@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import {
   DoubleSide,
@@ -94,27 +94,27 @@ const useKeyboardControls = ({direction, customSpeed}) => {
   }, []);
 };
 
-const useCanvasClick = (camera, raycaster, onObjectClick, meshRef) => {
+const useCanvasClick = ({camera, raycaster, handleObjectClick, meshRef}) => {
   useEffect(() => {
     const handleCanvasClick = (event) => {
       const mouse = new Vector2(
         (event.clientX / window.innerWidth) * 2 - 1,
         -(event.clientY / window.innerHeight) * 2 + 1
       );
-
+  
       raycaster.setFromCamera(mouse, camera);
       const intersects = raycaster.intersectObject(meshRef.current);
-
+  
       if (intersects.length > 0) {
-        onObjectClick(intersects[0]);
+        handleObjectClick(intersects[0]);
       }
     };
-
+  
     window.addEventListener("click", handleCanvasClick);
     return () => {
       window.removeEventListener("click", handleCanvasClick);
     };
-  }, [camera, raycaster, onObjectClick, meshRef]);
+  }, [camera, handleObjectClick, meshRef]);
 };
 
 const checkResource = (height) => {
@@ -152,7 +152,7 @@ const applyResources = ({ resources, widthCount, depthCount, scale, offsetX, off
   const speedFactor = resourceScale / 100;
   
   const resourceTypes = ['r1', 'r2', 'r3', 'r4'];
-  const thresholds = [0.1, 0.5, 0.8, 1];
+  const thresholds = [0.1, 0.2, 0.4, 1];
 
   for (let i = 0; i <= depthCount; i++) {
     for (let j = 0; j <= widthCount; j++) {
@@ -168,6 +168,8 @@ const applyResources = ({ resources, widthCount, depthCount, scale, offsetX, off
       }
     }
   }
+
+  // console.log("Resources:", resources[0]);
 };
 
 const generateTerrain = (
@@ -261,39 +263,39 @@ const Terrain = () => {
   const direction = useRef({ x: 0, y: -1 });
   const customSpeed = useRef(1);
   const [selectedPoint, setSelectedPoint] = useState(null);
-  const [resources, setResources] = useState([]);
+  // const [resources, setResources] = useState([]);
+  const resources = useRef([]);
 
   const raycaster = new Raycaster();
 
-  const handleObjectClick = ({ point, face }) => {
-    setSelectedPoint(point);
+  const handleObjectClick = useCallback(({ point, face }) => {
     if (face) {
       const vertexIndex = face.a;
-      console.log("Resource:", { resources, vertexIndex }, resources[vertexIndex]);
+      console.log("Resource:", { resources: resources.current, vertexIndex }, resources.current[vertexIndex]);
     }
-  };
+  }, []);
 
   useKeyboardControls({direction, customSpeed})
-  useCanvasClick(camera, raycaster, handleObjectClick, meshRef);
-
+  useCanvasClick({camera, raycaster, handleObjectClick, meshRef});
 
   useEffect(() => {
     const { resources: generatedResources } = generateTerrain(
       width, depth, resolution, scale, seed, offsetX, offsetY, terrainGeometry.current, showResources
     );
-    setResources(generatedResources);
+    resources.current = generatedResources;
   }, [width, depth, resolution, scale, seed, offsetX, offsetY, showResources]);
 
-
   const updateTerrainGeometry = () => {
-    const { colors } = generateTerrain( width, depth, resolution, scale, seed,
+    const { colors, resources: generatedResources } = generateTerrain(
+      width, depth, resolution, scale, seed,
       offset.current.x + offsetX,
       offset.current.y + offsetY,
       terrainGeometry.current,
       showResources
     );
     terrainGeometry.current.setAttribute('color', new Float32BufferAttribute(colors, 3));
-  
+    resources.current = generatedResources;
+
     if (meshRef.current) {
       meshRef.current.geometry = terrainGeometry.current;
     }
