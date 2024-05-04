@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import {
   DoubleSide,
@@ -52,6 +52,71 @@ const resourceTypes = {
   },
 };
 
+const useKeyboardControls = ({direction, customSpeed}) => {
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      switch (event.key) {
+        case "ArrowUp":
+        case "w":
+          direction.current = { x: 0, y: -1 };
+          break;
+        case "ArrowDown":
+        case "s":
+          direction.current = { x: 0, y: 1 };
+          break;
+        case "ArrowLeft":
+        case "a":
+          direction.current = { x: -1, y: 0 };
+          break;
+        case "ArrowRight":
+        case "d":
+          direction.current = { x: 1, y: 0 };
+          break;
+        case "Shift":
+          customSpeed.current = 3;
+          break;
+      }
+    };
+
+    const handleKeyUp = (event) => {
+      if (event.key === "Shift") {
+        customSpeed.current = 1;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+    };
+  }, []);
+};
+
+const useCanvasClick = (camera, raycaster, onObjectClick, meshRef) => {
+  useEffect(() => {
+    const handleCanvasClick = (event) => {
+      const mouse = new Vector2(
+        (event.clientX / window.innerWidth) * 2 - 1,
+        -(event.clientY / window.innerHeight) * 2 + 1
+      );
+
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObject(meshRef.current);
+
+      if (intersects.length > 0) {
+        onObjectClick(intersects[0]);
+      }
+    };
+
+    window.addEventListener("click", handleCanvasClick);
+    return () => {
+      window.removeEventListener("click", handleCanvasClick);
+    };
+  }, [camera, raycaster, onObjectClick, meshRef]);
+};
+
 const checkResource = (height) => {
   for (const [type, { level }] of Object.entries(terrainTypes)) {
     if (height < level) {
@@ -81,7 +146,7 @@ const applyTerrainColors = (positions, colors, widthCount, depthCount, scale) =>
   }
 };
 
-const applyResources = (resources, widthCount, depthCount, scale, offsetX, offsetY, rng) => {
+const applyResources = ({ resources, widthCount, depthCount, scale, offsetX, offsetY, rng }) => {
   const noise2D = createNoise2D(rng);
   const resourceScale = scale * 0.021 ;
   const speedFactor = resourceScale / 100;
@@ -150,7 +215,7 @@ const generateTerrain = (
   applyTerrainColors(positions, colors, widthCount, depthCount, scale);
 
   const resources = new Array((widthCount + 1) * (depthCount + 1)).fill(null);
-  applyResources(resources, widthCount, depthCount, scale, offsetX, offsetY, rng);
+  applyResources({resources, widthCount, depthCount, scale, offsetX, offsetY, rng});
 
   if (showResources) {
     for (let i = 0; i < resources.length; i++) {
@@ -183,120 +248,45 @@ const Terrain = () => {
     offsetY: { value: 0, min: -100, max: 100 },
   });
 
+  const { speed } = useControls({
+    speed: { value: 0.1, min: 0.01, max: 0.5 },
+  });
+
   const { camera } = useThree();
 
+  const showResources = useStore((state) => state.showResources);
   const meshRef = useRef();
   const terrainGeometry = useRef(new BufferGeometry());
   const offset = useRef({ x: 0, y: 0 });
   const direction = useRef({ x: 0, y: -1 });
-  const speed = useRef(0.1);
-
+  const customSpeed = useRef(1);
   const [selectedPoint, setSelectedPoint] = useState(null);
   const [resources, setResources] = useState([]);
-  const [originalColors, setOriginalColors] = useState(null);
-  // const [showResources, setShowResources] = useState(false);
-
-  const showResources = useStore((state) => state.showResources);
 
   const raycaster = new Raycaster();
-  const mouse = new Vector2();
 
-  useEffect(() => {
-    const { colors: generatedColors, resources: generatedResources } = generateTerrain(
-      width, depth, resolution, scale, seed, offsetX, offsetY, terrainGeometry.current, showResources
-    );
-    setResources(generatedResources);
-    setOriginalColors(new Float32Array(generatedColors));
-  }, [width, depth, resolution, scale, seed, offsetX, offsetY, showResources]);
-
-  const onCanvasClick = (event) => {
-    
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-    raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObject(meshRef.current);
-
-    if (intersects.length > 0) {
-      const { point, face } = intersects[0];
-      // console.log("You clicked on the terrain at:", point, checkResource(point.y));
-      setSelectedPoint(point);
-
-      if (face) {
-        const vertexIndex = face.a;
-
-        console.log("Resource:", {resources, vertexIndex}, resources[vertexIndex]);
-        // updateTerrainDisplay(face.a, resources[vertexIndex]);
-      }
-
-      // const vertexIndex = Math.floor(point.index / 3);
+  const handleObjectClick = ({ point, face }) => {
+    setSelectedPoint(point);
+    if (face) {
+      const vertexIndex = face.a;
+      console.log("Resource:", { resources, vertexIndex }, resources[vertexIndex]);
     }
   };
 
+  useKeyboardControls({direction, customSpeed})
+  useCanvasClick(camera, raycaster, handleObjectClick, meshRef);
+
+
   useEffect(() => {
-    const generatedResources = generateTerrain(
+    const { resources: generatedResources } = generateTerrain(
       width, depth, resolution, scale, seed, offsetX, offsetY, terrainGeometry.current, showResources
     );
     setResources(generatedResources);
-    
-    const colors = terrainGeometry.current.getAttribute('color').array;
-    setOriginalColors(new Float32Array(colors));
-  }, [width, depth, resolution, scale, seed, offsetX, offsetY]);
+  }, [width, depth, resolution, scale, seed, offsetX, offsetY, showResources]);
 
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      switch (event.key) {
-        case "ArrowUp":
-        case "w":
-          direction.current = { x: 0, y: -1 };
-          break;
-        case "ArrowDown":
-        case "s":
-          direction.current = { x: 0, y: 1 };
-          break;
-        case "ArrowLeft":
-        case "a":
-          direction.current = { x: -1, y: 0 };
-          break;
-        case "ArrowRight":
-        case "d":
-          direction.current = { x: 1, y: 0 };
-          break;
-        case "Shift":
-          speed.current = 0.5;
-          break;
-      }
-    };
-
-    const handleKeyUp = (event) => {
-      if (event.key === "Shift") {
-        speed.current = 0.1;
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("keyup", handleKeyUp);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("keyup", handleKeyUp);
-    };
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener("click", onCanvasClick);
-    return () => {
-      window.removeEventListener("click", onCanvasClick);
-    };
-  }, []);
 
   const updateTerrainGeometry = () => {
-    const { colors } = generateTerrain(
-      width,
-      depth,
-      resolution,
-      scale,
-      seed,
+    const { colors } = generateTerrain( width, depth, resolution, scale, seed,
       offset.current.x + offsetX,
       offset.current.y + offsetY,
       terrainGeometry.current,
@@ -310,8 +300,8 @@ const Terrain = () => {
   };
 
   useFrame(() => {
-    offset.current.x += direction.current.x * speed.current;
-    offset.current.y += direction.current.y * speed.current;
+    offset.current.x += direction.current.x * (speed * customSpeed.current);
+    offset.current.y += direction.current.y * (speed * customSpeed.current);
   
     updateTerrainGeometry();
 
