@@ -65,6 +65,8 @@ const useStore = create((set) => ({
 	},
   message: "",
 
+	scanRadius: 30,
+
 	canPlaceBeacon: false,
 
 	activePosition: { x: 0, y: 0 },

@@ -22,6 +22,8 @@ import { vertexShader, fragmentShader } from './chunkGridShader';
 import { ConcentricCirclesAnimation } from "./concentricCircles";
 import { EffectsCollection } from "./effects";
 
+import { debounce } from 'lodash';
+
 
 const PulsingShaderMaterial = shaderMaterial(
   {
@@ -210,13 +212,31 @@ const useKeyboardControls = ({
   // return { canPlaceBeacon, setCanPlaceBeacon };
 };
 
-const useCanvasHover = ({ camera, raycaster, meshRef, resources, offsetX, offsetY }) => {
+const useCanvasHover = ({ camera, raycaster, meshRef, resources }) => {
   const canPlaceBeacon = useStore((state) => state.canPlaceBeacon);
   // use hover only when placing beacon
 
+  const { width, depth, offsetX, offsetY } = useControls({
+    width: { value: 100, min: 50, max: 200 },
+    depth: { value: 100, min: 50, max: 200 },
+    offsetX: { value: 0, min: -100, max: 100 },
+    offsetY: { value: 0, min: -100, max: 100 },
+  });
+
+  // const debounceUpdateActivePosition = useCallback(
+  //   debounce((position) => {
+  //     useStore.setState({ activePosition: position });
+  //   }, 10),
+  //   []
+  // );
+
   useEffect(() => {
     const handleCanvasHover = (event: { clientX: number; clientY: number }) => {
-      if (!canPlaceBeacon) return;
+      if (!canPlaceBeacon) {
+        // setScanningArea(null);
+        useStore.setState({ showResources: false });
+        return;
+      }
 
       const mouse = new Vector2(
         (event.clientX / window.innerWidth) * 2 - 1,
@@ -229,29 +249,16 @@ const useCanvasHover = ({ camera, raycaster, meshRef, resources, offsetX, offset
       if (intersects.length > 0) {
         const vertexIndex = intersects[0].face.a;
         const resource = resources.current[vertexIndex];
-        useStore.setState({ selectedResource: resource, activePosition: intersects[0].point });
+        useStore.setState({ selectedResource: resource, activePosition: intersects[0].point, showResources: true});
+
+        // debounceUpdateActivePosition(intersects[0].point);
+        // debounce(() => {
+        //   useStore.setState({ activePosition: intersects[0].point, showResources: true });
+        // }, 100)();
+
       }
     };
 
-    window.addEventListener("mousemove", handleCanvasHover);
-    return () => {
-      window.removeEventListener("mousemove", handleCanvasHover);
-    };
-  }, [camera, meshRef, canPlaceBeacon, resources, offsetX, offsetY]);
-};
-
-const useCanvasClick = ({
-  camera,
-  raycaster,
-  handleObjectClick,
-  meshRef,
-  resources,
-  offsetX,
-  offsetY,
-}) => {
-  const canPlaceBeacon = useStore((state) => state.canPlaceBeacon);
-
-  useEffect(() => {
     const handleCanvasClick = (event: { clientX: number; clientY: number }) => {
       if (!canPlaceBeacon) return;
 
@@ -264,6 +271,8 @@ const useCanvasClick = ({
       const intersects = raycaster.intersectObject(meshRef.current);
 
       if (intersects.length > 0) {
+        // useStore.setState({ activePosition: intersects[0].point });
+
         handleObjectClick(
           {
             point: intersects[0].point,
@@ -277,11 +286,12 @@ const useCanvasClick = ({
     };
 
     window.addEventListener("click", handleCanvasClick);
+    window.addEventListener("mousemove", handleCanvasHover);
     return () => {
       window.removeEventListener("click", handleCanvasClick);
+      window.removeEventListener("mousemove", handleCanvasHover);
     };
-  }, [camera, meshRef, canPlaceBeacon, offsetX, offsetY]);
-  // }, [camera, handleObjectClick, meshRef, canPlaceBeacon, raycaster, resources, offsetX, offsetY]);
+  }, [camera, meshRef, canPlaceBeacon, resources, offsetX, offsetY]);
 };
 
 const addBeacon = (
@@ -414,7 +424,9 @@ const generateTerrain = (
   offsetX: number,
   offsetY: number,
   geometry: BufferGeometry<NormalBufferAttributes>,
-  showResources: boolean
+  showResources: boolean,
+  activePosition,
+  scanRadius = 0
 ) => {
   const rng = seedrandom(seed);
   const noise2D = createNoise2D(rng);
@@ -471,17 +483,45 @@ const generateTerrain = (
   const resources = new Array((widthCount + 1) * (depthCount + 1)).fill(null);
   applyResources({ resources, widthCount, depthCount, scale, offsetX, offsetY, rng });
 
+  // if (showResources) {
+  //   for (let i = 0; i < resources.length; i++) {
+  //     const resource = resources[i];
+  //     if (resource) {
+  //       const color = getResourceColor(resource);
+  //       colors[i * 3] = color.r;
+  //       colors[i * 3 + 1] = color.g;
+  //       colors[i * 3 + 2] = color.b;
+  //     }
+  //   }
+  // }
+
+  // const alwayShowResources = true;  
+
   if (showResources) {
-    for (let i = 0; i < resources.length; i++) {
-      const resource = resources[i];
-      if (resource) {
-        const color = getResourceColor(resource);
-        colors[i * 3] = color.r;
-        colors[i * 3 + 1] = color.g;
-        colors[i * 3 + 2] = color.b;
+    const mousePosX = activePosition.x + width / 2;
+    const mousePosZ = activePosition.z + depth / 2;
+    for (let i = 0; i <= depthCount; i++) {
+      const posZ = (i / depthCount) * depth - mousePosZ;
+      for (let j = 0; j <= widthCount; j++) {
+        const posX = (j / widthCount) * width - mousePosX;
+        const distance = Math.sqrt((posX) ** 2 + (posZ) ** 2);
+        if (distance <= scanRadius) {
+          const index = i * (widthCount + 1) + j;
+          const resource = resources[index];
+          if (resource) {
+            const color = getResourceColor(resource);
+            colors[index * 3] = color.r;
+            colors[index * 3 + 1] = color.g;
+            colors[index * 3 + 2] = color.b;
+          }
+        }
       }
     }
   }
+
+
+
+
   geometry.setAttribute("color", new Float32BufferAttribute(colors, 3));
   // geometry.setAttribute("originalColor", new Float32BufferAttribute(originalColors, 3));
   geometry.setAttribute("position", new Float32BufferAttribute(positions, 3));
@@ -533,6 +573,10 @@ const Terrain = () => {
 
   const showResources = useStore((state) => state.showResources);
   const beacons = useStore((state) => state.beacons);
+  const scanRadius = useStore((state) => state.scanRadius);
+  const activePosition = useStore((state) => state.activePosition);
+
+  // const [scanningArea, setScanningArea] = useState(null);
   // const pulsingCirclePosition = useStore((state) => state.activePosition);
   // const canPlaceBeacon = useStore((state) => state.canPlaceBeacon);
 
@@ -556,17 +600,17 @@ const Terrain = () => {
     customSpeed,
   });
 
-  useCanvasHover({ camera, raycaster, meshRef, resources, offsetX, offsetY });
+  useCanvasHover({ camera, raycaster, meshRef, resources });
 
-  useCanvasClick({
-    camera,
-    raycaster,
-    handleObjectClick,
-    meshRef,
-    resources,
-    offsetX,
-    offsetY,
-  });
+  // useCanvasClick({
+  //   camera,
+  //   raycaster,
+  //   handleObjectClick,
+  //   meshRef,
+  //   resources,
+  //   offsetX,
+  //   offsetY,
+  // });
 
   useEffect(() => {
     const { resources: generatedResources } = generateTerrain(
@@ -578,10 +622,12 @@ const Terrain = () => {
       offsetX,
       offsetY,
       terrainGeometry.current,
-      showResources
+      showResources,
+      activePosition,
+      scanRadius
     );
     resources.current = generatedResources;
-  }, [width, depth, resolution, scale, seed, offsetX, offsetY, showResources]);
+  }, [width, depth, resolution, scale, seed, offsetX, offsetY, showResources, activePosition]);
 
   useEffect(() => {
     generateGridGeometry();
@@ -597,7 +643,9 @@ const Terrain = () => {
       offset.current.x + offsetX,
       offset.current.y + offsetY,
       terrainGeometry.current,
-      showResources
+      showResources,
+      activePosition,
+      scanRadius
     );
     terrainGeometry.current.setAttribute("color", new Float32BufferAttribute(colors, 3));
     resources.current = generatedResources;
@@ -653,6 +701,8 @@ const Terrain = () => {
     const deltaX = direction.current.x * (speed * customSpeed.current);
     const deltaY = direction.current.y * (speed * customSpeed.current);
 
+    // console.log("deltaX:", deltaX, deltaY);
+
     offset.current.x += deltaX;
     offset.current.y += deltaY;
 
@@ -665,10 +715,12 @@ const Terrain = () => {
 
     useStore.setState({ currentLocation: { x: currentChunk.chunkX, y: currentChunk.chunkY } });
 
-    updateTerrainGeometry();
-    updateBeacons(deltaX, deltaY);
+    if (deltaX !== 0 || deltaY !== 0) {
+      updateTerrainGeometry();
+      updateBeacons(deltaX, deltaY);
+      planeRef.current.material.uniforms.offset.value.set(offset.current.x * 0.01, -offset.current.y * 0.01);
+    }
 
-    planeRef.current.material.uniforms.offset.value.set(offset.current.x * 0.01, -offset.current.y * 0.01);
   });
 
   return (
@@ -821,7 +873,7 @@ const App = () => {
 
   return (
     <>
-      <div className="z-50 w-72 fixed bottom-0 right-0">
+      <div className="scrollbar z-50 p-1 h-56 w-fit text-left m-2 text-xs fixed bottom-0 right-0 rounded-md border border-white/80">
         {beacons.map(
           (
             beacon: { chunk: { x: any; y: any }; resource: any; position: { x: any; z: any } },
@@ -861,9 +913,9 @@ const App = () => {
         <Terrain />
 
         <Text
-          position={[45, 0, 50]}
+          position={[47, 0, 50]}
           rotation={[-Math.PI / 2,0,Math.PI / 2]}
-          fontSize={20}
+          fontSize={18}
           fontWeight={"bold"}
           color={"#afafaf"}
           anchorX="left"
