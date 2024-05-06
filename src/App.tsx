@@ -20,8 +20,8 @@ import useStore, { minLevel, resourceTypes, terrainTypes } from "./store";
 
 import { vertexShader, fragmentShader } from './chunkGridShader';
 import { ConcentricCirclesAnimation } from "./concentricCircles";
+import { EffectsCollection } from "./effects";
 
-import { EffectComposer, Bloom, ChromaticAberration, Depth, DepthOfField, Noise, Scanline, Sepia, SMAA, FXAA, HueSaturation } from '@react-three/postprocessing';
 
 const PulsingShaderMaterial = shaderMaterial(
   {
@@ -784,23 +784,36 @@ const App = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      // console.log("Interval:", beacons);
-      useStore.setState((state: { playerPoints: any; beacons: any[] }) => ({
-        playerPoints:
-          state.playerPoints +
-          state.beacons.reduce(
-            (total: any, beacon: { resource: string | number }) =>
-              total + resourceTypes[beacon.resource].score,
-            0
-          ),
-      }));
-      
-    }, 1000);
+      useStore.setState((state) => {
+        // Calculate the new player points
+        const newPlayerPoints = state.playerPoints + state.beacons.reduce(
+          (total, beacon) => total + resourceTypes[beacon.resource].score,
+          0
+        );
+  
+        // Calculate the new collected resources
+        const newCollectedResources = { ...state.collectedResources };
+        state.beacons.forEach((beacon) => {
 
+          if (newCollectedResources.hasOwnProperty(beacon.resource)) {
+            newCollectedResources[beacon.resource] += 1;
+          } else {
+            newCollectedResources[beacon.resource] = 1;
+          }
+        });
+  
+        return {
+          playerPoints: newPlayerPoints,
+          collectedResources: newCollectedResources
+        };
+      });
+    }, 1000);
+  
     return () => {
       clearInterval(interval);
     };
   }, []);
+  
 
   const currentChunkName = useMemo(() => {
     return convertChunkCoordinateToName(currentLocation);
@@ -832,6 +845,11 @@ const App = () => {
         <div>Selected Resource: {selectedResource}</div>
         <div>Current Location: {JSON.stringify(currentLocation)}</div>
         <div className=" text-lg ">Player Points: {playerPoints}</div>
+        {Object.entries(collectedResources).map(([resource, count]) => (
+          <div key={resource}>
+            {resource}: {count}
+            </div> 
+        ))}
       </div>
       <div className="z-50 fixed bottom-0 left-1/2">{message}</div>
       <Stats />
@@ -869,39 +887,9 @@ const App = () => {
           <meshBasicMaterial color={0x0000ff} side={DoubleSide} />
         </mesh> */}
         <OrbitControls />
-        <EffectComposer>
-          {/* <FXAA /> */}
-          <HueSaturation
-            hue={0}
-            saturation={0.6}
-          />
-          <Bloom
-            // blendFunction={AdditiveBlending}
-            mipmapBlur={true}
-            // radius={0.3}
-            intensity={3}
-            // radius={0}
-            // luminanceThreshold={0.9}
-            // luminanceSmoothing={1}
-            // height={500}
-          />
-          <ChromaticAberration
-            offset={[0,0.003]}
-            radialModulation={true}
-          />
-          <Noise
-            opacity={0.2}
-          />
+        
+        {/* <EffectsCollection /> */}
 
-          {/* <Scanline
-            density={0.7}
-            opacity={0.2}
-          /> */}
-
-
-
-
-        </EffectComposer>
       </Canvas>
     </>
   );
