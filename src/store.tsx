@@ -51,6 +51,7 @@ export const resourceTypes = {
 };
 
 const useGamaStore = create((set) => ({
+	currentOffset: { x: 0, y: 0 },
   showResources: false,
   selectedResource: "",
 	selectedChunk: { x: 0, y: 0 },
@@ -64,15 +65,10 @@ const useGamaStore = create((set) => ({
 		r4: 0,
 	},
   message: "",
-
 	scanRadius: 30,
-
 	canPlaceBeacon: false,
-
 	activePosition: { x: 0, y: 0 },
-
   toggleShowResources: () => set((state) => ({ showResources: !state.showResources })),
-
   // selectResource: (resource) => set({ selectedResource: resource }),
 }));
 

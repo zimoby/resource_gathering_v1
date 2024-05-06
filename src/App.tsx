@@ -23,6 +23,8 @@ import { ConcentricCirclesAnimation } from "./concentricCircles";
 import { EffectsCollection } from "./effects";
 
 import { debounce } from 'lodash';
+import { useStore } from "zustand";
+import { depth } from "three/examples/jsm/nodes/Nodes.js";
 
 
 const PulsingShaderMaterial = shaderMaterial(
@@ -151,6 +153,9 @@ const getChunkCoordinates = (globalX: number, globalY: number, chunkSize: number
 const useKeyboardControls = ({
   direction,
   customSpeed,
+  raycaster,
+  meshRef,
+  camera
 }: {
   direction: {
     current: { x: number; y: number };
@@ -160,7 +165,26 @@ const useKeyboardControls = ({
   customSpeed: {
     current: number;
   };
+  raycaster: Raycaster;
+  meshRef: any;
+  camera: any;
 }): void => {
+  const mousePosition = useRef();
+
+  // useEffect(() => {
+  //   const handleMouseMove = (event) => {
+  //     const newEvent = { clientX: event.clientX, clientY: event.clientY };
+
+  //     // console.log("Mouse position:", newEvent);
+  //     mousePosition.current = newEvent ;
+  //   };
+
+  //   window.addEventListener('mousemove', handleMouseMove);
+  //   return () => {
+  //     window.removeEventListener('mousemove', handleMouseMove);
+  //   };
+  // }, []);
+
   useEffect(() => {
     const handleKeyDown = (event: { key: any }) => {
       switch (event.key) {
@@ -187,7 +211,31 @@ const useKeyboardControls = ({
           useGamaStore.setState({ canPlaceBeacon: true });
           break;
       }
+
+      // console.log("Camera position:", direction.current);
+      // get current mouse position
+      
+
+      // if (mousePosition.current) {
+      //   // console.log("Mouse position:", mousePosition.current);
+      //   const intersects = getIntersection(mousePosition.current, raycaster, meshRef, camera);
+
+      //   if (intersects.length > 0) {
+      //     const point = intersects[0].point;
+      //     const chunk = getChunkCoordinates(point.x, point.z, 100);
+      //     console.log("Chunk:", chunk);
+
+      //     // useGamaStore.setState({ currentLocation: point });
+      //   }
+
+      //   // console.log("Camera position:", {intersects});
+      // }
+
+      // console.log("Mouse position:", mousePosition.current);
+
+
     };
+
 
     const handleKeyUp = (event: { key: any }) => {
       switch (event.key) {
@@ -212,11 +260,28 @@ const useKeyboardControls = ({
   // return { canPlaceBeacon, setCanPlaceBeacon };
 };
 
+const getIntersection = (event: { clientX: number; clientY: number; }, raycaster: Raycaster, meshRef: any, camera) => {
+  const mouse = new Vector2(
+    (event.clientX / window.innerWidth) * 2 - 1,
+    -(event.clientY / window.innerHeight) * 2 + 1
+  );
+
+  // console.log("Mouse:", event.clientX, event.clientY);
+
+  raycaster.setFromCamera(mouse, camera);
+  const intersects = raycaster.intersectObject(meshRef.current);
+
+  return intersects;
+}
+
 const useCanvasHover = ({ camera, raycaster, meshRef, resources }) => {
   const canPlaceBeacon = useGamaStore((state) => state.canPlaceBeacon);
+  const currentOffset = useGamaStore((state) => state.currentOffset);
   // use hover only when placing beacon
 
-  const { offsetX, offsetY } = useControls({
+  const { offsetX, offsetY, width, depth } = useControls({
+    width: { value: 100, min: 1, max: 200 },
+    depth: { value: 100, min: 1, max: 200 },
     offsetX: { value: 0, min: -100, max: 100 },
     offsetY: { value: 0, min: -100, max: 100 },
   });
@@ -236,20 +301,35 @@ const useCanvasHover = ({ camera, raycaster, meshRef, resources }) => {
         return;
       }
 
-      const mouse = new Vector2(
-        (event.clientX / window.innerWidth) * 2 - 1,
-        -(event.clientY / window.innerHeight) * 2 + 1
-      );
+      // const mouse = new Vector2(
+      //   (event.clientX / window.innerWidth) * 2 - 1,
+      //   -(event.clientY / window.innerHeight) * 2 + 1
+      // );
 
-      raycaster.setFromCamera(mouse, camera);
-      const intersects = raycaster.intersectObject(meshRef.current);
+      // raycaster.setFromCamera(mouse, camera);
+      // const intersects = raycaster.intersectObject(meshRef.current);
+
+      const intersects = getIntersection(event, raycaster, meshRef, camera);
 
       if (intersects.length > 0) {
         const vertexIndex = intersects[0].face.a;
         const resource = resources.current[vertexIndex];
-        useGamaStore.setState({ selectedResource: resource, showResources: true});
+        
         // useGamaStore.setState({ selectedResource: resource, activePosition: intersects[0].point, showResources: true});
 
+        const calcCurrentPosition = {
+          x: intersects[0].point.x + width / 2 + currentOffset.x,
+          y: intersects[0].point.z + depth / 2 + currentOffset.y,
+        }
+
+        // const selectedChunk = getChunkCoordinates(calcCurrentPosition.x, calcCurrentPosition.y, width);
+
+        useGamaStore.setState({ selectedResource: resource, showResources: true, currentOffset: calcCurrentPosition});
+
+        // console.log("Resource:", getChunkCoordinates(calcCurrentPosition.x, calcCurrentPosition.y, width));
+
+        // console.log("Resource:", getChunkCoordinates(intersects[0].point.x - currentOffset.x, intersects[0].point.z - currentOffset.y, width));
+        // console.log("Intersects:", getChunkCoordinates(intersects[0].point.x, intersects[0].point.z, width));
         // debounceUpdateActivePosition(intersects[0].point);
         debounce(() => {
           useGamaStore.setState({ activePosition: intersects[0].point });
@@ -261,26 +341,49 @@ const useCanvasHover = ({ camera, raycaster, meshRef, resources }) => {
     const handleCanvasClick = (event: { clientX: number; clientY: number }) => {
       if (!canPlaceBeacon) return;
 
-      const mouse = new Vector2(
-        (event.clientX / window.innerWidth) * 2 - 1,
-        -(event.clientY / window.innerHeight) * 2 + 1
-      );
+      // const mouse = new Vector2(
+      //   (event.clientX / window.innerWidth) * 2 - 1,
+      //   -(event.clientY / window.innerHeight) * 2 + 1
+      // );
 
-      raycaster.setFromCamera(mouse, camera);
-      const intersects = raycaster.intersectObject(meshRef.current);
+      // raycaster.setFromCamera(mouse, camera);
+      // const intersects = raycaster.intersectObject(meshRef.current);
+
+      const intersects = getIntersection(event, raycaster, meshRef, camera);
 
       if (intersects.length > 0) {
         // useGamaStore.setState({ activePosition: intersects[0].point });
 
-        handleObjectClick(
-          {
-            point: intersects[0].point,
-            face: intersects[0].face,
-            resources,
-          },
-          offsetX,
-          offsetY
-        );
+        // console.log("Intersects:", getChunkCoordinates(intersects[0].point.x, intersects[0].point.z, width));
+        if (intersects[0].face) {
+          const vertexIndex = intersects[0].face.a;
+          const selectedResource = resources.current[vertexIndex];
+          useGamaStore.setState({ selectedResource: selectedResource });
+
+          const calcCurrentPosition = {
+            x: intersects[0].point.x + width / 2 + currentOffset.x,
+            y: intersects[0].point.z + depth / 2 + currentOffset.y,
+          }
+
+          // console.log("Resource:", getChunkCoordinates(calcCurrentPosition.x, calcCurrentPosition.y, width));
+
+          const chunkCoordinates = getChunkCoordinates(calcCurrentPosition.x, calcCurrentPosition.y, width);
+      
+          // addBeacon(intersects[0].point, selectedResource, offsetX, offsetY);
+          addBeacon({
+            position: {
+              x: intersects[0].point.x - offsetX,
+              y: intersects[0].point.y,
+              z: intersects[0].point.z - offsetY,
+            },
+            resource: selectedResource,
+            currentChunk: {
+              x: chunkCoordinates.chunkX,
+              y: chunkCoordinates.chunkY,
+            }
+          });
+        }
+
       }
     };
 
@@ -293,13 +396,12 @@ const useCanvasHover = ({ camera, raycaster, meshRef, resources }) => {
   }, [camera, meshRef, canPlaceBeacon, resources, offsetX, offsetY]);
 };
 
-const addBeacon = (
-  position: { x: number; z: number; y: number },
-  resource: any,
-  offsetX: number,
-  offsetY: number
-) => {
-  const currentChunk = useGamaStore.getState().currentLocation;
+const addBeacon = ({
+  position,
+  resource,
+  currentChunk,
+}) => {
+  // const currentChunk = useGamaStore.getState().currentLocation;
   const beacons = useGamaStore.getState().beacons;
   const chunkBeacons = beacons.filter(
     (beacon: { chunk: { x: any; y: any } }) =>
@@ -309,8 +411,8 @@ const addBeacon = (
   const minDistance = 10;
 
   const isWithinRadius = chunkBeacons.some((beacon: { position: { x: number; z: number } }) => {
-    const dx = position.x - offsetX - beacon.position.x;
-    const dz = position.z - offsetY - beacon.position.z;
+    const dx = position.x - beacon.position.x;
+    const dz = position.z - beacon.position.z;
     const distance = Math.sqrt(dx * dx + dz * dz);
     return distance < minDistance;
   });
@@ -333,9 +435,9 @@ const addBeacon = (
       ...state.beacons,
       {
         position: {
-          x: position.x.toFixed(3) - offsetX,
+          x: position.x.toFixed(3),
           y: position.y.toFixed(3),
-          z: position.z.toFixed(3) - offsetY,
+          z: position.z.toFixed(3),
         },
         resource,
         chunk: currentChunk,
@@ -344,17 +446,10 @@ const addBeacon = (
     ];
     return { beacons: newBeacons };
   });
+
+  // console.log("Beacons:", beacons);
 };
 
-const handleObjectClick = ({ point, face, resources }: any, offsetX: any, offsetY: any) => {
-  if (face) {
-    const vertexIndex = face.a;
-    const selectedResource = resources.current[vertexIndex];
-    useGamaStore.setState({ selectedResource: selectedResource });
-
-    addBeacon(point, selectedResource, offsetX, offsetY);
-  }
-};
 
 const checkResource = (height: number) => {
   for (const [type, { level }] of Object.entries(terrainTypes)) {
@@ -573,7 +668,7 @@ const Terrain = () => {
     subGridColor: '#ffffff',
   });
 
-  const { camera, gl } = useThree();
+  const { camera } = useThree();
 
   // const showResources = useGamaStore((state) => state.showResources);
   const canPlaceBeacon = useGamaStore((state) => state.canPlaceBeacon);
@@ -604,11 +699,14 @@ const Terrain = () => {
   //   }
   // }, [firstStart]);
 
-  useKeyboardControls({ direction, customSpeed });
+  // useKeyboardControls({ direction, customSpeed });
 
   useKeyboardControls({
     direction,
     customSpeed,
+    raycaster,
+    meshRef,
+    camera
   });
 
   useCanvasHover({ camera, raycaster, meshRef, resources });
@@ -760,7 +858,12 @@ const Terrain = () => {
       width
     );
 
-    useGamaStore.setState({ currentLocation: { x: currentChunk.chunkX, y: currentChunk.chunkY } });
+    // console.log("currentChunk:", offset.current.x + offsetX + width / 2, offset.current.y + offsetY + depth / 2);
+
+    useGamaStore.setState({
+      currentLocation: { x: currentChunk.chunkX, y: currentChunk.chunkY },
+      currentOffset: { x: offset.current.x, y: offset.current.y }
+    });
 
     if (deltaX !== 0 || deltaY !== 0) {
       updateTerrainGeometry();
@@ -873,7 +976,7 @@ const ChunkGrid = ({ position, sizeExtend = 0 }) => {
 const App = () => {
   const toggleShowResources = useGamaStore((state) => state.toggleShowResources);
   const selectedResource = useGamaStore((state) => state.selectedResource);
-  const selectedChunk = useGamaStore((state) => state.selectedChunk);
+  // const selectedChunk = useGamaStore((state) => state.selectedChunk);
   const currentLocation = useGamaStore((state) => state.currentLocation);
   const beacons = useGamaStore((state) => state.beacons);
   const message = useGamaStore((state) => state.message);
