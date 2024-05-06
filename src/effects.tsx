@@ -21,7 +21,7 @@ export const EffectsCollection = () => {
         // blendFunction={AdditiveBlending}
         mipmapBlur={true}
         // radius={0.3}
-        intensity={3}
+        intensity={30}
         // radius={0}
         // luminanceThreshold={0.9}
         // luminanceSmoothing={1}

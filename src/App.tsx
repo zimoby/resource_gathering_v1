@@ -15,8 +15,8 @@ import {
 import { createNoise2D } from "simplex-noise";
 import seedrandom from "seedrandom";
 import { Cylinder, OrbitControls, OrthographicCamera, Sphere, Stats, Text, shaderMaterial } from "@react-three/drei";
-import { useControls } from "leva";
-import useStore, { minLevel, resourceTypes, terrainTypes } from "./store";
+import { levaStore, useControls } from "leva";
+import useGamaStore, { minLevel, resourceTypes, terrainTypes } from "./store";
 
 import { vertexShader, fragmentShader } from './chunkGridShader';
 import { ConcentricCirclesAnimation } from "./concentricCircles";
@@ -72,8 +72,8 @@ const convertChunkCoordinateToName = (chunk) => {
 }
 
 const PulsingCircle = () => {
-  const activePosition = useStore((state) => state.activePosition);
-  const canPlaceBeacon = useStore((state) => state.canPlaceBeacon);
+  const activePosition = useGamaStore((state) => state.activePosition);
+  const canPlaceBeacon = useGamaStore((state) => state.canPlaceBeacon);
   const ref = useRef();
   const size = 10;
 
@@ -184,7 +184,7 @@ const useKeyboardControls = ({
           customSpeed.current = 3;
           break;
         case " ":
-          useStore.setState({ canPlaceBeacon: true });
+          useGamaStore.setState({ canPlaceBeacon: true });
           break;
       }
     };
@@ -195,7 +195,7 @@ const useKeyboardControls = ({
           customSpeed.current = 1;
           break;
         case " ":
-          useStore.setState({ canPlaceBeacon: false });
+          useGamaStore.setState({ canPlaceBeacon: false });
           break;
       }
     };
@@ -213,20 +213,18 @@ const useKeyboardControls = ({
 };
 
 const useCanvasHover = ({ camera, raycaster, meshRef, resources }) => {
-  const canPlaceBeacon = useStore((state) => state.canPlaceBeacon);
+  const canPlaceBeacon = useGamaStore((state) => state.canPlaceBeacon);
   // use hover only when placing beacon
 
-  const { width, depth, offsetX, offsetY } = useControls({
-    width: { value: 100, min: 50, max: 200 },
-    depth: { value: 100, min: 50, max: 200 },
+  const { offsetX, offsetY } = useControls({
     offsetX: { value: 0, min: -100, max: 100 },
     offsetY: { value: 0, min: -100, max: 100 },
   });
 
   // const debounceUpdateActivePosition = useCallback(
-  //   debounce((position) => {
-  //     useStore.setState({ activePosition: position });
-  //   }, 10),
+  //   debounce((activePosition) => {
+  //     useGamaStore.setState({ activePosition });
+  //   }, 50),
   //   []
   // );
 
@@ -234,7 +232,7 @@ const useCanvasHover = ({ camera, raycaster, meshRef, resources }) => {
     const handleCanvasHover = (event: { clientX: number; clientY: number }) => {
       if (!canPlaceBeacon) {
         // setScanningArea(null);
-        useStore.setState({ showResources: false });
+        useGamaStore.setState({ showResources: false });
         return;
       }
 
@@ -249,12 +247,13 @@ const useCanvasHover = ({ camera, raycaster, meshRef, resources }) => {
       if (intersects.length > 0) {
         const vertexIndex = intersects[0].face.a;
         const resource = resources.current[vertexIndex];
-        useStore.setState({ selectedResource: resource, activePosition: intersects[0].point, showResources: true});
+        useGamaStore.setState({ selectedResource: resource, showResources: true});
+        // useGamaStore.setState({ selectedResource: resource, activePosition: intersects[0].point, showResources: true});
 
         // debounceUpdateActivePosition(intersects[0].point);
-        // debounce(() => {
-        //   useStore.setState({ activePosition: intersects[0].point, showResources: true });
-        // }, 100)();
+        debounce(() => {
+          useGamaStore.setState({ activePosition: intersects[0].point });
+        }, 100)();
 
       }
     };
@@ -271,7 +270,7 @@ const useCanvasHover = ({ camera, raycaster, meshRef, resources }) => {
       const intersects = raycaster.intersectObject(meshRef.current);
 
       if (intersects.length > 0) {
-        // useStore.setState({ activePosition: intersects[0].point });
+        // useGamaStore.setState({ activePosition: intersects[0].point });
 
         handleObjectClick(
           {
@@ -300,8 +299,8 @@ const addBeacon = (
   offsetX: number,
   offsetY: number
 ) => {
-  const currentChunk = useStore.getState().currentLocation;
-  const beacons = useStore.getState().beacons;
+  const currentChunk = useGamaStore.getState().currentLocation;
+  const beacons = useGamaStore.getState().beacons;
   const chunkBeacons = beacons.filter(
     (beacon: { chunk: { x: any; y: any } }) =>
       beacon.chunk.x === currentChunk.x && beacon.chunk.y === currentChunk.y
@@ -317,19 +316,19 @@ const addBeacon = (
   });
 
   if (isWithinRadius) {
-    useStore.setState({ message: "Cannot place beacon too close to another beacon." });
+    useGamaStore.setState({ message: "Cannot place beacon too close to another beacon." });
     return;
   }
 
   // console.log("Beacons in chunk:", [beacon.chunk.x, beacon.chunk.y, currentChunk.x, currentChunk.y]);
 
   if (chunkBeacons.length >= 2) {
-    useStore.setState({ message: "Maximum beacons placed in this chunk." });
+    useGamaStore.setState({ message: "Maximum beacons placed in this chunk." });
     // console.log("Maximum beacons placed in this chunk.");
     return;
   }
 
-  useStore.setState((state: { beacons: any }) => {
+  useGamaStore.setState((state: { beacons: any }) => {
     const newBeacons = [
       ...state.beacons,
       {
@@ -351,7 +350,7 @@ const handleObjectClick = ({ point, face, resources }: any, offsetX: any, offset
   if (face) {
     const vertexIndex = face.a;
     const selectedResource = resources.current[vertexIndex];
-    useStore.setState({ selectedResource: selectedResource });
+    useGamaStore.setState({ selectedResource: selectedResource });
 
     addBeacon(point, selectedResource, offsetX, offsetY);
   }
@@ -424,8 +423,8 @@ const generateTerrain = (
   offsetX: number,
   offsetY: number,
   geometry: BufferGeometry<NormalBufferAttributes>,
-  showResources: boolean,
-  activePosition,
+  canPlaceBeacon: boolean,
+  activePosition: { x: number; z: number },
   scanRadius = 0
 ) => {
   const rng = seedrandom(seed);
@@ -483,7 +482,7 @@ const generateTerrain = (
   const resources = new Array((widthCount + 1) * (depthCount + 1)).fill(null);
   applyResources({ resources, widthCount, depthCount, scale, offsetX, offsetY, rng });
 
-  // if (showResources) {
+  // if (canPlaceBeacon) {
   //   for (let i = 0; i < resources.length; i++) {
   //     const resource = resources[i];
   //     if (resource) {
@@ -495,9 +494,9 @@ const generateTerrain = (
   //   }
   // }
 
-  // const alwayShowResources = true;  
+  // const alwaycanPlaceBeacon = true;  
 
-  if (showResources) {
+  if (canPlaceBeacon) {
     const mousePosX = activePosition.x + width / 2;
     const mousePosZ = activePosition.z + depth / 2;
     for (let i = 0; i <= depthCount; i++) {
@@ -547,9 +546,14 @@ const isOutOfBound = (
 };
 
 const Terrain = () => {
+  
+  const [loading, setLoading] = useState(true);
+  const [firstStart, setFirstStart] = useState(false);
+
+
   const { width, depth, resolution, scale, seed, offsetX, offsetY } = useControls({
-    width: { value: 100, min: 50, max: 200 },
-    depth: { value: 100, min: 50, max: 200 },
+    width: { value: 100, min: 1, max: 200 },
+    depth: { value: 100, min: 1, max: 200 },
     resolution: { value: 3, min: 3, max: 50 },
     scale: { value: 50, min: 10, max: 100 },
     seed: "42",
@@ -569,18 +573,19 @@ const Terrain = () => {
     subGridColor: '#ffffff',
   });
 
-  const { camera } = useThree();
+  const { camera, gl } = useThree();
 
-  const showResources = useStore((state) => state.showResources);
-  const beacons = useStore((state) => state.beacons);
-  const scanRadius = useStore((state) => state.scanRadius);
-  const activePosition = useStore((state) => state.activePosition);
+  // const showResources = useGamaStore((state) => state.showResources);
+  const canPlaceBeacon = useGamaStore((state) => state.canPlaceBeacon);
+  const beacons = useGamaStore((state) => state.beacons);
+  const scanRadius = useGamaStore((state) => state.scanRadius);
+  const activePosition = useGamaStore((state) => state.activePosition);
 
   // const [scanningArea, setScanningArea] = useState(null);
-  // const pulsingCirclePosition = useStore((state) => state.activePosition);
-  // const canPlaceBeacon = useStore((state) => state.canPlaceBeacon);
+  // const pulsingCirclePosition = useGamaStore((state) => state.activePosition);
+  // const canPlaceBeacon = useGamaStore((state) => state.canPlaceBeacon);
 
-  // const selectResource = useStore((state) => state.selectRecource);
+  // const selectResource = useGamaStore((state) => state.selectRecource);
   const planeRef = useRef();
   const meshRef = useRef();
   const terrainGeometry = useRef(new BufferGeometry());
@@ -592,6 +597,12 @@ const Terrain = () => {
   const resources = useRef([]);
 
   const raycaster = new Raycaster();
+
+  // useEffect(() => {
+  //   if (!firstStart) {
+  //     setFirstStart(true);
+  //   }
+  // }, [firstStart]);
 
   useKeyboardControls({ direction, customSpeed });
 
@@ -612,22 +623,14 @@ const Terrain = () => {
   //   offsetY,
   // });
 
+
   useEffect(() => {
-    const { resources: generatedResources } = generateTerrain(
-      width,
-      depth,
-      resolution,
-      scale,
-      seed,
-      offsetX,
-      offsetY,
-      terrainGeometry.current,
-      showResources,
-      activePosition,
-      scanRadius
-    );
-    resources.current = generatedResources;
-  }, [width, depth, resolution, scale, seed, offsetX, offsetY, showResources, activePosition]);
+    const resources = updateTerrainGeometry();
+    if (resources && loading) {
+      setLoading(false);
+      console.log("Terrain is ready");
+    }
+  }, [width, depth, resolution, scale, seed, offsetX, offsetY, canPlaceBeacon, activePosition]);
 
   useEffect(() => {
     generateGridGeometry();
@@ -643,7 +646,7 @@ const Terrain = () => {
       offset.current.x + offsetX,
       offset.current.y + offsetY,
       terrainGeometry.current,
-      showResources,
+      canPlaceBeacon,
       activePosition,
       scanRadius
     );
@@ -653,6 +656,8 @@ const Terrain = () => {
     if (meshRef.current) {
       meshRef.current.geometry = terrainGeometry.current;
     }
+
+    return resources.current;
   };
 
   const updateBeacons = (deltaX: number, deltaY: number) => {
@@ -672,7 +677,7 @@ const Terrain = () => {
       })
       .filter(Boolean);
 
-    useStore.setState({ beacons: updatedBeacons });
+    useGamaStore.setState({ beacons: updatedBeacons });
   };
 
   const generateGridGeometry = () => {
@@ -697,9 +702,51 @@ const Terrain = () => {
     planeRef.current.material = planeMaterial;
   };
 
+  const updateLevaWidthAndDepth = (width: number, depth: number) => {
+    levaStore.set({ width, depth });
+  }
+    
+
   useFrame(() => {
+    
+    if (!loading && !firstStart) {
+      // Animate width and depth from 10 to full size after loading
+      console.log("First start");
+      // updateLevaWidthAndDepth(0, 0);
+      
+      setFirstStart(true); // Prevent multiple initializations
+      // const newWidth = Math.min(width + 1, 100);
+      // const newDepth = Math.min(depth + 1, 100);
+
+      // console.log("newWidth:", newWidth, newDepth);
+      
+      // updateLevaWidthAndDepth(newWidth, newDepth);
+      // if (newWidth !== 100 || newDepth !== 100) {
+      //   // setFirstStart(true);
+      // }
+    }
+
+    // if (firstStart) {
+    //   // console.log("First start");
+    //   // Animate width and depth from 10 to full size after loading
+    //   const newWidth = Math.min(width + 2, 100);
+    //   const newDepth = Math.min(depth + 2, 100);
+    //   updateLevaWidthAndDepth(newWidth, newDepth);
+    // }
+
+
     const deltaX = direction.current.x * (speed * customSpeed.current);
     const deltaY = direction.current.y * (speed * customSpeed.current);
+    // if (!firstStart) {
+    //   // animate width and depth from 0 to 100
+    //   const newWidth = Math.min(width + 1, 100);
+    //   const newDepth = Math.min(depth + 1, 100);
+    //   updateLevaWidthAndDepth(newWidth, newDepth);
+
+    //   if (newWidth === 100 && newDepth === 100) {
+    //     setFirstStart(true);
+    //   }
+    // }
 
     // console.log("deltaX:", deltaX, deltaY);
 
@@ -713,7 +760,7 @@ const Terrain = () => {
       width
     );
 
-    useStore.setState({ currentLocation: { x: currentChunk.chunkX, y: currentChunk.chunkY } });
+    useGamaStore.setState({ currentLocation: { x: currentChunk.chunkX, y: currentChunk.chunkY } });
 
     if (deltaX !== 0 || deltaY !== 0) {
       updateTerrainGeometry();
@@ -724,7 +771,7 @@ const Terrain = () => {
   });
 
   return (
-    <>
+    <group visible={firstStart}>
       <mesh ref={meshRef} geometry={terrainGeometry.current}>
         <meshStandardMaterial wireframe={true} vertexColors side={DoubleSide} />
       </mesh>
@@ -732,12 +779,12 @@ const Terrain = () => {
         <planeGeometry />
         <shaderMaterial />
       </mesh>
-    </>
+    </group>
   );
 };
 
 const Beacons = () => {
-  const beacons = useStore((state) => state.beacons);
+  const beacons = useGamaStore((state) => state.beacons);
   const { offsetX, offsetY, width, depth } = useControls({
     offsetX: { value: 0, min: -100, max: 100 },
     offsetY: { value: 0, min: -100, max: 100 },
@@ -824,21 +871,23 @@ const ChunkGrid = ({ position, sizeExtend = 0 }) => {
 };
 
 const App = () => {
-  const toggleShowResources = useStore((state) => state.toggleShowResources);
-  const selectedResource = useStore((state) => state.selectedResource);
-  const selectedChunk = useStore((state) => state.selectedChunk);
-  const currentLocation = useStore((state) => state.currentLocation);
-  const beacons = useStore((state) => state.beacons);
-  const message = useStore((state) => state.message);
+  const toggleShowResources = useGamaStore((state) => state.toggleShowResources);
+  const selectedResource = useGamaStore((state) => state.selectedResource);
+  const selectedChunk = useGamaStore((state) => state.selectedChunk);
+  const currentLocation = useGamaStore((state) => state.currentLocation);
+  const beacons = useGamaStore((state) => state.beacons);
+  const message = useGamaStore((state) => state.message);
 
-  const playerPoints = useStore((state) => state.playerPoints);
-  const collectedResources = useStore((state) => state.collectedResources);
+  const playerPoints = useGamaStore((state) => state.playerPoints);
+  const collectedResources = useGamaStore((state) => state.collectedResources);
+
+  const canPlaceBeacon = useGamaStore((state) => state.canPlaceBeacon);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      useStore.setState((state) => {
+      useGamaStore.setState((state) => {
         // Calculate the new player points
-        const newPlayerPoints = state.playerPoints + state.beacons.reduce(
+        let newPlayerPoints = state.playerPoints + state.beacons.reduce(
           (total, beacon) => total + resourceTypes[beacon.resource].score,
           0
         );
@@ -853,6 +902,10 @@ const App = () => {
             newCollectedResources[beacon.resource] = 1;
           }
         });
+
+        if (canPlaceBeacon) {
+          newPlayerPoints -= 50;
+        }
   
         return {
           playerPoints: newPlayerPoints,
@@ -864,7 +917,7 @@ const App = () => {
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [canPlaceBeacon]);
   
 
   const currentChunkName = useMemo(() => {
@@ -873,14 +926,14 @@ const App = () => {
 
   return (
     <>
-      <div className="scrollbar z-50 p-1 h-56 w-fit text-left m-2 text-xs fixed bottom-0 right-0 rounded-md border border-white/80">
+      <div className="scrollbar z-50 p-1 h-fit max-h-56 w-fit text-left m-2 text-xs fixed bottom-0 right-0 rounded-md border border-white/80">
         {beacons.map(
           (
             beacon: { chunk: { x: any; y: any }; resource: any; position: { x: any; z: any } },
             index: Key | null | undefined
           ) => (
             <div key={index}>
-              {convertChunkCoordinateToName(beacon.chunk)}
+              {convertChunkCoordinateToName(beacon.chunk) + ": " + beacon.resource}
               {/* {`CH${beacon.chunk.x}${beacon.chunk.y}: ${beacon.resource}: ${beacon.position.x}, ${beacon.position.z}`} */}
               {/* {beacon.position.x}, {beacon.position.z} */}
             </div>
@@ -895,7 +948,7 @@ const App = () => {
       {/* </div> */}
       <div className="z-50 flex fixed bottom-0 left-0 flex-col">
         <div>Selected Resource: {selectedResource}</div>
-        <div>Current Location: {JSON.stringify(currentLocation)}</div>
+        {/* <div>Current Location: {JSON.stringify(currentLocation)}</div> */}
         <div className=" text-lg ">Player Points: {playerPoints}</div>
         {Object.entries(collectedResources).map(([resource, count]) => (
           <div key={resource}>

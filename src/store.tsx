@@ -50,13 +50,13 @@ export const resourceTypes = {
   },
 };
 
-const useStore = create((set) => ({
+const useGamaStore = create((set) => ({
   showResources: false,
   selectedResource: "",
 	selectedChunk: { x: 0, y: 0 },
   currentLocation: { x: 0, y: 0 },
   beacons: [],
-  playerPoints: 0,
+  playerPoints: 1000,
 	collectedResources: {
 		r1: 0,
 		r2: 0,
@@ -76,4 +76,4 @@ const useStore = create((set) => ({
   // selectResource: (resource) => set({ selectedResource: resource }),
 }));
 
-export default useStore;
+export default useGamaStore;
