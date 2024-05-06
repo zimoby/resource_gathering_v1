@@ -2,10 +2,13 @@
 import { Color } from "three";
 import create from "zustand";
 
+export const minLevel = -10;
+export const maxLevel = 100;
+
 export const terrainTypes = {
   water: {
     color: new Color(0x0000ff), // blue
-    level: -9,
+    level: minLevel + 1,
   },
   grass: {
     color: new Color(0x008000), // green
@@ -20,7 +23,7 @@ export const terrainTypes = {
     level: 10,
   },
   default: {
-    color: new Color(0x8b4513), // brown
+    color: new Color(0xffffff), // brown
   },
 };
 
@@ -50,12 +53,21 @@ export const resourceTypes = {
 const useStore = create((set) => ({
   showResources: false,
   selectedResource: "",
+	selectedChunk: { x: 0, y: 0 },
   currentLocation: { x: 0, y: 0 },
   beacons: [],
   playerPoints: 0,
+	collectedResources: {
+		r1: 0,
+		r2: 0,
+		r3: 0,
+		r4: 0,
+	},
   message: "",
 
 	canPlaceBeacon: false,
+
+	activePosition: { x: 0, y: 0 },
 
   toggleShowResources: () => set((state) => ({ showResources: !state.showResources })),
 
