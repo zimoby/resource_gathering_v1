@@ -5,12 +5,10 @@ import {
   Color
 } from "three";
 import { useControls } from "leva";
+import useGamaStore from "../store";
 
 export const ChunkGrid = ({ position, sizeExtend = 0 }) => {
-  const { width, depth } = useControls({
-    width: { value: 100, min: 50, max: 200 },
-    depth: { value: 100, min: 50, max: 200 },
-  });
+  const { width, depth } = useGamaStore((state) => state.mapParams);
 
   const gridGeometry = useMemo(() => {
     const geometry = new BufferGeometry();

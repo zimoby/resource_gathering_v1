@@ -24,20 +24,7 @@ export const Terrain = () => {
 
   const [loading, setLoading] = useState(true);
   const [firstStart, setFirstStart] = useState(false);
-
-  const { width, depth, resolution, scale, seed, offsetX, offsetY } = useControls({
-    width: { value: 100, min: 1, max: 200 },
-    depth: { value: 100, min: 1, max: 200 },
-    resolution: { value: 3, min: 3, max: 50 },
-    scale: { value: 50, min: 10, max: 100 },
-    seed: "42",
-    offsetX: { value: 0, min: -100, max: 100 },
-    offsetY: { value: 0, min: -100, max: 100 },
-  });
-
-  const { speed } = useControls({
-    speed: { value: 0.1, min: 0, max: 0.5 },
-  });
+  const { width, depth, resolution, scale, seed, offsetX, offsetY, speed } = useGamaStore((state) => state.mapParams);
 
   const gridConfig = useControls({
     chunkSize: { value: 1, min: 1, max: 200 },
@@ -49,35 +36,21 @@ export const Terrain = () => {
 
   const { camera } = useThree();
 
-  // const showResources = useGamaStore((state) => state.showResources);
   const canPlaceBeacon = useGamaStore((state) => state.canPlaceBeacon);
   const beacons = useGamaStore((state) => state.beacons);
   const scanRadius = useGamaStore((state) => state.scanRadius);
   const activePosition = useGamaStore((state) => state.activePosition);
   const direction = useGamaStore((state) => state.moveDirection);
 
-  // const [scanningArea, setScanningArea] = useState(null);
-  // const pulsingCirclePosition = useGamaStore((state) => state.activePosition);
-  // const canPlaceBeacon = useGamaStore((state) => state.canPlaceBeacon);
-  // const selectResource = useGamaStore((state) => state.selectRecource);
   const planeRef = useRef();
   const meshRef = useRef();
   const terrainGeometry = useRef(new BufferGeometry());
   const offset = useRef({ x: 0, y: 0 });
-  // const direction = useRef({ x: 0, y: -1 });
   const customSpeed = useRef(1);
-  // const [selectedResource, setSelectedResource] = useState(null);
-  // const [resources, setResources] = useState([]);
   const resources = useRef([]);
 
   const raycaster = new Raycaster();
 
-  // useEffect(() => {
-  //   if (!firstStart) {
-  //     setFirstStart(true);
-  //   }
-  // }, [firstStart]);
-  // useKeyboardControls({ direction, customSpeed });
   useKeyboardControls({
     customSpeed,
     raycaster,
@@ -87,15 +60,6 @@ export const Terrain = () => {
 
   useCanvasHover({ camera, raycaster, meshRef, resources });
 
-  // useCanvasClick({
-  //   camera,
-  //   raycaster,
-  //   handleObjectClick,
-  //   meshRef,
-  //   resources,
-  //   offsetX,
-  //   offsetY,
-  // });
   useEffect(() => {
     const resources = updateTerrainGeometry();
     if (resources && loading) {
@@ -174,9 +138,9 @@ export const Terrain = () => {
     planeRef.current.material = planeMaterial;
   };
 
-  const updateLevaWidthAndDepth = (width: number, depth: number) => {
-    levaStore.set({ width, depth });
-  };
+  // const updateLevaWidthAndDepth = (width: number, depth: number) => {
+  //   levaStore.set({ width, depth });
+  // };
 
 
   useFrame(() => {

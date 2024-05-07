@@ -51,6 +51,16 @@ export const resourceTypes = {
 };
 
 const useGamaStore = create((set) => ({
+	mapParams: {
+		width: 100,
+		depth: 100,
+		resolution: 3,
+		scale: 50,
+		seed: "42",
+		offsetX: 0,
+		offsetY: 0,
+		speed: 0.1,
+	},
 	currentOffset: { x: 0, y: 0 },
   showResources: false,
   selectedResource: "",

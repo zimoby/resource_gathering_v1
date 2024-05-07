@@ -6,14 +6,8 @@ import { isOutOfBound } from "../../functions/functions";
 
 export const Beacons = () => {
   const beacons = useGamaStore((state) => state.beacons);
-  const { offsetX, offsetY, width, depth } = useControls({
-    offsetX: { value: 0, min: -100, max: 100 },
-    offsetY: { value: 0, min: -100, max: 100 },
-    width: { value: 100, min: 50, max: 200 },
-    depth: { value: 100, min: 50, max: 200 },
-  });
-
   const beaconHeight = 10;
+  const mapParams = useGamaStore((state) => state.mapParams);
 
   return (
     <>
@@ -28,13 +22,13 @@ export const Beacons = () => {
             z: beacon.position.z,
           };
 
-          const isVisible = beacon.visible && !isOutOfBound(position, width, depth, offsetX, offsetY);
+          const isVisible = beacon.visible && !isOutOfBound(position, mapParams.width, mapParams.depth, mapParams.offsetX, mapParams.offsetY);
 
           return (
             isVisible && (
               <group
                 key={index}
-                position={[position.x - offsetX, position.y, position.z - offsetY]}
+                position={[position.x - mapParams.offsetX, position.y, position.z - mapParams.offsetY]}
               >
                 <Sphere args={[1, 8, 8]} position={[0, beaconHeight, 0]} />
                 <Cylinder args={[0.1, 0.1, beaconHeight, 4]} position={[0, beaconHeight / 2, 0]} />

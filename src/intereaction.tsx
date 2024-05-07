@@ -117,12 +117,8 @@ export const useCanvasHover = ({ camera, raycaster, meshRef, resources }) => {
   const canPlaceBeacon = useGamaStore((state) => state.canPlaceBeacon);
   const currentOffset = useGamaStore((state) => state.currentOffset);
   // use hover only when placing beacon
-  const { offsetX, offsetY, width, depth } = useControls({
-    width: { value: 100, min: 1, max: 200 },
-    depth: { value: 100, min: 1, max: 200 },
-    offsetX: { value: 0, min: -100, max: 100 },
-    offsetY: { value: 0, min: -100, max: 100 },
-  });
+
+  const { width, depth, offsetX, offsetY } = useGamaStore((state) => state.mapParams);
 
   // const debounceUpdateActivePosition = useCallback(
   //   debounce((activePosition) => {

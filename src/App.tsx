@@ -13,6 +13,7 @@ import { Beacons } from "./components/beacons/Beacons";
 import { useCalculateResources } from "./functions/calculateResources";
 import { CoordinatesKeys, GridMetricUnits } from "./components/CoordinatesKeys";
 import { SceneSettings } from "./components/scene";
+import { useParamsSync } from "./functions/paramsSync";
 
 const App = () => {
   // const toggleShowResources = useGamaStore((state) => state.toggleShowResources);
@@ -25,6 +26,7 @@ const App = () => {
   const collectedResources = useGamaStore((state) => state.collectedResources);
 
   useCalculateResources();
+  useParamsSync();
 
   return (
     <>
@@ -108,7 +110,7 @@ const App = () => {
         </mesh> */}
         <OrbitControls />
         
-        <EffectsCollection />
+        {/* <EffectsCollection /> */}
         {/* <Html> */}
         {/* </Html> */}
       </Canvas>

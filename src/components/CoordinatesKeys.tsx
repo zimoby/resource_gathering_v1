@@ -6,10 +6,7 @@ import useGamaStore from "../store";
 import { DoubleSide } from "three";
 
 export const GridMetricUnits = () => {
-  const { width, depth } = useControls({
-    width: { value: 100, min: 1, max: 200 },
-    depth: { value: 100, min: 1, max: 200 },
-  });
+  const { width, depth } = useGamaStore((state) => state.mapParams);
 
   return (
     <mesh position={[0, 1, 0]} rotation-x={Math.PI / 2}>
@@ -25,10 +22,7 @@ const redColor = "#8b0000";
 
 
 export const CoordinatesKeys = () => {
-  const { width, depth } = useControls({
-    width: { value: 100, min: 1, max: 200 },
-    depth: { value: 100, min: 1, max: 200 },
-  });
+  const { width, depth } = useGamaStore((state) => state.mapParams);
 
   const currentLocation = useGamaStore((state) => state.currentLocation);
   const moveDirection = useGamaStore((state) => state.moveDirection);
