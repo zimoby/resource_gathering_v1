@@ -39,25 +39,33 @@ const updateBeacons = (deltaX: number, deltaY: number, beacons, params) => {
 };
 
 
+const generateIndices = (widthCount, depthCount, indices) => {
+  let index = 0;
+  for (let i = 0; i < depthCount; i++) {
+    for (let j = 0; j < widthCount; j++) {
+      if (i < depthCount && j < widthCount) {
+
+        const a = i * (widthCount + 1) + j;
+        const b = a + (widthCount + 1);
+    
+        indices[index++] = a;
+        indices[index++] = b;
+        indices[index++] = a + 1;
+    
+        indices[index++] = b;
+        indices[index++] = b + 1;
+        indices[index++] = a + 1;
+      }
+    }
+  }
+  // console.log("indices precalculated:", indices, indices.length);
+};
+
 export const Terrain = () => {
   const firstStart = useGamaStore((state) => state.firstStart);
   const loading = useGamaStore((state) => state.loading);
   const { width, depth, resolution, scale, seed, offsetX, offsetY, speed } = useGamaStore((state) => state.mapParams);
-
-  const gridConfig = useControls({
-    chunkSize: { value: 1, min: 1, max: 200 },
-    subGrids: { value: 5, min: 1, max: 20, step: 1 },
-    lineWidth: { value: 0.2, min: 0.01, max: 0.5 },
-    gridColor: '#ff0000',
-    subGridColor: '#ffffff',
-  });
-
-  const widthCount = Math.floor(width / resolution);
-  const depthCount = Math.floor(depth / resolution) + 1;
-
-
-  const { camera } = useThree();
-
+  const gridConfig = useGamaStore((state) => state.gridConfig);
   const canPlaceBeacon = useGamaStore((state) => state.canPlaceBeacon);
   const beacons = useGamaStore((state) => state.beacons);
   const scanRadius = useGamaStore((state) => state.scanRadius);
@@ -65,8 +73,13 @@ export const Terrain = () => {
   const direction = useGamaStore((state) => state.moveDirection);
 
   // useEffect(() => {
-  //   console.log("beacons updated", beacons);
-  // }, [beacons]);
+  //   console.log("offsetX", offsetX);
+  // }, [offsetX]);
+
+  const widthCount = Math.floor(width / resolution);
+  const depthCount = Math.floor(depth / resolution) + 1;
+
+  const { camera } = useThree();
 
   const planeRef = useRef();
   const meshRef = useRef();
@@ -78,33 +91,6 @@ export const Terrain = () => {
   const positions = useRef(new Float32Array((widthCount + 1) * (depthCount + 1) * 3));
   const resources = useRef(new Array((widthCount + 1) * (depthCount + 1)).fill(null));
 
-
-
-  // const indices = useRef(new Array(widthCount * depthCount * 6));
-  // const indices = useRef(new Array((widthCount + 1) * (depthCount + 1) * 6));
-
-  const generateIndices = (widthCount, depthCount, indices) => {
-    let index = 0;
-    for (let i = 0; i < depthCount; i++) {
-      for (let j = 0; j < widthCount; j++) {
-        if (i < depthCount && j < widthCount) {
-
-          const a = i * (widthCount + 1) + j;
-          const b = a + (widthCount + 1);
-      
-          indices[index++] = a;
-          indices[index++] = b;
-          indices[index++] = a + 1;
-      
-          indices[index++] = b;
-          indices[index++] = b + 1;
-          indices[index++] = a + 1;
-        }
-      }
-    }
-    // console.log("indices precalculated:", indices, indices.length);
-  };
-  
   const indices = useMemo(() => {
     const indicesPrecalc = new Uint16Array(widthCount * depthCount * 6);
     generateIndices(widthCount, depthCount, indicesPrecalc);
@@ -124,7 +110,6 @@ export const Terrain = () => {
 
 
   const updateTerrainGeometry = () => {
-    // console.log("updateTerrainGeometry", indices.current);
     const { colors: generatedColors, resources: generatedResources } = generateTerrain(
       width,
       depth,
@@ -163,19 +148,8 @@ export const Terrain = () => {
   };
 
   useEffect(() => {
-    const resources = updateTerrainGeometry();
-    if (resources[0] !== null && loading) {
-      // console.log("Resources are ready", resources);
-      useGamaStore.setState({ loading: false });
-      console.log("Terrain is ready");
-    }
-  }, [width, depth, resolution, scale, seed, offsetX, offsetY, canPlaceBeacon, activePosition]);
-
-  useEffect(() => {
     generateGridGeometry();
   }, [width, depth, gridConfig]);
-
-
 
   const generateGridGeometry = () => {
     const planeGeometry = new PlaneGeometry(width, depth, 1, 1);
@@ -202,15 +176,22 @@ export const Terrain = () => {
   // const updateLevaWidthAndDepth = (width: number, depth: number) => {
   //   levaStore.set({ width, depth });
   // };
+  const deltaX = direction.x * (speed * customSpeed.current);
+  const deltaY = direction.y * (speed * customSpeed.current);
 
 
   useFrame(() => {
+    // if (canPlaceBeacon) {
+    //   // easing.damp3(model.current.position, [0, 0, 0], 0.2, delta)
+    //   // easing.damp3(state.camera.position, [-state.pointer.x * 4, 2.5 + -state.pointer.y * 4, 12], 0.3, delta)
 
-    // console.log("direction:", direction);
+    //   // make animation of increasing scan area from 0 to scanRadius
+    //   // dynamicScanArea.current = easing.damp(dynamicScanArea.current, scanRadius, 0.2);
 
-    const deltaX = direction.x * (speed * customSpeed.current);
-    const deltaY = direction.y * (speed * customSpeed.current);
-
+    //   dynamicScanArea.current = 
+    //   console.log("dynamicScanArea:", dynamicScanArea.current);
+  
+    // }
 
     offset.current.x += deltaX;
     offset.current.y += deltaY;
@@ -222,11 +203,15 @@ export const Terrain = () => {
       width
     );
 
-    // console.log("currentChunk:", offset.current.x + offsetX + width / 2, offset.current.y + offsetY + depth / 2);
+    const resources = updateTerrainGeometry();
+    
+    if (resources[0] !== null && loading) {
+      useGamaStore.setState({ loading: false });
+    }
+    
+    const updatedBeacons = updateBeacons(deltaX, deltaY, beacons, { width, depth, offsetX, offsetY });
     
     if (deltaX !== 0 || deltaY !== 0) {
-      updateTerrainGeometry();
-      const updatedBeacons = updateBeacons(deltaX, deltaY, beacons, { width, depth, offsetX, offsetY });
 
       useGamaStore.setState({
         currentLocation: { x: currentChunk.x, y: currentChunk.y },

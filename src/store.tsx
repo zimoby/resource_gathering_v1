@@ -54,6 +54,23 @@ const useGamaStore = create((set) => ({
 	firstStart: false,
 	loading: true,
 
+
+  // const gridConfig = useControls({
+  //   chunkSize: { value: 1, min: 1, max: 200 },
+  //   subGrids: { value: 5, min: 1, max: 20, step: 1 },
+  //   lineWidth: { value: 0.2, min: 0.01, max: 0.5 },
+  //   gridColor: '#ff0000',
+  //   subGridColor: '#ffffff',
+  // });
+
+	gridConfig: {
+		chunkSize: 1,
+		subGrids: 5,
+		lineWidth: 0.2,
+		gridColor: "#ff0000",
+		subGridColor: "#ffffff",
+	},
+
 	mapParams: {
 		width: 100,
 		depth: 100,
