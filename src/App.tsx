@@ -20,7 +20,7 @@ const App = () => {
   const firstStart = useGamaStore((state) => state.firstStart);
 
   const selectedResource = useGamaStore((state) => state.selectedResource);
-  // const selectedChunk = useGamaStore((state) => state.selectedChunk);
+  const selectedChunk = useGamaStore((state) => state.selectedChunk);
   const beacons = useGamaStore((state) => state.beacons);
   const message = useGamaStore((state) => state.message);
 
@@ -55,6 +55,7 @@ const App = () => {
       </div> */}
       {/* </div> */}
       <div className="z-50 flex fixed bottom-0 left-0 flex-col">
+        <div>Selected Chunk: {convertChunkCoordinateToName(selectedChunk)}</div>
         <div>Selected Resource: {selectedResource}</div>
         {/* <div>Current Location: {JSON.stringify(currentLocation)}</div> */}
         <div className=" text-lg ">Player Points: {playerPoints}</div>

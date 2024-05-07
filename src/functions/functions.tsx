@@ -7,9 +7,9 @@ export const convertChunkCoordinateToName = (chunk) => {
 };
 
 export const getChunkCoordinates = (globalX: number, globalY: number, chunkSize: number) => {
-  const chunkX = Math.floor(globalX / chunkSize);
-  const chunkY = Math.floor(globalY / chunkSize);
-  return { chunkX, chunkY };
+  const x = Math.floor(globalX / chunkSize);
+  const y = Math.floor(globalY / chunkSize);
+  return { x, y };
 };
 
 export const isOutOfBound = (

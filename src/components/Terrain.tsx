@@ -203,7 +203,7 @@ export const Terrain = () => {
 
     // console.log("currentChunk:", offset.current.x + offsetX + width / 2, offset.current.y + offsetY + depth / 2);
     useGamaStore.setState({
-      currentLocation: { x: currentChunk.chunkX, y: currentChunk.chunkY },
+      currentLocation: { x: currentChunk.x, y: currentChunk.y },
       currentOffset: { x: offset.current.x, y: offset.current.y }
     });
 

@@ -4,7 +4,7 @@ import useGamaStore from "./store";
 import { useControls } from "leva";
 import { debounce } from "lodash";
 import { addBeacon } from "./components/beacons/addBeacon";
-import { getChunkCoordinates } from "./functions/functions";
+import { convertChunkCoordinateToName, getChunkCoordinates } from "./functions/functions";
 
 
 const getIntersection = (event: { clientX: number; clientY: number; }, raycaster: Raycaster, meshRef: any, camera) => {
@@ -152,8 +152,17 @@ export const useCanvasHover = ({ camera, raycaster, meshRef, resources }) => {
           y: intersects[0].point.z + depth / 2 + currentOffset.y,
         };
 
+
+        // const chunkName = convertChunkCoordinateToName(chunkCoord);
+        // console.log("Chunk:", chunkName);
+
         // const selectedChunk = getChunkCoordinates(calcCurrentPosition.x, calcCurrentPosition.y, width);
-        useGamaStore.setState({ selectedResource: resource, showResources: true, currentOffset: calcCurrentPosition });
+        useGamaStore.setState({
+          selectedResource: resource,
+          showResources: true,
+          currentOffset: calcCurrentPosition,
+          selectedChunk: getChunkCoordinates(calcCurrentPosition.x, calcCurrentPosition.y, width)
+        });
 
         // console.log("Resource:", getChunkCoordinates(calcCurrentPosition.x, calcCurrentPosition.y, width));
         // console.log("Resource:", getChunkCoordinates(intersects[0].point.x - currentOffset.x, intersects[0].point.z - currentOffset.y, width));
@@ -202,8 +211,8 @@ export const useCanvasHover = ({ camera, raycaster, meshRef, resources }) => {
             },
             resource: selectedResource,
             currentChunk: {
-              x: chunkCoordinates.chunkX,
-              y: chunkCoordinates.chunkY,
+              x: chunkCoordinates.x,
+              y: chunkCoordinates.y,
             }
           });
         }

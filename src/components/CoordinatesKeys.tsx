@@ -23,6 +23,7 @@ const redColor = "#8b0000";
 
 export const CoordinatesKeys = () => {
   const { width, depth } = useGamaStore((state) => state.mapParams);
+  const speed = useGamaStore((state) => state.mapParams.speed);
 
   const currentLocation = useGamaStore((state) => state.currentLocation);
   const moveDirection = useGamaStore((state) => state.moveDirection);
@@ -39,7 +40,7 @@ export const CoordinatesKeys = () => {
         font="/Orbitron-Bold.ttf"
         fontSize={9}
         fontWeight={"bold"}
-        color={moveDirection.x === -1 && moveDirection.y === 0 ? redColor : lightColor}
+        color={(moveDirection.x === -1 && moveDirection.y === 0) && speed > 0 ? redColor : lightColor}
         anchorX="left"
         anchorY="top"
       >
@@ -51,7 +52,7 @@ export const CoordinatesKeys = () => {
         font="/Orbitron-Bold.ttf"
         fontSize={10}
         fontWeight={"bold"}
-        color={moveDirection.x === 1 && moveDirection.y === 0 ? redColor : lightColor}
+        color={(moveDirection.x === 1 && moveDirection.y === 0) && speed > 0 ? redColor : lightColor}
         anchorX="right"
         anchorY="bottom"
       >
@@ -63,7 +64,7 @@ export const CoordinatesKeys = () => {
         font="/Orbitron-Bold.ttf"
         fontSize={8}
         fontWeight={"bold"}
-        color={moveDirection.x === 0 && moveDirection.y === -1 ? redColor : lightColor}
+        color={(moveDirection.x === 0 && moveDirection.y === -1) && speed > 0 ? redColor : lightColor}
         anchorX="left"
         anchorY="top"
       >
@@ -75,7 +76,7 @@ export const CoordinatesKeys = () => {
         font="/Orbitron-Bold.ttf"
         fontSize={11}
         fontWeight={"bold"}
-        color={moveDirection.x === 0 && moveDirection.y === 1 ? redColor : lightColor}
+        color={(moveDirection.x === 0 && moveDirection.y === 1) && speed > 0 ? redColor : lightColor}
         anchorX="right"
         anchorY="bottom"
       >
