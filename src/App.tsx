@@ -17,6 +17,8 @@ import { useParamsSync } from "./functions/paramsSync";
 
 const App = () => {
   // const toggleShowResources = useGamaStore((state) => state.toggleShowResources);
+  const firstStart = useGamaStore((state) => state.firstStart);
+
   const selectedResource = useGamaStore((state) => state.selectedResource);
   // const selectedChunk = useGamaStore((state) => state.selectedChunk);
   const beacons = useGamaStore((state) => state.beacons);
@@ -91,8 +93,7 @@ const App = () => {
 
           {/* <GridMetricUnits /> */}
 
-          <group position={[0, 0, 0]}>
-            {/* <ChunkGrid position={[0,0,0]} /> */}
+          <group position={[0, 0, 0]} visible={firstStart}>
             <ChunkGrid position={[0,0,0]} sizeExtend={1} />
             <ChunkGrid position={[0,-10,0]} sizeExtend={1} />
             <ChunkGrid position={[0,-10,0]} sizeExtend={10} />

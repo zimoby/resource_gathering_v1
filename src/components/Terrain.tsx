@@ -19,11 +19,11 @@ import { generateTerrain } from "../functions/generateTerrain";
 import { isOutOfBound } from "../functions/functions";
 
 import { vertexShader, fragmentShader } from './chunkGridShader';
+import { update } from "three/examples/jsm/libs/tween.module.js";
 
 export const Terrain = () => {
-
   const [loading, setLoading] = useState(true);
-  const [firstStart, setFirstStart] = useState(false);
+  const firstStart = useGamaStore((state) => state.firstStart);
   const { width, depth, resolution, scale, seed, offsetX, offsetY, speed } = useGamaStore((state) => state.mapParams);
 
   const gridConfig = useControls({
@@ -138,9 +138,9 @@ export const Terrain = () => {
     planeRef.current.material = planeMaterial;
   };
 
-  // const updateLevaWidthAndDepth = (width: number, depth: number) => {
-  //   levaStore.set({ width, depth });
-  // };
+  const updateLevaWidthAndDepth = (width: number, depth: number) => {
+    levaStore.set({ width, depth });
+  };
 
 
   useFrame(() => {
@@ -149,7 +149,11 @@ export const Terrain = () => {
       // Animate width and depth from 10 to full size after loading
       console.log("First start");
       // updateLevaWidthAndDepth(0, 0);
-      setFirstStart(true); // Prevent multiple initializations
+      
+      // updateLevaWidthAndDepth(100, 100);
+      
+      levaStore.set({ width: 100, depth: 100 });
+      useGamaStore.setState({ firstStart: true });
 
 
 

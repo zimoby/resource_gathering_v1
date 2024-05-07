@@ -1,4 +1,4 @@
-import { useControls } from "leva";
+import { levaStore, useControls } from "leva";
 import { useEffect } from "react";
 import useGamaStore from "../store";
 
@@ -18,6 +18,13 @@ export const useParamsSync = () => {
 
   useEffect(() => {
 		useGamaStore.setState({ mapParams: { width, depth, resolution, scale, seed, offsetX, offsetY, speed } });
+		// console.log("mapPgame store updated");
 	}, [width, depth, resolution, scale, seed, offsetX, offsetY, speed]);
+
+	// useEffect(() => {
+	// 	levaStore.set({ ...mapParams });
+	// 	console.log("leva store updated");
+	// }, [mapParams]);
+
 
 };
