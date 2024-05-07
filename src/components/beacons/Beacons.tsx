@@ -3,23 +3,28 @@ import { useControls } from "leva";
 import useGamaStore from "../../store";
 import { ConcentricCirclesAnimation } from "../concentricCircles";
 import { isOutOfBound } from "../../functions/functions";
+import { useEffect } from "react";
 
 export const Beacons = () => {
   const beacons = useGamaStore((state) => state.beacons);
   const beaconHeight = 10;
   const mapParams = useGamaStore((state) => state.mapParams);
 
+  // useEffect(() => {
+  //   console.log("Beacons updated", beacons);
+  // }, [beacons]);
+
   return (
     <>
       {beacons.map(
         (
-          beacon: { position: { x: any; y: any; z: any; }; visible: any; },
-          index: string | number | bigint | undefined
+          beacon: { x: number; y: number; z: number; visible: boolean; },
+          index: string | number
         ) => {
           const position = {
-            x: beacon.position.x,
-            y: beacon.position.y,
-            z: beacon.position.z,
+            x: beacon.x,
+            y: beacon.y,
+            z: beacon.z,
           };
 
           const isVisible = beacon.visible && !isOutOfBound(position, mapParams.width, mapParams.depth, mapParams.offsetX, mapParams.offsetY);

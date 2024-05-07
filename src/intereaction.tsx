@@ -115,6 +115,7 @@ export const useKeyboardControls = ({
 export const useCanvasHover = ({ camera, raycaster, meshRef, resources }) => {
   const canPlaceBeacon = useGamaStore((state) => state.canPlaceBeacon);
   const currentOffset = useGamaStore((state) => state.currentOffset);
+  const replacePropWithXY = useGamaStore((state) => state.replacePropWithXY);
   // use hover only when placing beacon
 
   const { width, depth, offsetX, offsetY } = useGamaStore((state) => state.mapParams);
@@ -128,7 +129,7 @@ export const useCanvasHover = ({ camera, raycaster, meshRef, resources }) => {
 
 
   const throttledSetState = throttle((state) => {
-    console.log("Throttled state:", state);
+    // console.log("Throttled state:", state);
     useGamaStore.setState(state);
   }, 100);
 
@@ -168,16 +169,16 @@ export const useCanvasHover = ({ camera, raycaster, meshRef, resources }) => {
 
         throttledSetState({
           selectedResource: resource,
-          showResources: true,
+          // showResources: true,
           currentOffset: calcCurrentPosition,
           selectedChunk: getChunkCoordinates(calcCurrentPosition.x, calcCurrentPosition.y, width)
         });
 
         // useGamaStore.setState({
-        //   selectedResource: resource,
+        //   // selectedResource: resource,
         //   // showResources: true,
-        //   // currentOffset: calcCurrentPosition,
-        //   // selectedChunk: getChunkCoordinates(calcCurrentPosition.x, calcCurrentPosition.y, width)
+        //   currentOffset: calcCurrentPosition,
+        //   selectedChunk: getChunkCoordinates(calcCurrentPosition.x, calcCurrentPosition.y, width)
         // });
 
         // console.log("Resource:", getChunkCoordinates(calcCurrentPosition.x, calcCurrentPosition.y, width));

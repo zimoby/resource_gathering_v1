@@ -9,14 +9,14 @@ export const addBeacon = ({
   // const currentChunk = useGamaStore.getState().currentLocation;
   const beacons = useGamaStore.getState().beacons;
   const chunkBeacons = beacons.filter(
-    (beacon: { chunk: { x: any; y: any; }; }) => beacon.chunk.x === currentChunk.x && beacon.chunk.y === currentChunk.y
+    (beacon: { chunkX: number; chunkY: number; }) => beacon.chunkX === currentChunk.x && beacon.chunkY === currentChunk.y
   );
 
   const minDistance = 10;
 
-  const isWithinRadius = chunkBeacons.some((beacon: { position: { x: number; z: number; }; }) => {
-    const dx = position.x - beacon.position.x;
-    const dz = position.z - beacon.position.z;
+  const isWithinRadius = chunkBeacons.some((beacon: { x: number; z: number; }) => {
+    const dx = position.x - beacon.x;
+    const dz = position.z - beacon.z;
     const distance = Math.sqrt(dx * dx + dz * dz);
     return distance < minDistance;
   });
@@ -34,16 +34,16 @@ export const addBeacon = ({
   }
 
   useGamaStore.setState((state: { beacons: any; }) => {
+    // console.log("Adding beacon:", {x : position.x.toFixed(3), resource, currentChunk});
     const newBeacons = [
       ...state.beacons,
       {
-        position: {
-          x: position.x.toFixed(3),
-          y: position.y.toFixed(3),
-          z: position.z.toFixed(3),
-        },
+        x: Number(position.x.toFixed(3)),
+        y: Number(position.y.toFixed(3)),
+        z: Number(position.z.toFixed(3)),
         resource,
-        chunk: currentChunk,
+        chunkX: currentChunk.x,
+        chunkY: currentChunk.y,
         visible: true,
       },
     ];

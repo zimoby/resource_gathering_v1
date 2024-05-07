@@ -25,13 +25,17 @@ import { createNoise2D } from "simplex-noise";
 import seedrandom from "seedrandom";
 
 const updateBeacons = (deltaX: number, deltaY: number, beacons, params) => {
-  beacons.forEach(beacon => {
-    beacon.position.x -= deltaX;
-    beacon.position.z -= deltaY;
-    beacon.visible = !isOutOfBound(beacon.position, params.width, params.depth, params.offsetX, params.offsetY);
+  // console.log("updateBeacons", deltaX, deltaY, beacons, params);
+
+  const beaconDeepCopy = JSON.parse(JSON.stringify(beacons));
+
+  beaconDeepCopy.forEach(beacon => {
+    beacon.x -= deltaX;
+    beacon.z -= deltaY;
+    beacon.visible = !isOutOfBound({x: beacon.x, y: beacon.y, z: beacon.z}, params.width, params.depth, params.offsetX, params.offsetY);
   });
 
-  return beacons;
+  return beaconDeepCopy;
 };
 
 
@@ -59,6 +63,10 @@ export const Terrain = () => {
   const scanRadius = useGamaStore((state) => state.scanRadius);
   const activePosition = useGamaStore((state) => state.activePosition);
   const direction = useGamaStore((state) => state.moveDirection);
+
+  // useEffect(() => {
+  //   console.log("beacons updated", beacons);
+  // }, [beacons]);
 
   const planeRef = useRef();
   const meshRef = useRef();

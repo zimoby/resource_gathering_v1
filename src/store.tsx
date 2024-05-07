@@ -86,6 +86,13 @@ const useGamaStore = create((set) => ({
 	canPlaceBeacon: false,
 	activePosition: { x: 0, y: 0 },
   toggleShowResources: () => set((state) => ({ showResources: !state.showResources })),
+
+
+	replacePropWithXY: (name, value) => {
+		set((state) => ({ [name]: { x: value.x, y: value.y } }));
+	}
+
+
   // selectResource: (resource) => set({ selectedResource: resource }),
 }));
 
