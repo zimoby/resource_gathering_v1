@@ -1,6 +1,6 @@
 import { useEffect, Key, useMemo, Suspense, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Box, Html, Hud, OrbitControls, OrthographicCamera, PerspectiveCamera, Sphere, Stats, Text, View } from "@react-three/drei";
+import { Box, Center, Html, Hud, OrbitControls, OrthographicCamera, PerspectiveCamera, Sphere, Stats, StatsGl, Text, View } from "@react-three/drei";
 import useGamaStore, { resourceTypes } from "./store";
 
 import { EffectsCollection } from "./components/effects";
@@ -12,6 +12,7 @@ import { ChunkGrid } from "./components/ChunkGrid";
 import { Beacons } from "./components/beacons/Beacons";
 import { useCalculateResources } from "./functions/calculateResources";
 import { CoordinatesKeys, GridMetricUnits } from "./components/CoordinatesKeys";
+import { SceneSettings } from "./components/scene";
 
 const App = () => {
   // const toggleShowResources = useGamaStore((state) => state.toggleShowResources);
@@ -27,6 +28,9 @@ const App = () => {
 
   return (
     <>
+      <div className="orbitron z-50 fixed top-0 left-0 text-6xl">
+        PLANET-01
+      </div>
       <div className="scrollbar z-50 p-1 h-fit max-h-56 w-fit text-left m-2 text-xs fixed bottom-0 right-0 rounded-md border border-white/80">
         {beacons.map(
           (
@@ -58,7 +62,10 @@ const App = () => {
       </div>
       <div className="z-50 fixed bottom-0 left-1/2">{message}</div>
       {/* <div className="w-full h-full border border-white p-2" /> */}
-      <Stats />
+      {/* <div className=""> */}
+        
+        
+      {/* </div> */}
       {/* <View className=" absolute m-1 w-200 h-100 overflow-hidden inline-block">
         <SpherePlanet />
 
@@ -69,10 +76,11 @@ const App = () => {
 
       </View> */}
       <Canvas flat shadows dpr={[1, 1.5]} gl={{ antialias: false }}>
-        <color attach="background" args={['#050505']} />
-        <ambientLight />
-        <OrthographicCamera makeDefault position={[100, 75, 100]} zoom={7} />
-        <directionalLight position={[10, 10, 5]} intensity={2} castShadow />
+
+        <Stats showPanel={2} />
+
+        {/* <StatsGl /> */}
+        <SceneSettings />
 
         <Suspense fallback={null}>
           {/* <Viewcube /> */}
@@ -83,8 +91,8 @@ const App = () => {
 
           <group position={[0, 0, 0]}>
             {/* <ChunkGrid position={[0,0,0]} /> */}
-            <ChunkGrid position={[0,0,0]} />
-            <ChunkGrid position={[0,-10,0]}  />
+            <ChunkGrid position={[0,0,0]} sizeExtend={1} />
+            <ChunkGrid position={[0,-10,0]} sizeExtend={1} />
             <ChunkGrid position={[0,-10,0]} sizeExtend={10} />
           </group>
           <Beacons />

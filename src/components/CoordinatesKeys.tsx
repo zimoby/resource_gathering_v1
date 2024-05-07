@@ -36,8 +36,9 @@ export const CoordinatesKeys = () => {
   return (
     <group position={[0, 0, 0]}>
       <Text
-        position={[-width / 2 - 3, 0, depth / 2]}
+        position={[-width / 2 - 2, 0, depth / 2]}
         rotation={[-Math.PI / 2, 0, Math.PI / 2]}
+        font="/Orbitron-Bold.ttf"
         fontSize={9}
         fontWeight={"bold"}
         color={"#afafaf"}
@@ -49,6 +50,7 @@ export const CoordinatesKeys = () => {
       <Text
         position={[width / 2 + 2, 0, -depth / 2]}
         rotation={[-Math.PI / 2, 0, Math.PI / 2]}
+        font="/Orbitron-Bold.ttf"
         fontSize={10}
         fontWeight={"bold"}
         color={"#afafaf"}
@@ -58,8 +60,9 @@ export const CoordinatesKeys = () => {
         D
       </Text>
       <Text
-        position={[-width / 2, 0, -depth / 2 - 3]}
+        position={[-width / 2, 0, -depth / 2 - 2]}
         rotation={[-Math.PI / 2, 0, 0]}
+        font="/Orbitron-Bold.ttf"
         fontSize={8}
         fontWeight={"bold"}
         color={"#afafaf"}
@@ -71,6 +74,7 @@ export const CoordinatesKeys = () => {
       <Text
         position={[width / 2, 0, depth / 2 + 2]}
         rotation={[-Math.PI / 2, 0, 0]}
+        font="/Orbitron-Bold.ttf"
         fontSize={11}
         fontWeight={"bold"}
         color={"#afafaf"}
@@ -79,11 +83,13 @@ export const CoordinatesKeys = () => {
       >
         S
       </Text>
+
+      
       <Text
-        position={[width / 2 - 3, 0, depth / 2 + 2]}
+        position={[width / 2 - 1, 0, depth / 2 + 2]}
         rotation={[-Math.PI / 2, 0, Math.PI / 2]}
-        fontSize={14}
-        fontWeight={"bold"}
+        font="/Orbitron-Bold.ttf"
+        fontSize={12}
         color={"#afafaf"}
         anchorX="left"
         anchorY="top"

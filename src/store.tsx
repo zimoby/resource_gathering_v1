@@ -64,6 +64,9 @@ const useGamaStore = create((set) => ({
 		r3: 0,
 		r4: 0,
 	},
+	planetParams: {
+		
+	},
   message: "",
 	scanRadius: 30,
 	canPlaceBeacon: false,

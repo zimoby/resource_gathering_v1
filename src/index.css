@@ -1,6 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 
 html,
 body,
@@ -12,8 +16,9 @@ body,
   overflow: hidden;
 }
 
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Share Tech Mono', Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -25,6 +30,14 @@ body,
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+}
+
+.orbitron {
+  font-family: "Orbitron", sans-serif;
+  font-weight: 800;
+  font-optical-sizing: auto;
+  font-style: normal;
 }
 
 .scrollbar {
@@ -37,3 +50,4 @@ body,
 .scrollbar::-webkit-scrollbar {
   display: none; /* hide scrollbar for Chrome, Safari, and Opera */
 }
+
