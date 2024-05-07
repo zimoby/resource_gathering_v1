@@ -2,16 +2,15 @@ import { useRef, useEffect } from "react";
 import { Raycaster, Vector2 } from "three";
 import useGamaStore from "./store";
 import { useControls } from "leva";
-import { debounce } from "lodash";
+import { debounce, throttle } from "lodash";
 import { addBeacon } from "./components/beacons/addBeacon";
 import { convertChunkCoordinateToName, getChunkCoordinates } from "./functions/functions";
 
 
 const getIntersection = (event: { clientX: number; clientY: number; }, raycaster: Raycaster, meshRef: any, camera) => {
-    const mouse = new Vector2(
-      (event.clientX / window.innerWidth) * 2 - 1,
-      -(event.clientY / window.innerHeight) * 2 + 1
-    );
+    const mouse = new Vector2();
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
   
     // console.log("Mouse:", event.clientX, event.clientY);
   
@@ -126,6 +125,13 @@ export const useCanvasHover = ({ camera, raycaster, meshRef, resources }) => {
   //   }, 50),
   //   []
   // );
+
+
+  const throttledSetState = throttle((state) => {
+    console.log("Throttled state:", state);
+    useGamaStore.setState(state);
+  }, 100);
+
   useEffect(() => {
     const handleCanvasHover = (event: { clientX: number; clientY: number; }) => {
       if (!canPlaceBeacon) {
@@ -157,20 +163,37 @@ export const useCanvasHover = ({ camera, raycaster, meshRef, resources }) => {
         // console.log("Chunk:", chunkName);
 
         // const selectedChunk = getChunkCoordinates(calcCurrentPosition.x, calcCurrentPosition.y, width);
-        useGamaStore.setState({
+
+        // console.log("Resource:", resource);
+
+        throttledSetState({
           selectedResource: resource,
           showResources: true,
           currentOffset: calcCurrentPosition,
           selectedChunk: getChunkCoordinates(calcCurrentPosition.x, calcCurrentPosition.y, width)
         });
 
+        // useGamaStore.setState({
+        //   selectedResource: resource,
+        //   // showResources: true,
+        //   // currentOffset: calcCurrentPosition,
+        //   // selectedChunk: getChunkCoordinates(calcCurrentPosition.x, calcCurrentPosition.y, width)
+        // });
+
         // console.log("Resource:", getChunkCoordinates(calcCurrentPosition.x, calcCurrentPosition.y, width));
         // console.log("Resource:", getChunkCoordinates(intersects[0].point.x - currentOffset.x, intersects[0].point.z - currentOffset.y, width));
         // console.log("Intersects:", getChunkCoordinates(intersects[0].point.x, intersects[0].point.z, width));
         // debounceUpdateActivePosition(intersects[0].point);
+
         debounce(() => {
-          useGamaStore.setState({ activePosition: intersects[0].point });
+          // console.log("Resource:", resource);
+          useGamaStore.setState({
+            activePosition: intersects[0].point,
+            // selectedResource: resource,
+          });
         }, 100)();
+
+
 
       }
     };
@@ -225,6 +248,7 @@ export const useCanvasHover = ({ camera, raycaster, meshRef, resources }) => {
     return () => {
       window.removeEventListener("click", handleCanvasClick);
       window.removeEventListener("mousemove", handleCanvasHover);
+      throttledSetState.cancel();
     };
   }, [camera, meshRef, canPlaceBeacon, resources, offsetX, offsetY]);
 };

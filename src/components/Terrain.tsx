@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useMemo } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import {
   DoubleSide,
@@ -8,7 +8,8 @@ import {
   Raycaster,
   Vector2,
   PlaneGeometry,
-  ShaderMaterial
+  ShaderMaterial,
+  BufferAttribute
 } from "three";
 import { levaStore, useControls } from "leva";
 import useGamaStore from "../store";
@@ -20,6 +21,19 @@ import { isOutOfBound } from "../functions/functions";
 
 import { vertexShader, fragmentShader } from './chunkGridShader';
 import { easing } from "maath"
+import { createNoise2D } from "simplex-noise";
+import seedrandom from "seedrandom";
+
+const updateBeacons = (deltaX: number, deltaY: number, beacons, params) => {
+  beacons.forEach(beacon => {
+    beacon.position.x -= deltaX;
+    beacon.position.z -= deltaY;
+    beacon.visible = !isOutOfBound(beacon.position, params.width, params.depth, params.offsetX, params.offsetY);
+  });
+
+  return beacons;
+};
+
 
 export const Terrain = () => {
   const firstStart = useGamaStore((state) => state.firstStart);
@@ -34,6 +48,10 @@ export const Terrain = () => {
     subGridColor: '#ffffff',
   });
 
+  const widthCount = Math.floor(width / resolution);
+  const depthCount = Math.floor(depth / resolution) + 1;
+
+
   const { camera } = useThree();
 
   const canPlaceBeacon = useGamaStore((state) => state.canPlaceBeacon);
@@ -47,46 +65,86 @@ export const Terrain = () => {
   const terrainGeometry = useRef(new BufferGeometry());
   const offset = useRef({ x: 0, y: 0 });
   const customSpeed = useRef(1);
-  const resources = useRef([]);
+
+  const colors = useRef(new Float32Array((widthCount + 1) * (depthCount + 1) * 3));
+  const positions = useRef(new Float32Array((widthCount + 1) * (depthCount + 1) * 3));
+  const resources = useRef(new Array((widthCount + 1) * (depthCount + 1)).fill(null));
+
+
+
+  // const indices = useRef(new Array(widthCount * depthCount * 6));
+  // const indices = useRef(new Array((widthCount + 1) * (depthCount + 1) * 6));
+
+  const generateIndices = (widthCount, depthCount, indices) => {
+    let index = 0;
+    for (let i = 0; i < depthCount; i++) {
+      for (let j = 0; j < widthCount; j++) {
+        if (i < depthCount && j < widthCount) {
+
+          const a = i * (widthCount + 1) + j;
+          const b = a + (widthCount + 1);
+      
+          indices[index++] = a;
+          indices[index++] = b;
+          indices[index++] = a + 1;
+      
+          indices[index++] = b;
+          indices[index++] = b + 1;
+          indices[index++] = a + 1;
+        }
+      }
+    }
+    // console.log("indices precalculated:", indices, indices.length);
+  };
+  
+  const indices = useMemo(() => {
+    const indicesPrecalc = new Uint16Array(widthCount * depthCount * 6);
+    generateIndices(widthCount, depthCount, indicesPrecalc);
+    return indicesPrecalc;
+  }, [width, depth, resolution]);
+
+  const colorAttribute = useRef(new Float32BufferAttribute(colors.current, 3));
+  const indexAttribute = useRef(new BufferAttribute(indices, 1));
+  const noise2D = useMemo(() => createNoise2D(seedrandom(seed)), [seed])
+
 
   const raycaster = new Raycaster();
 
-  useKeyboardControls({
-    customSpeed,
-    raycaster,
-    meshRef,
-    camera
-  });
+  useKeyboardControls({ customSpeed, raycaster, meshRef, camera });
 
   useCanvasHover({ camera, raycaster, meshRef, resources });
 
-  useEffect(() => {
-    const resources = updateTerrainGeometry();
-    if (resources && loading) {
-      useGamaStore.setState({ loading: false });
-      console.log("Terrain is ready");
-    }
-  }, [width, depth, resolution, scale, seed, offsetX, offsetY, canPlaceBeacon, activePosition]);
-
-  useEffect(() => {
-    generateGridGeometry();
-  }, [width, depth, gridConfig]);
 
   const updateTerrainGeometry = () => {
-    const { colors, resources: generatedResources } = generateTerrain(
+    // console.log("updateTerrainGeometry", indices.current);
+    const { colors: generatedColors, resources: generatedResources } = generateTerrain(
       width,
       depth,
       resolution,
       scale,
-      seed,
+      noise2D,
       offset.current.x + offsetX,
       offset.current.y + offsetY,
       terrainGeometry.current,
       canPlaceBeacon,
       activePosition,
-      scanRadius
+      scanRadius,
+      resources.current,
+      colors.current,
+      positions.current,
+      // indices,
+      widthCount,
+      depthCount,
     );
-    terrainGeometry.current.setAttribute("color", new Float32BufferAttribute(colors, 3));
+
+    colorAttribute.current.array = generatedColors;
+    colorAttribute.current.needsUpdate = true;
+
+    indexAttribute.current.array = indices;
+    indexAttribute.current.needsUpdate = true;
+
+    terrainGeometry.current.setIndex(indexAttribute.current);
+    terrainGeometry.current.setAttribute("color", colorAttribute.current);
     resources.current = generatedResources;
 
     if (meshRef.current) {
@@ -96,32 +154,20 @@ export const Terrain = () => {
     return resources.current;
   };
 
-  const updateBeacons = (deltaX: number, deltaY: number) => {
-    // const updatedBeacons = beacons
-    //   .map((beacon: { position: { x: any; y: any; z: any; }; visible: boolean; }) => {
-    //     const newPosition = {
-    //       x: parseFloat((beacon.position.x - deltaX).toFixed(2)),
-    //       y: beacon.position.y,
-    //       z: parseFloat((beacon.position.z - deltaY).toFixed(2)),
-    //     };
+  useEffect(() => {
+    const resources = updateTerrainGeometry();
+    if (resources[0] !== null && loading) {
+      // console.log("Resources are ready", resources);
+      useGamaStore.setState({ loading: false });
+      console.log("Terrain is ready");
+    }
+  }, [width, depth, resolution, scale, seed, offsetX, offsetY, canPlaceBeacon, activePosition]);
 
-    //     // Check bounds here if necessary
-    //     beacon.visible = !isOutOfBound(newPosition, width, depth, offsetX, offsetY);
-    //     beacon.position = newPosition;
+  useEffect(() => {
+    generateGridGeometry();
+  }, [width, depth, gridConfig]);
 
-    //     return beacon;
-    //   })
-    //   .filter(Boolean);
 
-    beacons.forEach(beacon => {
-      beacon.position.x -= deltaX;
-      beacon.position.z -= deltaY;
-      beacon.visible = !isOutOfBound(beacon.position, width, depth, offsetX, offsetY);
-    });
-
-    return beacons;
-
-  };
 
   const generateGridGeometry = () => {
     const planeGeometry = new PlaneGeometry(width, depth, 1, 1);
@@ -172,7 +218,7 @@ export const Terrain = () => {
     
     if (deltaX !== 0 || deltaY !== 0) {
       updateTerrainGeometry();
-      const updatedBeacons = updateBeacons(deltaX, deltaY);
+      const updatedBeacons = updateBeacons(deltaX, deltaY, beacons, { width, depth, offsetX, offsetY });
 
       useGamaStore.setState({
         currentLocation: { x: currentChunk.x, y: currentChunk.y },

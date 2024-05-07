@@ -7,7 +7,18 @@ import {
 import { createNoise2D } from "simplex-noise";
 import seedrandom from "seedrandom";
 import { minLevel, terrainTypes, resourceTypes } from "../store";
+import { Ref } from "react";
 
+const updateBufferAttribute = (geometry, attrName, data) => {
+  const attr = geometry.getAttribute(attrName);
+  if (attr && attr.array.length === data.length) {
+    attr.array.set(data);
+    attr.needsUpdate = true;
+  } else {
+    geometry.setAttribute(attrName, new Float32BufferAttribute(data, 3));
+    console.log("new attribute created", attrName);
+  }
+};
 
 const getResourceColor = (resourceType: string | number) => {
   return resourceTypes[resourceType]?.color || new Color(0xffffff);
@@ -44,8 +55,7 @@ const applyTerrainColors = (
   }
 };
 
-const applyResources = ({ resources, widthCount, depthCount, scale, offsetX, offsetY, rng }) => {
-  const noise2D = createNoise2D(rng);
+const applyResources = ({ resources, widthCount, depthCount, scale, offsetX, offsetY, noise2D }) => {
   const resourceScale = scale * 0.021;
   const speedFactor = resourceScale / 100;
 
@@ -67,50 +77,49 @@ const applyResources = ({ resources, widthCount, depthCount, scale, offsetX, off
   // console.log("Resources:", resources[0]);
 };
 
+const generateHeight = (x, y, scale, offsetX, offsetY, noise2D) => {
+  const scaleCorrection = scale * 5;
+  const largeScale = noise2D((x + offsetX) / scaleCorrection, (y + offsetY) / scaleCorrection) * 0.5;
+  const mediumScale = noise2D((x + offsetX) / (scaleCorrection * 0.5), (y + offsetY) / (scaleCorrection * 0.5)) * 0.25; 
+  const smallScale = noise2D((x + offsetX) / (scaleCorrection * 0.25), (y + offsetY) / (scaleCorrection * 0.25)) * 0.25;
 
+  // return Math.pow(largeScale, 1);
+  const combined = largeScale + mediumScale + smallScale;
+
+  if (combined >= 0) {
+    return Math.pow(combined, 3 / 4);
+  } else {
+    return combined;
+  }
+};
 
 export const generateTerrain = (
   width: number,
   depth: number,
   resolution: number,
   scale: number,
-  seed: string | undefined,
+  noise2D: any,
   offsetX: number,
   offsetY: number,
   geometry: BufferGeometry<NormalBufferAttributes>,
   canPlaceBeacon: boolean,
   activePosition: { x: number; z: number; },
-  scanRadius = 0
+  scanRadius = 0,
+  resources: Array<string | null>,
+  colors: Float32Array,
+  // positions: Ref<Float32Array>
+  positions: Float32Array,
+  // indices2: number[],
+  widthCount: number,
+  depthCount: number
 ) => {
-  const rng = seedrandom(seed);
-  const noise2D = createNoise2D(rng);
-  const widthCount = Math.floor(width / resolution);
-  const depthCount = Math.floor(depth / resolution) + 1;
-  const positions = new Float32Array((widthCount + 1) * (depthCount + 1) * 3);
-  const indices = [];
   const heightMultiplier = 20;
   const baseLineOffset = -5;
-
-  const generateHeight = (x, y, scale, offsetX, offsetY) => {
-    const scaleCorrection = scale * 5;
-    const largeScale = noise2D((x + offsetX) / scaleCorrection, (y + offsetY) / scaleCorrection) * 0.5; // Broad features
-    const mediumScale = noise2D((x + offsetX) / (scaleCorrection * 0.5), (y + offsetY) / (scaleCorrection * 0.5)) * 0.25; // Mid-level features
-    const smallScale = noise2D((x + offsetX) / (scaleCorrection * 0.25), (y + offsetY) / (scaleCorrection * 0.25)) * 0.25; // Detailed features
-
-    // return Math.pow(largeScale, 1);
-    const combined = largeScale + mediumScale + smallScale;
-
-    if (combined >= 0) {
-      return Math.pow(combined, 3 / 4);
-    } else {
-      return combined;
-    }
-  };
 
   for (let i = 0; i <= depthCount; i++) {
     for (let j = 0; j <= widthCount; j++) {
       const x = j * resolution - width / 2;
-      const heightNoise = generateHeight(x, i * resolution, scale, offsetX, offsetY);
+      const heightNoise = generateHeight(x, i * resolution, scale, offsetX, offsetY, noise2D);
       // console.log("heightNoise:", heightNoise);
       const y = Math.max(heightNoise * heightMultiplier + baseLineOffset, minLevel);
       // const y = Math.max(heightNoise * (heightMultiplier + heightMultiplier / 2) - heightMultiplier / 2, -heightMultiplier);
@@ -119,23 +128,11 @@ export const generateTerrain = (
       positions[idx] = x;
       positions[idx + 1] = y;
       positions[idx + 2] = z;
-
-      if (i < depthCount && j < widthCount) {
-        const a = i * (widthCount + 1) + j;
-        const b = a + widthCount + 1;
-        indices.push(a, b, a + 1);
-        indices.push(b, b + 1, a + 1);
-      }
     }
   }
 
-  
-
-  const colors = new Float32Array((widthCount + 1) * (depthCount + 1) * 3);
   applyTerrainColors(positions, colors, widthCount, depthCount, scale);
 
-  const resources = new Array((widthCount + 1) * (depthCount + 1)).fill(null);
-  applyResources({ resources, widthCount, depthCount, scale, offsetX, offsetY, rng });
 
   // if (canPlaceBeacon) {
   //   for (let i = 0; i < resources.length; i++) {
@@ -171,13 +168,10 @@ export const generateTerrain = (
     }
   }
 
-  geometry.dispose();
+  applyResources({ resources, widthCount, depthCount, scale, offsetX, offsetY, noise2D });
 
-  geometry.setAttribute("color", new Float32BufferAttribute(colors, 3));
-  // geometry.setAttribute("originalColor", new Float32BufferAttribute(originalColors, 3));
-  geometry.setAttribute("position", new Float32BufferAttribute(positions, 3));
-  geometry.setIndex(indices);
-  geometry.computeVertexNormals();
+  updateBufferAttribute(geometry, "color", colors);
+  updateBufferAttribute(geometry, "position", positions);
 
   return { colors, resources };
 };
