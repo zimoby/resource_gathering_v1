@@ -54,6 +54,7 @@ export const Terrain = () => {
   const beacons = useGamaStore((state) => state.beacons);
   const scanRadius = useGamaStore((state) => state.scanRadius);
   const activePosition = useGamaStore((state) => state.activePosition);
+  const direction = useGamaStore((state) => state.moveDirection);
 
   // const [scanningArea, setScanningArea] = useState(null);
   // const pulsingCirclePosition = useGamaStore((state) => state.activePosition);
@@ -63,7 +64,7 @@ export const Terrain = () => {
   const meshRef = useRef();
   const terrainGeometry = useRef(new BufferGeometry());
   const offset = useRef({ x: 0, y: 0 });
-  const direction = useRef({ x: 0, y: -1 });
+  // const direction = useRef({ x: 0, y: -1 });
   const customSpeed = useRef(1);
   // const [selectedResource, setSelectedResource] = useState(null);
   // const [resources, setResources] = useState([]);
@@ -78,7 +79,6 @@ export const Terrain = () => {
   // }, [firstStart]);
   // useKeyboardControls({ direction, customSpeed });
   useKeyboardControls({
-    direction,
     customSpeed,
     raycaster,
     meshRef,
@@ -211,8 +211,8 @@ export const Terrain = () => {
     //   const newDepth = Math.min(depth + 2, 100);
     //   updateLevaWidthAndDepth(newWidth, newDepth);
     // }
-    const deltaX = direction.current.x * (speed * customSpeed.current);
-    const deltaY = direction.current.y * (speed * customSpeed.current);
+    const deltaX = direction.x * (speed * customSpeed.current);
+    const deltaY = direction.y * (speed * customSpeed.current);
     // if (!firstStart) {
     //   // animate width and depth from 0 to 100
     //   const newWidth = Math.min(width + 1, 100);

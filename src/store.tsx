@@ -56,6 +56,7 @@ const useGamaStore = create((set) => ({
   selectedResource: "",
 	selectedChunk: { x: 0, y: 0 },
   currentLocation: { x: 0, y: 0 },
+	moveDirection: { x: 0, y: -1 },
   beacons: [],
   playerPoints: 1000,
 	collectedResources: {
@@ -65,7 +66,7 @@ const useGamaStore = create((set) => ({
 		r4: 0,
 	},
 	planetParams: {
-		
+
 	},
   message: "",
 	scanRadius: 30,

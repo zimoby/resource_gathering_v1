@@ -20,6 +20,9 @@ export const GridMetricUnits = () => {
   )
 }
 
+const lightColor = "#afafaf";
+const redColor = "#8b0000";
+
 
 export const CoordinatesKeys = () => {
   const { width, depth } = useControls({
@@ -28,6 +31,7 @@ export const CoordinatesKeys = () => {
   });
 
   const currentLocation = useGamaStore((state) => state.currentLocation);
+  const moveDirection = useGamaStore((state) => state.moveDirection);
 
   const currentChunkName = useMemo(() => {
     return convertChunkCoordinateToName(currentLocation);
@@ -41,7 +45,7 @@ export const CoordinatesKeys = () => {
         font="/Orbitron-Bold.ttf"
         fontSize={9}
         fontWeight={"bold"}
-        color={"#afafaf"}
+        color={moveDirection.x === -1 && moveDirection.y === 0 ? redColor : lightColor}
         anchorX="left"
         anchorY="top"
       >
@@ -53,7 +57,7 @@ export const CoordinatesKeys = () => {
         font="/Orbitron-Bold.ttf"
         fontSize={10}
         fontWeight={"bold"}
-        color={"#afafaf"}
+        color={moveDirection.x === 1 && moveDirection.y === 0 ? redColor : lightColor}
         anchorX="right"
         anchorY="bottom"
       >
@@ -65,7 +69,7 @@ export const CoordinatesKeys = () => {
         font="/Orbitron-Bold.ttf"
         fontSize={8}
         fontWeight={"bold"}
-        color={"#afafaf"}
+        color={moveDirection.x === 0 && moveDirection.y === -1 ? redColor : lightColor}
         anchorX="left"
         anchorY="top"
       >
@@ -77,7 +81,7 @@ export const CoordinatesKeys = () => {
         font="/Orbitron-Bold.ttf"
         fontSize={11}
         fontWeight={"bold"}
-        color={"#afafaf"}
+        color={moveDirection.x === 0 && moveDirection.y === 1 ? redColor : lightColor}
         anchorX="right"
         anchorY="bottom"
       >
@@ -90,7 +94,7 @@ export const CoordinatesKeys = () => {
         rotation={[-Math.PI / 2, 0, Math.PI / 2]}
         font="/Orbitron-Bold.ttf"
         fontSize={12}
-        color={"#afafaf"}
+        color={lightColor}
         anchorX="left"
         anchorY="top"
       >

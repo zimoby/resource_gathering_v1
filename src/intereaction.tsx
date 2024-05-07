@@ -23,13 +23,8 @@ const getIntersection = (event: { clientX: number; clientY: number; }, raycaster
   
 
 export const useKeyboardControls = ({
-  direction, customSpeed, raycaster, meshRef, camera
+  customSpeed, raycaster, meshRef, camera
 }: {
-  direction: {
-    current: { x: number; y: number; };
-    x: number;
-    y: number;
-  };
   customSpeed: {
     current: number;
   };
@@ -37,7 +32,8 @@ export const useKeyboardControls = ({
   meshRef: any;
   camera: any;
 }): void => {
-  const mousePosition = useRef();
+  // const mousePosition = useRef();
+  // const direction = useGamaStore((state) => state.moveDirection);
 
   // useEffect(() => {
   //   const handleMouseMove = (event) => {
@@ -50,24 +46,25 @@ export const useKeyboardControls = ({
   //     window.removeEventListener('mousemove', handleMouseMove);
   //   };
   // }, []);
+
   useEffect(() => {
     const handleKeyDown = (event: { key: any; }) => {
       switch (event.key) {
         case "ArrowUp":
         case "w":
-          direction.current = { x: 0, y: -1 };
+          useGamaStore.setState({ moveDirection: { x: 0, y: -1 } });
           break;
         case "ArrowDown":
         case "s":
-          direction.current = { x: 0, y: 1 };
+          useGamaStore.setState({ moveDirection: { x: 0, y: 1 } });
           break;
         case "ArrowLeft":
         case "a":
-          direction.current = { x: -1, y: 0 };
+          useGamaStore.setState({ moveDirection: { x: -1, y: 0 } });
           break;
         case "ArrowRight":
         case "d":
-          direction.current = { x: 1, y: 0 };
+          useGamaStore.setState({ moveDirection: { x: 1, y: 0 } });
           break;
         case "Shift":
           customSpeed.current = 3;
@@ -77,20 +74,19 @@ export const useKeyboardControls = ({
           break;
       }
 
-      // console.log("Camera position:", direction.current);
-      // get current mouse position
-      // if (mousePosition.current) {
-      //   // console.log("Mouse position:", mousePosition.current);
-      //   const intersects = getIntersection(mousePosition.current, raycaster, meshRef, camera);
-      //   if (intersects.length > 0) {
-      //     const point = intersects[0].point;
-      //     const chunk = getChunkCoordinates(point.x, point.z, 100);
-      //     console.log("Chunk:", chunk);
-      //     // useGamaStore.setState({ currentLocation: point });
-      //   }
-      //   // console.log("Camera position:", {intersects});
-      // }
-      // console.log("Mouse position:", mousePosition.current);
+
+    //   if (mousePosition.current) {
+    //     // console.log("Mouse position:", mousePosition.current);
+    //     const intersects = getIntersection(mousePosition.current, raycaster, meshRef, camera);
+    //     if (intersects.length > 0) {
+    //       const point = intersects[0].point;
+    //       const chunk = getChunkCoordinates(point.x, point.z, 100);
+    //       // console.log("Chunk:", chunk);
+    //       useGamaStore.setState({ currentLocation: chunk });
+    //     }
+    //     // console.log("Camera position:", {intersects});
+    //   }
+    //   console.log("Mouse position:", mousePosition.current);
     };
 
 

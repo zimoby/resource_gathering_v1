@@ -108,7 +108,7 @@ const App = () => {
         </mesh> */}
         <OrbitControls />
         
-        {/* <EffectsCollection /> */}
+        <EffectsCollection />
         {/* <Html> */}
         {/* </Html> */}
       </Canvas>
