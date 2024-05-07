@@ -19,11 +19,11 @@ import { generateTerrain } from "../functions/generateTerrain";
 import { isOutOfBound } from "../functions/functions";
 
 import { vertexShader, fragmentShader } from './chunkGridShader';
-import { update } from "three/examples/jsm/libs/tween.module.js";
+import { easing } from "maath"
 
 export const Terrain = () => {
-  const [loading, setLoading] = useState(true);
   const firstStart = useGamaStore((state) => state.firstStart);
+  const loading = useGamaStore((state) => state.loading);
   const { width, depth, resolution, scale, seed, offsetX, offsetY, speed } = useGamaStore((state) => state.mapParams);
 
   const gridConfig = useControls({
@@ -63,7 +63,7 @@ export const Terrain = () => {
   useEffect(() => {
     const resources = updateTerrainGeometry();
     if (resources && loading) {
-      setLoading(false);
+      useGamaStore.setState({ loading: false });
       console.log("Terrain is ready");
     }
   }, [width, depth, resolution, scale, seed, offsetX, offsetY, canPlaceBeacon, activePosition]);
@@ -97,23 +97,30 @@ export const Terrain = () => {
   };
 
   const updateBeacons = (deltaX: number, deltaY: number) => {
-    const updatedBeacons = beacons
-      .map((beacon: { position: { x: any; y: any; z: any; }; visible: boolean; }) => {
-        const newPosition = {
-          x: parseFloat((beacon.position.x - deltaX).toFixed(2)),
-          y: beacon.position.y,
-          z: parseFloat((beacon.position.z - deltaY).toFixed(2)),
-        };
+    // const updatedBeacons = beacons
+    //   .map((beacon: { position: { x: any; y: any; z: any; }; visible: boolean; }) => {
+    //     const newPosition = {
+    //       x: parseFloat((beacon.position.x - deltaX).toFixed(2)),
+    //       y: beacon.position.y,
+    //       z: parseFloat((beacon.position.z - deltaY).toFixed(2)),
+    //     };
 
-        // Check bounds here if necessary
-        beacon.visible = !isOutOfBound(newPosition, width, depth, offsetX, offsetY);
-        beacon.position = newPosition;
+    //     // Check bounds here if necessary
+    //     beacon.visible = !isOutOfBound(newPosition, width, depth, offsetX, offsetY);
+    //     beacon.position = newPosition;
 
-        return beacon;
-      })
-      .filter(Boolean);
+    //     return beacon;
+    //   })
+    //   .filter(Boolean);
 
-    useGamaStore.setState({ beacons: updatedBeacons });
+    beacons.forEach(beacon => {
+      beacon.position.x -= deltaX;
+      beacon.position.z -= deltaY;
+      beacon.visible = !isOutOfBound(beacon.position, width, depth, offsetX, offsetY);
+    });
+
+    return beacons;
+
   };
 
   const generateGridGeometry = () => {
@@ -138,59 +145,19 @@ export const Terrain = () => {
     planeRef.current.material = planeMaterial;
   };
 
-  const updateLevaWidthAndDepth = (width: number, depth: number) => {
-    levaStore.set({ width, depth });
-  };
+  // const updateLevaWidthAndDepth = (width: number, depth: number) => {
+  //   levaStore.set({ width, depth });
+  // };
 
 
   useFrame(() => {
 
-    if (!loading && !firstStart) {
-      // Animate width and depth from 10 to full size after loading
-      console.log("First start");
-      // updateLevaWidthAndDepth(0, 0);
-      
-      // updateLevaWidthAndDepth(100, 100);
-      
-      levaStore.set({ width: 100, depth: 100 });
-      useGamaStore.setState({ firstStart: true });
+    // console.log("direction:", direction);
 
-
-
-
-
-
-
-
-
-      // const newWidth = Math.min(width + 1, 100);
-      // const newDepth = Math.min(depth + 1, 100);
-      // console.log("newWidth:", newWidth, newDepth);
-      // updateLevaWidthAndDepth(newWidth, newDepth);
-      // if (newWidth !== 100 || newDepth !== 100) {
-      //   // setFirstStart(true);
-      // }
-    }
-
-    // if (firstStart) {
-    //   // console.log("First start");
-    //   // Animate width and depth from 10 to full size after loading
-    //   const newWidth = Math.min(width + 2, 100);
-    //   const newDepth = Math.min(depth + 2, 100);
-    //   updateLevaWidthAndDepth(newWidth, newDepth);
-    // }
     const deltaX = direction.x * (speed * customSpeed.current);
     const deltaY = direction.y * (speed * customSpeed.current);
-    // if (!firstStart) {
-    //   // animate width and depth from 0 to 100
-    //   const newWidth = Math.min(width + 1, 100);
-    //   const newDepth = Math.min(depth + 1, 100);
-    //   updateLevaWidthAndDepth(newWidth, newDepth);
-    //   if (newWidth === 100 && newDepth === 100) {
-    //     setFirstStart(true);
-    //   }
-    // }
-    // console.log("deltaX:", deltaX, deltaY);
+
+
     offset.current.x += deltaX;
     offset.current.y += deltaY;
 
@@ -202,14 +169,17 @@ export const Terrain = () => {
     );
 
     // console.log("currentChunk:", offset.current.x + offsetX + width / 2, offset.current.y + offsetY + depth / 2);
-    useGamaStore.setState({
-      currentLocation: { x: currentChunk.x, y: currentChunk.y },
-      currentOffset: { x: offset.current.x, y: offset.current.y }
-    });
-
+    
     if (deltaX !== 0 || deltaY !== 0) {
       updateTerrainGeometry();
-      updateBeacons(deltaX, deltaY);
+      const updatedBeacons = updateBeacons(deltaX, deltaY);
+
+      useGamaStore.setState({
+        currentLocation: { x: currentChunk.x, y: currentChunk.y },
+        currentOffset: { x: offset.current.x, y: offset.current.y },
+        beacons: updatedBeacons,
+      });
+
       planeRef.current.material.uniforms.offset.value.set(offset.current.x * 0.01, -offset.current.y * 0.01);
     }
 

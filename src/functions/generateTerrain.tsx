@@ -129,7 +129,7 @@ export const generateTerrain = (
     }
   }
 
-  geometry.dispose();
+  
 
   const colors = new Float32Array((widthCount + 1) * (depthCount + 1) * 3);
   applyTerrainColors(positions, colors, widthCount, depthCount, scale);
@@ -171,8 +171,7 @@ export const generateTerrain = (
     }
   }
 
-
-
+  geometry.dispose();
 
   geometry.setAttribute("color", new Float32BufferAttribute(colors, 3));
   // geometry.setAttribute("originalColor", new Float32BufferAttribute(originalColors, 3));

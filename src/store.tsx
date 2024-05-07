@@ -52,6 +52,7 @@ export const resourceTypes = {
 
 const useGamaStore = create((set) => ({
 	firstStart: false,
+	loading: true,
 
 	mapParams: {
 		width: 100,

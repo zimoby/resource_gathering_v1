@@ -14,10 +14,12 @@ import { useCalculateResources } from "./functions/calculateResources";
 import { CoordinatesKeys, GridMetricUnits } from "./components/CoordinatesKeys";
 import { SceneSettings } from "./components/scene";
 import { useParamsSync } from "./functions/paramsSync";
+import { levaStore } from "leva";
 
 const App = () => {
   // const toggleShowResources = useGamaStore((state) => state.toggleShowResources);
   const firstStart = useGamaStore((state) => state.firstStart);
+  const loading = useGamaStore((state) => state.loading);
 
   const selectedResource = useGamaStore((state) => state.selectedResource);
   const selectedChunk = useGamaStore((state) => state.selectedChunk);
@@ -29,6 +31,16 @@ const App = () => {
 
   useCalculateResources();
   useParamsSync();
+
+  useEffect(() => {
+    if (!loading && !firstStart) {
+      useGamaStore.setState({ firstStart: true });
+    }
+    if (!loading && firstStart) {
+      levaStore.set({ width: 100, depth: 100 });
+      console.log("leva store updated");
+    }
+  }, [loading, firstStart]);
 
   return (
     <>
@@ -112,7 +124,7 @@ const App = () => {
         </mesh> */}
         <OrbitControls />
         
-        {/* <EffectsCollection /> */}
+        <EffectsCollection />
         {/* <Html> */}
         {/* </Html> */}
       </Canvas>
