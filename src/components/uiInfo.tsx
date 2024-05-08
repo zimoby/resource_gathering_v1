@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { convertChunkCoordinateToName } from "../functions/functions";
 import useGamaStore from "../store";
 
@@ -10,6 +11,13 @@ export const UiInfo = () => {
   const playerPoints = useGamaStore((state) => state.playerPoints);
   const collectedResources = useGamaStore((state) => state.collectedResources);
 
+  useEffect(() => {
+    if (message === "") return;
+    setTimeout(() => {
+      useGamaStore.setState({ message: "" });
+    }, 2000);
+  }, [message]);
+  
   return (
     <>
       <div className="orbitron z-50 fixed top-0 left-0 text-6xl">PLANET-01</div>
