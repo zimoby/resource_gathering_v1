@@ -4,10 +4,7 @@ import {
   Float32BufferAttribute,
   NormalBufferAttributes
 } from "three";
-import { createNoise2D } from "simplex-noise";
-import seedrandom from "seedrandom";
 import { minLevel, terrainTypes, resourceTypes } from "../store";
-import { Ref } from "react";
 
 const updateBufferAttribute = (geometry, attrName, data) => {
   const attr = geometry.getAttribute(attrName);

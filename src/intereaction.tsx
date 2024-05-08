@@ -73,6 +73,8 @@ export const useKeyboardControls = ({
           break;
       }
 
+      // console.log("Camera position:", camera.position);
+
 
     //   if (mousePosition.current) {
     //     // console.log("Mouse position:", mousePosition.current);

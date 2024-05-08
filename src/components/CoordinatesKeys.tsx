@@ -20,7 +20,6 @@ export const GridMetricUnits = () => {
 const lightColor = "#afafaf";
 const redColor = "#8b0000";
 
-
 export const CoordinatesKeys = () => {
   const { width, depth } = useGamaStore((state) => state.mapParams);
   const speed = useGamaStore((state) => state.mapParams.speed);

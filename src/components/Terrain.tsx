@@ -83,9 +83,9 @@ export const Terrain = () => {
 
   const planeRef = useRef();
   const meshRef = useRef();
-  const terrainGeometry = useRef(new BufferGeometry());
   const offset = useRef({ x: 0, y: 0 });
   const customSpeed = useRef(1);
+  
 
   const colors = useRef(new Float32Array((widthCount + 1) * (depthCount + 1) * 3));
   const positions = useRef(new Float32Array((widthCount + 1) * (depthCount + 1) * 3));
@@ -97,17 +97,15 @@ export const Terrain = () => {
     return indicesPrecalc;
   }, [width, depth, resolution]);
 
+  const noise2D = useMemo(() => createNoise2D(seedrandom(seed)), [seed])
+  
+  const raycaster = useRef(new Raycaster());
+  const terrainGeometry = useRef(new BufferGeometry());
   const colorAttribute = useRef(new Float32BufferAttribute(colors.current, 3));
   const indexAttribute = useRef(new BufferAttribute(indices, 1));
-  const noise2D = useMemo(() => createNoise2D(seedrandom(seed)), [seed])
 
-
-  const raycaster = new Raycaster();
-
-  useKeyboardControls({ customSpeed, raycaster, meshRef, camera });
-
-  useCanvasHover({ camera, raycaster, meshRef, resources });
-
+  useKeyboardControls({ customSpeed, raycaster: raycaster.current, meshRef, camera });
+  useCanvasHover({ camera, raycaster: raycaster.current, meshRef, resources });
 
   const updateTerrainGeometry = () => {
     const { colors: generatedColors, resources: generatedResources } = generateTerrain(
@@ -151,7 +149,7 @@ export const Terrain = () => {
     generateGridGeometry();
   }, [width, depth, gridConfig]);
 
-  const generateGridGeometry = () => {
+  const generateGridGeometry = useMemo(() => {
     const planeGeometry = new PlaneGeometry(width, depth, 1, 1);
     const planeMaterial = new ShaderMaterial({
       uniforms: {
@@ -169,9 +167,12 @@ export const Terrain = () => {
       depthWrite: false,
     });
 
-    planeRef.current.geometry = planeGeometry;
-    planeRef.current.material = planeMaterial;
-  };
+    return () => {
+      planeRef.current.geometry = planeGeometry;
+      planeRef.current.material = planeMaterial;
+    };
+  }, [width, depth, gridConfig]);
+
 
   // const updateLevaWidthAndDepth = (width: number, depth: number) => {
   //   levaStore.set({ width, depth });
@@ -179,6 +180,9 @@ export const Terrain = () => {
   const deltaX = direction.x * (speed * customSpeed.current);
   const deltaY = direction.y * (speed * customSpeed.current);
 
+  // const counter = useRef(0);
+
+  // console.log("counter:", counter.current);
 
   useFrame(() => {
     // if (canPlaceBeacon) {
@@ -212,7 +216,8 @@ export const Terrain = () => {
     const updatedBeacons = updateBeacons(deltaX, deltaY, beacons, { width, depth, offsetX, offsetY });
     
     if (deltaX !== 0 || deltaY !== 0) {
-
+      // counter.current++;
+      // console.log("currentChunk:", currentChunk);
       useGamaStore.setState({
         currentLocation: { x: currentChunk.x, y: currentChunk.y },
         currentOffset: { x: offset.current.x, y: offset.current.y },
