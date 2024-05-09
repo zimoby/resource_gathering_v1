@@ -1,14 +1,10 @@
-import { useRef, useEffect, useState, useMemo, createRef, useLayoutEffect } from "react";
+import { useRef, useState, useMemo, createRef, useLayoutEffect } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import {
   DoubleSide,
   BufferGeometry,
   Float32BufferAttribute,
-  Color,
   Raycaster,
-  Vector2,
-  PlaneGeometry,
-  ShaderMaterial,
   BufferAttribute
 } from "three";
 import { levaStore, useControls } from "leva";
@@ -19,12 +15,12 @@ import { useCanvasHover } from "../intereaction";
 import { generateTerrain } from "../functions/generateTerrain";
 import { isOutOfBound } from "../functions/functions";
 
-import { vertexShader, fragmentShader } from './chunkGridShader';
+
 import { easing } from "maath"
 import { createNoise2D } from "simplex-noise";
 import seedrandom from "seedrandom";
-import { Cylinder, Sphere } from "@react-three/drei";
-import { ConcentricCirclesAnimation } from "./concentricCircles";
+import { BasicGridShader } from "./BasicGridShader";
+import { BeaconGroup } from "./beacons/BeaconGroup";
 
 // const updateBeacons = (deltaX: number, deltaY: number, beacons, params) => {
 //   // console.log("updateBeacons", deltaX, deltaY, beacons, params);
@@ -41,7 +37,6 @@ import { ConcentricCirclesAnimation } from "./concentricCircles";
 
 //   return beaconDeepCopy;
 // };
-
 
 const generateIndices = (widthCount, depthCount, indices) => {
   let index = 0;
@@ -69,13 +64,11 @@ export const Map = () => {
   const firstStart = useGamaStore((state) => state.firstStart);
   const loading = useGamaStore((state) => state.loading);
   const { width, depth, resolution, scale, seed, offsetX, offsetY, speed } = useGamaStore((state) => state.mapParams);
-  const gridConfig = useGamaStore((state) => state.gridConfig);
   const canPlaceBeacon = useGamaStore((state) => state.canPlaceBeacon);
   const scanRadius = useGamaStore((state) => state.scanRadius);
   const activePosition = useGamaStore((state) => state.activePosition);
   const direction = useGamaStore((state) => state.moveDirection);
   
-  const mapParams = useGamaStore((state) => state.mapParams);
   const beacons = useGamaStore((state) => state.beacons);
   const beaconRefs = useRef(beacons.map(() => createRef()));
   const beaconHeight = 10;
@@ -162,61 +155,13 @@ export const Map = () => {
     return resources.current;
   };
 
-  useEffect(() => {
-    generateGridGeometry();
-  }, [width, depth, gridConfig]);
-
-  const generateGridGeometry = useMemo(() => {
-    const planeGeometry = new PlaneGeometry(width, depth, 1, 1);
-    const planeMaterial = new ShaderMaterial({
-      uniforms: {
-        chunkSize: { value: gridConfig.chunkSize },
-        offset: { value: new Vector2(0, 0) },
-        subGrids: { value: gridConfig.subGrids },
-        lineWidth: { value: gridConfig.lineWidth },
-        gridColor: { value: new Color(gridConfig.gridColor) },
-        subGridColor: { value: new Color(gridConfig.subGridColor) },
-      },
-      vertexShader,
-      fragmentShader,
-      transparent: true,
-      side: DoubleSide,
-      depthWrite: false,
-    });
-
-    return () => {
-      planeRef.current.geometry = planeGeometry;
-      planeRef.current.material = planeMaterial;
-    };
-  }, [width, depth, gridConfig]);
-
-
-  // const updateLevaWidthAndDepth = (width: number, depth: number) => {
-  //   levaStore.set({ width, depth });
-  // };
-  
-  // const counter = useRef(0);
-  
-  // console.log("counter:", counter.current);
   const deltaX = direction.x * (speed * customSpeed.current);
   const deltaY = direction.y * (speed * customSpeed.current);
   
-  useFrame(( { clock }) => {
+  useFrame(() => {
 
     offset.current.x += deltaX;
     offset.current.y += deltaY;
-
-    beaconRefs.current.forEach((beacon, index) => {
-      const beaconObject = beacon.current; // Assuming each beacon is a child of the meshRef group
-      if (beaconObject) {
-
-        beaconObject.position.x -= deltaX;
-        beaconObject.position.z -= deltaY;
-
-        const visibilityBoundaries = !isOutOfBound({x: beaconObject.position.x, y: beaconObject.position.z}, width, depth, offsetX, offsetY);
-        beaconObject.visible = visibilityBoundaries;
-      }
-    });
 
     const currentChunk = getChunkCoordinates(
       offset.current.x + offsetX + width / 2,
@@ -231,40 +176,23 @@ export const Map = () => {
       useGamaStore.setState({ loading: false });
     }
     
-    // const updatedBeacons = updateBeacons(deltaX, deltaY, beacons, { width, depth, offsetX, offsetY });
-    
-    // if (deltaX !== 0 || deltaY !== 0) {
-      // console.log("currentChunk:", currentChunk);
-      // counter.current++;
-      // console.log("currentChunk:", currentChunk);
-      useGamaStore.setState({
-        currentLocation: { x: currentChunk.x, y: currentChunk.y },
-        currentOffset: { x: offset.current.x, y: offset.current.y },
-        // beacons: updatedBeacons,
-      });
+    useGamaStore.setState({
+      currentLocation: { x: currentChunk.x, y: currentChunk.y },
+      currentOffset: { x: offset.current.x, y: offset.current.y },
+    });
 
-      planeRef.current.material.uniforms.offset.value.set(offset.current.x * 0.01, -offset.current.y * 0.01);
-
+    planeRef.current.material.uniforms.offset.value.set(offset.current.x * 0.01, -offset.current.y * 0.01);
   });
 
   return (
     <group visible={firstStart}>
-      {beacons.map((beacon, index) => (
-        <group key={index} >
-          <group position={[beacon.x, beacon.y, beacon.z]} ref={beaconRefs.current[index]}>
-            <Sphere args={[1, 8, 8]} position={[0, 10, 0]} />
-            <Cylinder args={[0.1, 0.1, 10, 4]} position={[0, 5, 0]} />
-            <ConcentricCirclesAnimation />
-          </group>
-        </group>
-      ))}
+      <BeaconGroup customSpeed={customSpeed} beaconRefs={beaconRefs} />
       <mesh ref={meshRef} geometry={terrainGeometry.current}>
         <meshStandardMaterial wireframe={true} vertexColors side={DoubleSide} />
       </mesh>
-      <mesh ref={planeRef} rotation={[-Math.PI / 2, 0, 0]}>
-        <planeGeometry />
-        <shaderMaterial />
-      </mesh>
+      <BasicGridShader planeRef={planeRef} />
     </group>
   );
 };
+
+
