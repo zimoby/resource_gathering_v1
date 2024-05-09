@@ -21,14 +21,9 @@ export const isOutOfBound = (
   offsetX: number,
   offsetY: number
 ) => {
-  const checkVis = position.x < -width / 2 + offsetX ||
-    position.x > width / 2 + offsetX ||
-    position.y < -depth / 2 + offsetY ||
-    position.y > depth / 2 + offsetY
-
-    // console.log("CheckVis:", position, position.y < -depth / 2 + offsetY ||
-    // position.y > depth / 2 + offsetY);
-  return checkVis;
+  const xOutOfBounds = position.x < -width / 2 + offsetX || position.x > width / 2 + offsetX;
+  const yOutOfBounds = position.y < -depth / 2 + offsetY || position.y > depth / 2 + offsetY;
+  return { x: xOutOfBounds, y: yOutOfBounds };
 };
 
 export const useCalculateDeltas = () => {

@@ -2,21 +2,16 @@ import useGamaStore from "../../store";
 import { Cylinder, Sphere } from "@react-three/drei";
 import { ConcentricCirclesAnimation } from "../concentricCircles";
 import { useFrame } from "@react-three/fiber";
-import { isOutOfBound } from "../../functions/functions";
+import { isOutOfBound, useCalculateDeltas } from "../../functions/functions";
 import { createRef, useLayoutEffect, useRef } from "react";
 
 export const BeaconGroup = () => {
   const firstStart = useGamaStore((state) => state.firstStart);
   const beacons = useGamaStore((state) => state.beacons);
-  const direction = useGamaStore((state) => state.moveDirection);
-  const dynamicSpeed = useGamaStore((state) => state.dynamicSpeed);
-
-  const { width, depth, offsetX, offsetY, speed } = useGamaStore((state) => state.mapParams);
+  const { width, depth, offsetX, offsetY } = useGamaStore((state) => state.mapParams);
+  const { deltaX, deltaY } = useCalculateDeltas();
 
   const beaconRefs = useRef(beacons.map(() => createRef()));
-
-  const deltaX = direction.x * (speed * dynamicSpeed);
-  const deltaY = direction.y * (speed * dynamicSpeed);
 
   const beaconHeight = 10;
 
@@ -29,16 +24,16 @@ export const BeaconGroup = () => {
 }, [beacons.length]);
 
   useFrame(() => {
-
     beaconRefs.current.forEach((beacon, index) => {
       const beaconObject = beacon.current;
       if (beaconObject) {
+        const checkBoundaries = isOutOfBound({x: beaconObject.position.x, y: beaconObject.position.z}, width, depth, offsetX, offsetY);
 
         beaconObject.position.x -= deltaX;
         beaconObject.position.z -= deltaY;
 
-        const visibilityBoundaries = !isOutOfBound({x: beaconObject.position.x, y: beaconObject.position.z}, width, depth, offsetX, offsetY);
-        beaconObject.visible = visibilityBoundaries;
+        beaconObject.visible = !checkBoundaries.x && !checkBoundaries.y;
+
       }
     });
   });
