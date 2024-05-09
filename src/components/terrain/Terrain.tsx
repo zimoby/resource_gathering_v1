@@ -14,6 +14,7 @@ import { generateTerrain } from "./generateTerrain";
 
 import { createNoise2D } from "simplex-noise";
 import seedrandom from "seedrandom";
+import { useCalculateDeltas } from "../../functions/functions";
 
 const generateIndices = (widthCount, depthCount, indices) => {
   let index = 0;
@@ -39,12 +40,10 @@ const generateIndices = (widthCount, depthCount, indices) => {
 
 export const Terrain = () => {
   const loading = useGamaStore((state) => state.loading);
-  const { width, depth, resolution, scale, seed, offsetX, offsetY, speed } = useGamaStore((state) => state.mapParams);
+  const { width, depth, resolution, scale, seed, offsetX, offsetY } = useGamaStore((state) => state.mapParams);
   const canPlaceBeacon = useGamaStore((state) => state.canPlaceBeacon);
   const scanRadius = useGamaStore((state) => state.scanRadius);
   const activePosition = useGamaStore((state) => state.activePosition);
-  const direction = useGamaStore((state) => state.moveDirection);
-  const dynamicSpeed = useGamaStore((state) => state.dynamicSpeed);
 
   const widthCount = Math.floor(width / resolution);
   const depthCount = Math.floor(depth / resolution) + 1;
@@ -112,12 +111,9 @@ export const Terrain = () => {
     return resources.current;
   };
 
-  const deltaX = direction.x * (speed * dynamicSpeed);
-  const deltaY = direction.y * (speed * dynamicSpeed);
-
-  // console.log("deltaX:", deltaX, "deltaY:", deltaY);
-
-  // console.log("terrain generating:");
+  const { deltaX, deltaY } = useCalculateDeltas();
+  
+  console.log("terrain generating:");
   
   useFrame(() => {
 

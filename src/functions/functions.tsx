@@ -1,3 +1,5 @@
+import useGamaStore from "../store";
+
 export const convertChunkCoordinateToName = (chunk) => {
   const ns = chunk.y >= 0 ? "N" : "S";
   const ew = chunk.x >= 0 ? "E" : "W";
@@ -29,3 +31,33 @@ export const isOutOfBound = (
   return checkVis;
 };
 
+export const useCalculateDeltas = () => {
+  const dynamicSpeed = useGamaStore((state) => state.dynamicSpeed);
+  const { speed } = useGamaStore((state) => state.mapParams);
+  const direction = useGamaStore((state) => state.moveDirection);
+
+  const deltaX = direction.x * (speed * dynamicSpeed);
+  const deltaY = direction.y * (speed * dynamicSpeed);
+
+  return { deltaX, deltaY };
+};
+
+export const useUpdateMapMoving = () => {
+  const { width, depth, offsetX, offsetY } = useGamaStore((state) => state.mapParams);
+
+  const updateLocationAndOffset = (offset) => {
+
+    const currentChunk = getChunkCoordinates(
+      offset.current.x + offsetX + width / 2,
+      offset.current.y + offsetY + depth / 2,
+      width
+    );
+
+    useGamaStore.setState({
+      currentLocation: { x: currentChunk.x, y: currentChunk.y },
+      currentOffset: { x: offset.current.x, y: offset.current.y },
+    });
+  }
+
+  return { updateLocationAndOffset };
+};

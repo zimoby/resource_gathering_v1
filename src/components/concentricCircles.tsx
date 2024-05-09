@@ -2,7 +2,7 @@ import { useRef, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
 import { DoubleSide, Color } from "three";
 
-export const ConcentricCirclesAnimation = () => {
+export const ConcentricCirclesAnimation = ({size = 5}) => {
   const ref = useRef();
 
   useFrame(({ clock }) => {
@@ -23,7 +23,7 @@ export const ConcentricCirclesAnimation = () => {
 
   return (
     <mesh rotation={[-Math.PI / 2, 0, 0]}>
-      <circleGeometry args={[5, 64]} />
+      <circleGeometry args={[size, 64]} />
       <shaderMaterial
         ref={ref}
         uniforms={uniforms}
