@@ -7,7 +7,7 @@ import { EffectsCollection } from "./components/effects";
 
 import { convertChunkCoordinateToName } from "./functions/functions";
 import { PulsingCircle } from "./components/PulsingCircle";
-import { Terrain } from "./components/Terrain";
+import { Map } from "./components/Map";
 import { ChunkGrid } from "./components/ChunkGrid";
 import { Beacons } from "./components/beacons/Beacons";
 import { useCalculateResources } from "./functions/calculateResources";
@@ -35,7 +35,7 @@ const App = () => {
         <SceneSettings />
         <Suspense fallback={null}>
           {/* <Viewcube /> */}
-          <Terrain />
+          <Map />
           <CoordinatesKeys />
 
           {/* <GridMetricUnits /> */}
@@ -45,7 +45,7 @@ const App = () => {
             <ChunkGrid position={[0,-10,0]} sizeExtend={1} />
             <ChunkGrid position={[0,-10,0]} sizeExtend={10} />
           </group>
-          <Beacons />
+          {/* <Beacons /> */}
           <PulsingCircle />
         </Suspense>
 

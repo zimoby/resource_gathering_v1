@@ -3,7 +3,7 @@ import { Raycaster, Vector2 } from "three";
 import useGamaStore from "./store";
 import { useControls } from "leva";
 import { debounce, throttle } from "lodash";
-import { addBeacon } from "./components/beacons/addBeacon";
+import { addBeacon, useProcessBeacons } from "./components/beacons/addBeacon";
 import { convertChunkCoordinateToName, getChunkCoordinates } from "./functions/functions";
 
 
@@ -117,7 +117,10 @@ export const useKeyboardControls = ({
 export const useCanvasHover = ({ camera, raycaster, meshRef, resources }) => {
   const canPlaceBeacon = useGamaStore((state) => state.canPlaceBeacon);
   const currentOffset = useGamaStore((state) => state.currentOffset);
-  const replacePropWithXY = useGamaStore((state) => state.replacePropWithXY);
+  const beacons = useGamaStore((state) => state.beacons);
+  // const replacePropWithXY = useGamaStore((state) => state.replacePropWithXY);
+
+  const { addBeacon } = useProcessBeacons();
   // use hover only when placing beacon
 
   const { width, depth, offsetX, offsetY } = useGamaStore((state) => state.mapParams);
@@ -239,7 +242,8 @@ export const useCanvasHover = ({ camera, raycaster, meshRef, resources }) => {
             currentChunk: {
               x: chunkCoordinates.x,
               y: chunkCoordinates.y,
-            }
+            },
+            beacons
           });
         }
 
@@ -253,6 +257,6 @@ export const useCanvasHover = ({ camera, raycaster, meshRef, resources }) => {
       window.removeEventListener("mousemove", handleCanvasHover);
       throttledSetState.cancel();
     };
-  }, [camera, meshRef, canPlaceBeacon, resources, offsetX, offsetY]);
+  }, [camera, meshRef, canPlaceBeacon, resources, offsetX, offsetY, beacons]);
 };
 

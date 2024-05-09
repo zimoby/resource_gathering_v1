@@ -13,17 +13,19 @@ export const getChunkCoordinates = (globalX: number, globalY: number, chunkSize:
 };
 
 export const isOutOfBound = (
-  position: { x: any; y?: any; z: any; },
+  position: { x: number; y: number; z?: number; },
   width: number,
   depth: number,
   offsetX: number,
   offsetY: number
 ) => {
-  return (
-    position.x < -width / 2 + offsetX ||
+  const checkVis = position.x < -width / 2 + offsetX ||
     position.x > width / 2 + offsetX ||
-    position.z < -depth / 2 + offsetY ||
-    position.z > depth / 2 + offsetY
-  );
+    position.y < -depth / 2 + offsetY ||
+    position.y > depth / 2 + offsetY
+
+    // console.log("CheckVis:", position, position.y < -depth / 2 + offsetY ||
+    // position.y > depth / 2 + offsetY);
+  return checkVis;
 };
 
