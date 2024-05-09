@@ -6,10 +6,10 @@ import useGamaStore from "../../store";
 export const useProcessBeacons = () => {
 
   // const currentChunk = useGamaStore.getState().currentLocation;
-  // const beacons = useGamaStore((state) => state.beacons);
+  const beacons = useGamaStore((state) => state.beacons);
 
   const addBeacon = ({
-    position, resource, currentChunk, beacons
+    position, resource, currentChunk
   }) => {
 
 
@@ -39,7 +39,6 @@ export const useProcessBeacons = () => {
       return;
     }
 
-    console.log("Adding beacon:", {beacons, position, currentChunk});
     
   
     useGamaStore.setState((state: { beacons: any; }) => {
@@ -56,8 +55,11 @@ export const useProcessBeacons = () => {
           visible: true,
         },
       ];
+      console.log("Adding beacon:", {newBeacons, position, currentChunk});
       return { beacons: newBeacons };
     });
+
+
   
     // console.log("Beacons:", beacons);
   }

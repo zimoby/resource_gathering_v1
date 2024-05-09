@@ -15,6 +15,8 @@ export const BeaconGroup = () => {
 
   const beaconHeight = 10;
 
+  // console.log("beacons:", beacons);
+
   useLayoutEffect(() => {
     beaconRefs.current = beaconRefs.current.slice(0, beacons.length);
     for (let i = beaconRefs.current.length; i < beacons.length; i++) {
@@ -26,6 +28,7 @@ export const BeaconGroup = () => {
   useFrame(() => {
     beaconRefs.current.forEach((beacon, index) => {
       const beaconObject = beacon.current;
+      // console.log("beaconObject.position:", beaconObject);
       if (beaconObject) {
         const checkBoundaries = isOutOfBound({x: beaconObject.position.x, y: beaconObject.position.z}, width, depth, offsetX, offsetY);
 
@@ -33,6 +36,8 @@ export const BeaconGroup = () => {
         beaconObject.position.z -= deltaY;
 
         beaconObject.visible = !checkBoundaries.x && !checkBoundaries.y;
+
+        
 
       }
     });

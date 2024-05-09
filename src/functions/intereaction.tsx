@@ -112,7 +112,7 @@ export const useKeyboardControls = ({
 export const useCanvasHover = ({ camera, raycaster, meshRef, resources }) => {
   const canPlaceBeacon = useGamaStore((state) => state.canPlaceBeacon);
   // const currentOffset = useGamaStore((state) => state.currentOffset);
-  const beacons = useGamaStore((state) => state.beacons);
+  // const beacons = useGamaStore((state) => state.beacons);
   // const replacePropWithXY = useGamaStore((state) => state.replacePropWithXY);
 
   const { addBeacon } = useProcessBeacons();
@@ -132,6 +132,8 @@ export const useCanvasHover = ({ camera, raycaster, meshRef, resources }) => {
     // console.log("Throttled state:", state);
     useGamaStore.setState(state);
   }, 100);
+
+  // console.log("Resources:", resources.current);
 
   useEffect(() => {
     const handleCanvasHover = (event: { clientX: number; clientY: number; }) => {
@@ -241,11 +243,9 @@ export const useCanvasHover = ({ camera, raycaster, meshRef, resources }) => {
             currentChunk: {
               x: chunkCoordinates.x,
               y: chunkCoordinates.y,
-            },
-            beacons
+            }
           });
         }
-
       }
     };
 
@@ -256,6 +256,6 @@ export const useCanvasHover = ({ camera, raycaster, meshRef, resources }) => {
       window.removeEventListener("mousemove", handleCanvasHover);
       throttledSetState.cancel();
     };
-  }, [camera, meshRef, canPlaceBeacon, resources, offsetX, offsetY, beacons]);
+  }, [camera, meshRef, canPlaceBeacon, resources, offsetX, offsetY, width, depth]);
 };
 
