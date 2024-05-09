@@ -87,6 +87,7 @@ const useGamaStore = create((set) => ({
 	selectedChunk: { x: 0, y: 0 },
   currentLocation: { x: 0, y: 0 },
 	moveDirection: { x: 0, y: -1 },
+  dynamicSpeed: 1,
   beacons: [],
   playerPoints: 1000,
 	collectedResources: {

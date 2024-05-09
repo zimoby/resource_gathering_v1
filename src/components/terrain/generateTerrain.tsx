@@ -4,7 +4,7 @@ import {
   Float32BufferAttribute,
   NormalBufferAttributes
 } from "three";
-import { minLevel, terrainTypes, resourceTypes } from "../store";
+import { minLevel, terrainTypes, resourceTypes } from "../../store";
 
 const updateBufferAttribute = (geometry, attrName, data) => {
   const attr = geometry.getAttribute(attrName);

@@ -22,11 +22,8 @@ const getIntersection = (event: { clientX: number; clientY: number; }, raycaster
   
 
 export const useKeyboardControls = ({
-  customSpeed, raycaster, meshRef, camera
+  raycaster, meshRef, camera
 }: {
-  customSpeed: {
-    current: number;
-  };
   raycaster: Raycaster;
   meshRef: any;
   camera: any;
@@ -66,7 +63,7 @@ export const useKeyboardControls = ({
           useGamaStore.setState({ moveDirection: { x: 1, y: 0 } });
           break;
         case "Shift":
-          customSpeed.current = 3;
+          useGamaStore.setState({ dynamicSpeed: 3 });
           break;
         case " ":
           useGamaStore.setState({ canPlaceBeacon: true });
@@ -94,7 +91,7 @@ export const useKeyboardControls = ({
     const handleKeyUp = (event: { key: any; }) => {
       switch (event.key) {
         case "Shift":
-          customSpeed.current = 1;
+          useGamaStore.setState({ dynamicSpeed: 1 });
           break;
         case " ":
           useGamaStore.setState({ canPlaceBeacon: false });
