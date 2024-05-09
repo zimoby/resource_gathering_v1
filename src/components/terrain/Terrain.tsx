@@ -8,8 +8,8 @@ import {
   BufferAttribute
 } from "three";
 import useGamaStore from "../../store";
-import { useKeyboardControls } from "../../intereaction";
-import { useCanvasHover } from "../../intereaction";
+import { useKeyboardControls } from "../../functions/intereaction";
+import { useCanvasHover } from "../../functions/intereaction";
 import { generateTerrain } from "./generateTerrain";
 
 import { createNoise2D } from "simplex-noise";
@@ -112,7 +112,7 @@ export const Terrain = () => {
   };
 
   const { deltaX, deltaY } = useCalculateDeltas();
-  
+
   console.log("terrain generating:");
   
   useFrame(() => {

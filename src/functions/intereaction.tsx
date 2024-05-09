@@ -1,11 +1,9 @@
-import { useRef, useEffect } from "react";
+import { useEffect } from "react";
 import { Raycaster, Vector2 } from "three";
-import useGamaStore from "./store";
-import { useControls } from "leva";
+import useGamaStore from "../store";
 import { debounce, throttle } from "lodash";
-import { addBeacon, useProcessBeacons } from "./components/beacons/addBeacon";
-import { convertChunkCoordinateToName, getChunkCoordinates } from "./functions/functions";
-
+import { useProcessBeacons } from "../components/beacons/addBeacon";
+import { getChunkCoordinates } from "./functions";
 
 const getIntersection = (event: { clientX: number; clientY: number; }, raycaster: Raycaster, meshRef: any, camera) => {
     const mouse = new Vector2();
