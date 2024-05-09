@@ -6,7 +6,6 @@ import { BasicGridShader } from "./BasicGridShader";
 import { BeaconGroup } from "./beacons/BeaconGroup";
 import { Terrain } from "./terrain/Terrain";
 
-
 export const Map = () => {
   const firstStart = useGamaStore((state) => state.firstStart);
   const dynamicSpeed = useGamaStore((state) => state.dynamicSpeed);
@@ -17,6 +16,8 @@ export const Map = () => {
 
   const deltaX = direction.x * (speed * dynamicSpeed);
   const deltaY = direction.y * (speed * dynamicSpeed);
+
+  // console.log("Map rendering");
   
   useFrame(() => {
     offset.current.x += deltaX;
@@ -44,5 +45,3 @@ export const Map = () => {
     </group>
   );
 };
-
-

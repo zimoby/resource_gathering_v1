@@ -17,6 +17,7 @@ import { useParamsSync } from "./functions/paramsSync";
 import { BeaconsInfo } from "./components/beacons/BeaconsInfo";
 import { UiInfo } from "./components/uiInfo";
 import { useInitInfo } from "./components/initInfo";
+import { Perf } from "r3f-perf";
 
 const App = () => {
   const firstStart = useGamaStore((state) => state.firstStart)
@@ -32,6 +33,7 @@ const App = () => {
 
       <Canvas flat shadows dpr={[1, 1.5]} gl={{ antialias: false }}>
         <Stats showPanel={2} />
+        {/* <Perf position="top-left" /> */}
         <SceneSettings />
         <Suspense fallback={null}>
           {/* <Viewcube /> */}

@@ -113,7 +113,7 @@ export const useKeyboardControls = ({
 
 export const useCanvasHover = ({ camera, raycaster, meshRef, resources }) => {
   const canPlaceBeacon = useGamaStore((state) => state.canPlaceBeacon);
-  const currentOffset = useGamaStore((state) => state.currentOffset);
+  // const currentOffset = useGamaStore((state) => state.currentOffset);
   const beacons = useGamaStore((state) => state.beacons);
   // const replacePropWithXY = useGamaStore((state) => state.replacePropWithXY);
 
@@ -157,8 +157,10 @@ export const useCanvasHover = ({ camera, raycaster, meshRef, resources }) => {
 
         // useGamaStore.setState({ selectedResource: resource, activePosition: intersects[0].point, showResources: true});
         const calcCurrentPosition = {
-          x: intersects[0].point.x + width / 2 + currentOffset.x,
-          y: intersects[0].point.z + depth / 2 + currentOffset.y,
+          // x: intersects[0].point.x + width / 2 + currentOffset.x,
+          // y: intersects[0].point.z + depth / 2 + currentOffset.y,
+          x: intersects[0].point.x + width / 2 + useGamaStore.getState().currentOffset.x,
+          y: intersects[0].point.z + depth / 2 + useGamaStore.getState().currentOffset.y,
         };
 
 
@@ -221,8 +223,10 @@ export const useCanvasHover = ({ camera, raycaster, meshRef, resources }) => {
           useGamaStore.setState({ selectedResource: selectedResource });
 
           const calcCurrentPosition = {
-            x: intersects[0].point.x + width / 2 + currentOffset.x,
-            y: intersects[0].point.z + depth / 2 + currentOffset.y,
+            x: intersects[0].point.x + width / 2 + useGamaStore.getState().currentOffset.x,
+            y: intersects[0].point.z + depth / 2 + useGamaStore.getState().currentOffset.y,
+            // x: intersects[0].point.x + width / 2 + currentOffset.x,
+            // y: intersects[0].point.z + depth / 2 + currentOffset.y,
           };
 
           // console.log("Resource:", getChunkCoordinates(calcCurrentPosition.x, calcCurrentPosition.y, width));

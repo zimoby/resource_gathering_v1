@@ -114,6 +114,10 @@ export const Terrain = () => {
 
   const deltaX = direction.x * (speed * dynamicSpeed);
   const deltaY = direction.y * (speed * dynamicSpeed);
+
+  // console.log("deltaX:", deltaX, "deltaY:", deltaY);
+
+  // console.log("terrain generating:");
   
   useFrame(() => {
 
@@ -133,5 +137,3 @@ export const Terrain = () => {
     </mesh>
   );
 };
-
-
