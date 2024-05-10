@@ -1,7 +1,7 @@
 import { shaderMaterial } from "@react-three/drei";
 import { Object3DNode, extend, useFrame } from "@react-three/fiber";
 import { useRef } from "react";
-import { Color, DoubleSide, Mesh, PlaneGeometry, ShaderMaterial } from "three";
+import { Color, DoubleSide, Mesh, PlaneGeometry, ShaderMaterial, Vector3 } from "three";
 
 interface PulsingShaderMaterialUniforms {
   uTime: number;
@@ -70,7 +70,7 @@ export const PlaneTest = ({ position = [0,0,0], color = new Color(0x0000ff) }) =
   });
 
   return (
-    <group position={position}>
+    <group position={new Vector3(position[0], position[1], position[2])}>
       <mesh ref={ref} rotation={[Math.PI / 2, 0, 0]}>
         <planeGeometry args={[size, size, 32, 32]} />
         <pulsingShaderMaterial

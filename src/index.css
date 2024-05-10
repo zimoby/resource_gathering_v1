@@ -1,10 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Share+Tech+Mono&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap');
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 html,
 body,
@@ -15,7 +14,6 @@ body,
   padding: 0;
   overflow: hidden;
 }
-
 
 :root {
   font-family: 'Share Tech Mono', Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -30,7 +28,6 @@ body,
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
 }
 
 .orbitron {
@@ -43,11 +40,29 @@ body,
 .scrollbar {
   overflow-y: scroll;
   overflow-x: scroll;
-  scrollbar-width: none; /* hide scrollbar for Firefox */
-  -ms-overflow-style: none; /* hide scrollbar for IE and Edge */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .scrollbar::-webkit-scrollbar {
-  display: none; /* hide scrollbar for Chrome, Safari, and Opera */
+  display: none; 
 }
 
+.warning-sign {
+  width: 200px;
+  height: 100px;
+  background: repeating-linear-gradient(
+    90deg,
+    yellow,
+    yellow 10px,
+    black 10px,
+    black 20px
+  );
+  color: white; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 20px;
+  transform: skewX(20deg);
+}

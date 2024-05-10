@@ -28,11 +28,13 @@ export const UiInfo = () => {
         <div className="flex flex-col">
           <div className="orbitron z-50 text-6xl">{`PLANET-${mapParams.seed}`}</div>
           <div className="flex flec-col">
-            <div className="scrollbar z-50 p-1 h-fit max-h-56 w-52 text-left m-2 text-xs rounded-sm border border-white/80">
+            <div className=" z-50 p-1 h-fit max-h-56 w-52 text-left m-2 text-xs rounded-sm border border-white/80">
               LOGS:
-              {logs.map((log, index) => (
-                <div key={index}>{log}</div>
-              ))}
+              <div className="scrollbar w-fll h-full">
+                {logs.map((log, index) => (
+                  <div key={index}>{log}</div>
+                ))}
+              </div>
             </div>
             <div className="scrollbar z-50 p-1 h-fit max-h-56 w-52 text-left m-2 text-xs rounded-sm border border-white/80">
               <p>

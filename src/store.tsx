@@ -65,6 +65,8 @@ export interface BeaconType {
 }
 
 export interface GamaStoreState {
+  disableAnimations: boolean;
+
   firstStart: boolean;
   loading: boolean;
   gridConfig: GridConfig;
@@ -89,6 +91,7 @@ export interface GamaStoreState {
   canPlaceBeacon: boolean;
   activePosition: { x: number; y: number; z: number };
   weatherCondition: WeatherCondition;
+  updateMapSize: (value: number) => void;
   updateMapParam: (paramName: string, value: unknown) => void;
   updateStoreProperty: (paramName: string, value: unknown) => void;
   updateWeather: () => void;
@@ -152,6 +155,8 @@ export const resourceTypes: ResourceTypesT = {
 };
 
 const useGamaStore = create<GamaStoreState>((set) => ({
+  disableAnimations: false,
+
   firstStart: false,
   loading: true,
   gridConfig: {
@@ -198,7 +203,9 @@ const useGamaStore = create<GamaStoreState>((set) => ({
   weatherCondition: "mild",
   updateStoreProperty: (paramName, value) => {
     set(() => ({ [paramName]: value }));
-    console.log("store updated", paramName, value);
+  },
+  updateMapSize: (value) => {
+    set((state) => ({ mapParams: { ...state.mapParams, width: value, depth: value } }));
   },
   updateMapParam: (paramName, value) => {
     set((state) => ({

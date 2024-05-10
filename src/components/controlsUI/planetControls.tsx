@@ -13,6 +13,9 @@ export const SystemControls = () => {
   const mapDepth = useGamaStore((state) => state.mapParams.depth);
   const mapResolution = useGamaStore((state) => state.mapParams.resolution);
   const mapSpeed = useGamaStore((state) => state.mapParams.speed);
+	const disableAnimations = useGamaStore((state) => state.disableAnimations);
+
+	const updateStoreProperty = useGamaStore((state) => state.updateStoreProperty);
 
   const animation = useSpring({
     from: { height: 0 },
@@ -22,22 +25,6 @@ export const SystemControls = () => {
       easing: easings.easeOutCubic,
     },
   });
-
-  // const updateSystemSettings = useSolarStore((state) => state.updateSystemSettings)
-
-  // const disableTrash = useSolarStore((state) => state.disableTrash)
-  // const disableRandomObjects = useSolarStore((state) => state.disableRandomObjects)
-  // const disableOrbits = useSolarStore((state) => state.disableOrbits);
-
-  // const timeSpeed = useSolarStore((state) => state.timeSpeed)
-  // const timeOffset = useSolarStore((state) => state.timeOffset)
-  // const objectsDistance = useSolarStore((state) => state.objectsDistance)
-  // const objectsRelativeScale = useSolarStore((state) => state.objectsRelativeScale)
-  // const orbitAngleOffset = useSolarStore((state) => state.orbitAngleOffset)
-
-  // const handleSliderUpdate = (value: number | boolean, param: string, correction: number = 1) => {
-  //   updateSystemSettings({ [param]: Number(value) * correction })
-  // }
 
   return (
     <div className="absolute z-50 top-0 right-0 m-4 pb-1 pl-1 flex flex-col space-y-0 border border-white">
@@ -80,12 +67,14 @@ export const SystemControls = () => {
 							onUpdate={(e) => updateMapParam("speed", e)}
 						/>
           </div>
-          {/* <div className="space-y-1 pt-1"> */}
+          <div className="space-y-1 pt-1">
             {/* <div className="w-72 space-y-1 pt-1 flex flex-wrap justify-between"> */}
-            {/* <CheckBox label="Disable Asteroids" value={disableTrash} onUpdate={() => handleSliderUpdate(!disableTrash, "disableTrash")} />
-              <CheckBox label="Disable Objects" value={disableRandomObjects} onUpdate={() => handleSliderUpdate(!disableRandomObjects, "disableRandomObjects")} />
-              <CheckBox label="Disable Ellipses" value={disableOrbits} onUpdate={() => handleSliderUpdate(!disableOrbits, "disableOrbits")} /> */}
-          {/* </div> */}
+						<CheckBox
+							label="Disable Animations"
+							value={disableAnimations}
+							onUpdate={() => updateStoreProperty("disableAnimations", !disableAnimations)}
+						/>
+          </div>
         </div>
       </animated.div>
     </div>
