@@ -1,7 +1,7 @@
-import { convertChunkCoordinateToName } from "../../functions/functions";
+import { convertChunkCoordinateToName } from "../../utils/functions";
 import useGamaStore from "../../store";
 import { BeaconsInfo } from "../beacons/BeaconsInfo";
-import TypingText from "../../animations/TextEffects";
+import TypingText from "../../effects/TextEffects";
 
 export const BasicPanelWrapper = ({ children, titleText }: { children: React.ReactNode, titleText: string }) => (
   <div className="h-fit w-52 text-left text-xs border border-white/80">

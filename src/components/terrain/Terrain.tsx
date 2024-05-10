@@ -9,13 +9,13 @@ import {
   Mesh
 } from "three";
 import useGamaStore from "../../store";
-import { useKeyboardControls } from "../../functions/intereaction";
-import { useCanvasHover } from "../../functions/intereaction";
+import { useKeyboardControls } from "../../utils/intereaction";
+import { useCanvasHover } from "../../utils/intereaction";
 import { generateTerrain } from "./generateTerrain";
 
 import { NoiseFunction2D, createNoise2D } from "simplex-noise";
 import seedrandom from "seedrandom";
-import { useCalculateDeltas } from "../../functions/functions";
+import { useCalculateDeltas } from "../../utils/functions";
 
 const generateIndices = (widthCount: number, depthCount: number, indices: Uint16Array) => {
   let index = 0;

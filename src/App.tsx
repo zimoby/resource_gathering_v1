@@ -1,9 +1,9 @@
-import { useCalculateResources } from "./functions/calculateResources";
+import { useCalculateResources } from "./utils/calculateResources";
 import { UiInfo } from "./components/UI/uiInfo";
 import { useInitInfo } from "./components/initInfo";
 import { useGameLoop } from "./components/GameLoop";
 import { SystemControls } from "./components/UI/controlsUI/planetControls";
-import { GameCanvas } from "./components/GameCanvas";
+import { GameCanvas } from "./Scene/GameCanvas";
 
 const App = () => {
   useInitInfo();

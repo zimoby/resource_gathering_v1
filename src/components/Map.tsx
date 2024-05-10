@@ -1,14 +1,14 @@
 import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import useGamaStore from "../store";
-import { consoleLog, useCalculateDeltas, useUpdateMapMoving } from "../functions/functions";
+import { consoleLog, useCalculateDeltas, useUpdateMapMoving } from "../utils/functions";
 import { BeaconGroup } from "./beacons/BeaconGroup";
 import { Terrain } from "./terrain/Terrain";
 import { LinearGridShader } from "./LinearGridShader1";
 import { BasicGridShader } from "./BasicGridShader";
 import { Mesh, ShaderMaterial } from "three";
-import FlickeringEffect from "../animations/FlickeringEffect";
-import FadingEffect from "../animations/FadingEffect";
+import FlickeringEffect from "../effects/FlickeringEffect";
+import FadingEffect from "../effects/FadingEffect";
 
 const rulerGridY = 50;
 

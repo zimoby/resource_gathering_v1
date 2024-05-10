@@ -1,9 +1,9 @@
 import { Plane, Text } from "@react-three/drei";
-import { convertChunkCoordinateToName } from "../functions/functions";
+import { convertChunkCoordinateToName } from "../utils/functions";
 import { useMemo } from "react";
 import useGamaStore from "../store";
 import { DoubleSide } from "three";
-import FadingEffect from "../animations/FadingEffect";
+import FadingEffect from "../effects/FadingEffect";
 
 export const GridMetricUnits = () => {
   const { width, depth } = useGamaStore((state) => state.mapParams);

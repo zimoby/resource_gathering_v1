@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import useGamaStore from "../../store";
-import { convertChunkCoordinateToName } from "../../functions/functions";
+import { convertChunkCoordinateToName } from "../../utils/functions";
 import { BasicPanelWrapper } from "../UI/uiInfo";
 
 

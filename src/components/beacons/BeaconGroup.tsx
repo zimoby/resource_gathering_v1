@@ -2,7 +2,7 @@ import useGamaStore from "../../store";
 import { Cylinder, Sphere } from "@react-three/drei";
 import { ConcentricCirclesAnimation } from "../concentricCircles";
 import { useFrame } from "@react-three/fiber";
-import { isOutOfBound, useCalculateDeltas } from "../../functions/functions";
+import { isOutOfBound, useCalculateDeltas } from "../../utils/functions";
 import { createRef, useLayoutEffect, useRef } from "react";
 import { Group } from "three";
 
