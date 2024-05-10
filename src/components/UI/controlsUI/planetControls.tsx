@@ -2,7 +2,7 @@ import { useSpring, animated, easings } from "@react-spring/web";
 import { useState } from "react";
 import { SliderWithInput, CheckBox } from "./uiLibrary";
 import useMeasure from "react-use-measure";
-import useGamaStore from "../../store";
+import useGamaStore from "../../../store";
 
 export const SystemControls = () => {
   const [ref, bounds] = useMeasure();

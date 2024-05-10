@@ -61,6 +61,7 @@ export const BasicGridShader = ({ position = [0,0,0], planeRef }: BasicGridShade
 
   useEffect(() => {
     generateGridGeometry();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [width, depth, gridConfig]);
 
   const generateGridGeometry = useMemo(() => {
@@ -87,7 +88,7 @@ export const BasicGridShader = ({ position = [0,0,0], planeRef }: BasicGridShade
         planeRef.current.material = planeMaterial;
       }
     };
-  }, [width, depth, gridConfig]);
+  }, [width, depth, gridConfig.chunkSize, gridConfig.subGrids, gridConfig.lineWidth, gridConfig.gridColor, gridConfig.subGridColor, planeRef]);
 
   return (
     <group position={position}>

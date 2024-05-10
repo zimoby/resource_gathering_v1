@@ -1,9 +1,8 @@
 import { useCalculateResources } from "./functions/calculateResources";
-import { BeaconsInfo } from "./components/beacons/BeaconsInfo";
-import { UiInfo } from "./components/uiInfo";
+import { UiInfo } from "./components/UI/uiInfo";
 import { useInitInfo } from "./components/initInfo";
 import { useGameLoop } from "./components/GameLoop";
-import { SystemControls } from "./components/controlsUI/planetControls";
+import { SystemControls } from "./components/UI/controlsUI/planetControls";
 import { GameCanvas } from "./components/GameCanvas";
 
 const App = () => {
@@ -14,9 +13,7 @@ const App = () => {
 
   return (
     <>
-      {/* <WarningBlock /> */}
       <UiInfo />
-      <BeaconsInfo />
       <SystemControls />
       <GameCanvas />
     </>

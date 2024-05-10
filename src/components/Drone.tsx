@@ -1,21 +1,21 @@
 import { Float, Sphere } from "@react-three/drei";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { Mesh } from "three";
 import useGamaStore from "../store";
 import { useFrame } from "@react-three/fiber";
 
 export const Drone = () => {
   const ref = useRef<Mesh>(null);
-	const activePosition = useGamaStore((state) => state.activePosition);
+	// const activePosition = useGamaStore((state) => state.activePosition);
 
-	useEffect(() => {
-		console.log("Active position:", activePosition);
-	}, [activePosition]);
+	// useEffect(() => {
+	// 	console.log("Active position:", activePosition);
+	// }, [activePosition]);
 
 	useFrame(({clock}) => {
 		const time = clock.getElapsedTime();
 		if (!ref.current) return;
-		const { x, y, z } = activePosition;
+		const { x, y, z } = useGamaStore.getState().activePosition;
 		const ease = 0.02;
 		ref.current.position.x += (x - ref.current.position.x) * ease;
 		ref.current.position.y += (y - ref.current.position.y) * ease;
