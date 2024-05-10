@@ -11,6 +11,7 @@ import { EffectsCollection } from "./effects";
 import { PlaneTest } from "./pulsingAreaTest";
 import { SceneSettings } from "./scene";
 import { Map } from "./Map";
+import { FlyingDrone } from "./Drone";
 
 export const GameCanvas = () => {
   const firstStart = useGamaStore((state) => state.firstStart);
@@ -19,6 +20,7 @@ export const GameCanvas = () => {
     <Canvas flat shadows dpr={[1, 1.5]} gl={{ antialias: false }}>
       <Stats showPanel={2} />
       {/* <Perf position="top-left" /> */}
+      <FlyingDrone />
       <SceneSettings />
       <Suspense fallback={null}>
         {/* <Viewcube /> */}
