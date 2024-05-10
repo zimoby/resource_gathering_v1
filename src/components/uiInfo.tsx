@@ -7,7 +7,8 @@ export const UiInfo = () => {
   const selectedChunk = useGamaStore((state) => state.selectedChunk);
   const mapParams = useGamaStore((state) => state.mapParams);
   const logs = useGamaStore((state) => state.logs);
-  // const weatherCondition = useGamaStore((state) => state.weatherCondition);
+
+  const weatherCondition = useGamaStore((state) => state.weatherCondition);
 
   const message = useGamaStore((state) => state.message);
 
@@ -26,11 +27,21 @@ export const UiInfo = () => {
       <div className="fixed z-50 top-0 left-0">
         <div className="flex flex-col">
           <div className="orbitron z-50 text-6xl">{`PLANET-${mapParams.seed}`}</div>
-          <div className="scrollbar z-50 p-1 h-fit max-h-56 w-52 text-left m-2 text-xs rounded-sm border border-white/80">
-            LOGS:
-            {logs.map((log, index) => (
-              <div key={index}>{log}</div>
-            ))}
+          <div className="flex flec-col">
+            <div className="scrollbar z-50 p-1 h-fit max-h-56 w-52 text-left m-2 text-xs rounded-sm border border-white/80">
+              LOGS:
+              {logs.map((log, index) => (
+                <div key={index}>{log}</div>
+              ))}
+            </div>
+            <div className="scrollbar z-50 p-1 h-fit max-h-56 w-52 text-left m-2 text-xs rounded-sm border border-white/80">
+              <p>
+                Planet:
+              </p>
+              <p>
+                Weather: {weatherCondition}
+              </p>
+            </div>
           </div>
         </div>
       </div>

@@ -58,7 +58,7 @@ declare global {
 
 type PulsingShaderMaterialImpl = ShaderMaterial & { uniforms: { [uniform: string]: { value: unknown } } };
 
-export const PlaneTest = () => {
+export const PlaneTest = ({ position = [0,0,0], color = new Color(0x0000ff) }) => {
   const ref = useRef<Mesh<PlaneGeometry, PulsingShaderMaterialImpl>>(null);
   const size = 100;
 
@@ -70,15 +70,15 @@ export const PlaneTest = () => {
   });
 
   return (
-    <group position={[0, 5, 0]}>
+    <group position={position}>
       <mesh ref={ref} rotation={[Math.PI / 2, 0, 0]}>
         <planeGeometry args={[size, size, 32, 32]} />
         <pulsingShaderMaterial
           uTime={0}
-          uColor={new Color(0x0000ff)}
-          uFrequency={10}
-          uAmplitude={0.5}
-          uOpacity={0.5}
+          uColor={color}
+          uFrequency={5}
+          uAmplitude={0.1}
+          uOpacity={0.01}
         />
       </mesh>
     </group>

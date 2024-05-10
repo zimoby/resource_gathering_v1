@@ -13,7 +13,7 @@ export const EffectsCollection = () => {
       <HueSaturation hue={0} saturation={0.6} />
       <Bloom luminanceThreshold={0} mipmapBlur luminanceSmoothing={0.0} intensity={1} />
       <ChromaticAberration offset={new Vector2(0, 0.003)} radialModulation={true} modulationOffset={0} />
-      <Noise opacity={0.2} />
+      <Noise opacity={0.3} />
     </EffectComposer>
   );
 };

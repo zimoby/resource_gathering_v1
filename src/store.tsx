@@ -89,6 +89,8 @@ export interface GamaStoreState {
   canPlaceBeacon: boolean;
   activePosition: { x: number; y: number; z: number };
   weatherCondition: WeatherCondition;
+  updateMapParam: (paramName: string, value: unknown) => void;
+  updateStoreProperty: (paramName: string, value: unknown) => void;
   updateWeather: () => void;
   toggleShowResources: () => void;
   replacePropWithXY: (name: string, value: Offset) => void;
@@ -194,6 +196,15 @@ const useGamaStore = create<GamaStoreState>((set) => ({
   canPlaceBeacon: false,
   activePosition: { x: 0, y: 0, z: 0},
   weatherCondition: "mild",
+  updateStoreProperty: (paramName, value) => {
+    set(() => ({ [paramName]: value }));
+    console.log("store updated", paramName, value);
+  },
+  updateMapParam: (paramName, value) => {
+    set((state) => ({
+      mapParams: { ...state.mapParams, [paramName]: value },
+    }));
+  },
   toggleShowResources: () =>
     set((state) => ({ showResources: !state.showResources })),
   replacePropWithXY: (name, value) => {

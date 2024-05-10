@@ -17,6 +17,10 @@ import { UiInfo } from "./components/uiInfo";
 import { useInitInfo } from "./components/initInfo";
 import FlickeringEffect from "./animations/FlickeringEffect";
 import { useGameLoop } from "./components/GameLoop";
+import FadingEffect from "./animations/FadingEffect";
+import { PlaneTest } from "./components/pulsingAreaTest";
+import { Color } from "three";
+import { SystemControls } from "./components/controlsUI/planetControls";
 
 // import FadingEffect from "./animations/FadingEffect";
 
@@ -25,13 +29,14 @@ const App = () => {
 
   useInitInfo();
   useCalculateResources();
-  useParamsSync();
+  // useParamsSync();
   useGameLoop();
 
   return (
     <>
       <UiInfo />
       <BeaconsInfo />
+      <SystemControls />
 
       <Canvas flat shadows dpr={[1, 1.5]} gl={{ antialias: false }}>
         <Stats showPanel={2} />
@@ -52,13 +57,15 @@ const App = () => {
             </FlickeringEffect>
           </group>
           {/* <Beacons /> */}
-          {/* <FadingEffect> */}
-            <PulsingCircle />
+          {/* <FadingEffect randomFrequency={1}> */}
+            {/* <group> */}
+              <PulsingCircle />
+            {/* </group> */}
           {/* </FadingEffect> */}
         </Suspense>
 
         {/* <ChunkGrid position={[0,-10,0]} /> */}
-        {/* <PlaneTest /> */}
+        <PlaneTest position={[0,-10,0]} color={new Color(0x1586E9)} />
         {/* <ConcentricCirclesAnimation /> */}
         {/* <mesh position={[0,-12,0]} rotation-x={Math.PI / 2}>
           <planeGeometry args={[100,100]} />

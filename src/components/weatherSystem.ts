@@ -1,6 +1,5 @@
 import { WeatherCondition } from "../store";
 
-
 export const generateWeather = (): WeatherCondition => {
   const randomValue = Math.random();
   if (randomValue < 0.7) {
