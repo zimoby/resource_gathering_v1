@@ -2,12 +2,15 @@ import { useMemo } from "react";
 import {
   BufferGeometry,
   Float32BufferAttribute,
-  Color
+  Color,
+  Vector3
 } from "three";
-import { useControls } from "leva";
 import useGamaStore from "../store";
 
-export const ChunkGrid = ({ position, sizeExtend = 0 }) => {
+export const ChunkGrid = ({ position, sizeExtend = 0 }: {
+  position: number[],
+  sizeExtend?: number
+}) => {
   const { width, depth } = useGamaStore((state) => state.mapParams);
 
   const gridGeometry = useMemo(() => {
@@ -39,10 +42,10 @@ export const ChunkGrid = ({ position, sizeExtend = 0 }) => {
     geometry.setIndex([0, 1, 1, 2, 2, 3, 3, 0]);
 
     return geometry;
-  }, [width, depth]);
+  }, [width, sizeExtend, depth]);
 
   return (
-    <lineSegments geometry={gridGeometry} position={position}>
+    <lineSegments geometry={gridGeometry} position={new Vector3(position[0], position[1], position[2])}>
       <lineBasicMaterial vertexColors />
     </lineSegments>
   );

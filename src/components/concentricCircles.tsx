@@ -1,13 +1,15 @@
 import { useRef, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
-import { DoubleSide, Color } from "three";
+import { DoubleSide, Color, ShaderMaterial } from "three";
 
 export const ConcentricCirclesAnimation = ({size = 5}) => {
-  const ref = useRef();
+  const ref = useRef<ShaderMaterial | null>(null);
 
   useFrame(({ clock }) => {
     const time = clock.getElapsedTime();
-    ref.current.uniforms.uTime.value = time;
+    if (ref.current) {
+      ref.current.uniforms.uTime.value = time;
+    }
   });
 
   const uniforms = useMemo(

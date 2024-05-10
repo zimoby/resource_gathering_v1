@@ -12,7 +12,7 @@ export const useInitInfo = () => {
       useGamaStore.setState({ firstStart: true });
     }
     if (!loading && firstStart) {
-      levaStore.set({ width: 100, depth: 100 });
+      levaStore.set({ width: 100, depth: 100 }, false);
       console.log("leva store updated");
     }
   }, [loading, firstStart]);

@@ -15,7 +15,7 @@ export const useCalculateResources = () => {
         // Calculate the new collected resources
         const newCollectedResources = { ...state.collectedResources };
         state.beacons.forEach((beacon) => {
-          if (newCollectedResources.hasOwnProperty(beacon.resource)) {
+          if (Object.prototype.hasOwnProperty.call(newCollectedResources, beacon.resource)) {
             newCollectedResources[beacon.resource] += 1;
           } else {
             newCollectedResources[beacon.resource] = 1;

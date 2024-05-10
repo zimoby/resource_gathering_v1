@@ -5,18 +5,19 @@ import {
   BufferGeometry,
   Float32BufferAttribute,
   Raycaster,
-  BufferAttribute
+  BufferAttribute,
+  Mesh
 } from "three";
 import useGamaStore from "../../store";
 import { useKeyboardControls } from "../../functions/intereaction";
 import { useCanvasHover } from "../../functions/intereaction";
 import { generateTerrain } from "./generateTerrain";
 
-import { createNoise2D } from "simplex-noise";
+import { NoiseFunction2D, createNoise2D } from "simplex-noise";
 import seedrandom from "seedrandom";
 import { useCalculateDeltas } from "../../functions/functions";
 
-const generateIndices = (widthCount, depthCount, indices) => {
+const generateIndices = (widthCount: number, depthCount: number, indices: Uint16Array) => {
   let index = 0;
   for (let i = 0; i < depthCount; i++) {
     for (let j = 0; j < widthCount; j++) {
@@ -35,7 +36,6 @@ const generateIndices = (widthCount, depthCount, indices) => {
       }
     }
   }
-  // console.log("indices precalculated:", indices, indices.length);
 };
 
 export const Terrain = () => {
@@ -50,7 +50,7 @@ export const Terrain = () => {
 
   const { camera } = useThree();
 
-  const meshRef = useRef();
+  const meshRef = useRef<Mesh>(null);
   const offset = useRef({ x: 0, y: 0 });
 
   const colors = useRef(new Float32Array((widthCount + 1) * (depthCount + 1) * 3));
@@ -60,11 +60,11 @@ export const Terrain = () => {
   const indices = useMemo(() => {
     const indicesPrecalc = new Uint16Array(widthCount * depthCount * 6);
     generateIndices(widthCount, depthCount, indicesPrecalc);
-    // console.log("indices precalculated:", indicesPrecalc, indicesPrecalc.length);
+    console.log("indices precalculated:", indicesPrecalc, indicesPrecalc.length);
     return indicesPrecalc;
-  }, [width, depth, resolution]);
+  }, [widthCount, depthCount]);
 
-  const noise2D = useMemo(() => createNoise2D(seedrandom(seed)), [seed])
+  const noise2D: NoiseFunction2D = useMemo(() => createNoise2D(seedrandom(seed)), [seed]);
   
   const raycaster = useRef(new Raycaster());
   const terrainGeometry = useRef(new BufferGeometry());

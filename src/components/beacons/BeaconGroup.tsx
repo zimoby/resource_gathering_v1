@@ -4,6 +4,7 @@ import { ConcentricCirclesAnimation } from "../concentricCircles";
 import { useFrame } from "@react-three/fiber";
 import { isOutOfBound, useCalculateDeltas } from "../../functions/functions";
 import { createRef, useLayoutEffect, useRef } from "react";
+import { Group } from "three";
 
 export const BeaconGroup = () => {
   const firstStart = useGamaStore((state) => state.firstStart);
@@ -11,7 +12,7 @@ export const BeaconGroup = () => {
   const { width, depth, offsetX, offsetY } = useGamaStore((state) => state.mapParams);
   const { deltaX, deltaY } = useCalculateDeltas();
 
-  const beaconRefs = useRef(beacons.map(() => createRef()));
+  const beaconRefs = useRef<React.RefObject<Group>[]>(beacons.map(() => createRef()));
 
   const beaconHeight = 10;
 
@@ -26,7 +27,7 @@ export const BeaconGroup = () => {
 }, [beacons.length]);
 
   useFrame(() => {
-    beaconRefs.current.forEach((beacon, index) => {
+    beaconRefs.current.forEach((beacon) => {
       const beaconObject = beacon.current;
       // console.log("beaconObject.position:", beaconObject);
       if (beaconObject) {
@@ -36,9 +37,6 @@ export const BeaconGroup = () => {
         beaconObject.position.z -= deltaY;
 
         beaconObject.visible = !checkBoundaries.x && !checkBoundaries.y;
-
-        
-
       }
     });
   });

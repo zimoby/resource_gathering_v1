@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from "react";
-import { DoubleSide, Color, Vector2, PlaneGeometry, ShaderMaterial } from "three";
+import { DoubleSide, Color, Vector2, PlaneGeometry, ShaderMaterial, Mesh } from "three";
 import useGamaStore from "../store";
 
 // import { vertexShader, fragmentShader } from './chunkGridShader';
@@ -44,14 +44,13 @@ const fragmentShader = `
 }
 `;
 
-export const LinearGridShader = ({position = [0,0,0], sizeX = 100, sizeY = 100, width = 100, depth = 100}) => {
-	// const { width: mapWidth, depth: mapDepth, } = useGamaStore((state) => state.mapParams);
-
+export const LinearGridShader = ({position = [0,0,0] as [number, number, number], sizeX = 100, sizeY = 100, width = 100, depth = 100}) => {
+	const rulerRef = useRef<Mesh>(null);
   const gridConfig = useGamaStore((state) => state.gridConfig);
-	const rulerRef = useRef();
 
   useEffect(() => {
     generateRulerGeometry();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [width, depth, sizeX, sizeY, gridConfig]);
 
   const generateRulerGeometry = useMemo(() => {
@@ -75,10 +74,12 @@ export const LinearGridShader = ({position = [0,0,0], sizeX = 100, sizeY = 100, 
 	});
 
     return () => {
-      rulerRef.current.geometry = planeGeometry;
-      rulerRef.current.material = planeMaterial;
+      if (rulerRef.current) {
+        rulerRef.current.geometry = planeGeometry;
+        rulerRef.current.material = planeMaterial;
+      }
     };
-  }, [sizeX, sizeY, gridConfig.chunkSize, gridConfig.lineWidth, gridConfig.gridColor, gridConfig.subGridColor, width, depth]);
+  }, [sizeX, sizeY, gridConfig.chunkSize, gridConfig.lineWidth, gridConfig.subGridColor, width, depth]);
 
   return (
     <mesh position={position} ref={rulerRef} rotation={[-Math.PI / 2, 0, 0]}>

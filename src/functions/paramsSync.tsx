@@ -1,4 +1,4 @@
-import { levaStore, useControls } from "leva";
+import { useControls } from "leva";
 import { useEffect } from "react";
 import useGamaStore from "../store";
 

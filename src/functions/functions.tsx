@@ -1,6 +1,6 @@
-import useGamaStore from "../store";
+import useGamaStore, { ChunkType } from "../store";
 
-export const convertChunkCoordinateToName = (chunk) => {
+export const convertChunkCoordinateToName = (chunk: ChunkType) => {
   const ns = chunk.y >= 0 ? "N" : "S";
   const ew = chunk.x >= 0 ? "E" : "W";
   const absX = Math.abs(chunk.x);
@@ -40,7 +40,7 @@ export const useCalculateDeltas = () => {
 export const useUpdateMapMoving = () => {
   const { width, depth, offsetX, offsetY } = useGamaStore((state) => state.mapParams);
 
-  const updateLocationAndOffset = (offset) => {
+  const updateLocationAndOffset = (offset: { current: { x: number; y: number; }; }) => {
 
     const currentChunk = getChunkCoordinates(
       offset.current.x + offsetX + width / 2,

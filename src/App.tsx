@@ -1,23 +1,20 @@
-import { useEffect, Key, useMemo, Suspense, useRef, useState } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Box, Center, Html, Hud, OrbitControls, OrthographicCamera, PerspectiveCamera, Sphere, Stats, StatsGl, Text, View } from "@react-three/drei";
-import useGamaStore, { resourceTypes } from "./store";
+import { Suspense } from "react";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, Stats } from "@react-three/drei";
+import useGamaStore from "./store";
 
 import { EffectsCollection } from "./components/effects";
 
-import { convertChunkCoordinateToName } from "./functions/functions";
 import { PulsingCircle } from "./components/PulsingCircle";
 import { Map } from "./components/Map";
 import { ChunkGrid } from "./components/ChunkGrid";
-import { Beacons } from "./components/beacons/Beacons";
 import { useCalculateResources } from "./functions/calculateResources";
-import { CoordinatesKeys, GridMetricUnits } from "./components/CoordinatesKeys";
+import { CoordinatesKeys } from "./components/CoordinatesKeys";
 import { SceneSettings } from "./components/scene";
 import { useParamsSync } from "./functions/paramsSync";
 import { BeaconsInfo } from "./components/beacons/BeaconsInfo";
 import { UiInfo } from "./components/uiInfo";
 import { useInitInfo } from "./components/initInfo";
-import { Perf } from "r3f-perf";
 
 const App = () => {
   const firstStart = useGamaStore((state) => state.firstStart)

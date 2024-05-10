@@ -1,4 +1,5 @@
-import useGamaStore from "../../store";
+import { useCallback } from "react";
+import useGamaStore, { BeaconType, ResourceType } from "../../store";
 
 
 
@@ -8,11 +9,13 @@ export const useProcessBeacons = () => {
   // const currentChunk = useGamaStore.getState().currentLocation;
   const beacons = useGamaStore((state) => state.beacons);
 
-  const addBeacon = ({
+  const addBeacon = useCallback(({
     position, resource, currentChunk
+  }: {
+    position: { x: number; y: number; z: number; };
+    resource: ResourceType;
+    currentChunk: { x: number; y: number; };
   }) => {
-
-
 
     const chunkBeacons = beacons.filter(
       (beacon: { chunkX: number; chunkY: number; }) => beacon.chunkX === currentChunk.x && beacon.chunkY === currentChunk.y
@@ -38,10 +41,8 @@ export const useProcessBeacons = () => {
       // console.log("Maximum beacons placed in this chunk.");
       return;
     }
-
-    
   
-    useGamaStore.setState((state: { beacons: any; }) => {
+    useGamaStore.setState((state: { beacons: BeaconType[]; }) => {
       // console.log("Adding beacon:", {x : position.x.toFixed(3), resource, currentChunk});
       const newBeacons = [
         ...state.beacons,
@@ -58,11 +59,7 @@ export const useProcessBeacons = () => {
       console.log("Adding beacon:", {newBeacons, position, currentChunk});
       return { beacons: newBeacons };
     });
-
-
-  
-    // console.log("Beacons:", beacons);
-  }
+  }, [beacons]);
 
   return { addBeacon };
 

@@ -1,5 +1,4 @@
 import { Plane, Text } from "@react-three/drei";
-import { useControls } from "leva";
 import { convertChunkCoordinateToName } from "../functions/functions";
 import { useMemo } from "react";
 import useGamaStore from "../store";

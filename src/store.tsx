@@ -1,11 +1,99 @@
-// store.js
 import { Color } from "three";
 import create from "zustand";
 
 export const minLevel = -10;
 export const maxLevel = 100;
 
-export const terrainTypes = {
+export type TerrainType = "water" | "grass" | "dirt" | "snow" | "default";
+
+export type ResourceType = "r1" | "r2" | "r3" | "r4";
+
+export interface Terrain {
+  color: Color;
+  level: number;
+}
+
+export interface Resource {
+  color: Color;
+  threshold: number;
+  score: number;
+}
+
+export interface GridConfig {
+  chunkSize: number;
+  subGrids: number;
+  lineWidth: number;
+  gridColor: string;
+  subGridColor: string;
+}
+
+export interface MapParams {
+  width: number;
+  depth: number;
+  resolution: number;
+  scale: number;
+  seed: string;
+  offsetX: number;
+  offsetY: number;
+  speed: number;
+}
+
+export interface Offset {
+  x: number;
+  y: number;
+}
+
+export interface ChunkType {
+  x: number;
+  y: number;
+}
+
+export interface CollectedResources {
+  [key: string]: number;
+}
+
+export interface BeaconType {
+  x: number;
+  y: number;
+  z: number;
+  resource: ResourceType;
+  chunkX: number;
+  chunkY: number;
+  visible: boolean;
+}
+
+export interface GamaStoreState {
+  firstStart: boolean;
+  loading: boolean;
+  gridConfig: GridConfig;
+  mapParams: MapParams;
+  currentOffset: Offset;
+  showResources: boolean;
+  selectedResource: ResourceType;
+  selectedChunk: ChunkType;
+  currentLocation: ChunkType;
+  moveDirection: Offset;
+  dynamicSpeed: number;
+  beacons: BeaconType[];
+  playerPoints: number;
+  collectedResources: CollectedResources;
+  planetParams: {
+    name: string;
+    seed: string;
+  };
+  message: string;
+  scanRadius: number;
+  canPlaceBeacon: boolean;
+  activePosition: { x: number; y: number; z: number };
+  toggleShowResources: () => void;
+  replacePropWithXY: (name: string, value: Offset) => void;
+}
+
+interface TerrainTypesT {
+  [key: string]: Terrain;
+}
+
+export const terrainTypes: TerrainTypesT = {
   water: {
     color: new Color(0x0000ff), // blue
     level: minLevel + 1,
@@ -24,10 +112,15 @@ export const terrainTypes = {
   },
   default: {
     color: new Color(0xffffff), // brown
+    level: 0,
   },
 };
 
-export const resourceTypes = {
+export interface ResourceTypesT {
+  [key: string]: Resource;
+}
+
+export const resourceTypes: ResourceTypesT = {
   r1: {
     color: new Color(0xffffff), // white
     threshold: 0.1,
@@ -50,68 +143,54 @@ export const resourceTypes = {
   },
 };
 
-const useGamaStore = create((set) => ({
-	firstStart: false,
-	loading: true,
-
-
-  // const gridConfig = useControls({
-  //   chunkSize: { value: 1, min: 1, max: 200 },
-  //   subGrids: { value: 5, min: 1, max: 20, step: 1 },
-  //   lineWidth: { value: 0.2, min: 0.01, max: 0.5 },
-  //   gridColor: '#ff0000',
-  //   subGridColor: '#ffffff',
-  // });
-
-	gridConfig: {
-		chunkSize: 1,
-		subGrids: 5,
-		lineWidth: 0.2,
-		gridColor: "#ff0000",
-		subGridColor: "#ffffff",
-	},
-
-	mapParams: {
-		width: 100,
-		depth: 100,
-		resolution: 3,
-		scale: 50,
-		seed: "42",
-		offsetX: 0,
-		offsetY: 0,
-		speed: 0.1,
-	},
-	currentOffset: { x: 0, y: 0 },
+const useGamaStore = create<GamaStoreState>((set) => ({
+  firstStart: false,
+  loading: true,
+  gridConfig: {
+    chunkSize: 1,
+    subGrids: 5,
+    lineWidth: 0.2,
+    gridColor: "#ff0000",
+    subGridColor: "#ffffff",
+  },
+  mapParams: {
+    width: 100,
+    depth: 100,
+    resolution: 3,
+    scale: 50,
+    seed: "42",
+    offsetX: 0,
+    offsetY: 0,
+    speed: 0.1,
+  },
+  currentOffset: { x: 0, y: 0 },
   showResources: false,
-  selectedResource: "",
-	selectedChunk: { x: 0, y: 0 },
+  selectedResource: "r1",
+  selectedChunk: { x: 0, y: 0 },
   currentLocation: { x: 0, y: 0 },
-	moveDirection: { x: 0, y: -1 },
+  moveDirection: { x: 0, y: -1 },
   dynamicSpeed: 1,
   beacons: [],
   playerPoints: 1000,
-	collectedResources: {
-		r1: 0,
-		r2: 0,
-		r3: 0,
-		r4: 0,
-	},
-	planetParams: {
-
-	},
+  collectedResources: {
+    r1: 0,
+    r2: 0,
+    r3: 0,
+    r4: 0,
+  },
+  planetParams: {
+    name: "Earth",
+    seed: "42",
+  },
   message: "",
-	scanRadius: 30,
-	canPlaceBeacon: false,
-	activePosition: { x: 0, y: 0 },
-  toggleShowResources: () => set((state) => ({ showResources: !state.showResources })),
-
-
-	replacePropWithXY: (name, value) => {
-		set((state) => ({ [name]: { x: value.x, y: value.y } }));
-	}
-
-
-  // selectResource: (resource) => set({ selectedResource: resource }),
+  scanRadius: 30,
+  canPlaceBeacon: false,
+  activePosition: { x: 0, y: 0, z: 0},
+  toggleShowResources: () =>
+    set((state) => ({ showResources: !state.showResources })),
+  replacePropWithXY: (name, value) => {
+    set(() => ({ [name]: { x: value.x, y: value.y } }));
+  },
 }));
 
 export default useGamaStore;

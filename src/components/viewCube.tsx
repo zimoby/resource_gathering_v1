@@ -1,10 +1,17 @@
 import { Hud, PerspectiveCamera, Sphere } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
+import { Mesh } from "three";
 
 const SpherePlanet = () => {
-    const sphereRef = useRef();
-    useFrame((state, delta) => (sphereRef.current.rotation.y += delta))
+    const sphereRef = useRef<Mesh>(null);
+
+    useFrame((_, delta) => {
+      if (sphereRef.current) {
+        sphereRef.current.rotation.y += delta;
+      }
+    });
+
     return (
       <Sphere ref={sphereRef} args={[4, 16, 8]} position={[0, 0, 0]} >
         <meshStandardMaterial wireframe color={"#ffffff"} />

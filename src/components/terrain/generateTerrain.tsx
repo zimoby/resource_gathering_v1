@@ -4,9 +4,10 @@ import {
   Float32BufferAttribute,
   NormalBufferAttributes
 } from "three";
-import { minLevel, terrainTypes, resourceTypes } from "../../store";
+import { minLevel, terrainTypes, resourceTypes, ResourceType } from "../../store";
+import { NoiseFunction2D } from "simplex-noise";
 
-const updateBufferAttribute = (geometry, attrName, data) => {
+const updateBufferAttribute = (geometry: BufferGeometry<NormalBufferAttributes>, attrName: string, data: Float32Array) => {
   const attr = geometry.getAttribute(attrName);
   if (attr && attr.array.length === data.length) {
     attr.array.set(data);
@@ -17,12 +18,12 @@ const updateBufferAttribute = (geometry, attrName, data) => {
   }
 };
 
-const getResourceColor = (resourceType: string | number) => {
+const getResourceColor = (resourceType: ResourceType) => {
   return resourceTypes[resourceType]?.color || new Color(0xffffff);
 };
 
 const checkResource = (height: number) => {
-  for (const [type, { level }] of Object.entries(terrainTypes)) {
+  for (const [type, { level }] of Object.entries(terrainTypes) as [string, { color: Color; level: number; }][] ) {
     if (height < level) {
       return type;
     }
@@ -31,11 +32,10 @@ const checkResource = (height: number) => {
 };
 
 const applyTerrainColors = (
-  positions: any[] | Float32Array,
-  colors: any[] | Float32Array,
+  positions: Float32Array,
+  colors: Float32Array,
   widthCount: number,
   depthCount: number,
-  scale: number
 ) => {
   for (let i = 0; i <= depthCount; i++) {
     for (let j = 0; j <= widthCount; j++) {
@@ -52,7 +52,9 @@ const applyTerrainColors = (
   }
 };
 
-const applyResources = ({ resources, widthCount, depthCount, scale, offsetX, offsetY, noise2D }) => {
+const applyResources = ({ resources, widthCount, depthCount, scale, offsetX, offsetY, noise2D }:
+  { resources: Array<string | null>; widthCount: number; depthCount: number; scale: number; offsetX: number; offsetY: number; noise2D: NoiseFunction2D; }
+) => {
   const resourceScale = scale * 0.021;
   const speedFactor = resourceScale / 100;
 
@@ -74,7 +76,7 @@ const applyResources = ({ resources, widthCount, depthCount, scale, offsetX, off
   // console.log("Resources:", resources[0]);
 };
 
-const generateHeight = (x, y, scale, offsetX, offsetY, noise2D) => {
+const generateHeight = (x: number, y: number, scale: number, offsetX: number, offsetY: number, noise2D: NoiseFunction2D) => {
   const scaleCorrection = scale * 5;
   const largeScale = noise2D((x + offsetX) / scaleCorrection, (y + offsetY) / scaleCorrection) * 0.5;
   const mediumScale = noise2D((x + offsetX) / (scaleCorrection * 0.5), (y + offsetY) / (scaleCorrection * 0.5)) * 0.25; 
@@ -95,18 +97,16 @@ export const generateTerrain = (
   depth: number,
   resolution: number,
   scale: number,
-  noise2D: any,
+  noise2D: NoiseFunction2D,
   offsetX: number,
   offsetY: number,
   geometry: BufferGeometry<NormalBufferAttributes>,
   canPlaceBeacon: boolean,
   activePosition: { x: number; z: number; },
   scanRadius = 0,
-  resources: Array<string | null>,
+  resources: Array<ResourceType>,
   colors: Float32Array,
-  // positions: Ref<Float32Array>
   positions: Float32Array,
-  // indices2: number[],
   widthCount: number,
   depthCount: number
 ) => {
@@ -128,7 +128,7 @@ export const generateTerrain = (
     }
   }
 
-  applyTerrainColors(positions, colors, widthCount, depthCount, scale);
+  applyTerrainColors(positions, colors, widthCount, depthCount);
 
 
   // if (canPlaceBeacon) {

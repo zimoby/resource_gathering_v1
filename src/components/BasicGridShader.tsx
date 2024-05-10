@@ -1,10 +1,14 @@
-import { useEffect, useMemo } from "react";
+import { RefObject, useEffect, useMemo } from "react";
 import {
   DoubleSide, Color, Vector2,
   PlaneGeometry,
-  ShaderMaterial
+  ShaderMaterial,
+  Mesh
 } from "three";
 import useGamaStore from "../store";
+
+import { BufferGeometry, Material, Object3DEventMap } from "three";
+
 
 // import { vertexShader, fragmentShader } from './chunkGridShader';
 
@@ -46,8 +50,12 @@ const fragmentShader = `
   }
 `;
 
-export const BasicGridShader = ({ planeRef }) => {
-  const { width, depth, } = useGamaStore((state) => state.mapParams);
+export interface BasicGridShaderProps {
+  planeRef: RefObject<Mesh<BufferGeometry, Material | Material[], Object3DEventMap>>;
+}
+
+export const BasicGridShader = ({ planeRef }: BasicGridShaderProps) => {
+  const { width, depth } = useGamaStore((state) => state.mapParams);
   const gridConfig = useGamaStore((state) => state.gridConfig);
 
   useEffect(() => {
@@ -73,8 +81,10 @@ export const BasicGridShader = ({ planeRef }) => {
     });
 
     return () => {
-      planeRef.current.geometry = planeGeometry;
-      planeRef.current.material = planeMaterial;
+      if (planeRef.current) {
+        planeRef.current.geometry = planeGeometry;
+        planeRef.current.material = planeMaterial;
+      }
     };
   }, [width, depth, gridConfig]);
 

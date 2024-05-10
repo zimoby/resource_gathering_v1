@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useRef } from "react";
-import { Raycaster, Vector2 } from "three";
-import useGamaStore from "../store";
+import { RefObject, useCallback, useEffect } from "react";
+import { Camera, Mesh, Raycaster, Vector2 } from "three";
+import useGamaStore, { ResourceType } from "../store";
 import { debounce, throttle } from "lodash";
 import { useProcessBeacons } from "../components/beacons/addBeacon";
 import { getChunkCoordinates } from "./functions";
@@ -8,21 +8,21 @@ import { getChunkCoordinates } from "./functions";
 const getIntersection = (
   event: { clientX: number; clientY: number },
   raycaster: Raycaster,
-  meshRef: any,
-  camera
+  mesh: Mesh,
+  camera: Camera
 ) => {
   const mouse = new Vector2();
   mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
   mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
   raycaster.setFromCamera(mouse, camera);
-  const intersects = raycaster.intersectObject(meshRef.current);
+  const intersects = raycaster.intersectObject(mesh);
 
   return intersects;
 };
 
 export const useKeyboardControls = (): void => {
-  const handleKeyDown = useCallback((event: { key: any }) => {
+  const handleKeyDown = useCallback((event: KeyboardEvent) => {
     switch (event.key) {
       case "ArrowUp":
       case "w":
@@ -49,7 +49,7 @@ export const useKeyboardControls = (): void => {
     }
   }, []);
 
-  const handleKeyUp = useCallback((event: { key: any }) => {
+  const handleKeyUp = useCallback((event: KeyboardEvent) => {
     switch (event.key) {
       case "Shift":
         useGamaStore.setState({ dynamicSpeed: 1 });
@@ -68,10 +68,15 @@ export const useKeyboardControls = (): void => {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
-  }, []);
+  }, [handleKeyDown, handleKeyUp]);
 };
 
-export const useCanvasHover = ({ camera, raycaster, meshRef, resources }) => {
+export const useCanvasHover = ({ camera, raycaster, meshRef, resources }: {
+  camera: Camera;
+  raycaster: Raycaster;
+  meshRef: RefObject<Mesh>;
+  resources: { current: Array<ResourceType> };
+}) => {
   const canPlaceBeacon = useGamaStore((state) => state.canPlaceBeacon);
   const { width, depth, offsetX, offsetY } = useGamaStore((state) => state.mapParams);
   const { addBeacon } = useProcessBeacons();
@@ -81,16 +86,18 @@ export const useCanvasHover = ({ camera, raycaster, meshRef, resources }) => {
   }, 100);
 
   const handleCanvasHover = useCallback(
-    (event: { clientX: number; clientY: number }) => {
-      if (!canPlaceBeacon) {
+    (event: { clientX: number; clientY: number, type: string }) => {
+      if (!canPlaceBeacon || !meshRef.current) {
         // useGamaStore.setState({ showResources: false });
         return;
       }
 
-      const intersects = getIntersection(event, raycaster, meshRef, camera);
+      const intersects = getIntersection(event, raycaster, meshRef.current, camera);
 
       if (intersects.length > 0) {
         const { point, face } = intersects[0];
+        if (!face) return;
+
         const vertexIndex = face.a;
         const resource = resources.current[vertexIndex];
 
@@ -125,7 +132,7 @@ export const useCanvasHover = ({ camera, raycaster, meshRef, resources }) => {
         }
       }
     },
-    [canPlaceBeacon, camera, depth, meshRef, raycaster, resources, width]
+    [canPlaceBeacon, meshRef, raycaster, camera, resources, width, depth, throttledSetState, addBeacon, offsetX, offsetY]
   );
 
   useEffect(() => {

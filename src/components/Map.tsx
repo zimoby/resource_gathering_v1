@@ -1,30 +1,21 @@
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import useGamaStore from "../store";
-import { getChunkCoordinates, useCalculateDeltas, useUpdateMapMoving } from "../functions/functions";
+import { useCalculateDeltas, useUpdateMapMoving } from "../functions/functions";
 import { BeaconGroup } from "./beacons/BeaconGroup";
 import { Terrain } from "./terrain/Terrain";
-import { LinearGridShader } from "./LinearGridShader";
+import { LinearGridShader } from "./linearGridShader";
 import { BasicGridShader } from "./BasicGridShader";
 import { useControls } from "leva";
-
+import { Mesh, ShaderMaterial } from "three";
 
 export const Map = () => {
   const firstStart = useGamaStore((state) => state.firstStart);
-  const planeRef = useRef();
+  const planeRef = useRef<Mesh>(null);
   const offset = useRef({ x: 0, y: 0 });
   const { width } = useGamaStore((state) => state.mapParams);
 
-  const { rulerGridX, rulerGridY, sizeX, sizeY } = useControls({
-    // sizeX: {
-    //   value: 100, min: 1, max: 300, step: 1,
-    // },
-    // sizeY: {
-    //   value: 100, min: 1, max: 300, step: 1,
-    // },
-    // rulerGridX: {
-    //   value: 50, min: 1, max: 100, step: 1,
-    // },
+  const { rulerGridY } = useControls({
     rulerGridY: {
       value: 50, min: 1, max: 100, step: 1,
     },
@@ -41,7 +32,9 @@ export const Map = () => {
 
     updateLocationAndOffset(offset);
 
-    planeRef.current.material.uniforms.offset.value.set(offset.current.x * 0.01, -offset.current.y * 0.01);
+    if (planeRef.current && planeRef.current.material instanceof ShaderMaterial) {
+      planeRef.current.material.uniforms.offset.value.set(offset.current.x * 0.01, -offset.current.y * 0.01);
+    }
   });
 
   return (
