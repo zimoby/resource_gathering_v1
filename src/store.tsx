@@ -1,5 +1,5 @@
 import { Color } from "three";
-import create from "zustand";
+import { create } from "zustand";
 import { generateWeather } from "./utils/generators";
 
 export const minLevel = -10;
