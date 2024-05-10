@@ -4,7 +4,7 @@ import useGamaStore from "../store";
 import { useCalculateDeltas, useUpdateMapMoving } from "../functions/functions";
 import { BeaconGroup } from "./beacons/BeaconGroup";
 import { Terrain } from "./terrain/Terrain";
-import { LinearGridShader } from "./linearGridShader";
+import { LinearGridShader } from "./LinearGridShader1";
 import { BasicGridShader } from "./BasicGridShader";
 import { useControls } from "leva";
 import { Mesh, ShaderMaterial } from "three";
