@@ -24,12 +24,12 @@ export const UiInfo = () => {
   const playerPoints = useGamaStore((state) => state.playerPoints);
   const collectedResources = useGamaStore((state) => state.collectedResources);
 
-  useEffect(() => {
-    if (message === "") return;
-    setTimeout(() => {
-      useGamaStore.setState({ message: "" });
-    }, 2000);
-  }, [message]);
+  // useEffect(() => {
+  //   if (message === "") return;
+  //   setTimeout(() => {
+  //     useGamaStore.setState({ message: "" });
+  //   }, 2000);
+  // }, [message]);
 
   return (
     <div className="fixed z-40">
@@ -85,7 +85,7 @@ export const UiInfo = () => {
           <BeaconsInfo />
         </div>
       </div>
-      <div className=" fixed bottom-0 left-1/2">{message}</div>
+      {/* <div className=" fixed bottom-0 left-1/2">{message}</div> */}
     </div>
   );
 };
