@@ -1,4 +1,4 @@
-import useGamaStore from "../store";
+import useGamaStore from "../../store";
 import { ConcentricCirclesAnimation } from "./concentricCircles";
 
 export const PulsingCircle = () => {

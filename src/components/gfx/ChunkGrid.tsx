@@ -5,7 +5,7 @@ import {
   Color,
   Vector3
 } from "three";
-import useGamaStore from "../store";
+import useGamaStore from "../../store";
 
 export const ChunkGrid = ({ position, sizeExtend = 0 }: {
   position: number[],

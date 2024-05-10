@@ -1,7 +1,7 @@
 import { useCalculateResources } from "./utils/calculateResources";
 import { UiInfo } from "./components/UI/uiInfo";
-import { useInitInfo } from "./components/initInfo";
-import { useGameLoop } from "./components/GameLoop";
+import { useInitInfo } from "./hooks/initInfo";
+import { useGameLoop } from "./hooks/GameLoop";
 import { SystemControls } from "./components/UI/controlsUI/planetControls";
 import { GameCanvas } from "./Scene/GameCanvas";
 

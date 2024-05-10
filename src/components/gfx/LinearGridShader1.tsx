@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef } from "react";
 import { DoubleSide, Color, Vector2, PlaneGeometry, ShaderMaterial, Mesh } from "three";
-import useGamaStore from "../store";
+import useGamaStore from "../../store";
 
 // import { vertexShader, fragmentShader } from './chunkGridShader';
 

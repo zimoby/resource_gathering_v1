@@ -1,6 +1,6 @@
 import { Color } from "three";
 import create from "zustand";
-import { generateWeather } from "./components/weatherSystem";
+import { generateWeather } from "./utils/generators";
 
 export const minLevel = -10;
 export const maxLevel = 100;

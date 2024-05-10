@@ -5,7 +5,7 @@ import {
   ShaderMaterial,
   Mesh
 } from "three";
-import useGamaStore from "../store";
+import useGamaStore from "../../store";
 
 import { BufferGeometry, Material, Object3DEventMap } from "three";
 

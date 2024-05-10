@@ -4,13 +4,13 @@ import { OrbitControls, Stats } from "@react-three/drei";
 import { Color } from "three";
 import FlickeringEffect from "../effects/FlickeringEffect";
 import useGamaStore from "../store";
-import { ChunkGrid } from "../components/ChunkGrid";
-import { CoordinatesKeys } from "../components/CoordinatesKeys";
-import { PulsingCircle } from "../components/PulsingCircle";
+import { ChunkGrid } from "../components/gfx/ChunkGrid";
+import { CoordinatesKeys } from "../components/gfx/CoordinatesKeys";
+import { PulsingCircle } from "../components/gfx/PulsingCircle";
 import { EffectsCollection } from "./effects";
-import { PlaneTest } from "../components/pulsingAreaTest";
+import { PlaneTest } from "../components/gfx/pulsingAreaTest";
 import { SceneSettings } from "./scene";
-import { Map } from "../components/Map";
+import { Map } from "./Map";
 import { FlyingDrone } from "../components/drone/Drone";
 
 export const GameCanvas = () => {

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import useGamaStore from "../store";
-import { useProcessBeacons } from "./beacons/beaconUtils";
+import { useProcessBeacons } from "../components/beacons/beaconUtils";
 
 export const useGameLoop = () => {
   // const
