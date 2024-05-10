@@ -57,7 +57,7 @@ export const useProcessBeacons = () => {
           id: Math.random().toString(36).substr(2, 9),
         },
       ];
-      console.log("Adding beacon:", {newBeacons, position, currentChunk});
+      // console.log("Adding beacon:", {newBeacons, position, currentChunk});
       return { beacons: newBeacons };
     });
   }, [addLog, beacons]);

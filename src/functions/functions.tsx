@@ -1,4 +1,8 @@
-import useGamaStore, { ChunkType } from "../store";
+import useGamaStore, { ChunkType, DEV_MODE } from "../store";
+
+export const consoleLog = (message: string, data: any) => {
+  DEV_MODE && console.log(message, { ...data});
+}
 
 export const convertChunkCoordinateToName = (chunk: ChunkType) => {
   const ns = chunk.y >= 0 ? "N" : "S";

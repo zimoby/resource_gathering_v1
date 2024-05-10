@@ -3,10 +3,12 @@ import useGamaStore, { resourceTypes } from "../store";
 
 export const useCalculateResources = () => {
 	const canPlaceBeacon = useGamaStore((state) => state.canPlaceBeacon);
+  const addEventLog = useGamaStore((state) => state.addEventLog);
 	
   useEffect(() => {
     const interval = setInterval(() => {
       useGamaStore.setState((state) => {
+
         // Calculate the new player points
         let newPlayerPoints =
           state.playerPoints +
@@ -22,8 +24,9 @@ export const useCalculateResources = () => {
           }
         });
 
-        if (canPlaceBeacon) {
+        if (canPlaceBeacon && state.playerPoints >= 50) {
           newPlayerPoints -= 50;
+          addEventLog("Beacon placed. -50 points");
         }
 
         return {
@@ -36,5 +39,5 @@ export const useCalculateResources = () => {
     return () => {
       clearInterval(interval);
     };
-  }, [canPlaceBeacon]);
+  }, [addEventLog, canPlaceBeacon]);
 };

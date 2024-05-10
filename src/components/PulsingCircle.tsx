@@ -4,6 +4,7 @@ import { ConcentricCirclesAnimation } from "./concentricCircles";
 export const PulsingCircle = () => {
   const activePosition = useGamaStore((state) => state.activePosition);
   const canPlaceBeacon = useGamaStore((state) => state.canPlaceBeacon);
+
   // const ref = useRef<ShaderMaterial | null>(null);
 
   // useFrame(({ clock }) => {

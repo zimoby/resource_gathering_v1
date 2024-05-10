@@ -14,7 +14,7 @@ const updateBufferAttribute = (geometry: BufferGeometry<NormalBufferAttributes>,
     attr.needsUpdate = true;
   } else {
     geometry.setAttribute(attrName, new Float32BufferAttribute(data, 3));
-    console.log("new attribute created", attrName);
+    // console.log("new attribute created", attrName);
   }
 };
 

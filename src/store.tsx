@@ -5,6 +5,8 @@ import { generateWeather } from "./components/weatherSystem";
 export const minLevel = -10;
 export const maxLevel = 100;
 
+export const DEV_MODE = import.meta.env.VITE_APP_MODE === "development";
+
 export type TerrainType = "water" | "grass" | "dirt" | "snow" | "default";
 export type ResourceType = "r1" | "r2" | "r3" | "r4";
 export type WeatherCondition = "mild" | "moderate" | "severe";

@@ -57,12 +57,12 @@ export const FlyingDrone = () => {
 
   return (
 		<group position={[0,appearingHeight,0]}>
+				<group ref={ref}>
 			<Float
 				position={[0, 20, 0]}
 				floatIntensity={10}
 				speed={5}
 			>
-				<group ref={ref}>
 					<Drone />
 					<Billboard>
 						<Html position={[4, 2, 0]} >
@@ -76,8 +76,8 @@ export const FlyingDrone = () => {
 								)}
 						</Html>
 					</Billboard>
-				</group>
 			</Float>
+				</group>
 		</group>
   );
 };

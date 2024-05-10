@@ -44,6 +44,7 @@ export const Terrain = () => {
   const canPlaceBeacon = useGamaStore((state) => state.canPlaceBeacon);
   const scanRadius = useGamaStore((state) => state.scanRadius);
   const activePosition = useGamaStore((state) => state.activePosition);
+  const playerPoints = useGamaStore((state) => state.playerPoints);
 
   const widthCount = Math.floor(width / resolution);
   const depthCount = Math.floor(depth / resolution) + 1;
@@ -84,7 +85,7 @@ export const Terrain = () => {
       offset.current.x + offsetX,
       offset.current.y + offsetY,
       terrainGeometry.current,
-      canPlaceBeacon,
+      canPlaceBeacon && playerPoints >= 50,
       activePosition,
       scanRadius,
       resources.current,

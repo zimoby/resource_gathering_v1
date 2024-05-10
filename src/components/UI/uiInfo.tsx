@@ -35,20 +35,22 @@ export const UiInfo = () => {
     <div className="fixed z-40">
       <div className="fixed bottom-0 right-0 flex flex-row m-2">
         <div className="flex flex-row">
-          <div className="size-20 border border-white flex justify-center items-center">
+          {/* <div className="size-20 border border-white flex justify-center items-center">
             <div className="size-16 border border-white" />
-          </div>
-          <div className="px-1 py-0.5 h-20 w-64 border border-white">
-            <p className=" font-bold">Drone</p>
-            <p className=" leading-3 text-sm">
-              <TypingText text={message} />
-            </p>
-          </div>
+          </div> */}
+          {/* <div className="px-1 py-0.5 h-20 w-64 border border-white"> */}
+            <BasicPanelWrapper titleText="System Message">
+              <div className=" leading-4 text-sm">
+                <TypingText text={message} />
+              </div>
+            </BasicPanelWrapper>
+            {/* <p className=" font-bold">System Message</p> */}
+          {/* </div> */}
         </div>
       </div>
       <div className="fixed top-0 left-0 m-1">
         <div className="flex flex-col">
-          <div className="w-fit h-fit mb-1 border-8 border-neutral-200 p-1 text-xs bg-neutral-900 text-neutral-200">
+          <div className="w-fit h-fit mb-1 border border-neutral-200 p-1 text-xs bg-neutral-900 text-neutral-200">
             <div className="orbitron text-6xl text-neutral-200">{`PLANET-${mapParams.seed}`}</div>
           </div>
             

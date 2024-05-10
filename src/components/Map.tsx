@@ -1,7 +1,7 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import useGamaStore from "../store";
-import { useCalculateDeltas, useUpdateMapMoving } from "../functions/functions";
+import { consoleLog, useCalculateDeltas, useUpdateMapMoving } from "../functions/functions";
 import { BeaconGroup } from "./beacons/BeaconGroup";
 import { Terrain } from "./terrain/Terrain";
 import { LinearGridShader } from "./LinearGridShader1";
@@ -10,30 +10,28 @@ import { Mesh, ShaderMaterial } from "three";
 import FlickeringEffect from "../animations/FlickeringEffect";
 import FadingEffect from "../animations/FadingEffect";
 
+const rulerGridY = 50;
+
 export const Map = () => {
   const firstStart = useGamaStore((state) => state.firstStart);
   const planeRef = useRef<Mesh>(null);
   const offset = useRef({ x: 0, y: 0 });
   const { width, depth } = useGamaStore((state) => state.mapParams);
 
-  // const { rulerGridY } = useControls({
-  //   rulerGridY: {
-  //     value: 50, min: 1, max: 100, step: 1,
-  //   },
-  // });
-
-  const rulerGridY = 50;
-
   const { deltaX, deltaY } = useCalculateDeltas();
-  const { updateLocationAndOffset } = useUpdateMapMoving();
+  // const { updateLocationAndOffset } = useUpdateMapMoving();
 
   // console.log("Map rendering");
+
+  // useEffect(() => {
+  //   consoleLog(` Map rendering:`, {deltaX, deltaY, firstStart, width, depth, rulerGridY, planeRef});
+  // }, [deltaX, deltaY, firstStart, width, depth]);
   
   useFrame(() => {
     offset.current.x += deltaX;
     offset.current.y += deltaY;
 
-    updateLocationAndOffset(offset);
+    // updateLocationAndOffset(offset);
 
     if (planeRef.current && planeRef.current.material instanceof ShaderMaterial) {
       planeRef.current.material.uniforms.offset.value.set(offset.current.x * 0.01, -offset.current.y * 0.01);
