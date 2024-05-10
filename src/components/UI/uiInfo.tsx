@@ -4,11 +4,7 @@ import useGamaStore from "../../store";
 import { BeaconsInfo } from "../beacons/BeaconsInfo";
 import TypingText from "../../animations/TextEffects";
 
-export const BasicPanelWrapper = ({ children, titleText }) => (
-  // <div className="border border-white/80 p-1 h-fit w-fit text-left text-xs">
-  //   {children}
-  // </div>
-
+export const BasicPanelWrapper = ({ children, titleText }: { children: React.ReactNode, titleText: string }) => (
   <div className="h-fit w-52 text-left text-xs border border-white/80">
     <p className="w-full h-fit px-1 bg-neutral-200 text-neutral-900">{titleText}</p>
     <div className="scrollbar w-fll h-full p-1">{children}</div>
