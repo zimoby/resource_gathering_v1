@@ -23,7 +23,7 @@ export const BeaconGroup = () => {
     for (let i = beaconRefs.current.length; i < beacons.length; i++) {
         beaconRefs.current[i] = createRef();
     }
-    console.log("beaconRefs:", beaconRefs.current);
+    // console.log("beaconRefs:", beaconRefs.current);
 }, [beacons.length]);
 
   useFrame(() => {

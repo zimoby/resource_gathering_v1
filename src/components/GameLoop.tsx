@@ -5,16 +5,22 @@ import { useProcessBeacons } from "./beacons/beaconUtils";
 export const useGameLoop = () => {
   // const
 	const { destroyBeacons } = useProcessBeacons();
+  const updateWeather = useGamaStore.getState().updateWeather;
+  const addEventLog = useGamaStore.getState().addEventLog;
+  // const eventsLog = useGamaStore.getState().eventsLog;
 
   useEffect(() => {
     const weatherInterval = setInterval(() => {
-      useGamaStore.getState().updateWeather();
-      //   console.log("Weather updated:", weatherCondition);
+      const receiveNewWether = updateWeather();
+
+      if (!receiveNewWether) { return; }
+      
+      addEventLog(receiveNewWether);
       destroyBeacons();
     }, 5000);
 
     return () => {
       clearInterval(weatherInterval);
     };
-  }, [destroyBeacons]);
+  }, [addEventLog, destroyBeacons, updateWeather]);
 };

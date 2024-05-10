@@ -26,7 +26,7 @@ const TypingText: React.FC<TypingTextProps> = ({ text, speed = 50 }) => {
     };
   }, [text, speed]);
 
-  return <div>{displayText}</div>;
+  return <div className="w-fit h-fit">{displayText}</div>;
 };
 
 export default TypingText;

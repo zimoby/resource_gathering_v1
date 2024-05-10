@@ -64,7 +64,21 @@ export interface BeaconType {
   id: string;
 }
 
-export interface GamaStoreState {
+
+export interface GamaStoreActions {
+  updateStoreProperty: (paramName: string, value: unknown) => void;
+  updateMapSize: (value: number) => void;
+  updateMapParam: (paramName: string, value: unknown) => void;
+  toggleShowResources: () => void;
+  replacePropWithXY: (name: string, value: Offset) => void;
+  addLog: (log: string) => void;
+  addEventLog: (eventName: string) => void;
+  removeFirstEventLog: () => void;
+  updateWeather: () => WeatherCondition | null;
+}
+
+
+export type GamaStoreState = {
   disableAnimations: boolean;
 
   firstStart: boolean;
@@ -86,19 +100,13 @@ export interface GamaStoreState {
     seed: string;
   };
   logs: string[];
+  eventsLog: string[];
   message: string;
   scanRadius: number;
   canPlaceBeacon: boolean;
   activePosition: { x: number; y: number; z: number };
   weatherCondition: WeatherCondition;
-  updateMapSize: (value: number) => void;
-  updateMapParam: (paramName: string, value: unknown) => void;
-  updateStoreProperty: (paramName: string, value: unknown) => void;
-  updateWeather: () => void;
-  toggleShowResources: () => void;
-  replacePropWithXY: (name: string, value: Offset) => void;
-  addLog: (log: string) => void;
-}
+} & GamaStoreActions;
 
 interface TerrainTypesT {
   [key: string]: Terrain;
@@ -154,82 +162,110 @@ export const resourceTypes: ResourceTypesT = {
   },
 };
 
-const useGamaStore = create<GamaStoreState>((set) => ({
-  disableAnimations: false,
+function createGamaStore() {
+  return create<GamaStoreState>((set, get) => ({
+    disableAnimations: false,
 
-  firstStart: false,
-  loading: true,
-  gridConfig: {
-    chunkSize: 1,
-    subGrids: 5,
-    lineWidth: 0.2,
-    gridColor: "#ff0000",
-    subGridColor: "#ffffff",
-  },
-  mapParams: {
-    width: 100,
-    depth: 100,
-    resolution: 3,
-    scale: 50,
-    seed: "42",
-    offsetX: 0,
-    offsetY: 0,
-    speed: 0.1,
-  },
-  currentOffset: { x: 0, y: 0 },
-  showResources: false,
-  selectedResource: "r1",
-  selectedChunk: { x: 0, y: 0 },
-  currentLocation: { x: 0, y: 0 },
-  moveDirection: { x: 0, y: -1 },
-  dynamicSpeed: 1,
-  beacons: [],
-  playerPoints: 1000,
-  collectedResources: {
-    r1: 0,
-    r2: 0,
-    r3: 0,
-    r4: 0,
-  },
-  planetParams: {
-    name: "Earth",
-    seed: "42",
-  },
-  message: "",
-  logs: [],
-  scanRadius: 30,
-  canPlaceBeacon: false,
-  activePosition: { x: 0, y: 0, z: 0},
-  weatherCondition: "mild",
-  updateStoreProperty: (paramName, value) => {
-    set(() => ({ [paramName]: value }));
-  },
-  updateMapSize: (value) => {
-    set((state) => ({ mapParams: { ...state.mapParams, width: value, depth: value } }));
-  },
-  updateMapParam: (paramName, value) => {
-    set((state) => ({
-      mapParams: { ...state.mapParams, [paramName]: value },
-    }));
-  },
-  toggleShowResources: () =>
-    set((state) => ({ showResources: !state.showResources })),
-  replacePropWithXY: (name, value) => {
-    set(() => ({ [name]: { x: value.x, y: value.y } }));
-  },
-  addLog: (log) => {
-    set((state) => {
-      const updatedLogs = [log, ...state.logs];
-      if (updatedLogs.length > 10) {
-        updatedLogs.pop();
+    firstStart: false,
+    loading: true,
+    gridConfig: {
+      chunkSize: 1,
+      subGrids: 5,
+      lineWidth: 0.2,
+      gridColor: "#ff0000",
+      subGridColor: "#ffffff",
+    },
+    mapParams: {
+      width: 100,
+      depth: 100,
+      resolution: 3,
+      scale: 50,
+      seed: "42",
+      offsetX: 0,
+      offsetY: 0,
+      speed: 0.1,
+    },
+    currentOffset: { x: 0, y: 0 },
+    showResources: false,
+    selectedResource: "r1",
+    selectedChunk: { x: 0, y: 0 },
+    currentLocation: { x: 0, y: 0 },
+    moveDirection: { x: 0, y: -1 },
+    dynamicSpeed: 1,
+    beacons: [],
+    playerPoints: 1000,
+    collectedResources: {
+      r1: 0,
+      r2: 0,
+      r3: 0,
+      r4: 0,
+    },
+    planetParams: {
+      name: "Earth",
+      seed: "42",
+    },
+    message: "",
+    logs: [],
+    eventsLog: [],
+    scanRadius: 30,
+    canPlaceBeacon: false,
+    activePosition: { x: 0, y: 0, z: 0},
+    weatherCondition: "mild",
+    updateStoreProperty: (paramName, value) => {
+      set(() => ({ [paramName]: value }));
+    },
+    updateMapSize: (value) => {
+      set((state) => ({ mapParams: { ...state.mapParams, width: value, depth: value } }));
+    },
+    updateMapParam: (paramName, value) => {
+      set((state) => ({
+        mapParams: { ...state.mapParams, [paramName]: value },
+      }));
+    },
+    toggleShowResources: () =>
+      set((state) => ({ showResources: !state.showResources })),
+    replacePropWithXY: (name, value) => {
+      set(() => ({ [name]: { x: value.x, y: value.y } }));
+    },
+    addLog: (log) => {
+      set((state) => {
+        const updatedLogs = [log, ...state.logs];
+        if (updatedLogs.length > 10) {
+          updatedLogs.pop();
+        }
+        return { logs: updatedLogs };
+      });
+    },
+    addEventLog: (eventName) => {
+      set((state) => {
+        const updatedEvents = [...state.eventsLog, eventName];
+        if (updatedEvents.length > 5) {
+          updatedEvents.shift()
+        }
+        // console.log("updatedEvents add:", updatedEvents);
+        return { eventsLog: updatedEvents };
+      });
+    },
+    removeFirstEventLog: () => {
+      set((state) => {
+        const updatedEvents = [...state.eventsLog];
+        updatedEvents.shift();
+        // console.log("updatedEvents remove:", updatedEvents);
+        return { eventsLog: updatedEvents };
+      });
+    },
+    updateWeather: (): WeatherCondition | null => {
+      const newWeather = generateWeather();
+      if (newWeather === get().weatherCondition) {
+        return null;
+      } else {
+        set({ weatherCondition: newWeather });
+        return newWeather;
       }
-      return { logs: updatedLogs };
-    });
-  },
-  updateWeather: () => {
-    const newWeather = generateWeather();
-    set({ weatherCondition: newWeather });
-  },
-}));
+    }
+  }));
+}
+
+const useGamaStore = createGamaStore();
 
 export default useGamaStore;

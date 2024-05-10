@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { convertChunkCoordinateToName } from "../../functions/functions";
 import useGamaStore from "../../store";
 import { BeaconsInfo } from "../beacons/BeaconsInfo";
@@ -16,6 +15,7 @@ export const UiInfo = () => {
   const selectedChunk = useGamaStore((state) => state.selectedChunk);
   const mapParams = useGamaStore((state) => state.mapParams);
   const logs = useGamaStore((state) => state.logs);
+  const eventsLog = useGamaStore((state) => state.eventsLog);
 
   const weatherCondition = useGamaStore((state) => state.weatherCondition);
 
@@ -77,11 +77,18 @@ export const UiInfo = () => {
       </div>
       <div className=" flex fixed bottom-0 left-0 flex-col">
         <div className="flex flex-row space-x-1 items-end">
-          <BasicPanelWrapper titleText="LOGS:">
-            {logs.map((log, index) => (
-              <div key={index}>{log}</div>
-            ))}
-          </BasicPanelWrapper>
+          <div className="flex flex-col space-y-1 items-end">
+            <BasicPanelWrapper titleText="Events:">
+              {eventsLog.map((eventName, index) => (
+                <div key={index}>{eventName}</div>
+              ))}
+            </BasicPanelWrapper>
+            <BasicPanelWrapper titleText="LOGS:">
+              {logs.map((log, index) => (
+                <div key={index}>{log}</div>
+              ))}
+            </BasicPanelWrapper>
+          </div>
           <BeaconsInfo />
         </div>
       </div>

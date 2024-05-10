@@ -11,7 +11,7 @@ import { EffectsCollection } from "./effects";
 import { PlaneTest } from "./pulsingAreaTest";
 import { SceneSettings } from "./scene";
 import { Map } from "./Map";
-import { FlyingDrone } from "./Drone";
+import { FlyingDrone } from "./drone/Drone";
 
 export const GameCanvas = () => {
   const firstStart = useGamaStore((state) => state.firstStart);
