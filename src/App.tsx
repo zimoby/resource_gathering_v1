@@ -1,4 +1,4 @@
-import { useCalculateResources } from "./utils/calculateResources";
+import { useCalculateResources } from "./hooks/calculateResources";
 import { UiInfo } from "./components/UI/uiInfo";
 import { useInitInfo } from "./hooks/initInfo";
 import { useGameLoop } from "./hooks/GameLoop";

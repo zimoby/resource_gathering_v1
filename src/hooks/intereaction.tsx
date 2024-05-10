@@ -1,9 +1,9 @@
 import { RefObject, useCallback, useEffect } from "react";
 import { Camera, Mesh, Raycaster, Vector2 } from "three";
-import useGamaStore, { ResourceType } from "../store";
+import { useGameStore, ResourceType } from "../store";
 import { debounce, throttle } from "lodash";
 import { useProcessBeacons } from "../components/beacons/beaconUtils";
-import { getChunkCoordinates } from "./functions";
+import { getChunkCoordinates } from "../utils/functions";
 
 const getIntersection = (
   event: { clientX: number; clientY: number },
@@ -26,25 +26,25 @@ export const useKeyboardControls = (): void => {
     switch (event.key) {
       case "ArrowUp":
       case "w":
-        useGamaStore.setState({ moveDirection: { x: 0, y: -1 } });
+        useGameStore.setState({ moveDirection: { x: 0, y: -1 } });
         break;
       case "ArrowDown":
       case "s":
-        useGamaStore.setState({ moveDirection: { x: 0, y: 1 } });
+        useGameStore.setState({ moveDirection: { x: 0, y: 1 } });
         break;
       case "ArrowLeft":
       case "a":
-        useGamaStore.setState({ moveDirection: { x: -1, y: 0 } });
+        useGameStore.setState({ moveDirection: { x: -1, y: 0 } });
         break;
       case "ArrowRight":
       case "d":
-        useGamaStore.setState({ moveDirection: { x: 1, y: 0 } });
+        useGameStore.setState({ moveDirection: { x: 1, y: 0 } });
         break;
       case "Shift":
-        useGamaStore.setState({ dynamicSpeed: 3 });
+        useGameStore.setState({ dynamicSpeed: 3 });
         break;
       case " ":
-        useGamaStore.setState({ canPlaceBeacon: true });
+        useGameStore.setState({ canPlaceBeacon: true });
         break;
     }
   }, []);
@@ -52,10 +52,10 @@ export const useKeyboardControls = (): void => {
   const handleKeyUp = useCallback((event: KeyboardEvent) => {
     switch (event.key) {
       case "Shift":
-        useGamaStore.setState({ dynamicSpeed: 1 });
+        useGameStore.setState({ dynamicSpeed: 1 });
         break;
       case " ":
-        useGamaStore.setState({ canPlaceBeacon: false });
+        useGameStore.setState({ canPlaceBeacon: false });
         break;
     }
   }, []);
@@ -77,18 +77,18 @@ export const useCanvasHover = ({ camera, raycaster, meshRef, resources }: {
   meshRef: RefObject<Mesh>;
   resources: { current: Array<ResourceType> };
 }) => {
-  const canPlaceBeacon = useGamaStore((state) => state.canPlaceBeacon);
-  const { width, depth, offsetX, offsetY } = useGamaStore((state) => state.mapParams);
+  const canPlaceBeacon = useGameStore((state) => state.canPlaceBeacon);
+  const { width, depth, offsetX, offsetY } = useGameStore((state) => state.mapParams);
   const { addBeacon } = useProcessBeacons();
 
   const throttledSetState = throttle((state) => {
-    useGamaStore.setState(state);
+    useGameStore.setState(state);
   }, 100);
 
   const handleCanvasHover = useCallback(
     (event: { clientX: number; clientY: number, type: string }) => {
       if (!canPlaceBeacon || !meshRef.current) {
-        // useGamaStore.setState({ showResources: false });
+        // useGameStore.setState({ showResources: false });
         return;
       }
 
@@ -102,14 +102,14 @@ export const useCanvasHover = ({ camera, raycaster, meshRef, resources }: {
         const resource = resources.current[vertexIndex];
 
         debounce(() => {
-          useGamaStore.setState({
+          useGameStore.setState({
             activePosition: point,
           });
         }, 100)();
 
         const currentPosition = {
-          x: point.x + width / 2 + useGamaStore.getState().currentOffset.x,
-          y: point.z + depth / 2 + useGamaStore.getState().currentOffset.y,
+          x: point.x + width / 2 + useGameStore.getState().currentOffset.x,
+          y: point.z + depth / 2 + useGameStore.getState().currentOffset.y,
         };
 
         throttledSetState({
@@ -128,7 +128,7 @@ export const useCanvasHover = ({ camera, raycaster, meshRef, resources }: {
             resource,
             currentChunk: getChunkCoordinates(currentPosition.x, currentPosition.y, width),
           });
-          useGamaStore.setState({ canPlaceBeacon: false });
+          useGameStore.setState({ canPlaceBeacon: false });
         }
       }
     },

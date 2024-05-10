@@ -1,4 +1,4 @@
-import useGamaStore from "../../store";
+import { useGameStore } from "../../store";
 import { Cylinder, Sphere } from "@react-three/drei";
 import { ConcentricCirclesAnimation } from "../gfx/concentricCircles";
 import { useFrame } from "@react-three/fiber";
@@ -7,9 +7,9 @@ import { createRef, useLayoutEffect, useRef } from "react";
 import { Group } from "three";
 
 export const BeaconGroup = () => {
-  const firstStart = useGamaStore((state) => state.firstStart);
-  const beacons = useGamaStore((state) => state.beacons);
-  const { width, depth, offsetX, offsetY } = useGamaStore((state) => state.mapParams);
+  const firstStart = useGameStore((state) => state.firstStart);
+  const beacons = useGameStore((state) => state.beacons);
+  const { width, depth, offsetX, offsetY } = useGameStore((state) => state.mapParams);
   const { deltaX, deltaY } = useCalculateDeltas();
 
   const beaconRefs = useRef<React.RefObject<Group>[]>(beacons.map(() => createRef()));

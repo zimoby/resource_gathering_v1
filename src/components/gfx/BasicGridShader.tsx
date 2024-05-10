@@ -5,8 +5,7 @@ import {
   ShaderMaterial,
   Mesh
 } from "three";
-import useGamaStore from "../../store";
-
+import { useGameStore } from "../../store";
 import { BufferGeometry, Material, Object3DEventMap } from "three";
 
 
@@ -56,8 +55,8 @@ export interface BasicGridShaderProps {
 }
 
 export const BasicGridShader = ({ position = [0,0,0], planeRef }: BasicGridShaderProps) => {
-  const { width, depth } = useGamaStore((state) => state.mapParams);
-  const gridConfig = useGamaStore((state) => state.gridConfig);
+  const { width, depth } = useGameStore((state) => state.mapParams);
+  const gridConfig = useGameStore((state) => state.gridConfig);
 
   useEffect(() => {
     generateGridGeometry();

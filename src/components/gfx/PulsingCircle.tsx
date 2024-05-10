@@ -1,9 +1,9 @@
-import useGamaStore from "../../store";
+import { useGameStore } from "../../store";
 import { ConcentricCirclesAnimation } from "./concentricCircles";
 
 export const PulsingCircle = () => {
-  const activePosition = useGamaStore((state) => state.activePosition);
-  const canPlaceBeacon = useGamaStore((state) => state.canPlaceBeacon);
+  const activePosition = useGameStore((state) => state.activePosition);
+  const canPlaceBeacon = useGameStore((state) => state.canPlaceBeacon);
 
   // const ref = useRef<ShaderMaterial | null>(null);
 

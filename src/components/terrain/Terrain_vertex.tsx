@@ -1,7 +1,7 @@
 import { useFrame } from '@react-three/fiber';
 import { useRef } from 'react';
 import { Mesh, PlaneGeometry, ShaderMaterial } from 'three';
-import useGamaStore from '../../store';
+import { useGameStore } from "../../store";
 import { extend } from 'lodash';
 
 const terrainVertexShader = `
@@ -71,7 +71,7 @@ const terrainMaterial = new ShaderMaterial({
   });
   
   export const TerrainVertex = () => {
-    const { width, depth, resolution, scale, offsetX, offsetY } = useGamaStore((state) => state.mapParams);
+    const { width, depth, resolution, scale, offsetX, offsetY } = useGameStore((state) => state.mapParams);
     
     const widthSegments = Math.floor(width * resolution);
     const depthSegments = Math.floor(depth * resolution);

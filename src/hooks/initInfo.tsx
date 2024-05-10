@@ -1,14 +1,14 @@
 import { useEffect } from "react";
-import useGamaStore from "../store";
+import { useGameStore } from "../store";
 
 export const useInitInfo = () => {
-	const firstStart = useGamaStore((state) => state.firstStart);
-  const loading = useGamaStore((state) => state.loading);
-  const updateMapSize = useGamaStore((state) => state.updateMapSize);
+	const firstStart = useGameStore((state) => state.firstStart);
+  const loading = useGameStore((state) => state.loading);
+  const updateMapSize = useGameStore((state) => state.updateMapSize);
 
   useEffect(() => {
     if (!loading && !firstStart) {
-      useGamaStore.setState({ firstStart: true });
+      useGameStore.setState({ firstStart: true });
     }
     if (!loading && firstStart) {
       updateMapSize(100);

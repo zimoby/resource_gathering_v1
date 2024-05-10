@@ -1,7 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import useGamaStore from "../store";
-import { consoleLog, useCalculateDeltas, useUpdateMapMoving } from "../utils/functions";
+import { useGameStore } from "../store";
+import { useCalculateDeltas, useUpdateMapMoving } from "../utils/functions";
 import { BeaconGroup } from "../components/beacons/BeaconGroup";
 import { Terrain } from "../components/terrain/Terrain";
 import { LinearGridShader } from "../components/gfx/LinearGridShader1";
@@ -13,13 +13,13 @@ import FadingEffect from "../effects/FadingEffect";
 const rulerGridY = 50;
 
 export const Map = () => {
-  const firstStart = useGamaStore((state) => state.firstStart);
+  const firstStart = useGameStore((state) => state.firstStart);
   const planeRef = useRef<Mesh>(null);
   const offset = useRef({ x: 0, y: 0 });
-  const { width, depth } = useGamaStore((state) => state.mapParams);
+  const { width, depth } = useGameStore((state) => state.mapParams);
 
   const { deltaX, deltaY } = useCalculateDeltas();
-  // const { updateLocationAndOffset } = useUpdateMapMoving();
+  const { updateLocationAndOffset } = useUpdateMapMoving();
 
   // console.log("Map rendering");
 
@@ -31,9 +31,9 @@ export const Map = () => {
     offset.current.x += deltaX;
     offset.current.y += deltaY;
 
-    // updateLocationAndOffset(offset);
+    updateLocationAndOffset(offset);
 
-    if (planeRef.current && planeRef.current.material instanceof ShaderMaterial) {
+    if (planeRef.current && planeRef.current.material instanceof ShaderMaterial && planeRef.current.material.uniforms.offset.value) {
       planeRef.current.material.uniforms.offset.value.set(offset.current.x * 0.01, -offset.current.y * 0.01);
     }
   });

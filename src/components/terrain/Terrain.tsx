@@ -8,9 +8,9 @@ import {
   BufferAttribute,
   Mesh
 } from "three";
-import useGamaStore from "../../store";
-import { useKeyboardControls } from "../../utils/intereaction";
-import { useCanvasHover } from "../../utils/intereaction";
+import { useGameStore } from "../../store";
+import { useKeyboardControls } from "../../hooks/intereaction";
+import { useCanvasHover } from "../../hooks/intereaction";
 import { generateTerrain } from "./generateTerrain";
 
 import { NoiseFunction2D, createNoise2D } from "simplex-noise";
@@ -39,12 +39,12 @@ const generateIndices = (widthCount: number, depthCount: number, indices: Uint16
 };
 
 export const Terrain = () => {
-  const loading = useGamaStore((state) => state.loading);
-  const { width, depth, resolution, scale, seed, offsetX, offsetY } = useGamaStore((state) => state.mapParams);
-  const canPlaceBeacon = useGamaStore((state) => state.canPlaceBeacon);
-  const scanRadius = useGamaStore((state) => state.scanRadius);
-  const activePosition = useGamaStore((state) => state.activePosition);
-  const playerPoints = useGamaStore((state) => state.playerPoints);
+  const loading = useGameStore((state) => state.loading);
+  const { width, depth, resolution, scale, seed, offsetX, offsetY } = useGameStore((state) => state.mapParams);
+  const canPlaceBeacon = useGameStore((state) => state.canPlaceBeacon);
+  const scanRadius = useGameStore((state) => state.scanRadius);
+  const activePosition = useGameStore((state) => state.activePosition);
+  const playerPoints = useGameStore((state) => state.playerPoints);
 
   const widthCount = Math.floor(width / resolution);
   const depthCount = Math.floor(depth / resolution) + 1;
@@ -124,7 +124,7 @@ export const Terrain = () => {
     const resources = updateTerrainGeometry();
     
     if (resources[0] !== null && loading) {
-      useGamaStore.setState({ loading: false });
+      useGameStore.setState({ loading: false });
     }
   });
 

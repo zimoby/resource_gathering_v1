@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef } from "react";
 import { DoubleSide, Color, Vector2, PlaneGeometry, ShaderMaterial, Mesh } from "three";
-import useGamaStore from "../../store";
+import { useGameStore } from "../../store";
 
 // import { vertexShader, fragmentShader } from './chunkGridShader';
 
@@ -46,7 +46,7 @@ const fragmentShader = `
 
 export const LinearGridShader = ({position = [0,0,0] as [number, number, number], sizeX = 100, sizeY = 100, width = 100, depth = 100}) => {
 	const rulerRef = useRef<Mesh>(null);
-  const gridConfig = useGamaStore((state) => state.gridConfig);
+  const gridConfig = useGameStore((state) => state.gridConfig);
 
   useEffect(() => {
     generateRulerGeometry();

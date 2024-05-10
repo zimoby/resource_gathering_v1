@@ -1,9 +1,9 @@
 import { useControls } from "leva";
 import { useEffect } from "react";
-import useGamaStore from "../store";
+import { useGameStore } from "../store";
 
 export const useParamsSync = () => {
-  // const mapParams = useGamaStore((state) => state.mapParams);
+  // const mapParams = useGameStore((state) => state.mapParams);
 
   const { width, depth, resolution, scale, seed, offsetX, offsetY, speed } = useControls({
     width: { value: 200, min: 1, max: 200 },
@@ -17,7 +17,7 @@ export const useParamsSync = () => {
   });
 
   useEffect(() => {
-		useGamaStore.setState({ mapParams: { width, depth, resolution, scale, seed, offsetX, offsetY, speed } });
+		useGameStore.setState({ mapParams: { width, depth, resolution, scale, seed, offsetX, offsetY, speed } });
 		// console.log("mapPgame store updated");
 	}, [width, depth, resolution, scale, seed, offsetX, offsetY, speed]);
 

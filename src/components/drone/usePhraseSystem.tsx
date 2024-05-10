@@ -42,24 +42,20 @@ const usePhraseSystem = ({
 		}
 	}, [firstAppearing, firstGreatings]);
 
-  useEffect(() => {
-    const selectRandomPhrase = () => {
+	useEffect(() => {
+		if (!firstGreatings) {
+			const selectRandomPhrase = () => {
+				const newPhrase = randomisePhrase(activePhrase);
+				setActivePhrase(newPhrase);
+				setPhraseKey((prevKey) => prevKey + 1);
+				const timeout = setTimeout(selectRandomPhrase, 10000);
+				return () => clearTimeout(timeout);
+			};
 
-			const newPhrase = randomisePhrase(activePhrase);
-      setActivePhrase(newPhrase);
-      setPhraseKey((prevKey) => prevKey + 1);
-
-      // const randomDuration = Math.floor(Math.random() * 11) + 10;
-      const timeout = setTimeout(selectRandomPhrase, 10000);
-      // const timeout = setTimeout(selectRandomPhrase, randomDuration * 1000);
-
-      return () => clearTimeout(timeout);
-    };
-
-    const initialTimeout = setTimeout(selectRandomPhrase, 10000);
-
-    return () => clearTimeout(initialTimeout);
-  }, [activePhrase]);
+			const initialTimeout = setTimeout(selectRandomPhrase, 10000);
+			return () => clearTimeout(initialTimeout);
+		}
+	}, [activePhrase, firstGreatings]);
 
   useEffect(() => {
     if (activePhrase !== "") {
@@ -85,7 +81,7 @@ const usePhraseSystem = ({
 //   const [activePhrase, setActivePhrase] = useState<string>("");
 //   const [phraseKey, setPhraseKey] = useState<number>(0);
 // 	const [previousEvent, setPreviousEvent] = useState<string | null>(null);
-// 	const eventsLog = useGamaStore((state) => state.eventsLog);
+// 	const eventsLog = useGameStore((state) => state.eventsLog);
 
 // 	const [firstGreatings, setFirstGreatings] = useState<boolean>(true);
 

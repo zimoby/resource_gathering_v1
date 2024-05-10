@@ -3,7 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stats } from "@react-three/drei";
 import { Color } from "three";
 import FlickeringEffect from "../effects/FlickeringEffect";
-import useGamaStore from "../store";
+import { useGameStore } from "../store";
 import { ChunkGrid } from "../components/gfx/ChunkGrid";
 import { CoordinatesKeys } from "../components/gfx/CoordinatesKeys";
 import { PulsingCircle } from "../components/gfx/PulsingCircle";
@@ -14,7 +14,7 @@ import { Map } from "./Map";
 import { FlyingDrone } from "../components/drone/Drone";
 
 export const GameCanvas = () => {
-  const firstStart = useGamaStore((state) => state.firstStart);
+  const firstStart = useGameStore((state) => state.firstStart);
 
   return (
     <Canvas flat shadows dpr={[1, 1.5]} gl={{ antialias: false }}>

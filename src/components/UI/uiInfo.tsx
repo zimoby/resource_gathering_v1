@@ -1,5 +1,5 @@
 import { convertChunkCoordinateToName } from "../../utils/functions";
-import useGamaStore from "../../store";
+import { useGameStore } from "../../store";
 import { BeaconsInfo } from "../beacons/BeaconsInfo";
 import TypingText from "../../effects/TextEffects";
 
@@ -11,23 +11,23 @@ export const BasicPanelWrapper = ({ children, titleText }: { children: React.Rea
 );
 
 export const UiInfo = () => {
-  const selectedResource = useGamaStore((state) => state.selectedResource);
-  const selectedChunk = useGamaStore((state) => state.selectedChunk);
-  const mapParams = useGamaStore((state) => state.mapParams);
-  const logs = useGamaStore((state) => state.logs);
-  const eventsLog = useGamaStore((state) => state.eventsLog);
+  const selectedResource = useGameStore((state) => state.selectedResource);
+  const selectedChunk = useGameStore((state) => state.selectedChunk);
+  const mapParams = useGameStore((state) => state.mapParams);
+  const logs = useGameStore((state) => state.logs);
+  const eventsLog = useGameStore((state) => state.eventsLog);
 
-  const weatherCondition = useGamaStore((state) => state.weatherCondition);
+  const weatherCondition = useGameStore((state) => state.weatherCondition);
 
-  const message = useGamaStore((state) => state.message);
+  const message = useGameStore((state) => state.message);
 
-  const playerPoints = useGamaStore((state) => state.playerPoints);
-  const collectedResources = useGamaStore((state) => state.collectedResources);
+  const playerPoints = useGameStore((state) => state.playerPoints);
+  const collectedResources = useGameStore((state) => state.collectedResources);
 
   // useEffect(() => {
   //   if (message === "") return;
   //   setTimeout(() => {
-  //     useGamaStore.setState({ message: "" });
+  //     useGameStore.setState({ message: "" });
   //   }, 2000);
   // }, [message]);
 

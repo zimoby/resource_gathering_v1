@@ -1,13 +1,13 @@
 import { useEffect } from "react";
-import useGamaStore from "../store";
+import { useGameStore } from "../store";
 import { useProcessBeacons } from "../components/beacons/beaconUtils";
 
 export const useGameLoop = () => {
   // const
 	const { destroyBeacons } = useProcessBeacons();
-  const updateWeather = useGamaStore.getState().updateWeather;
-  const addEventLog = useGamaStore.getState().addEventLog;
-  // const eventsLog = useGamaStore.getState().eventsLog;
+  const updateWeather = useGameStore.getState().updateWeather;
+  const addEventLog = useGameStore.getState().addEventLog;
+  // const eventsLog = useGameStore.getState().eventsLog;
 
   useEffect(() => {
     const weatherInterval = setInterval(() => {

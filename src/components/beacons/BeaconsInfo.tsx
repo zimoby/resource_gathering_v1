@@ -1,11 +1,11 @@
 import { useMemo } from "react";
-import useGamaStore from "../../store";
+import { useGameStore } from "../../store";
 import { convertChunkCoordinateToName } from "../../utils/functions";
 import { BasicPanelWrapper } from "../UI/uiInfo";
 
 
 export const BeaconsInfo = () => {
-    const beacons = useGamaStore((state) => state.beacons);
+    const beacons = useGameStore((state) => state.beacons);
     const memoizedBeacons = useMemo(() => {
 
       if (beacons.length === 0) return (<></>);

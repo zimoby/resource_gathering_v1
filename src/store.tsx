@@ -268,6 +268,4 @@ function createGamaStore() {
   }));
 }
 
-const useGamaStore = createGamaStore();
-
-export default useGamaStore;
+export const useGameStore = createGamaStore();

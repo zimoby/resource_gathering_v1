@@ -1,7 +1,7 @@
 import { Billboard, Float, Html, Sphere } from "@react-three/drei";
 import { useRef, useState } from "react";
 import { Group, Mesh } from "three";
-import useGamaStore from "../../store";
+import { useGameStore } from "../../store";
 import { useFrame } from "@react-three/fiber";
 import TypingText from "../../effects/TextEffects";
 import usePhraseSystem from "./usePhraseSystem";
@@ -40,7 +40,7 @@ export const FlyingDrone = () => {
   useFrame(({ clock }) => {
     const time = clock.getElapsedTime();
     if (!ref.current) return;
-    const { x, y, z } = useGamaStore.getState().activePosition;
+    const { x, y, z } = useGameStore.getState().activePosition;
     const ease = 0.02;
 
     if (firstAppearing && time > 0.3) {

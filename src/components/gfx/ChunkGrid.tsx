@@ -5,13 +5,13 @@ import {
   Color,
   Vector3
 } from "three";
-import useGamaStore from "../../store";
+import { useGameStore } from "../../store";
 
 export const ChunkGrid = ({ position, sizeExtend = 0 }: {
   position: number[],
   sizeExtend?: number
 }) => {
-  const { width, depth } = useGamaStore((state) => state.mapParams);
+  const { width, depth } = useGameStore((state) => state.mapParams);
 
   const gridGeometry = useMemo(() => {
     const geometry = new BufferGeometry();

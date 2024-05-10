@@ -1,11 +1,11 @@
 import { useCallback } from "react";
-import useGamaStore, { BeaconType, ResourceType } from "../../store";
+import { useGameStore, BeaconType, ResourceType } from "../../store";
 
 export const useProcessBeacons = () => {
-  const addLog = useGamaStore((state) => state.addLog);
-  // const currentChunk = useGamaStore.getState().currentLocation;
-  const beacons = useGamaStore((state) => state.beacons);
-  const weatherCondition = useGamaStore((state) => state.weatherCondition);
+  const addLog = useGameStore((state) => state.addLog);
+  // const currentChunk = useGameStore.getState().currentLocation;
+  const beacons = useGameStore((state) => state.beacons);
+  const weatherCondition = useGameStore((state) => state.weatherCondition);
 
   const addBeacon = useCallback(({
     position, resource, currentChunk
@@ -29,20 +29,20 @@ export const useProcessBeacons = () => {
     });
   
     if (isWithinRadius) {
-      useGamaStore.setState({ message: "Cannot place beacon too close to another beacon." });
+      useGameStore.setState({ message: "Cannot place beacon too close to another beacon." });
       return;
     }
   
     // console.log("Beacons in chunk:", [beacon.chunk.x, beacon.chunk.y, currentChunk.x, currentChunk.y]);
     if (chunkBeacons.length >= 2) {
-      useGamaStore.setState({ message: "Maximum beacons placed in this chunk." });
+      useGameStore.setState({ message: "Maximum beacons placed in this chunk." });
       // console.log("Maximum beacons placed in this chunk.");
       return;
     }
 
     addLog(`Beacon placed at ${currentChunk.x}, ${currentChunk.y}`);
   
-    useGamaStore.setState((state: { beacons: BeaconType[]; }) => {
+    useGameStore.setState((state: { beacons: BeaconType[]; }) => {
       // console.log("Adding beacon:", {x : position.x.toFixed(3), resource, currentChunk});
       const newBeacons = [
         ...state.beacons,
@@ -77,14 +77,14 @@ export const useProcessBeacons = () => {
           beacons.splice(randomIndex, 1);
         }
   
-        useGamaStore.setState((state) => {
+        useGameStore.setState((state) => {
           const newBeacons = state.beacons.filter(
             (beacon) => !destroyedBeacons.includes(beacon)
           );
           return { beacons: newBeacons };
         });
   
-        useGamaStore.setState({
+        useGameStore.setState({
           message: `Destroyed ${numBeaconsToDestroy} beacons due to severe weather.`,
         });
         addLog(`Destroyed ${numBeaconsToDestroy} beacons due to severe weather.`);

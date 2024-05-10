@@ -1,13 +1,13 @@
 import { useEffect } from "react";
-import useGamaStore, { resourceTypes } from "../store";
+import { resourceTypes, useGameStore } from "../store";
 
 export const useCalculateResources = () => {
-	const canPlaceBeacon = useGamaStore((state) => state.canPlaceBeacon);
-  const addEventLog = useGamaStore((state) => state.addEventLog);
+	const canPlaceBeacon = useGameStore((state) => state.canPlaceBeacon);
+  const addEventLog = useGameStore((state) => state.addEventLog);
 	
   useEffect(() => {
     const interval = setInterval(() => {
-      useGamaStore.setState((state) => {
+      useGameStore.setState((state) => {
 
         // Calculate the new player points
         let newPlayerPoints =

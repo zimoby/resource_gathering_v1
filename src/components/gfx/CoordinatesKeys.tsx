@@ -1,12 +1,12 @@
 import { Plane, Text } from "@react-three/drei";
 import { convertChunkCoordinateToName } from "../../utils/functions";
 import { useMemo } from "react";
-import useGamaStore from "../../store";
+import { useGameStore } from "../../store";
 import { DoubleSide } from "three";
 import FadingEffect from "../../effects/FadingEffect";
 
 export const GridMetricUnits = () => {
-  const { width, depth } = useGamaStore((state) => state.mapParams);
+  const { width, depth } = useGameStore((state) => state.mapParams);
 
   return (
     <mesh position={[0, 1, 0]} rotation-x={Math.PI / 2}>
@@ -21,11 +21,11 @@ const lightColor = "#afafaf";
 const redColor = "#8b0000";
 
 export const CoordinatesKeys = () => {
-  const { width, depth } = useGamaStore((state) => state.mapParams);
-  const speed = useGamaStore((state) => state.mapParams.speed);
+  const { width, depth } = useGameStore((state) => state.mapParams);
+  const speed = useGameStore((state) => state.mapParams.speed);
 
-  const currentLocation = useGamaStore((state) => state.currentLocation);
-  const moveDirection = useGamaStore((state) => state.moveDirection);
+  const currentLocation = useGameStore((state) => state.currentLocation);
+  const moveDirection = useGameStore((state) => state.moveDirection);
 
   const currentChunkName = useMemo(() => {
     return convertChunkCoordinateToName(currentLocation);

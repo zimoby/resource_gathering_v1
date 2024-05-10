@@ -2,20 +2,20 @@ import { useSpring, animated, easings } from "@react-spring/web";
 import { useState } from "react";
 import { SliderWithInput, CheckBox } from "./uiLibrary";
 import useMeasure from "react-use-measure";
-import useGamaStore from "../../../store";
+import { useGameStore } from "../../../store";
 
 export const SystemControls = () => {
   const [ref, bounds] = useMeasure();
   const [show, setShow] = useState(true);
 
-  const updateMapParam = useGamaStore((state) => state.updateMapParam);
-  const mapWidth = useGamaStore((state) => state.mapParams.width);
-  const mapDepth = useGamaStore((state) => state.mapParams.depth);
-  const mapResolution = useGamaStore((state) => state.mapParams.resolution);
-  const mapSpeed = useGamaStore((state) => state.mapParams.speed);
-	const disableAnimations = useGamaStore((state) => state.disableAnimations);
+  const updateMapParam = useGameStore((state) => state.updateMapParam);
+  const mapWidth = useGameStore((state) => state.mapParams.width);
+  const mapDepth = useGameStore((state) => state.mapParams.depth);
+  const mapResolution = useGameStore((state) => state.mapParams.resolution);
+  const mapSpeed = useGameStore((state) => state.mapParams.speed);
+	const disableAnimations = useGameStore((state) => state.disableAnimations);
 
-	const updateStoreProperty = useGamaStore((state) => state.updateStoreProperty);
+	const updateStoreProperty = useGameStore((state) => state.updateStoreProperty);
 
   const animation = useSpring({
     from: { height: 0 },

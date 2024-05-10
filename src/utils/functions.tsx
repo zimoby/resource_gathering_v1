@@ -1,6 +1,6 @@
-import useGamaStore, { ChunkType, DEV_MODE } from "../store";
+import { useGameStore, ChunkType, DEV_MODE } from "../store";
 
-export const consoleLog = (message: string, data: any) => {
+export const consoleLog = (message: string, data: object) => {
   DEV_MODE && console.log(message, { ...data});
 }
 
@@ -31,9 +31,9 @@ export const isOutOfBound = (
 };
 
 export const useCalculateDeltas = () => {
-  const dynamicSpeed = useGamaStore((state) => state.dynamicSpeed);
-  const { speed } = useGamaStore((state) => state.mapParams);
-  const direction = useGamaStore((state) => state.moveDirection);
+  const dynamicSpeed = useGameStore((state) => state.dynamicSpeed);
+  const { speed } = useGameStore((state) => state.mapParams);
+  const direction = useGameStore((state) => state.moveDirection);
 
   const deltaX = direction.x * (speed * dynamicSpeed);
   const deltaY = direction.y * (speed * dynamicSpeed);
@@ -42,7 +42,7 @@ export const useCalculateDeltas = () => {
 };
 
 export const useUpdateMapMoving = () => {
-  const { width, depth, offsetX, offsetY } = useGamaStore((state) => state.mapParams);
+  const { width, depth, offsetX, offsetY } = useGameStore((state) => state.mapParams);
 
   const updateLocationAndOffset = (offset: { current: { x: number; y: number; }; }) => {
 
@@ -52,7 +52,7 @@ export const useUpdateMapMoving = () => {
       width
     );
 
-    useGamaStore.setState({
+    useGameStore.setState({
       currentLocation: { x: currentChunk.x, y: currentChunk.y },
       currentOffset: { x: offset.current.x, y: offset.current.y },
     });
