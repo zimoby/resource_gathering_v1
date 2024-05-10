@@ -60,7 +60,7 @@ export const Terrain = () => {
   const indices = useMemo(() => {
     const indicesPrecalc = new Uint16Array(widthCount * depthCount * 6);
     generateIndices(widthCount, depthCount, indicesPrecalc);
-    console.log("indices precalculated:", indicesPrecalc, indicesPrecalc.length);
+    // console.log("indices precalculated:", indicesPrecalc, indicesPrecalc.length);
     return indicesPrecalc;
   }, [widthCount, depthCount]);
 
@@ -113,7 +113,7 @@ export const Terrain = () => {
 
   const { deltaX, deltaY } = useCalculateDeltas();
 
-  console.log("terrain generating:");
+  // console.log("terrain generating:");
   
   useFrame(() => {
 
@@ -129,7 +129,7 @@ export const Terrain = () => {
 
   return (
     <mesh ref={meshRef} geometry={terrainGeometry.current}>
-        <meshStandardMaterial wireframe={true} vertexColors side={DoubleSide} />
+      <meshStandardMaterial wireframe={true} vertexColors side={DoubleSide} />
     </mesh>
   );
 };

@@ -15,6 +15,8 @@ import { useParamsSync } from "./functions/paramsSync";
 import { BeaconsInfo } from "./components/beacons/BeaconsInfo";
 import { UiInfo } from "./components/uiInfo";
 import { useInitInfo } from "./components/initInfo";
+import FlickeringEffect from "./animations/FlickeringEffect";
+// import FadingEffect from "./animations/FadingEffect";
 
 const App = () => {
   const firstStart = useGamaStore((state) => state.firstStart)
@@ -40,12 +42,16 @@ const App = () => {
           {/* <GridMetricUnits /> */}
 
           <group position={[0, 0, 0]} visible={firstStart}>
-            <ChunkGrid position={[0,0,0]} sizeExtend={1} />
-            <ChunkGrid position={[0,-10,0]} sizeExtend={1} />
-            <ChunkGrid position={[0,-10,0]} sizeExtend={10} />
+            <FlickeringEffect initialIntensity={10} randomFrequency={0.008} duration={50}>
+              <ChunkGrid position={[0,0,0]} sizeExtend={1} />
+              <ChunkGrid position={[0,-10,0]} sizeExtend={1} />
+              <ChunkGrid position={[0,-10,0]} sizeExtend={10} />
+            </FlickeringEffect>
           </group>
           {/* <Beacons /> */}
-          <PulsingCircle />
+          {/* <FadingEffect> */}
+            <PulsingCircle />
+          {/* </FadingEffect> */}
         </Suspense>
 
         {/* <ChunkGrid position={[0,-10,0]} /> */}

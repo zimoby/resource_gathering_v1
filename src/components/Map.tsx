@@ -8,6 +8,8 @@ import { LinearGridShader } from "./linearGridShader";
 import { BasicGridShader } from "./BasicGridShader";
 import { useControls } from "leva";
 import { Mesh, ShaderMaterial } from "three";
+import FlickeringEffect from "../animations/FlickeringEffect";
+import FadingEffect from "../animations/FadingEffect";
 
 export const Map = () => {
   const firstStart = useGamaStore((state) => state.firstStart);
@@ -40,9 +42,11 @@ export const Map = () => {
   return (
     <group visible={firstStart}>
       <BeaconGroup />
-      <Terrain />
+      <FadingEffect>
+        <Terrain />
+      </FadingEffect>
       {/* <TerrainVertex /> */}
-      <group>
+      <FlickeringEffect appearingOnly={true} initialIntensity={10} randomFrequency={0.008} duration={50}>
         <group position={[0,0,width / 2 + 4]}>
           <LinearGridShader position={[0,0,-1]} sizeX={width} sizeY={2} width={rulerGridY} depth={1} />
           <LinearGridShader position={[0,0,0]} sizeX={width} sizeY={5} width={rulerGridY / 2} depth={1} />
@@ -59,7 +63,7 @@ export const Map = () => {
           <LinearGridShader position={[0,0,-1]} sizeX={width} sizeY={2} width={rulerGridY} depth={1} />
           <LinearGridShader position={[0,0,0]} sizeX={width} sizeY={5} width={rulerGridY / 2} depth={1} />
         </group>
-      </group>
+      </FlickeringEffect>
 
       <BasicGridShader planeRef={planeRef} />
     </group>
