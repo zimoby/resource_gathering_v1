@@ -32,7 +32,7 @@ export const CoordinatesKeys = () => {
   }, [currentLocation]);
 
   return (
-    <group position={[0, 0, 0]}>
+    <group position={[0, 0.3, 0]}>
       <FadingEffect randomFrequency={0.2} minOpacity={0.8}>
         <Text
           position={[-width / 2 - 2, 0, depth / 2]}

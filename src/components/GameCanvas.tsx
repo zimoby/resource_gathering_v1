@@ -20,10 +20,10 @@ export const GameCanvas = () => {
     <Canvas flat shadows dpr={[1, 1.5]} gl={{ antialias: false }}>
       <Stats showPanel={2} />
       {/* <Perf position="top-left" /> */}
-      <FlyingDrone />
       <SceneSettings />
       <Suspense fallback={null}>
         {/* <Viewcube /> */}
+        <FlyingDrone />
         <Map />
         <CoordinatesKeys />
         <group position={[0, 0, 0]} visible={firstStart}>
@@ -39,8 +39,8 @@ export const GameCanvas = () => {
         <PulsingCircle />
         {/* </group> */}
         {/* </FadingEffect> */}
+        <PlaneTest position={[0, -10, 0]} color={new Color(0x1586e9)} />
       </Suspense>
-      <PlaneTest position={[0, -10, 0]} color={new Color(0x1586e9)} />
       <OrbitControls />
       <EffectsCollection />
     </Canvas>

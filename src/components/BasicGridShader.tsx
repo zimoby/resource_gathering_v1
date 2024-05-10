@@ -51,10 +51,11 @@ const fragmentShader = `
 `;
 
 export interface BasicGridShaderProps {
+  position?: [number, number, number];
   planeRef: RefObject<Mesh<BufferGeometry, Material | Material[], Object3DEventMap>>;
 }
 
-export const BasicGridShader = ({ planeRef }: BasicGridShaderProps) => {
+export const BasicGridShader = ({ position = [0,0,0], planeRef }: BasicGridShaderProps) => {
   const { width, depth } = useGamaStore((state) => state.mapParams);
   const gridConfig = useGamaStore((state) => state.gridConfig);
 
@@ -89,10 +90,12 @@ export const BasicGridShader = ({ planeRef }: BasicGridShaderProps) => {
   }, [width, depth, gridConfig]);
 
   return (
-    <mesh ref={planeRef} rotation={[-Math.PI / 2, 0, 0]}>
-      <planeGeometry />
-      <shaderMaterial />
-    </mesh>
+    <group position={position}>
+      <mesh ref={planeRef} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry />
+        <shaderMaterial />
+      </mesh>
+    </group>
   );
 
 };
