@@ -44,7 +44,7 @@ export const BeaconGroup = () => {
   return (
     <group visible={firstStart}>
       {beacons.map((beacon, index) => (
-        <group key={index}>
+        <group key={beacon.id}>
           <group position={[beacon.x, beacon.y, beacon.z]} ref={beaconRefs.current[index]}>
             <Sphere args={[1, 8, 8]} position={[0, beaconHeight, 0]} />
             <Cylinder args={[0.1, 0.1, beaconHeight, 4]} position={[0, beaconHeight / 2, 0]} />

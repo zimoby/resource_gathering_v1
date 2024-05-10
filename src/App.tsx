@@ -16,6 +16,8 @@ import { BeaconsInfo } from "./components/beacons/BeaconsInfo";
 import { UiInfo } from "./components/uiInfo";
 import { useInitInfo } from "./components/initInfo";
 import FlickeringEffect from "./animations/FlickeringEffect";
+import { useGameLoop } from "./components/GameLoop";
+
 // import FadingEffect from "./animations/FadingEffect";
 
 const App = () => {
@@ -24,6 +26,7 @@ const App = () => {
   useInitInfo();
   useCalculateResources();
   useParamsSync();
+  useGameLoop();
 
   return (
     <>

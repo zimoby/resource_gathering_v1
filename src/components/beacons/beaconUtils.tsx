@@ -1,13 +1,11 @@
 import { useCallback } from "react";
 import useGamaStore, { BeaconType, ResourceType } from "../../store";
 
-
-
-
 export const useProcessBeacons = () => {
-
+  const addLog = useGamaStore((state) => state.addLog);
   // const currentChunk = useGamaStore.getState().currentLocation;
   const beacons = useGamaStore((state) => state.beacons);
+  const weatherCondition = useGamaStore((state) => state.weatherCondition);
 
   const addBeacon = useCallback(({
     position, resource, currentChunk
@@ -41,6 +39,8 @@ export const useProcessBeacons = () => {
       // console.log("Maximum beacons placed in this chunk.");
       return;
     }
+
+    addLog(`Beacon placed at ${currentChunk.x}, ${currentChunk.y}`);
   
     useGamaStore.setState((state: { beacons: BeaconType[]; }) => {
       // console.log("Adding beacon:", {x : position.x.toFixed(3), resource, currentChunk});
@@ -54,13 +54,44 @@ export const useProcessBeacons = () => {
           chunkX: currentChunk.x,
           chunkY: currentChunk.y,
           visible: true,
+          id: Math.random().toString(36).substr(2, 9),
         },
       ];
       console.log("Adding beacon:", {newBeacons, position, currentChunk});
       return { beacons: newBeacons };
     });
-  }, [beacons]);
+  }, [addLog, beacons]);
 
-  return { addBeacon };
+  const destroyBeacons = useCallback(() => {
+    if (weatherCondition === "severe") {
+      const destroyPercentage = 0.2;
+      const numBeaconsToDestroy = Math.floor(beacons.length * destroyPercentage);
+  
+      if (numBeaconsToDestroy > 0) {
+        const destroyedBeacons: BeaconType[] = [];
+  
+        for (let i = 0; i < numBeaconsToDestroy; i++) {
+          const randomIndex = Math.floor(Math.random() * beacons.length);
+          const destroyedBeacon = beacons[randomIndex];
+          destroyedBeacons.push(destroyedBeacon);
+          beacons.splice(randomIndex, 1);
+        }
+  
+        useGamaStore.setState((state) => {
+          const newBeacons = state.beacons.filter(
+            (beacon) => !destroyedBeacons.includes(beacon)
+          );
+          return { beacons: newBeacons };
+        });
+  
+        useGamaStore.setState({
+          message: `Destroyed ${numBeaconsToDestroy} beacons due to severe weather.`,
+        });
+        addLog(`Destroyed ${numBeaconsToDestroy} beacons due to severe weather.`);
+      }
+    }
+  }, [addLog, beacons, weatherCondition]);
+  
+  return { addBeacon, destroyBeacons };
 
 };

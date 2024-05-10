@@ -1,12 +1,13 @@
 import { Color } from "three";
 import create from "zustand";
+import { generateWeather } from "./components/weatherSystem";
 
 export const minLevel = -10;
 export const maxLevel = 100;
 
 export type TerrainType = "water" | "grass" | "dirt" | "snow" | "default";
-
 export type ResourceType = "r1" | "r2" | "r3" | "r4";
+export type WeatherCondition = "mild" | "moderate" | "severe";
 
 export interface Terrain {
   color: Color;
@@ -60,6 +61,7 @@ export interface BeaconType {
   chunkX: number;
   chunkY: number;
   visible: boolean;
+  id: string;
 }
 
 export interface GamaStoreState {
@@ -81,12 +83,16 @@ export interface GamaStoreState {
     name: string;
     seed: string;
   };
+  logs: string[];
   message: string;
   scanRadius: number;
   canPlaceBeacon: boolean;
   activePosition: { x: number; y: number; z: number };
+  weatherCondition: WeatherCondition;
+  updateWeather: () => void;
   toggleShowResources: () => void;
   replacePropWithXY: (name: string, value: Offset) => void;
+  addLog: (log: string) => void;
 }
 
 interface TerrainTypesT {
@@ -183,13 +189,28 @@ const useGamaStore = create<GamaStoreState>((set) => ({
     seed: "42",
   },
   message: "",
+  logs: [],
   scanRadius: 30,
   canPlaceBeacon: false,
   activePosition: { x: 0, y: 0, z: 0},
+  weatherCondition: "mild",
   toggleShowResources: () =>
     set((state) => ({ showResources: !state.showResources })),
   replacePropWithXY: (name, value) => {
     set(() => ({ [name]: { x: value.x, y: value.y } }));
+  },
+  addLog: (log) => {
+    set((state) => {
+      const updatedLogs = [log, ...state.logs];
+      if (updatedLogs.length > 10) {
+        updatedLogs.pop();
+      }
+      return { logs: updatedLogs };
+    });
+  },
+  updateWeather: () => {
+    const newWeather = generateWeather();
+    set({ weatherCondition: newWeather });
   },
 }));
 

@@ -2,7 +2,7 @@ import { RefObject, useCallback, useEffect } from "react";
 import { Camera, Mesh, Raycaster, Vector2 } from "three";
 import useGamaStore, { ResourceType } from "../store";
 import { debounce, throttle } from "lodash";
-import { useProcessBeacons } from "../components/beacons/addBeacon";
+import { useProcessBeacons } from "../components/beacons/beaconUtils";
 import { getChunkCoordinates } from "./functions";
 
 const getIntersection = (
