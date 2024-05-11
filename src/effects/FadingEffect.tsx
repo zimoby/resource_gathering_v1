@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, ReactNode } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Group, Material, Mesh } from "three";
+import { useAppearingGlitchingEffect } from "./AppearingGlitchingEffect";
 
 interface FadingEffectProps {
   children: ReactNode;
@@ -36,7 +37,7 @@ const FadingEffect: React.FC<FadingEffectProps> = ({
 
   useEffect(() => {
     const group = groupRef.current;
-    if (disabled && group) { 
+    if (disabled && group) {
       group.children.forEach((child) => {
         if (child instanceof Mesh) {
           setMeshOpacity(child, maxOpacity);
@@ -46,82 +47,14 @@ const FadingEffect: React.FC<FadingEffectProps> = ({
     }
   }, [disabled, maxOpacity]);
 
-  // useEffect(() => {
-  //   if (disabled) { return; }
-  //   const group = groupRef.current;
-
-  //   if (group) {
-  //     const timeouts = new Set<number>();
-  //     group.children.forEach((child) => {
-  //       let lastToggle = 0;
-  //       for (let i = 0; i < initialIntensity; i++) {
-  //         lastToggle += Math.random() * 1000;
-  //         timeouts.add( setTimeout(() => {
-  //           // if (child instanceof Mesh) {
-  //             console.log("child:", child);
-  //             setMeshOpacity(child, Math.random() * (maxOpacity - minOpacity) + minOpacity);
-  //           // }
-  //         }, lastToggle));
-  //       }
-  //     });
-  //     return () => timeouts.forEach(clearTimeout);
-  //   }
-  // }, [children, initialIntensity, minOpacity, maxOpacity, disabled]);
-
-  useEffect(() => {
-    // console.log('FlickeringEffect: group.children');
-    if (disabled) { return }
-
-    const group = groupRef.current;
-    
-    if (group) {
-        const timeouts = new Set<number>();
-        group.children.forEach((child) => {
-            let lastToggle = 0;
-            for (let i = 0; i < initialIntensity; i++) {
-                lastToggle += Math.random() * 100;
-                console.log("child fading");
-                timeouts.add(setTimeout(() => {
-                    child.visible = !child.visible;
-                }, lastToggle));
-            }
-            child.visible = true;
-        });
-        return () => timeouts.forEach(clearTimeout);
-    }
-  }, [initialIntensity, disabled]);
-  
-  // enable visibility of every child as random time range
-  // useEffect(() => {
-  //   if (disabled) { return; }
-  //   const group = groupRef.current;
-
-  //   if (group) {
-  //     const timeouts = new Set<number>();
-  //     group.children.forEach(
-  //       (child) => {
-  //         let lastToggle = 0;
-  //         // console.log("child:", child);
-  //         for (let i = 0; i < initialIntensity; i++) {
-  //           lastToggle += Math.random() * 1000;
-  //           timeouts.add(
-  //             setTimeout(() => {
-  //               if (child instanceof Mesh) {
-  //                 setMeshOpacity(child, Math.random() * (maxOpacity - minOpacity) + minOpacity);
-  //               }
-  //             }, lastToggle)
-  //           );
-  //         }
-  //       }
-  //     );
-  //     return () => timeouts.forEach(clearTimeout);
-  //   }
-  // }, [children, initialIntensity, minOpacity, maxOpacity, disabled]);
+  useAppearingGlitchingEffect({ disabled, groupRef, initialIntensity });
 
   useFrame(() => {
     const group = groupRef.current;
 
-    if (disabled) { return; }
+    if (disabled) {
+      return;
+    }
 
     if (group) {
       group.children.forEach((child) => {

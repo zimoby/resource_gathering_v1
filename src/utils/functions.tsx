@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useGameStore, ChunkType, DEV_MODE } from "../store";
 
 export const consoleLog = (message: string, data?: object) => {
-  DEV_MODE && console.log(message, { ...data});
+  DEV_MODE && data ? console.log(message, { ...data }) : console.log(message);
 }
 
 export const useCheckVariableRender = ({variable, name}: {variable: object | string | number | boolean, name: string}) => {

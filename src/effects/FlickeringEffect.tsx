@@ -1,92 +1,69 @@
-import { useEffect, useRef, ReactNode } from 'react';
-import { useFrame } from '@react-three/fiber';
-import { Group } from 'three';
+import { useEffect, useRef, ReactNode } from "react";
+import { useFrame } from "@react-three/fiber";
+import { Group } from "three";
+import { useAppearingGlitchingEffect } from "./AppearingGlitchingEffect";
 
 interface FlickeringEffectProps {
-    children: ReactNode;
-    disabled?: boolean;
-    appearingOnly?: boolean;
-    initialIntensity?: number;
-    randomFrequency?: number;
-    duration?: number;
-  }
+  children: ReactNode;
+  disabled?: boolean;
+  appearingOnly?: boolean;
+  initialIntensity?: number;
+  randomFrequency?: number;
+  duration?: number;
+}
 
-  const FlickeringEffect: React.FC<FlickeringEffectProps> = ({
-    children,
-    disabled = false,
-    appearingOnly = false,
-    initialIntensity = 10,
-    randomFrequency = 0.01,
-    duration = 100,
-  }) => {
-    const groupRef = useRef<Group>(null);
+const FlickeringEffect: React.FC<FlickeringEffectProps> = ({
+  children,
+  disabled = false,
+  appearingOnly = false,
+  initialIntensity = 10,
+  randomFrequency = 0.01,
+  duration = 100,
+}) => {
+  const groupRef = useRef<Group>(null);
 
-    useEffect(() => {
-        const group = groupRef.current;
-        if (disabled && group) {
-            console.log('FlickeringEffect: group.children');
-            group.children.forEach((child) => {
-                child.visible = true;
-            });
-          return;
+  useEffect(() => {
+    const group = groupRef.current;
+    if (disabled && group) {
+      group.children.forEach((child) => {
+        child.visible = true;
+      });
+      return;
+    }
+  }, [disabled]);
+
+	useAppearingGlitchingEffect({ disabled, groupRef, duration, initialIntensity });
+
+  useFrame(() => {
+    if (appearingOnly || disabled) return;
+
+    const group = groupRef.current;
+
+    // if (disabled) {
+    //     if (group) {
+    //         group.children.forEach(child => {
+    //             child.visible = true;
+    //         });
+    //     }
+    //     return;
+    // }
+
+    if (group) {
+      group.children.forEach((child) => {
+        if (Math.random() < randomFrequency) {
+          child.visible = !child.visible;
         }
-      }, [disabled]);
-    
+      });
+    }
+  });
 
-    useEffect(() => {
-        // console.log('FlickeringEffect: group.children');
-        if (disabled) { return }
-
-        const group = groupRef.current;
-        
-        if (group) {
-            const timeouts = new Set<number>();
-            group.children.forEach((child) => {
-                let lastToggle = 0;
-                for (let i = 0; i < initialIntensity; i++) {
-                    lastToggle += Math.random() * duration;
-                    timeouts.add(setTimeout(() => {
-                        child.visible = !child.visible;
-                    }, lastToggle));
-                }
-                child.visible = true;
-            });
-            return () => timeouts.forEach(clearTimeout);
-        }
-    }, [initialIntensity, duration, disabled]);
-
-    useFrame(() => {
-        if (appearingOnly || disabled) return;
-
-        const group = groupRef.current;
-
-        // if (disabled) {
-        //     if (group) {
-        //         group.children.forEach(child => {
-        //             child.visible = true;
-        //         });
-        //     }
-        //     return;
-        // }
-
-        if (group) {
-            group.children.forEach(child => {
-            if (Math.random() < randomFrequency) {
-                child.visible = !child.visible;
-            }
-            });
-        }
-    });
-
-    return <group ref={groupRef}>{children}</group>;
-  };
+  return <group ref={groupRef}>{children}</group>;
+};
 
 export default FlickeringEffect;
 
-
 // import React, { useEffect, useRef } from 'react';
 // import { useFrame } from '@react-three/fiber';
-
 
 // const FlickeringEffect = ({ children, initialIntensity = 10, randomFrequency = 0.008, duration = 100 }) => {
 //   const isVisible = useRef(true);
