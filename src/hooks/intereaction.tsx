@@ -38,9 +38,7 @@ export const useKeyboardControls = ({
   const mouseEventRef = useRef<MouseEvent | null>(null);
 
   const handleMousePosition = useCallback((event: MouseEvent) => {
-    if (mouseEventRef.current) {
-      mouseEventRef.current = event;
-    }
+    mouseEventRef.current = event;
   }, []);
 
   const handleKeyDown = useCallback(
