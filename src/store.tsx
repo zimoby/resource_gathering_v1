@@ -68,7 +68,7 @@ export interface BeaconType {
 }
 
 
-export interface GamaStoreActions {
+export interface GameStoreActions {
   updateStoreProperty: (paramName: string, value: unknown) => void;
   updateMapSize: (value: number) => void;
   updateMapParam: (paramName: string, value: unknown) => void;
@@ -81,7 +81,7 @@ export interface GamaStoreActions {
 }
 
 
-export type GamaStoreState = {
+export type GameStoreState = {
   disableAnimations: boolean;
   educationMode: boolean;
 
@@ -110,7 +110,7 @@ export type GamaStoreState = {
   canPlaceBeacon: boolean;
   activePosition: { x: number; y: number; z: number };
   weatherCondition: WeatherCondition;
-} & GamaStoreActions;
+} & GameStoreActions;
 
 interface TerrainTypesT {
   [key: string]: Terrain;
@@ -166,8 +166,8 @@ export const resourceTypes: ResourceTypesT = {
   },
 };
 
-function createGamaStore() {
-  return create<GamaStoreState>((set, get) => ({
+function createGameStore() {
+  return create<GameStoreState>((set, get) => ({
     disableAnimations: false,
     educationMode: true,
 
@@ -271,4 +271,4 @@ function createGamaStore() {
   }));
 }
 
-export const useGameStore = createGamaStore();
+export const useGameStore = createGameStore();
