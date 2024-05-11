@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { PhrasesCollection } from "./PhrasesCollection";
-import { consoleLog } from "../../utils/functions";
-// import { useGameStore } from "../../store";
 
 interface PhraseSystemOptions {
   minDuration?: number;

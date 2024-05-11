@@ -1,4 +1,4 @@
-import { MouseEvent, RefObject, useCallback, useEffect, useRef, useState } from "react";
+import { RefObject, useCallback, useEffect, useRef } from "react";
 import { Camera, Mesh, Raycaster, Vector2 } from "three";
 import { useGameStore, ResourceType } from "../store";
 import { debounce, throttle } from "lodash";
@@ -6,9 +6,9 @@ import { useProcessBeacons } from "../components/beacons/beaconUtils";
 import { getChunkCoordinates } from "../utils/functions";
 
 const getIntersection = (
-  event: MouseEvent | null,
+  event: { clientX: number; clientY: number },
   raycaster: Raycaster,
-  mesh: Mesh,
+  mesh: Mesh | null,
   camera: Camera
 ) => {
   const mouse = new Vector2();
@@ -17,18 +17,23 @@ const getIntersection = (
   mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
   raycaster.setFromCamera(mouse, camera);
-  const intersects = raycaster.intersectObject(mesh);
-
-  return intersects;
+  if (mesh) {
+    const intersects = raycaster.intersectObject(mesh);
+    return intersects;
+  } else {
+    return [];
+  }
 };
 
-export const useKeyboardControls = ({meshRef, camera, raycaster}:
-  {
-    camera: Camera;
-    raycaster: Raycaster;
-    meshRef: RefObject<Mesh>;
-  }
-): void => {
+export const useKeyboardControls = ({
+  meshRef,
+  camera,
+  raycaster,
+}: {
+  camera: Camera;
+  raycaster: Raycaster;
+  meshRef: RefObject<Mesh>;
+}): void => {
   const canPlaceBeacon = useGameStore((state) => state.canPlaceBeacon);
   const mouseEventRef = useRef<MouseEvent | null>(null);
 
@@ -38,44 +43,52 @@ export const useKeyboardControls = ({meshRef, camera, raycaster}:
     }
   }, []);
 
-  const handleKeyDown = useCallback((event: KeyboardEvent) => {
-    const intersects = getIntersection(mouseEventRef.current, raycaster, meshRef.current, camera);
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      const intersects = getIntersection(
+        mouseEventRef.current || { clientX: 0, clientY: 0 },
+        raycaster,
+        meshRef.current,
+        camera
+      );
 
-    switch (event.key) {
-      case "ArrowUp":
-      case "w":
-        useGameStore.setState({ moveDirection: { x: 0, y: -1 } });
-        break;
-      case "ArrowDown":
-      case "s":
-        useGameStore.setState({ moveDirection: { x: 0, y: 1 } });
-        break;
-      case "ArrowLeft":
-      case "a":
-        useGameStore.setState({ moveDirection: { x: -1, y: 0 } });
-        break;
-      case "ArrowRight":
-      case "d":
-        useGameStore.setState({ moveDirection: { x: 1, y: 0 } });
-        break;
-      case "Shift":
-        useGameStore.setState({ dynamicSpeed: 3 });
-        break;
-      case " ":
-        useGameStore.setState({ canPlaceBeacon: true });
+      switch (event.key) {
+        case "ArrowUp":
+        case "w":
+          useGameStore.setState({ moveDirection: { x: 0, y: -1 } });
+          break;
+        case "ArrowDown":
+        case "s":
+          useGameStore.setState({ moveDirection: { x: 0, y: 1 } });
+          break;
+        case "ArrowLeft":
+        case "a":
+          useGameStore.setState({ moveDirection: { x: -1, y: 0 } });
+          break;
+        case "ArrowRight":
+        case "d":
+          useGameStore.setState({ moveDirection: { x: 1, y: 0 } });
+          break;
+        case "Shift":
+          useGameStore.setState({ dynamicSpeed: 3 });
+          break;
+        case " ":
+          useGameStore.setState({ canPlaceBeacon: true });
 
-        if (intersects.length > 0 && !canPlaceBeacon) {
-          const { point, face } = intersects[0];
-          if (!face) return;
-    
+          if (intersects.length > 0 && !canPlaceBeacon) {
+            const { point, face } = intersects[0];
+            if (!face) return;
+
             useGameStore.setState({
               activePosition: point,
             });
-        }
+          }
 
-        break;
-    }
-  }, [camera, canPlaceBeacon, meshRef, raycaster]);
+          break;
+      }
+    },
+    [camera, canPlaceBeacon, meshRef, raycaster]
+  );
 
   const handleKeyUp = useCallback((event: KeyboardEvent) => {
     switch (event.key) {
@@ -103,7 +116,12 @@ export const useKeyboardControls = ({meshRef, camera, raycaster}:
   }, [handleKeyDown, handleKeyUp, handleMousePosition]);
 };
 
-export const useCanvasHover = ({ camera, raycaster, meshRef, resources }: {
+export const useCanvasHover = ({
+  camera,
+  raycaster,
+  meshRef,
+  resources,
+}: {
   camera: Camera;
   raycaster: Raycaster;
   meshRef: RefObject<Mesh>;
@@ -119,7 +137,7 @@ export const useCanvasHover = ({ camera, raycaster, meshRef, resources }: {
   }, 100);
 
   const handleCanvasHover = useCallback(
-    (event: { clientX: number; clientY: number, type: string }) => {
+    (event: { clientX: number; clientY: number; type: string }) => {
       // mousePositionRef.current = { x: event.clientX, y: event.clientY };
 
       // const reltimeIntersect = getIntersection(event, raycaster, meshRef.current, camera);
@@ -134,15 +152,18 @@ export const useCanvasHover = ({ camera, raycaster, meshRef, resources }: {
       //   }, 100)();
       // }
 
-
       // console.log("mouse", mousePositionRef.current);
       if (!canPlaceBeacon || !meshRef.current) {
         // useGameStore.setState({ showResources: false });
         return;
       }
 
-
-      const intersects = getIntersection(event, raycaster, meshRef.current, camera);
+      const intersects = getIntersection(
+        { clientX: event.clientX, clientY: event.clientY },
+        raycaster,
+        meshRef.current,
+        camera
+      );
 
       if (intersects.length > 0) {
         const { point, face } = intersects[0];
@@ -182,7 +203,19 @@ export const useCanvasHover = ({ camera, raycaster, meshRef, resources }: {
         }
       }
     },
-    [canPlaceBeacon, meshRef, raycaster, camera, resources, width, depth, throttledSetState, addBeacon, offsetX, offsetY]
+    [
+      canPlaceBeacon,
+      meshRef,
+      raycaster,
+      camera,
+      resources,
+      width,
+      depth,
+      throttledSetState,
+      addBeacon,
+      offsetX,
+      offsetY,
+    ]
   );
 
   useEffect(() => {

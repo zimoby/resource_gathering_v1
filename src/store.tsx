@@ -1,7 +1,7 @@
 import { Color } from "three";
 import { create } from "zustand";
 import { generateWeather } from "./utils/generators";
-import { persist } from "zustand/middleware";
+// import { persist } from "zustand/middleware";
 
 export const minLevel = -10;
 export const maxLevel = 100;
