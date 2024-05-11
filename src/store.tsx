@@ -78,6 +78,9 @@ export interface GameStoreActions {
   addEventLog: (eventName: string) => void;
   removeFirstEventLog: () => void;
   updateWeather: () => WeatherCondition | null;
+  updateEducationMode: (value: boolean) => void;
+  resetEducationMode: () => void;
+  updateDisableAnimationsInStorage: (value: boolean) => void;
 }
 
 
@@ -168,8 +171,8 @@ export const resourceTypes: ResourceTypesT = {
 
 function createGameStore() {
   return create<GameStoreState>((set, get) => ({
-    disableAnimations: false,
-    educationMode: true,
+    disableAnimations: localStorage.getItem('disableAnimations') === 'true',
+    educationMode: localStorage.getItem('educationMode') === 'true',
 
     firstStart: false,
     loading: true,
@@ -267,6 +270,19 @@ function createGameStore() {
         set({ weatherCondition: newWeather });
         return newWeather;
       }
+    },
+
+    updateDisableAnimationsInStorage: (value: boolean) => {
+      set({ disableAnimations: value });
+      localStorage.setItem('disableAnimations', value.toString());
+    },
+    updateEducationMode: (value: boolean) => {
+      set({ educationMode: value });
+      localStorage.setItem('educationMode', value.toString());
+    },
+    resetEducationMode: () => {
+      set({ educationMode: true });
+      localStorage.setItem('educationMode', 'true');
     }
   }));
 }

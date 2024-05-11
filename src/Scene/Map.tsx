@@ -17,6 +17,7 @@ export const Map = () => {
   const planeRef = useRef<Mesh>(null);
   const offset = useRef({ x: 0, y: 0 });
   const { width, depth } = useGameStore((state) => state.mapParams);
+  const disableAnimations = useGameStore((state) => state.disableAnimations);
 
   const { deltaX, deltaY } = useCalculateDeltas();
   const { updateLocationAndOffset } = useUpdateMapMoving();
@@ -33,7 +34,7 @@ export const Map = () => {
 
     updateLocationAndOffset(offset);
 
-    if (planeRef.current && planeRef.current.material instanceof ShaderMaterial && planeRef.current.material.uniforms.offset.value) {
+    if (planeRef.current && planeRef.current.material instanceof ShaderMaterial && planeRef.current.material.uniforms.offset && planeRef.current.material.uniforms.offset.value) {
       planeRef.current.material.uniforms.offset.value.set(offset.current.x * 0.01, -offset.current.y * 0.01);
     }
   });
@@ -41,12 +42,12 @@ export const Map = () => {
   return (
     <group visible={firstStart}>
       <BeaconGroup />
-      <FadingEffect>
+      <FadingEffect disabled={disableAnimations}>
         <Terrain />
       </FadingEffect>
       {/* <TerrainVertex /> */}
       <group position={[0,-1,0]}>
-        <FlickeringEffect appearingOnly={true} initialIntensity={10} randomFrequency={0.008} duration={50}>
+        <FlickeringEffect disabled={disableAnimations} appearingOnly={true} initialIntensity={10} randomFrequency={0.008} duration={50}>
           <group position={[0,0,depth / 2 + 4]}>
             <LinearGridShader position={[0,0,-1]} sizeX={width} sizeY={2} width={rulerGridY / (100 / width)} depth={1} />
             <LinearGridShader position={[0,0,0]} sizeX={width} sizeY={5} width={rulerGridY / (100 / width) / 2} depth={1} />

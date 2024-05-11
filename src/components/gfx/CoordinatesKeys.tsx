@@ -23,6 +23,7 @@ const redColor = "#8b0000";
 export const CoordinatesKeys = () => {
   const { width, depth } = useGameStore((state) => state.mapParams);
   const speed = useGameStore((state) => state.mapParams.speed);
+  const disableAnimations = useGameStore((state) => state.disableAnimations);
 
   const currentLocation = useGameStore((state) => state.currentLocation);
   const moveDirection = useGameStore((state) => state.moveDirection);
@@ -33,7 +34,7 @@ export const CoordinatesKeys = () => {
 
   return (
     <group position={[0, 0.3, 0]}>
-      <FadingEffect randomFrequency={0.2} minOpacity={0.8}>
+      <FadingEffect disabled={disableAnimations} randomFrequency={0.2} minOpacity={0.8}>
         <Text
           position={[-width / 2 - 2, 0, depth / 2]}
           rotation={[-Math.PI / 2, 0, Math.PI / 2]}

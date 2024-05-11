@@ -14,8 +14,9 @@ export const SystemControls = () => {
   const mapResolution = useGameStore((state) => state.mapParams.resolution);
   const mapSpeed = useGameStore((state) => state.mapParams.speed);
 	const disableAnimations = useGameStore((state) => state.disableAnimations);
+  const updateDisableAnimationsInStorage = useGameStore((state) => state.updateDisableAnimationsInStorage);
 
-	const updateStoreProperty = useGameStore((state) => state.updateStoreProperty);
+	// const updateStoreProperty = useGameStore((state) => state.updateStoreProperty);
 
   const animation = useSpring({
     from: { height: 0 },
@@ -72,7 +73,9 @@ export const SystemControls = () => {
 						<CheckBox
 							label="Disable Animations"
 							value={disableAnimations}
-							onUpdate={() => updateStoreProperty("disableAnimations", !disableAnimations)}
+							// onUpdate={() => updateStoreProperty("disableAnimations", !disableAnimations)}
+							onUpdate={() => updateDisableAnimationsInStorage(!disableAnimations)}
+
 						/>
           </div>
         </div>

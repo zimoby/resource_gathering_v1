@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { PhrasesCollection } from "./PhrasesCollection";
+import { useGameStore } from "../../store";
 
 interface PhraseSystemOptions {
   minDuration?: number;
@@ -50,16 +51,25 @@ const usePhraseSystem = ({
   const [phraseKey, setPhraseKey] = useState<number>(0);
 	const [firstGreetings, setFirstGreetings] = useState<boolean>(true);
 	const [educationalStepIndex, setEducationalStepIndex] = useState(0);
+	const educationMode = useGameStore((state) => state.educationMode);
 	// const beacons = useGameStore((state) => state.beacons);
 
 
 	useEffect(() => {
+
+		// console.log("educationMode:", educationMode, localStorage.getItem('educationMode'));
+		// if (localStorage.getItem('educationMode') === "false") {
+		if (!educationMode) {
+			setFirstGreetings(false);
+			// setActivePhrase({ phrase: PhrasesCollection[0] });
+		}
+
 		if(firstGreetings && !firstAppearing) {
 			setActivePhrase(educationalStepsPhrases[educationalStepIndex]);
 			setPhraseKey((prevKey) => prevKey + 1);
 			// setFirstGreetings(false);
 		}
-	}, [educationalStepIndex, firstAppearing, firstGreetings]);
+	}, [educationMode, educationalStepIndex, firstAppearing, firstGreetings]);
 
 
 	// phrase: prevPhrase.educationalSteps[educationalStepIndex || 0],
@@ -107,6 +117,7 @@ const usePhraseSystem = ({
       setEducationalStepIndex((prevIndex) => prevIndex + 1);
     } else {
       setFirstGreetings(false);
+			useGameStore.getState().updateEducationMode(false);
 			setActivePhrase({ phrase: "" });
     }
   };

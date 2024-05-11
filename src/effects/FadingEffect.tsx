@@ -4,6 +4,7 @@ import { Group, Material, Mesh } from "three";
 
 interface FadingEffectProps {
   children: ReactNode;
+  disabled?: boolean;
   initialIntensity?: number;
   randomFrequency?: number;
   minOpacity?: number;
@@ -25,6 +26,7 @@ function updateMaterialOpacity(material: Material, opacity: number) {
 
 const FadingEffect: React.FC<FadingEffectProps> = ({
   children,
+  disabled = false,
   initialIntensity = 10,
   randomFrequency = 0.01,
   minOpacity = 0.1,
@@ -34,6 +36,20 @@ const FadingEffect: React.FC<FadingEffectProps> = ({
 
   useEffect(() => {
     const group = groupRef.current;
+    if (disabled && group) { 
+      group.children.forEach((child) => {
+        if (child instanceof Mesh) {
+          setMeshOpacity(child, maxOpacity);
+        }
+      });
+      return;
+    }
+  }, [disabled, maxOpacity]);
+
+  useEffect(() => {
+    if (disabled) { return; }
+    const group = groupRef.current;
+
     if (group) {
       const timeouts = new Set<number>();
       group.children.forEach(
@@ -53,10 +69,14 @@ const FadingEffect: React.FC<FadingEffectProps> = ({
       );
       return () => timeouts.forEach(clearTimeout);
     }
-  }, [children, initialIntensity, minOpacity, maxOpacity]);
+  }, [children, initialIntensity, minOpacity, maxOpacity, disabled]);
+  
 
   useFrame(() => {
     const group = groupRef.current;
+
+    if (disabled) { return; }
+
     if (group) {
       group.children.forEach((child) => {
         if (Math.random() < randomFrequency && child instanceof Mesh) {

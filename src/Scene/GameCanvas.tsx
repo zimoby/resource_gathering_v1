@@ -15,6 +15,7 @@ import { FlyingDrone } from "../components/drone/Drone";
 
 export const GameCanvas = () => {
   const firstStart = useGameStore((state) => state.firstStart);
+  const disableAnimations = useGameStore((state) => state.disableAnimations);
 
   return (
     <Canvas flat shadows dpr={[1, 1.5]} gl={{ antialias: false }}>
@@ -27,7 +28,7 @@ export const GameCanvas = () => {
         <Map />
         <CoordinatesKeys />
         <group position={[0, 0, 0]} visible={firstStart}>
-          <FlickeringEffect initialIntensity={10} randomFrequency={0.008} duration={50}>
+          <FlickeringEffect disabled={disableAnimations} initialIntensity={10} randomFrequency={0.008} duration={50}>
             <ChunkGrid position={[0, 0, 0]} sizeExtend={1} />
             <ChunkGrid position={[0, -10, 0]} sizeExtend={1} />
             <ChunkGrid position={[0, -10, 0]} sizeExtend={10} />

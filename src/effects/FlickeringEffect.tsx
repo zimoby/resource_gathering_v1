@@ -4,6 +4,7 @@ import { Group } from 'three';
 
 interface FlickeringEffectProps {
     children: ReactNode;
+    disabled?: boolean;
     appearingOnly?: boolean;
     initialIntensity?: number;
     randomFrequency?: number;
@@ -12,6 +13,7 @@ interface FlickeringEffectProps {
 
   const FlickeringEffect: React.FC<FlickeringEffectProps> = ({
     children,
+    disabled = false,
     appearingOnly = false,
     initialIntensity = 10,
     randomFrequency = 0.01,
@@ -21,6 +23,21 @@ interface FlickeringEffectProps {
 
     useEffect(() => {
         const group = groupRef.current;
+        if (disabled && group) {
+            console.log('FlickeringEffect: group.children');
+            group.children.forEach((child) => {
+                child.visible = true;
+            });
+          return;
+        }
+      }, [disabled]);
+    
+
+    useEffect(() => {
+        if (disabled) { return }
+
+        const group = groupRef.current;
+
         if (group) {
             const timeouts = new Set<number>();
             group.children.forEach((child) => {
@@ -35,11 +52,22 @@ interface FlickeringEffectProps {
             });
             return () => timeouts.forEach(clearTimeout);
         }
-    }, [initialIntensity, duration]);
+    }, [initialIntensity, duration, disabled]);
 
     useFrame(() => {
         if (appearingOnly) return;
+
         const group = groupRef.current;
+
+        if (disabled) {
+            if (group) {
+                group.children.forEach(child => {
+                    child.visible = true;
+                });
+            }
+            return;
+        }
+
         if (group) {
             group.children.forEach(child => {
             if (Math.random() < randomFrequency) {
