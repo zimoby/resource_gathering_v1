@@ -16,6 +16,7 @@ import { generateTerrain } from "./generateTerrain";
 import { NoiseFunction2D, createNoise2D } from "simplex-noise";
 import seedrandom from "seedrandom";
 import { useCalculateDeltas } from "../../utils/functions";
+import { useIncreasingSpeed } from "../../effects/IncreaseSceneSpeed";
 
 const generateIndices = (widthCount: number, depthCount: number, indices: Uint16Array) => {
   let index = 0;
@@ -53,6 +54,9 @@ export const Terrain = () => {
 
   const meshRef = useRef<Mesh>(null);
   const offset = useRef({ x: 0, y: 0 });
+
+  // const increasingSpeedRef = useRef(0);
+  // const goalSpeed = 1;
 
   const colors = useRef(new Float32Array((widthCount + 1) * (depthCount + 1) * 3));
   const positions = useRef(new Float32Array((widthCount + 1) * (depthCount + 1) * 3));
@@ -113,13 +117,14 @@ export const Terrain = () => {
   };
 
   const { deltaX, deltaY } = useCalculateDeltas();
+  const increasingSpeedRef = useIncreasingSpeed(0, 1, 0.01, 2);
 
   // console.log("terrain generating:");
   
   useFrame(() => {
 
-    offset.current.x += deltaX;
-    offset.current.y += deltaY;
+    offset.current.x += deltaX * increasingSpeedRef.current;
+    offset.current.y += deltaY * increasingSpeedRef.current;
 
     const resources = updateTerrainGeometry();
     

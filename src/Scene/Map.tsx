@@ -9,6 +9,7 @@ import { BasicGridShader } from "../components/gfx/BasicGridShader";
 import { Mesh, ShaderMaterial } from "three";
 import FlickeringEffect from "../effects/FlickeringEffect";
 import FadingEffect from "../effects/FadingEffect";
+import { useIncreasingSpeed } from "../effects/IncreaseSceneSpeed";
 
 const rulerGridY = 50;
 
@@ -20,6 +21,7 @@ export const Map = () => {
   const disableAnimations = useGameStore((state) => state.disableAnimations);
 
   const { deltaX, deltaY } = useCalculateDeltas();
+  const increasingSpeedRef = useIncreasingSpeed(0, 1, 0.01, 2);
   const { updateLocationAndOffset } = useUpdateMapMoving();
 
   // console.log("Map rendering");
@@ -29,8 +31,9 @@ export const Map = () => {
   // }, [deltaX, deltaY, firstStart, width, depth]);
   
   useFrame(() => {
-    offset.current.x += deltaX;
-    offset.current.y += deltaY;
+
+    offset.current.x += deltaX * increasingSpeedRef.current;
+    offset.current.y += deltaY * increasingSpeedRef.current;
 
     updateLocationAndOffset(offset);
 

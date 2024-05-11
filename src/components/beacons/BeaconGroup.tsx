@@ -5,6 +5,7 @@ import { useFrame } from "@react-three/fiber";
 import { isOutOfBound, useCalculateDeltas } from "../../utils/functions";
 import { createRef, useLayoutEffect, useRef } from "react";
 import { Group } from "three";
+import { useIncreasingSpeed } from "../../effects/IncreaseSceneSpeed";
 
 const beaconHeight = 10;
 const minDistance = 20;
@@ -18,6 +19,7 @@ export const BeaconGroup = () => {
   const { deltaX, deltaY } = useCalculateDeltas();
 
   const beaconRefs = useRef<React.RefObject<Group>[]>(beacons.map(() => createRef()));
+  const increasingSpeedRef = useIncreasingSpeed(0, 1, 0.01, 2);
 
 
   // console.log("beacons:", beacons);
@@ -37,8 +39,8 @@ export const BeaconGroup = () => {
       if (beaconObject) {
         const checkBoundaries = isOutOfBound({x: beaconObject.position.x, y: beaconObject.position.z}, width, depth, offsetX, offsetY);
 
-        beaconObject.position.x -= deltaX;
-        beaconObject.position.z -= deltaY;
+        beaconObject.position.x -= deltaX * increasingSpeedRef.current;
+        beaconObject.position.z -= deltaY * increasingSpeedRef.current;
 
         beaconObject.visible = !checkBoundaries.x && !checkBoundaries.y;
       }
