@@ -1,10 +1,10 @@
 import { Billboard, Float, Html, Sphere } from "@react-three/drei";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Group, Mesh } from "three";
 import { useGameStore } from "../../store";
 import { useFrame } from "@react-three/fiber";
 import TypingText from "../../effects/TextEffects";
-import usePhraseSystem, { educationalStepsPhrases } from "./usePhraseSystem";
+import usePhraseSystem from "./usePhraseSystem";
 
 export const Drone = () => {
   const sphereRef = useRef<Mesh>(null);

@@ -1,6 +1,7 @@
 import { Color } from "three";
 import { create } from "zustand";
 import { generateWeather } from "./utils/generators";
+import { persist } from "zustand/middleware";
 
 export const minLevel = -10;
 export const maxLevel = 100;
@@ -82,6 +83,7 @@ export interface GamaStoreActions {
 
 export type GamaStoreState = {
   disableAnimations: boolean;
+  educationMode: boolean;
 
   firstStart: boolean;
   loading: boolean;
@@ -167,6 +169,7 @@ export const resourceTypes: ResourceTypesT = {
 function createGamaStore() {
   return create<GamaStoreState>((set, get) => ({
     disableAnimations: false,
+    educationMode: true,
 
     firstStart: false,
     loading: true,

@@ -39,7 +39,7 @@ export const GameCanvas = () => {
         <PulsingCircle />
         {/* </group> */}
         {/* </FadingEffect> */}
-        <PlaneTest position={[0, -10, 0]} color={new Color(0x1586e9)} />
+        <PlaneTest position={[0, -12, 0]} color={new Color(0x1586e9)} />
       </Suspense>
       <OrbitControls />
       <EffectsCollection />

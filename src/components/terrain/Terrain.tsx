@@ -72,7 +72,7 @@ export const Terrain = () => {
   const colorAttribute = useRef(new Float32BufferAttribute(colors.current, 3));
   const indexAttribute = useRef(new BufferAttribute(indices, 1));
 
-  useKeyboardControls();
+  useKeyboardControls({ camera, raycaster: raycaster.current, meshRef });
   useCanvasHover({ camera, raycaster: raycaster.current, meshRef, resources });
 
   const updateTerrainGeometry = () => {

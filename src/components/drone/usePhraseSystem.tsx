@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { PhrasesCollection } from "./PhrasesCollection";
 import { consoleLog } from "../../utils/functions";
-import { useGameStore } from "../../store";
+// import { useGameStore } from "../../store";
 
 interface PhraseSystemOptions {
   minDuration?: number;
@@ -73,9 +73,9 @@ const usePhraseSystem = ({
 			// setActivePhrase({ phrase: "" });
 			// console.log("firstGreetings:", firstGreetings);
 			const selectRandomPhrase = () => {
-				consoleLog("selectRandomPhrase");
+				// consoleLog("selectRandomPhrase");
 				const newPhrase = randomisePhrase(activePhrase.phrase);
-				consoleLog("newPhrase:", { newPhrase });
+				// consoleLog("newPhrase:", { newPhrase });
 				setActivePhrase({ phrase: newPhrase });
 				setPhraseKey((prevKey) => prevKey + 1);
 				const timeout = setTimeout(selectRandomPhrase, 10000);

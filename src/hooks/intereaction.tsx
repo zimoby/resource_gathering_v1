@@ -1,4 +1,4 @@
-import { RefObject, useCallback, useEffect } from "react";
+import { MouseEvent, RefObject, useCallback, useEffect, useRef, useState } from "react";
 import { Camera, Mesh, Raycaster, Vector2 } from "three";
 import { useGameStore, ResourceType } from "../store";
 import { debounce, throttle } from "lodash";
@@ -6,12 +6,13 @@ import { useProcessBeacons } from "../components/beacons/beaconUtils";
 import { getChunkCoordinates } from "../utils/functions";
 
 const getIntersection = (
-  event: { clientX: number; clientY: number },
+  event: MouseEvent | null,
   raycaster: Raycaster,
   mesh: Mesh,
   camera: Camera
 ) => {
   const mouse = new Vector2();
+  if (!event) return [];
   mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
   mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
@@ -21,8 +22,25 @@ const getIntersection = (
   return intersects;
 };
 
-export const useKeyboardControls = (): void => {
+export const useKeyboardControls = ({meshRef, camera, raycaster}:
+  {
+    camera: Camera;
+    raycaster: Raycaster;
+    meshRef: RefObject<Mesh>;
+  }
+): void => {
+  const canPlaceBeacon = useGameStore((state) => state.canPlaceBeacon);
+  const mouseEventRef = useRef<MouseEvent | null>(null);
+
+  const handleMousePosition = useCallback((event: MouseEvent) => {
+    if (mouseEventRef.current) {
+      mouseEventRef.current = event;
+    }
+  }, []);
+
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
+    const intersects = getIntersection(mouseEventRef.current, raycaster, meshRef.current, camera);
+
     switch (event.key) {
       case "ArrowUp":
       case "w":
@@ -45,9 +63,19 @@ export const useKeyboardControls = (): void => {
         break;
       case " ":
         useGameStore.setState({ canPlaceBeacon: true });
+
+        if (intersects.length > 0 && !canPlaceBeacon) {
+          const { point, face } = intersects[0];
+          if (!face) return;
+    
+            useGameStore.setState({
+              activePosition: point,
+            });
+        }
+
         break;
     }
-  }, []);
+  }, [camera, canPlaceBeacon, meshRef, raycaster]);
 
   const handleKeyUp = useCallback((event: KeyboardEvent) => {
     switch (event.key) {
@@ -56,6 +84,8 @@ export const useKeyboardControls = (): void => {
         break;
       case " ":
         useGameStore.setState({ canPlaceBeacon: false });
+        // console.log("Space key up", mouseEventRef.current);
+        // setSpaceKeyPressed(false);
         break;
     }
   }, []);
@@ -63,12 +93,14 @@ export const useKeyboardControls = (): void => {
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
+    window.addEventListener("mousemove", handleMousePosition);
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
+      window.removeEventListener("mousemove", handleMousePosition);
     };
-  }, [handleKeyDown, handleKeyUp]);
+  }, [handleKeyDown, handleKeyUp, handleMousePosition]);
 };
 
 export const useCanvasHover = ({ camera, raycaster, meshRef, resources }: {
@@ -80,6 +112,7 @@ export const useCanvasHover = ({ camera, raycaster, meshRef, resources }: {
   const canPlaceBeacon = useGameStore((state) => state.canPlaceBeacon);
   const { width, depth, offsetX, offsetY } = useGameStore((state) => state.mapParams);
   const { addBeacon } = useProcessBeacons();
+  // const mousePositionRef = useRef({ x: 0, y: 0 });
 
   const throttledSetState = throttle((state) => {
     useGameStore.setState(state);
@@ -87,10 +120,27 @@ export const useCanvasHover = ({ camera, raycaster, meshRef, resources }: {
 
   const handleCanvasHover = useCallback(
     (event: { clientX: number; clientY: number, type: string }) => {
+      // mousePositionRef.current = { x: event.clientX, y: event.clientY };
+
+      // const reltimeIntersect = getIntersection(event, raycaster, meshRef.current, camera);
+      // if (reltimeIntersect.length > 0) {
+      //   console.log("reltimeIntersect", canPlaceBeacon);
+      //   const { point, face } = reltimeIntersect[0];
+      //   if (!face) return;
+      //   debounce(() => {
+      //     useGameStore.setState({
+      //       activePosition: point,
+      //     });
+      //   }, 100)();
+      // }
+
+
+      // console.log("mouse", mousePositionRef.current);
       if (!canPlaceBeacon || !meshRef.current) {
         // useGameStore.setState({ showResources: false });
         return;
       }
+
 
       const intersects = getIntersection(event, raycaster, meshRef.current, camera);
 
