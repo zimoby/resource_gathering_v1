@@ -33,6 +33,7 @@ export const UiInfo = () => {
 
   return (
     <div className="fixed z-40">
+      {/* <div onClick={(e) => e.stopPropagation()} className="w-full h-screen fixed border border-white bg-transparent select-none" /> */}
       <div className="fixed bottom-0 right-0 flex flex-row m-2">
         <div className="flex flex-row">
           {/* <div className="size-20 border border-white flex justify-center items-center">
@@ -48,7 +49,7 @@ export const UiInfo = () => {
           {/* </div> */}
         </div>
       </div>
-      <div className="fixed top-0 left-0 m-1">
+      <div className="fixed top-0 left-0 m-2">
         <div className="flex flex-col">
           <div className="w-fit h-fit mb-1 border border-neutral-200 p-1 text-xs bg-neutral-900 text-neutral-200">
             <div className="orbitron text-6xl text-neutral-200">{`PLANET-${mapParams.seed}`}</div>
@@ -77,7 +78,7 @@ export const UiInfo = () => {
           </div>
         </div>
       </div>
-      <div className=" flex fixed bottom-0 left-0 flex-col">
+      <div className=" flex fixed bottom-0 left-0 flex-col m-2">
         <div className="flex flex-row space-x-1 items-end">
           <div className="flex flex-col space-y-1 items-end">
             <BasicPanelWrapper titleText="Events:">
@@ -85,7 +86,7 @@ export const UiInfo = () => {
                 <div key={index}>{eventName}</div>
               ))}
             </BasicPanelWrapper>
-            <BasicPanelWrapper titleText="LOGS:">
+            <BasicPanelWrapper titleText="Logs:">
               {logs.map((log, index) => (
                 <div key={index}>{log}</div>
               ))}

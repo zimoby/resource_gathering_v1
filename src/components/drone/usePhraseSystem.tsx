@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { PhrasesCollection } from "./PhrasesCollection";
+import { consoleLog } from "../../utils/functions";
+import { useGameStore } from "../../store";
 
 interface PhraseSystemOptions {
   minDuration?: number;
@@ -23,30 +25,58 @@ const randomisePhrase = (activePhrase: string) => {
 	return newPhrase;
 }
 
+export const educationalStepsPhrases = [
+	{
+		phrase: "Hello, I'm your drone. I will help you to gather resources.",
+		skipped: false
+	},
+	{
+		phrase: "To gather resources, hold Space and Click on the ground.",
+		skipped: false
+	},
+];
+
+type ActivePhraseType = {
+	phrase: string;
+	skipped?: boolean;
+}
+
+
 const usePhraseSystem = ({
   // minDuration = 10,
   // maxDuration = 20,
   // phraseDuration = 5,
 	firstAppearing
 }: PhraseSystemOptions) => {
-  const [activePhrase, setActivePhrase] = useState<string>("");
+  const [activePhrase, setActivePhrase] = useState<ActivePhraseType>({phrase: ""});
   const [phraseKey, setPhraseKey] = useState<number>(0);
-	const [firstGreatings, setFirstGreatings] = useState<boolean>(true);
+	const [firstGreetings, setFirstGreetings] = useState<boolean>(true);
+	const [educationalStepIndex, setEducationalStepIndex] = useState(0);
+	// const beacons = useGameStore((state) => state.beacons);
+
 
 	useEffect(() => {
-		if(firstGreatings && !firstAppearing) {
-			setActivePhrase("Hello, I'm your drone. I will help you to gather resources.");
+		if(firstGreetings && !firstAppearing) {
+			setActivePhrase(educationalStepsPhrases[educationalStepIndex]);
 			setPhraseKey((prevKey) => prevKey + 1);
-			setFirstGreatings(false);
-
+			// setFirstGreetings(false);
 		}
-	}, [firstAppearing, firstGreatings]);
+	}, [educationalStepIndex, firstAppearing, firstGreetings]);
+
+
+	// phrase: prevPhrase.educationalSteps[educationalStepIndex || 0],
+	// skipped: (educationalStepIndex || 0) >= prevPhrase.educationalSteps.length - 1,
+
 
 	useEffect(() => {
-		if (!firstGreatings) {
+		if (!firstGreetings) {
+			// setActivePhrase({ phrase: "" });
+			// console.log("firstGreetings:", firstGreetings);
 			const selectRandomPhrase = () => {
-				const newPhrase = randomisePhrase(activePhrase);
-				setActivePhrase(newPhrase);
+				consoleLog("selectRandomPhrase");
+				const newPhrase = randomisePhrase(activePhrase.phrase);
+				consoleLog("newPhrase:", { newPhrase });
+				setActivePhrase({ phrase: newPhrase });
 				setPhraseKey((prevKey) => prevKey + 1);
 				const timeout = setTimeout(selectRandomPhrase, 10000);
 				return () => clearTimeout(timeout);
@@ -55,21 +85,38 @@ const usePhraseSystem = ({
 			const initialTimeout = setTimeout(selectRandomPhrase, 10000);
 			return () => clearTimeout(initialTimeout);
 		}
-	}, [activePhrase, firstGreatings]);
+	}, [activePhrase, firstGreetings]);
 
   useEffect(() => {
-    if (activePhrase !== "") {
+    if (activePhrase.phrase !== "" && !firstGreetings) {
       const timeout = setTimeout(() => {
-        setActivePhrase("");
+        setActivePhrase({phrase: ""});
       }, 5000);
 
       return () => clearTimeout(timeout);
     }
-  }, [activePhrase, phraseKey]);
+  }, [activePhrase, firstGreetings, phraseKey]);
+
+	// useEffect(() => {
+  //   if (useGameStore.getState().beacons.length > 0 && activePhrase.skipped) {
+  //     setFirstGreetings(false);
+  //   }
+  // }, [activePhrase.skipped, beacons.length, setFirstGreetings]);
+
+
+	const handleNextClick = () => {
+    if (educationalStepIndex < educationalStepsPhrases.length - 1) {
+      setEducationalStepIndex((prevIndex) => prevIndex + 1);
+    } else {
+      setFirstGreetings(false);
+			setActivePhrase({ phrase: "" });
+    }
+  };
 
   return {
     activePhrase,
     phraseKey,
+		handleNextClick
   };
 };
 
@@ -83,20 +130,20 @@ const usePhraseSystem = ({
 // 	const [previousEvent, setPreviousEvent] = useState<string | null>(null);
 // 	const eventsLog = useGameStore((state) => state.eventsLog);
 
-// 	const [firstGreatings, setFirstGreatings] = useState<boolean>(true);
+// 	const [firstGreetings, setfirstGreetings] = useState<boolean>(true);
 
 // 	// useEffect(() => {
 // 	// 	console.log("eventsLog:", eventsLog);
 // 	// }, [eventsLog]);
 
 // 	useEffect(() => {
-// 		if( firstGreatings) {
+// 		if( firstGreetings) {
 // 			setActivePhrase("Hello, I'm your drone. I will help you to gather resources.");
 // 			setPhraseKey((prevKey) => prevKey + 1);
-// 			setFirstGreatings(false);
+// 			setfirstGreetings(false);
 
 // 		}
-// 	}, [firstGreatings]);
+// 	}, [firstGreetings]);
 
 // 	const selectPhrase = useCallback(() => {
 // 		// if (eventsLog.length > 0) {

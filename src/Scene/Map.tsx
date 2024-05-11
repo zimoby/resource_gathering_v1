@@ -33,7 +33,7 @@ export const Map = () => {
 
     updateLocationAndOffset(offset);
 
-    if (planeRef.current && planeRef.current.material instanceof ShaderMaterial && planeRef.current.material.uniforms.offset.value) {
+    if (planeRef.current && planeRef.current.material instanceof ShaderMaterial && planeRef.current.material.uniforms) {
       planeRef.current.material.uniforms.offset.value.set(offset.current.x * 0.01, -offset.current.y * 0.01);
     }
   });

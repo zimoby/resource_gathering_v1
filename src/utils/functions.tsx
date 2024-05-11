@@ -1,6 +1,6 @@
 import { useGameStore, ChunkType, DEV_MODE } from "../store";
 
-export const consoleLog = (message: string, data: object) => {
+export const consoleLog = (message: string, data?: object) => {
   DEV_MODE && console.log(message, { ...data});
 }
 
