@@ -1,17 +1,16 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { useGameStore } from "../store";
-import { consoleLog, useCalculateDeltas, useCheckVariableRender, useUpdateMapMoving } from "../utils/functions";
+import { useCalculateDeltas, useUpdateMapMoving } from "../utils/functions";
 import { BeaconGroup } from "../components/beacons/BeaconGroup";
 import { Terrain } from "../components/terrain/Terrain";
 import { LinearGridShader } from "../components/gfx/LinearGridShader1";
 import { BasicGridShader } from "../components/gfx/BasicGridShader";
 import { Color, Mesh, ShaderMaterial } from "three";
-import FlickeringEffect from "../effects/FlickeringEffect";
-import FadingEffect from "../effects/FadingEffect";
+import FlickeringEffect from "../effects/FlickeringEffectWrapper";
+import FadingEffect from "../effects/FadingEffectWrapper";
 import { useIncreasingSpeed } from "../effects/IncreaseSceneSpeed";
 import { PlaneTest } from "../components/gfx/pulsingAreaTest";
-import { throttle } from "lodash";
 
 const rulerGridY = 50;
 
@@ -36,6 +35,7 @@ export const Map = () => {
   useFrame(() => {
     const now = Date.now();
     if (!speedReached.current && speedStarted.current) {
+      useGameStore.setState({ terrainAppearing: true });
       updateMapSize(100 * increasingMapSpeedRef.current);
     } else if (speedReached.current) {
       useGameStore.setState({ animationFirstStage: true });

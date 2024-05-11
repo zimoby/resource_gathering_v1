@@ -1,7 +1,8 @@
 import { convertChunkCoordinateToName } from "../../utils/functions";
 import { useGameStore } from "../../store";
 import { BeaconsInfo } from "../beacons/BeaconsInfo";
-import TypingText from "../../effects/TextEffects";
+import TypingText from "../../effects/TextEffectsWrapper";
+import AppearingGlitchEffect from "../../effects/AppearingUiEffectWrapper";
 
 export const BasicPanelWrapper = ({ children, titleText }: { children: React.ReactNode, titleText: string }) => (
   <div className="h-fit w-52 text-left text-xs border border-white/80">
@@ -16,6 +17,7 @@ export const UiInfo = () => {
   const mapParams = useGameStore((state) => state.mapParams);
   const logs = useGameStore((state) => state.logs);
   const eventsLog = useGameStore((state) => state.eventsLog);
+  const disableAnimations = useGameStore((state) => state.disableAnimations);
 
   const weatherCondition = useGameStore((state) => state.weatherCondition);
 
@@ -24,6 +26,9 @@ export const UiInfo = () => {
   const playerPoints = useGameStore((state) => state.playerPoints);
   const collectedResources = useGameStore((state) => state.collectedResources);
 
+  const animationFirstStage = useGameStore((state) => state.animationFirstStage);
+
+  if (!animationFirstStage) return null;
   // useEffect(() => {
   //   if (message === "") return;
   //   setTimeout(() => {
@@ -51,46 +56,53 @@ export const UiInfo = () => {
       </div>
       <div className="fixed top-0 left-0 m-2">
         <div className="flex flex-col">
-          <div className="w-fit h-fit mb-1 border border-neutral-200 p-1 text-xs bg-neutral-900 text-neutral-200">
-            <div className="orbitron text-6xl text-neutral-200">{`PLANET-${mapParams.seed}`}</div>
-          </div>
+          <AppearingGlitchEffect disabled={disableAnimations}>
+            <div className="w-fit h-fit mb-1 border border-neutral-200 p-1 text-xs bg-neutral-900 text-neutral-200">
+              <div className="orbitron text-6xl text-neutral-200">{`PLANET-${mapParams.seed}`}</div>
+            </div>
+          </AppearingGlitchEffect>
             
           <div className="flex flex-row space-x-1">
-            <div className="flex flex-col space-y-1">
-              <BasicPanelWrapper titleText="Collected Resources:">
-                {Object.entries(collectedResources).map(([resource, count]) => (
-                  <div key={resource}>
-                    {resource}: {count}
-                  </div>
-                ))}
+            <AppearingGlitchEffect disabled={disableAnimations}>
+              <div className="flex flex-col space-y-1">
+                <BasicPanelWrapper titleText="Collected Resources:">
+                  {Object.entries(collectedResources).map(([resource, count]) => (
+                    <div key={resource}>
+                      {resource}: {count}
+                    </div>
+                  ))}
+                </BasicPanelWrapper>
+                <BasicPanelWrapper titleText="Energy:">
+                  {playerPoints}
+                </BasicPanelWrapper>
+                <BasicPanelWrapper titleText="Scaner:">
+                  <div>Selected Chunk: {convertChunkCoordinateToName(selectedChunk)}</div>
+                  <div>Selected Resource: {selectedResource}</div>
+                </BasicPanelWrapper>
+              </div>
+              <BasicPanelWrapper titleText="Planet:">
+                <p>Weather: {weatherCondition}</p>
               </BasicPanelWrapper>
-              <BasicPanelWrapper titleText="Energy:">
-                {playerPoints}
-              </BasicPanelWrapper>
-              <BasicPanelWrapper titleText="Scaner:">
-                <div>Selected Chunk: {convertChunkCoordinateToName(selectedChunk)}</div>
-                <div>Selected Resource: {selectedResource}</div>
-              </BasicPanelWrapper>
-            </div>
-            <BasicPanelWrapper titleText="Planet:">
-              <p>Weather: {weatherCondition}</p>
-            </BasicPanelWrapper>
+
+            </AppearingGlitchEffect>
           </div>
         </div>
       </div>
       <div className=" flex fixed bottom-0 left-0 flex-col m-2">
         <div className="flex flex-row space-x-1 items-end">
           <div className="flex flex-col space-y-1 items-end">
-            <BasicPanelWrapper titleText="Events:">
-              {eventsLog.map((eventName, index) => (
-                <div key={index}>{eventName}</div>
-              ))}
-            </BasicPanelWrapper>
-            <BasicPanelWrapper titleText="Logs:">
-              {logs.map((log, index) => (
-                <div key={index}>{log}</div>
-              ))}
-            </BasicPanelWrapper>
+            <AppearingGlitchEffect disabled={disableAnimations}>
+              <BasicPanelWrapper titleText="Events:">
+                {eventsLog.map((eventName, index) => (
+                  <div key={index}>{eventName}</div>
+                ))}
+              </BasicPanelWrapper>
+              <BasicPanelWrapper titleText="Logs:">
+                {logs.map((log, index) => (
+                  <div key={index}>{log}</div>
+                ))}
+              </BasicPanelWrapper>
+            </AppearingGlitchEffect>
           </div>
           <BeaconsInfo />
         </div>

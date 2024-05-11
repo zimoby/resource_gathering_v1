@@ -90,6 +90,7 @@ export type GameStoreState = {
 
   firstStart: boolean;
   terrainLoading: boolean;
+  terrainAppearing: boolean;
   animationFirstStage: boolean;
 
   gridConfig: GridConfig;
@@ -178,6 +179,7 @@ function createGameStore() {
 
     firstStart: false,
     terrainLoading: true,
+    terrainAppearing: false,
     animationFirstStage: false,
 
     gridConfig: {

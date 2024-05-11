@@ -1,5 +1,5 @@
 import { Text } from "@react-three/drei";
-import { convertChunkCoordinateToName, useCheckComponentRender } from "../../utils/functions";
+import { convertChunkCoordinateToName } from "../../utils/functions";
 import { useMemo } from "react";
 import { useGameStore } from "../../store";
 

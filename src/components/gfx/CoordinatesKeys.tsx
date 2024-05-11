@@ -1,7 +1,6 @@
 import { Text } from "@react-three/drei";
-import { useCheckComponentRender } from "../../utils/functions";
 import { useGameStore } from "../../store";
-import FadingEffect from "../../effects/FadingEffect";
+import FadingEffect from "../../effects/FadingEffectWrapper";
 import { ChunkName } from "./chunkText";
 
 const lightColor = "#afafaf";

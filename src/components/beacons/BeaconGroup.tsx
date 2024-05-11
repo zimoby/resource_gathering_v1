@@ -1,5 +1,5 @@
 import { useGameStore } from "../../store";
-import { Circle, Cylinder, Sphere } from "@react-three/drei";
+import { Cylinder, Sphere } from "@react-three/drei";
 import { ConcentricCirclesAnimation } from "../gfx/concentricCircles";
 import { useFrame } from "@react-three/fiber";
 import { isOutOfBound, useCalculateDeltas } from "../../utils/functions";

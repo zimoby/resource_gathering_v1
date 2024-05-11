@@ -21,6 +21,7 @@ export const useCheckComponentRender = (name: string) => {
   useEffect(() => {
     // consoleLog(name);
     console.log(name);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 }
 

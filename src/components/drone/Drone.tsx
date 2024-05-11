@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { Group, Mesh } from "three";
 import { useGameStore } from "../../store";
 import { useFrame } from "@react-three/fiber";
-import TypingText from "../../effects/TextEffects";
+import TypingText from "../../effects/TextEffectsWrapper";
 import usePhraseSystem from "./usePhraseSystem";
 
 export const Drone = () => {
