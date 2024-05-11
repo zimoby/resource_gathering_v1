@@ -1,6 +1,9 @@
 import { useCallback } from "react";
 import { useGameStore, BeaconType, ResourceType } from "../../store";
 
+const minDistance = 20;
+
+
 export const useProcessBeacons = () => {
   const addLog = useGameStore((state) => state.addLog);
   // const currentChunk = useGameStore.getState().currentLocation;
@@ -19,7 +22,6 @@ export const useProcessBeacons = () => {
       (beacon: { chunkX: number; chunkY: number; }) => beacon.chunkX === currentChunk.x && beacon.chunkY === currentChunk.y
     );
   
-    const minDistance = 20;
   
     const isWithinRadius = chunkBeacons.some((beacon: { x: number; z: number; }) => {
       const dx = position.x - beacon.x;

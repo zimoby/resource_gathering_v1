@@ -6,6 +6,10 @@ import { isOutOfBound, useCalculateDeltas } from "../../utils/functions";
 import { createRef, useLayoutEffect, useRef } from "react";
 import { Group } from "three";
 
+const beaconHeight = 10;
+const minDistance = 20;
+
+
 export const BeaconGroup = () => {
   const firstStart = useGameStore((state) => state.firstStart);
   const beacons = useGameStore((state) => state.beacons);
@@ -15,8 +19,6 @@ export const BeaconGroup = () => {
 
   const beaconRefs = useRef<React.RefObject<Group>[]>(beacons.map(() => createRef()));
 
-  const beaconHeight = 10;
-  const minDistance = 20;
 
   // console.log("beacons:", beacons);
 
