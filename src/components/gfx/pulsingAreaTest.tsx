@@ -2,6 +2,7 @@ import { shaderMaterial } from "@react-three/drei";
 import { Object3DNode, extend, useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import { Color, DoubleSide, Mesh, PlaneGeometry, ShaderMaterial, Vector3 } from "three";
+import { useGameStore } from "../../store";
 
 interface PulsingShaderMaterialUniforms {
   uTime: number;
@@ -60,7 +61,7 @@ type PulsingShaderMaterialImpl = ShaderMaterial & { uniforms: { [uniform: string
 
 export const PlaneTest = ({ position = [0,0,0], color = new Color(0x0000ff) }) => {
   const ref = useRef<Mesh<PlaneGeometry, PulsingShaderMaterialImpl>>(null);
-  const size = 100;
+  const { width, depth } = useGameStore((state) => state.mapParams);
 
   useFrame(({ clock }) => {
     const time = clock.getElapsedTime();
@@ -72,7 +73,7 @@ export const PlaneTest = ({ position = [0,0,0], color = new Color(0x0000ff) }) =
   return (
     <group position={new Vector3(position[0], position[1], position[2])}>
       <mesh ref={ref} rotation={[Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[size, size, 32, 32]} />
+        <planeGeometry args={[width, depth, 32, 32]} />
         <pulsingShaderMaterial
           uTime={0}
           uColor={color}
