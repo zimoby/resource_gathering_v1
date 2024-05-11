@@ -19,7 +19,7 @@ export const useProcessBeacons = () => {
       (beacon: { chunkX: number; chunkY: number; }) => beacon.chunkX === currentChunk.x && beacon.chunkY === currentChunk.y
     );
   
-    const minDistance = 10;
+    const minDistance = 20;
   
     const isWithinRadius = chunkBeacons.some((beacon: { x: number; z: number; }) => {
       const dx = position.x - beacon.x;
