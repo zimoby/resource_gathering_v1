@@ -1,20 +1,19 @@
 import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stats } from "@react-three/drei";
-import { Color } from "three";
 import FlickeringEffect from "../effects/FlickeringEffect";
 import { useGameStore } from "../store";
 import { ChunkGrid } from "../components/gfx/ChunkGrid";
 import { CoordinatesKeys } from "../components/gfx/CoordinatesKeys";
 import { PulsingCircle } from "../components/gfx/PulsingCircle";
 import { EffectsCollection } from "./effects";
-import { PlaneTest } from "../components/gfx/pulsingAreaTest";
 import { SceneSettings } from "./scene";
 import { Map } from "./Map";
 import { FlyingDrone } from "../components/drone/Drone";
 
 export const GameCanvas = () => {
   const firstStart = useGameStore((state) => state.firstStart);
+  const animationFirstStage = useGameStore((state) => state.animationFirstStage);
   const disableAnimations = useGameStore((state) => state.disableAnimations);
 
   return (
@@ -26,7 +25,9 @@ export const GameCanvas = () => {
         {/* <Viewcube /> */}
         <FlyingDrone />
         <Map />
-        <CoordinatesKeys />
+        {animationFirstStage && <group position={[0, 0, 0]} visible={animationFirstStage}>
+          <CoordinatesKeys />
+        </group>}
         <group position={[0, 0, 0]} visible={firstStart}>
           <FlickeringEffect disabled={disableAnimations} initialIntensity={10} randomFrequency={0.008} duration={50}>
             <ChunkGrid position={[0, 0, 0]} sizeExtend={1} />
@@ -40,7 +41,6 @@ export const GameCanvas = () => {
         <PulsingCircle />
         {/* </group> */}
         {/* </FadingEffect> */}
-        <PlaneTest position={[0, -12, 0]} color={new Color(0x1586e9)} />
       </Suspense>
       <OrbitControls />
       <EffectsCollection />

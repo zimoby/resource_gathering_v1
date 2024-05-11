@@ -40,7 +40,7 @@ const generateIndices = (widthCount: number, depthCount: number, indices: Uint16
 };
 
 export const Terrain = () => {
-  const loading = useGameStore((state) => state.loading);
+  const terrainLoading = useGameStore((state) => state.terrainLoading);
   const { width, depth, resolution, scale, seed, offsetX, offsetY } = useGameStore((state) => state.mapParams);
   const canPlaceBeacon = useGameStore((state) => state.canPlaceBeacon);
   const scanRadius = useGameStore((state) => state.scanRadius);
@@ -117,7 +117,7 @@ export const Terrain = () => {
   };
 
   const { deltaX, deltaY } = useCalculateDeltas();
-  const increasingSpeedRef = useIncreasingSpeed(0, 1, 0.01, 2);
+  const { speedRef: increasingSpeedRef } = useIncreasingSpeed(0, 1, 0.01, 2);
 
   // console.log("terrain generating:");
   
@@ -128,8 +128,9 @@ export const Terrain = () => {
 
     const resources = updateTerrainGeometry();
     
-    if (resources[0] !== null && loading) {
-      useGameStore.setState({ loading: false });
+    if (resources[0] !== null && terrainLoading) {
+      useGameStore.setState({ terrainLoading: false });
+      console.log("terrainLoading finished");
     }
   });
 

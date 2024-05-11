@@ -27,7 +27,7 @@ function updateMaterialOpacity(material: Material, opacity: number) {
 const FadingEffect: React.FC<FadingEffectProps> = ({
   children,
   disabled = false,
-  initialIntensity = 10,
+  initialIntensity = 6,
   randomFrequency = 0.01,
   minOpacity = 0.1,
   maxOpacity = 1,
@@ -46,31 +46,77 @@ const FadingEffect: React.FC<FadingEffectProps> = ({
     }
   }, [disabled, maxOpacity]);
 
-  useEffect(() => {
-    if (disabled) { return; }
-    const group = groupRef.current;
+  // useEffect(() => {
+  //   if (disabled) { return; }
+  //   const group = groupRef.current;
 
+  //   if (group) {
+  //     const timeouts = new Set<number>();
+  //     group.children.forEach((child) => {
+  //       let lastToggle = 0;
+  //       for (let i = 0; i < initialIntensity; i++) {
+  //         lastToggle += Math.random() * 1000;
+  //         timeouts.add( setTimeout(() => {
+  //           // if (child instanceof Mesh) {
+  //             console.log("child:", child);
+  //             setMeshOpacity(child, Math.random() * (maxOpacity - minOpacity) + minOpacity);
+  //           // }
+  //         }, lastToggle));
+  //       }
+  //     });
+  //     return () => timeouts.forEach(clearTimeout);
+  //   }
+  // }, [children, initialIntensity, minOpacity, maxOpacity, disabled]);
+
+  useEffect(() => {
+    // console.log('FlickeringEffect: group.children');
+    if (disabled) { return }
+
+    const group = groupRef.current;
+    
     if (group) {
-      const timeouts = new Set<number>();
-      group.children.forEach(
-        (child) => {
-          let lastToggle = 0;
-          for (let i = 0; i < initialIntensity; i++) {
-            lastToggle += Math.random() * 1000;
-            timeouts.add(
-              setTimeout(() => {
-                if (child instanceof Mesh) {
-                  setMeshOpacity(child, Math.random() * (maxOpacity - minOpacity) + minOpacity);
-                }
-              }, lastToggle)
-            );
-          }
-        }
-      );
-      return () => timeouts.forEach(clearTimeout);
+        const timeouts = new Set<number>();
+        group.children.forEach((child) => {
+            let lastToggle = 0;
+            for (let i = 0; i < initialIntensity; i++) {
+                lastToggle += Math.random() * 100;
+                console.log("child fading");
+                timeouts.add(setTimeout(() => {
+                    child.visible = !child.visible;
+                }, lastToggle));
+            }
+            child.visible = true;
+        });
+        return () => timeouts.forEach(clearTimeout);
     }
-  }, [children, initialIntensity, minOpacity, maxOpacity, disabled]);
+  }, [initialIntensity, disabled]);
   
+  // enable visibility of every child as random time range
+  // useEffect(() => {
+  //   if (disabled) { return; }
+  //   const group = groupRef.current;
+
+  //   if (group) {
+  //     const timeouts = new Set<number>();
+  //     group.children.forEach(
+  //       (child) => {
+  //         let lastToggle = 0;
+  //         // console.log("child:", child);
+  //         for (let i = 0; i < initialIntensity; i++) {
+  //           lastToggle += Math.random() * 1000;
+  //           timeouts.add(
+  //             setTimeout(() => {
+  //               if (child instanceof Mesh) {
+  //                 setMeshOpacity(child, Math.random() * (maxOpacity - minOpacity) + minOpacity);
+  //               }
+  //             }, lastToggle)
+  //           );
+  //         }
+  //       }
+  //     );
+  //     return () => timeouts.forEach(clearTimeout);
+  //   }
+  // }, [children, initialIntensity, minOpacity, maxOpacity, disabled]);
 
   useFrame(() => {
     const group = groupRef.current;

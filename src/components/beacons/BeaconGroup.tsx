@@ -19,7 +19,7 @@ export const BeaconGroup = () => {
   const { deltaX, deltaY } = useCalculateDeltas();
 
   const beaconRefs = useRef<React.RefObject<Group>[]>(beacons.map(() => createRef()));
-  const increasingSpeedRef = useIncreasingSpeed(0, 1, 0.01, 2);
+  const { speedRef: increasingSpeedRef } = useIncreasingSpeed(0, 1, 0.01, 2);
 
 
   // console.log("beacons:", beacons);

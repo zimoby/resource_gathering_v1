@@ -1,15 +1,17 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { useGameStore } from "../store";
-import { useCalculateDeltas, useUpdateMapMoving } from "../utils/functions";
+import { consoleLog, useCalculateDeltas, useCheckVariableRender, useUpdateMapMoving } from "../utils/functions";
 import { BeaconGroup } from "../components/beacons/BeaconGroup";
 import { Terrain } from "../components/terrain/Terrain";
 import { LinearGridShader } from "../components/gfx/LinearGridShader1";
 import { BasicGridShader } from "../components/gfx/BasicGridShader";
-import { Mesh, ShaderMaterial } from "three";
+import { Color, Mesh, ShaderMaterial } from "three";
 import FlickeringEffect from "../effects/FlickeringEffect";
 import FadingEffect from "../effects/FadingEffect";
 import { useIncreasingSpeed } from "../effects/IncreaseSceneSpeed";
+import { PlaneTest } from "../components/gfx/pulsingAreaTest";
+import { throttle } from "lodash";
 
 const rulerGridY = 50;
 
@@ -19,27 +21,38 @@ export const Map = () => {
   const offset = useRef({ x: 0, y: 0 });
   const { width, depth } = useGameStore((state) => state.mapParams);
   const disableAnimations = useGameStore((state) => state.disableAnimations);
+  const updateMapSize = useGameStore((state) => state.updateMapSize);
 
   const { deltaX, deltaY } = useCalculateDeltas();
-  const increasingSpeedRef = useIncreasingSpeed(0, 1, 0.01, 2);
+  const { speedRef: increasingSpeedRef } = useIncreasingSpeed(0, 1, 0.01, 2);
+  const { speedRef: increasingMapSpeedRef, speedReached, speedStarted } = useIncreasingSpeed(0, 1, 0.01, 1);
   const { updateLocationAndOffset } = useUpdateMapMoving();
 
-  // console.log("Map rendering");
+  const lastExecution = useRef(Date.now());
+  const updateInterval = 300;
 
-  // useEffect(() => {
-  //   consoleLog(` Map rendering:`, {deltaX, deltaY, firstStart, width, depth, rulerGridY, planeRef});
-  // }, [deltaX, deltaY, firstStart, width, depth]);
+  // useCheckVariableRender({variable: animationFirstStage, name: "animationFirstStage"});
   
   useFrame(() => {
+    const now = Date.now();
+    if (!speedReached.current && speedStarted.current) {
+      updateMapSize(100 * increasingMapSpeedRef.current);
+    } else if (speedReached.current) {
+      useGameStore.setState({ animationFirstStage: true });
+    }
 
     offset.current.x += deltaX * increasingSpeedRef.current;
     offset.current.y += deltaY * increasingSpeedRef.current;
 
-    updateLocationAndOffset(offset);
-
+    if (now - lastExecution.current > updateInterval) {
+      lastExecution.current = now;
+      updateLocationAndOffset(offset);
+    }
+    
     if (planeRef.current && planeRef.current.material instanceof ShaderMaterial && planeRef.current.material.uniforms.offset && planeRef.current.material.uniforms.offset.value) {
       planeRef.current.material.uniforms.offset.value.set(offset.current.x * 0.01, -offset.current.y * 0.01);
     }
+
   });
 
   return (
@@ -71,6 +84,7 @@ export const Map = () => {
       </group>
 
       <BasicGridShader planeRef={planeRef} position={[0,0,0]} />
+      <PlaneTest position={[0, -12, 0]} color={new Color(0x1586e9)} />
     </group>
   );
 };

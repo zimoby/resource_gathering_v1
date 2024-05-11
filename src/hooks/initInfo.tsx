@@ -3,16 +3,16 @@ import { useGameStore } from "../store";
 
 export const useInitInfo = () => {
 	const firstStart = useGameStore((state) => state.firstStart);
-  const loading = useGameStore((state) => state.loading);
+  const terrainLoading = useGameStore((state) => state.terrainLoading);
   const updateMapSize = useGameStore((state) => state.updateMapSize);
 
   useEffect(() => {
-    if (!loading && !firstStart) {
+    if (!terrainLoading && !firstStart) {
       useGameStore.setState({ firstStart: true });
     }
-    if (!loading && firstStart) {
-      updateMapSize(100);
+    if (!terrainLoading && firstStart) {
+      updateMapSize(1);
     }
-  }, [loading, firstStart, updateMapSize]);
+  }, [terrainLoading, firstStart, updateMapSize]);
 
 };

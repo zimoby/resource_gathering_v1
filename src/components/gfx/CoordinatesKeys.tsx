@@ -1,21 +1,8 @@
-import { Plane, Text } from "@react-three/drei";
-import { convertChunkCoordinateToName } from "../../utils/functions";
-import { useMemo } from "react";
+import { Text } from "@react-three/drei";
+import { useCheckComponentRender } from "../../utils/functions";
 import { useGameStore } from "../../store";
-import { DoubleSide } from "three";
 import FadingEffect from "../../effects/FadingEffect";
-
-export const GridMetricUnits = () => {
-  const { width, depth } = useGameStore((state) => state.mapParams);
-
-  return (
-    <mesh position={[0, 1, 0]} rotation-x={Math.PI / 2}>
-      <Plane args={[width + 2, depth + 2]}>
-        <meshBasicMaterial color={"#000000"} side={DoubleSide} />
-      </Plane>
-    </mesh>
-  )
-}
+import { ChunkName } from "./chunkText";
 
 const lightColor = "#afafaf";
 const redColor = "#8b0000";
@@ -25,12 +12,9 @@ export const CoordinatesKeys = () => {
   const speed = useGameStore((state) => state.mapParams.speed);
   const disableAnimations = useGameStore((state) => state.disableAnimations);
 
-  const currentLocation = useGameStore((state) => state.currentLocation);
   const moveDirection = useGameStore((state) => state.moveDirection);
 
-  const currentChunkName = useMemo(() => {
-    return convertChunkCoordinateToName(currentLocation);
-  }, [currentLocation]);
+  // useCheckComponentRender("CoordinatesKeys");
 
   return (
     <group position={[0, 0.3, 0]}>
@@ -83,19 +67,7 @@ export const CoordinatesKeys = () => {
         >
           S
         </Text>
-
-        
-        <Text
-          position={[width / 2 - 1, 0, depth / 2 + 2]}
-          rotation={[-Math.PI / 2, 0, Math.PI / 2]}
-          font="/Orbitron-Bold.ttf"
-          fontSize={12}
-          color={lightColor}
-          anchorX="left"
-          anchorY="top"
-        >
-          {currentChunkName}
-        </Text>
+        <ChunkName />
 
       </FadingEffect>
     </group>

@@ -34,10 +34,11 @@ interface FlickeringEffectProps {
     
 
     useEffect(() => {
+        // console.log('FlickeringEffect: group.children');
         if (disabled) { return }
 
         const group = groupRef.current;
-
+        
         if (group) {
             const timeouts = new Set<number>();
             group.children.forEach((child) => {
@@ -55,18 +56,18 @@ interface FlickeringEffectProps {
     }, [initialIntensity, duration, disabled]);
 
     useFrame(() => {
-        if (appearingOnly) return;
+        if (appearingOnly || disabled) return;
 
         const group = groupRef.current;
 
-        if (disabled) {
-            if (group) {
-                group.children.forEach(child => {
-                    child.visible = true;
-                });
-            }
-            return;
-        }
+        // if (disabled) {
+        //     if (group) {
+        //         group.children.forEach(child => {
+        //             child.visible = true;
+        //         });
+        //     }
+        //     return;
+        // }
 
         if (group) {
             group.children.forEach(child => {

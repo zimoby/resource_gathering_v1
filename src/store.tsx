@@ -89,7 +89,9 @@ export type GameStoreState = {
   educationMode: boolean;
 
   firstStart: boolean;
-  loading: boolean;
+  terrainLoading: boolean;
+  animationFirstStage: boolean;
+
   gridConfig: GridConfig;
   mapParams: MapParams;
   currentOffset: Offset;
@@ -175,7 +177,9 @@ function createGameStore() {
     educationMode: localStorage.getItem('educationMode') === 'true',
 
     firstStart: false,
-    loading: true,
+    terrainLoading: true,
+    animationFirstStage: false,
+
     gridConfig: {
       chunkSize: 1,
       subGrids: 5,
@@ -184,8 +188,8 @@ function createGameStore() {
       subGridColor: "#ffffff",
     },
     mapParams: {
-      width: 100,
-      depth: 100,
+      width: 200,
+      depth: 200,
       resolution: 3,
       scale: 50,
       seed: "42",
@@ -223,6 +227,7 @@ function createGameStore() {
       set(() => ({ [paramName]: value }));
     },
     updateMapSize: (value) => {
+      // console.log("updateMapSize:", value);
       set((state) => ({ mapParams: { ...state.mapParams, width: value, depth: value } }));
     },
     updateMapParam: (paramName, value) => {

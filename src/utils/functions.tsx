@@ -1,7 +1,27 @@
+import { useEffect } from "react";
 import { useGameStore, ChunkType, DEV_MODE } from "../store";
 
 export const consoleLog = (message: string, data?: object) => {
   DEV_MODE && console.log(message, { ...data});
+}
+
+export const useCheckVariableRender = ({variable, name}: {variable: object | string | number | boolean, name: string}) => {
+  useEffect(() => {
+
+    if (typeof variable === "object") {
+      consoleLog(name || `variable:`, { ...variable });
+    } else {
+      console.log(name || `variable:`, variable);
+    }
+
+  }, [name, variable]);
+}
+
+export const useCheckComponentRender = (name: string) => {
+  useEffect(() => {
+    // consoleLog(name);
+    console.log(name);
+  }, []);
 }
 
 export const convertChunkCoordinateToName = (chunk: ChunkType) => {
