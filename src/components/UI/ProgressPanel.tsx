@@ -2,6 +2,8 @@ import { useGameStore } from "../../store";
 
 export const ProgressBlock = () => {
   const playerPoints = useGameStore((state) => state.playerPoints);
+  const opacity = useGameStore((state) => state.uiPanelsState.progressPanel.opacity);
+
   const goal = 10000; // The maximum points or goal
 
   // Calculate the percentage of progress for each block relative to the goal
@@ -16,8 +18,7 @@ export const ProgressBlock = () => {
   });
 
   return (
-    <>
-      <div className="flex w-80 h-16 flex-col -space-y-1">
+      <div className="flex w-80 h-16 flex-col -space-y-1" style={{ opacity }}>
         <div className="flex w-full h-full flex-row -space-x-0">
           {blockWidths.map((width, index) => (
             <div
@@ -38,7 +39,6 @@ export const ProgressBlock = () => {
 					</p>
         </div>
       </div>
-    </>
   );
 };
 

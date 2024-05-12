@@ -1,26 +1,29 @@
 import { useMemo } from "react";
 import { useGameStore } from "../../store";
 import { convertChunkCoordinateToName } from "../../utils/functions";
-import { BasicPanelWrapper } from "../UI/uiInfo";
-
+import { BasicPanelWrapper } from "../UI/BasicPanelWrapper";
 
 export const BeaconsInfo = () => {
-    const beacons = useGameStore((state) => state.beacons);
-    const memoizedBeacons = useMemo(() => {
+  const beacons = useGameStore((state) => state.beacons);
+  const opacity = useGameStore((state) => state.uiPanelsState.beaconPanel.opacity);
+  
+  const memoizedBeacons = useMemo(() => {
+    if (beacons.length === 0) return <></>;
 
-      if (beacons.length === 0) return (<></>);
+    return (
+      <BasicPanelWrapper titleText="Beacons" opacity={opacity}>
+        <div className="scrollbar">
+          {beacons.slice(0, 100).map((beacon, index) => (
+            <div key={index}>
+              {convertChunkCoordinateToName({ x: beacon.chunkX, y: beacon.chunkY }) +
+                ": " +
+                beacon.resource}
+            </div>
+          ))}
+        </div>
+      </BasicPanelWrapper>
+    );
+  }, [beacons, opacity]);
 
-      return (
-        <BasicPanelWrapper titleText="Beacons">
-          <div className="scrollbar">
-            {beacons.slice(0, 100).map((beacon, index) => (
-              <div key={index}>
-                {convertChunkCoordinateToName({x: beacon.chunkX, y: beacon.chunkY }) + ": " + beacon.resource}
-              </div>
-            ))}
-          </div>
-        </BasicPanelWrapper>
-      )}, [beacons]);
-
-    return memoizedBeacons;
-}
+  return memoizedBeacons;
+};

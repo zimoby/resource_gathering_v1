@@ -1,0 +1,17 @@
+import { useGameStore } from "../../store";
+
+export const TitlePanel = () => {
+  const uiPanelsState = useGameStore((state) => state.uiPanelsState);
+  const worldParams = useGameStore((state) => state.worldParams);
+
+  {/* <div className="w-fit h-fit mb-1 border border-neutral-200 p-1 text-xs bg-neutral-900 text-neutral-200"> */}
+
+  return <div
+    className="w-96 h-16 mb-1 border border-neutral-200 p-1 text-xs bg-neutral-900 text-neutral-200"
+    style={{ opacity: uiPanelsState.titlePanel.opacity }}
+  >
+    <div className="h-full w-full content-end orbitron text-2xl px-1 text-end uppercase text-neutral-200">
+      {`Planet-${worldParams.seed}`}
+    </div>
+  </div>;
+};

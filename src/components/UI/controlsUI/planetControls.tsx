@@ -3,7 +3,7 @@
 import { SliderWithInput, CheckBox } from "./uiLibrary";
 // import useMeasure from "react-use-measure";
 import { useGameStore } from "../../../store";
-import { BasicPanelWrapper } from "../uiInfo";
+import { BasicPanelWrapper } from "../BasicPanelWrapper";
 
 export const SystemControls = () => {
   // const [ref, bounds] = useMeasure();
@@ -16,6 +16,8 @@ export const SystemControls = () => {
   const mapSpeed = useGameStore((state) => state.mapParams.speed);
 	const disableAnimations = useGameStore((state) => state.disableAnimations);
   const updateDisableAnimationsInStorage = useGameStore((state) => state.updateDisableAnimationsInStorage);
+
+  const opacity = useGameStore((state) => state.uiPanelsState.systemControlsPanel.opacity);
 
 	// const updateStoreProperty = useGameStore((state) => state.updateStoreProperty);
 
@@ -38,7 +40,7 @@ export const SystemControls = () => {
       </div> */}
       {/* <animated.div style={{ overflow: "hidden", ...animation }}> */}
         {/* <div ref={ref} className=""> */}
-          <BasicPanelWrapper titleText="System Message" width="w-72">
+          <BasicPanelWrapper titleText="System Controls" width="w-72" opacity={opacity}> 
             <div
               className="w-fit space-y-1 bg-black/20 py-1 px-2 divide-y divide-white/40 rounded-md"
             >

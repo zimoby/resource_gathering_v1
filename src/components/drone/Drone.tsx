@@ -65,7 +65,7 @@ export const FlyingDrone = () => {
                     key={phraseKey}
                     className=" w-fit max-w-32 min-w-fit leading-4 text-sm text-left border select-none border-white py-0.5 px-1 bg-black/80"
                   >
-                    <TypingText text={activePhrase.phrase} />
+                    <TypingText text={activePhrase.phrase} speed={10}/>
                   </div>
                   {activePhrase.skipped === false && (
                     <div

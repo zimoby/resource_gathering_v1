@@ -11,7 +11,14 @@ export const DEV_MODE = import.meta.env.VITE_APP_MODE === "development";
 export type TerrainType = "water" | "grass" | "dirt" | "snow" | "default";
 export type ResourceType = "r1" | "r2" | "r3" | "r4";
 export type WeatherCondition = "mild" | "moderate" | "severe";
-export type WorldState = "extreme" | "danger" | "normal" | "safe";
+export type WorldState =
+  | "extreme"
+  | "danger"
+  | "normal"
+  | "safe"
+  | "hazardous"
+  | "stormy"
+  | "extreme temperature";
 
 export interface Terrain {
   color: Color;
@@ -68,7 +75,6 @@ export interface BeaconType {
   id: string;
 }
 
-
 export interface GameStoreActions {
   updateStoreProperty: (paramName: string, value: unknown) => void;
   updateMapSize: (value: number) => void;
@@ -82,6 +88,10 @@ export interface GameStoreActions {
   updateEducationMode: (value: boolean) => void;
   resetEducationMode: () => void;
   updateDisableAnimationsInStorage: (value: boolean) => void;
+
+  soloPanelOpacity: (panelName: PanelNamesT) => void;
+  updatePanelOpacity: (panelName: PanelNamesT, value: number) => void;
+  resetPanelsOpacity: () => void;
 }
 
 export type WorldParamsType = {
@@ -94,13 +104,28 @@ export type WorldParamsType = {
   pollution: number;
   radiation: number;
   weatherCondition: WeatherCondition;
-}
+};
+
+type UiPanelsStateType = {
+  opacity: number;
+};
 
 export type GameStoreState = {
   disableAnimations: boolean;
   educationMode: boolean;
 
   worldParams: WorldParamsType;
+  uiPanelsState: {
+    titlePanel: UiPanelsStateType;
+    planetPanel: UiPanelsStateType;
+    collectedResourcesPanel: UiPanelsStateType;
+    scanerPanel: UiPanelsStateType;
+    progressPanel: UiPanelsStateType;
+    systemMessagePanel: UiPanelsStateType;
+    systemControlsPanel: UiPanelsStateType;
+    logsPanel: UiPanelsStateType;
+    beaconPanel: UiPanelsStateType;
+  };
 
   firstStart: boolean;
   terrainLoading: boolean;
@@ -182,10 +207,23 @@ export const resourceTypes: ResourceTypesT = {
   },
 };
 
+type PanelNamesT =
+  | "titlePanel"
+  | "planetPanel"
+  | "collectedResourcesPanel"
+  | "scanerPanel"
+  | "progressPanel"
+  | "systemMessagePanel"
+  | "systemControlsPanel"
+  | "logsPanel"
+  | "beaconPanel";
+
 function createGameStore() {
   return create<GameStoreState>((set, get) => ({
-    disableAnimations: localStorage.getItem('disableAnimations') === 'true',
-    educationMode: localStorage.getItem('educationMode') === 'true',
+    disableAnimations: localStorage.getItem("disableAnimations") === "true",
+    educationMode:
+      localStorage.getItem("educationMode") === "true" ||
+      localStorage.getItem("educationMode") === null,
 
     firstStart: false,
     terrainLoading: true,
@@ -193,6 +231,52 @@ function createGameStore() {
     animationFirstStage: false,
 
     worldParams: generateWorld(),
+
+    uiPanelsState: {
+      titlePanel: { opacity: 1 },
+      planetPanel: { opacity: 1 },
+      collectedResourcesPanel: { opacity: 1 },
+      scanerPanel: { opacity: 1 },
+      progressPanel: { opacity: 1 },
+      systemMessagePanel: { opacity: 1 },
+      systemControlsPanel: { opacity: 1 },
+      logsPanel: { opacity: 1 },
+      beaconPanel: { opacity: 1 },
+    },
+
+    updatePanelOpacity: (panelName: PanelNamesT, value: number) => {
+      set((state) => ({
+        uiPanelsState: {
+          ...state.uiPanelsState,
+          [panelName]: { opacity: value },
+        },
+      }));
+    },
+
+    soloPanelOpacity: (panelName: PanelNamesT) => {
+      set((state) => {
+        const newPanelsState = Object.keys(state.uiPanelsState).reduce((acc, key) => {
+          acc[key as keyof typeof state.uiPanelsState] = { opacity: 0.1 };
+          return acc;
+        }, {} as typeof state.uiPanelsState);
+        newPanelsState[panelName] = { opacity: 1 };
+        return {
+          uiPanelsState: newPanelsState,
+        };
+      });
+    },
+
+    resetPanelsOpacity: () => {
+      set((state) => {
+        const newPanelsState = Object.keys(state.uiPanelsState).reduce((acc, key) => {
+          acc[key as keyof typeof state.uiPanelsState] = { opacity: 1 };
+          return acc;
+        }, {} as typeof state.uiPanelsState);
+        return {
+          uiPanelsState: newPanelsState,
+        };
+      });
+    },
 
     gridConfig: {
       chunkSize: 1,
@@ -232,7 +316,7 @@ function createGameStore() {
     eventsLog: [],
     scanRadius: 30,
     canPlaceBeacon: false,
-    activePosition: { x: 0, y: 0, z: 0},
+    activePosition: { x: 0, y: 0, z: 0 },
     weatherCondition: "mild",
     updateStoreProperty: (paramName, value) => {
       set(() => ({ [paramName]: value }));
@@ -246,8 +330,7 @@ function createGameStore() {
         mapParams: { ...state.mapParams, [paramName]: value },
       }));
     },
-    toggleShowResources: () =>
-      set((state) => ({ showResources: !state.showResources })),
+    toggleShowResources: () => set((state) => ({ showResources: !state.showResources })),
     replacePropWithXY: (name, value) => {
       set(() => ({ [name]: { x: value.x, y: value.y } }));
     },
@@ -264,7 +347,7 @@ function createGameStore() {
       set((state) => {
         const updatedEvents = [...state.eventsLog, eventName];
         if (updatedEvents.length > 5) {
-          updatedEvents.shift()
+          updatedEvents.shift();
         }
         // console.log("updatedEvents add:", updatedEvents);
         return { eventsLog: updatedEvents };
@@ -290,16 +373,16 @@ function createGameStore() {
 
     updateDisableAnimationsInStorage: (value: boolean) => {
       set({ disableAnimations: value });
-      localStorage.setItem('disableAnimations', value.toString());
+      localStorage.setItem("disableAnimations", value.toString());
     },
     updateEducationMode: (value: boolean) => {
       set({ educationMode: value });
-      localStorage.setItem('educationMode', value.toString());
+      localStorage.setItem("educationMode", value.toString());
     },
     resetEducationMode: () => {
       set({ educationMode: true });
-      localStorage.setItem('educationMode', 'true');
-    }
+      localStorage.setItem("educationMode", "true");
+    },
   }));
 }
 
