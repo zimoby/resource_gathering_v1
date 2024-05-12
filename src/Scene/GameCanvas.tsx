@@ -80,7 +80,7 @@ export const GameCanvas = () => {
           />
         </Html>
       </Billboard>
-      <OrbitControls />
+      <OrbitControls enablePan={false} />
       <EffectsCollection />
     </Canvas>
   );
