@@ -59,10 +59,10 @@ export const BeaconManagementPanel = () => {
     }));
   };
 
-  const handleHighlightBeacon = (beaconId: string) => {
-    // Highlight the beacon on the planet's surface
-    // Implement the highlighting logic based on your requirements
-  };
+  // const handleHighlightBeacon = (beaconId: string) => {
+  //   // Highlight the beacon on the planet's surface
+  //   // Implement the highlighting logic based on your requirements
+  // };
 
   return (
     <BasicPanelWrapper titleText="Beacon Management" >
@@ -70,7 +70,7 @@ export const BeaconManagementPanel = () => {
         <div key={beacon.id} className="flex justify-between items-center">
           <span>Beacon {beacon.id}</span>
           <div>
-            <button onClick={() => handleHighlightBeacon(beacon.id)}>Highlight</button>
+            {/* <button onClick={() => handleHighlightBeacon(beacon.id)}>Highlight</button> */}
             <button onClick={() => handleRemoveBeacon(beacon.id)}>Remove</button>
           </div>
         </div>
@@ -86,10 +86,10 @@ export const ResourceExtractionPanel = () => {
     { id: 3, name: "Laser Extraction", time: 45, energyCost: 150 },
   ];
 
-  const handleStartExtraction = (methodId: number) => {
-    // Initiate the resource extraction process based on the selected method
-    // Implement the extraction logic based on your requirements
-  };
+  // const handleStartExtraction = (methodId: number) => {
+  //   // Initiate the resource extraction process based on the selected method
+  //   // Implement the extraction logic based on your requirements
+  // };
 
   return (
     <BasicPanelWrapper titleText="Resource Extraction">
@@ -99,7 +99,7 @@ export const ResourceExtractionPanel = () => {
           <div>
             <span>Time: {method.time}s</span>
             <span>Energy: {method.energyCost}</span>
-            <button onClick={() => handleStartExtraction(method.id)}>Start</button>
+            {/* <button onClick={() => handleStartExtraction(method.id)}>Start</button> */}
           </div>
         </div>
       ))}
