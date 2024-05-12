@@ -52,8 +52,14 @@ export const CheckBox = ({ label, value, onUpdate }: CheckBoxProps) => {
 
 export const SliderWithInput = ({ label, value, min = 1, max = 100, step = 1, onUpdate }: SliderWithInputProps) => {
   const [localValue, setLocalValue] = useState<number>(value)
+  const [currentStep, setCurrentStep] = useState<number>(step);
+
+  const handleStepChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    setCurrentStep(e.shiftKey ? step * 10 : step);
+  }
 
   const allChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("currentStep", localValue);
     setLocalValue(Number(e.target.value))
     onUpdate(Number(e.target.value))
   }
@@ -63,30 +69,36 @@ export const SliderWithInput = ({ label, value, min = 1, max = 100, step = 1, on
   }, [value])
 
   return (
-    <div className="relative flex flex-row text-xs justify-center items-center">
+    <div className="relative flex flex-col space-y-1 text-xs justify-center items-start">
       <div className="relative w-32 truncate select-none">{label}</div>
-      <input
-        className="h-2 w-24 cursor-pointer appearance-none rounded-sm"
-        style={{
-          background: backgroundSliderCalc(localValue, min, max),
-        }}
-        type="range"
-        min={min}
-        max={max}
-        value={localValue}
-        step={step}
-        onChange={allChange}
-        // onMouseUp={handleMouseUp}
-      />
-      <input
-        className="h-hull ml-2 m-0 w-10 rounded-sm border-transparent bg-black/20 p-0 text-center text-xs text-white"
-        min={min.toString()}
-        max={max.toString()}
-        step={step.toString()}
-        type="number"
-        value={localValue}
-        onChange={allChange}
-      />
+      <div className="w-full flex flex-row justify-between space-x-1 items-center">
+        <input
+          className="h-2 w-24 cursor-pointer appearance-none rounded-sm"
+          style={{
+            background: backgroundSliderCalc(localValue, min, max),
+          }}
+          type="range"
+          min={min}
+          max={max}
+          value={localValue}
+          step={currentStep}
+          onChange={allChange}
+          onKeyDown={handleStepChange}
+          onKeyUp={handleStepChange}
+          // onMouseUp={handleMouseUp}
+        />
+        <input
+          className="h-hull ml-2 m-0 w-12 rounded-sm border-transparent bg-black/20 p-0 text-left text-xs text-white"
+          min={min.toString()}
+          max={max.toString()}
+          step={currentStep.toString()}
+          type="number"
+          value={step >= 1 ? localValue.toFixed(0) : localValue.toFixed(2)}
+          onChange={allChange}
+          onKeyDown={handleStepChange}
+          onKeyUp={handleStepChange}
+        />
+      </div>
     </div>
   )
 }

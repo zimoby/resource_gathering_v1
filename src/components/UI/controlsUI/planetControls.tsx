@@ -40,7 +40,7 @@ export const SystemControls = () => {
       </div> */}
       {/* <animated.div style={{ overflow: "hidden", ...animation }}> */}
         {/* <div ref={ref} className=""> */}
-          <BasicPanelWrapper titleText="System Controls" width="w-72" opacity={opacity}> 
+          <BasicPanelWrapper titleText="System Controls" opacity={opacity}> 
             <div
               className="w-fit space-y-1 bg-black/20 py-1 px-2 divide-y divide-white/40 rounded-md"
             >

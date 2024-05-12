@@ -5,7 +5,7 @@ interface TypingTextProps {
   speed?: number;
 }
 
-const TypingText: React.FC<TypingTextProps> = ({ text, speed = 20 }) => {
+const TypingText: React.FC<TypingTextProps> = ({ text, speed = 100 }) => {
   const [displayText, setDisplayText] = useState("");
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const TypingText: React.FC<TypingTextProps> = ({ text, speed = 20 }) => {
       } else {
         clearInterval(typingInterval);
       }
-    }, (text.length / 20) * speed);
+    }, (20 / text.length) * speed);
 
     return () => {
       clearInterval(typingInterval);

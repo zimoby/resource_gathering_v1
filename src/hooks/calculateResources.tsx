@@ -26,7 +26,7 @@ export const useCalculateResources = () => {
 
         if (canPlaceBeacon && state.playerPoints >= 50) {
           newPlayerPoints -= 50;
-          addEventLog("Beacon placed. -50 points");
+          addEventLog("Scanning. -50 points");
         }
 
         return {

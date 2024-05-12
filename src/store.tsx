@@ -125,6 +125,7 @@ export type GameStoreState = {
     systemControlsPanel: UiPanelsStateType;
     logsPanel: UiPanelsStateType;
     beaconPanel: UiPanelsStateType;
+    eventsPanel: UiPanelsStateType;
   };
 
   firstStart: boolean;
@@ -216,7 +217,8 @@ type PanelNamesT =
   | "systemMessagePanel"
   | "systemControlsPanel"
   | "logsPanel"
-  | "beaconPanel";
+  | "beaconPanel"
+  | "eventsPanel";
 
 function createGameStore() {
   return create<GameStoreState>((set, get) => ({
@@ -242,6 +244,7 @@ function createGameStore() {
       systemControlsPanel: { opacity: 1 },
       logsPanel: { opacity: 1 },
       beaconPanel: { opacity: 1 },
+      eventsPanel: { opacity: 1 },
     },
 
     updatePanelOpacity: (panelName: PanelNamesT, value: number) => {

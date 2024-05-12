@@ -2,7 +2,7 @@ import { useGameStore } from "../../store";
 import { Cylinder, Sphere } from "@react-three/drei";
 import { ConcentricCirclesAnimation } from "../gfx/concentricCircles";
 import { useFrame } from "@react-three/fiber";
-import { isOutOfBound, useCalculateDeltas } from "../../utils/functions";
+import { isOutOfBound, useCalculateDeltas, useCheckVariableRender } from "../../utils/functions";
 import { createRef, useLayoutEffect, useRef } from "react";
 import { Group } from "three";
 import { useIncreasingSpeed } from "../../effects/IncreaseSceneSpeed";
@@ -21,6 +21,7 @@ export const BeaconGroup = () => {
   const beaconRefs = useRef<React.RefObject<Group>[]>(beacons.map(() => createRef()));
   const { speedRef: increasingSpeedRef } = useIncreasingSpeed(0, 1, 0.01, 2);
 
+  // useCheckVariableRender({variable: beacons, name: "BeaconGroup"});
 
   // console.log("beacons:", beacons);
 
@@ -30,7 +31,7 @@ export const BeaconGroup = () => {
         beaconRefs.current[i] = createRef();
     }
     // console.log("beaconRefs:", beaconRefs.current);
-}, [beacons.length]);
+  }, [beacons.length]);
 
   useFrame(() => {
     beaconRefs.current.forEach((beacon) => {
@@ -50,19 +51,19 @@ export const BeaconGroup = () => {
   return (
     <group visible={firstStart}>
       {beacons.map((beacon, index) => (
-        <group key={beacon.id}>
-          <group position={[beacon.x, beacon.y + 1, beacon.z]} ref={beaconRefs.current[index]}>
-            <Sphere args={[1, 8, 8]} position={[0, beaconHeight, 0]} />
-            <Cylinder args={[0.1, 0.1, beaconHeight, 4]} position={[0, beaconHeight / 2, 0]} />
-            <Cylinder visible={canPlaceBeacon} args={[minDistance, minDistance, 0.2, 16]} position={[0, 0, 0]}>
-              <meshBasicMaterial wireframe color={"#8D1919"} />
-            </Cylinder>
-            {/* <Circle args={[1, 8]} position={[0, 1, 0]} rotation-x={Math.PI / 2}>
-              <meshBasicMaterial color={"#ff0000"} />
-            </Circle> */}
-            <ConcentricCirclesAnimation />
-          </group>
+        // <group key={beacon.id}>
+        <group key={beacon.id} position={[beacon.x, beacon.y + 1, beacon.z]} ref={beaconRefs.current[index]}>
+          <Sphere args={[1, 8, 8]} position={[0, beaconHeight, 0]} />
+          <Cylinder args={[0.1, 0.1, beaconHeight, 4]} position={[0, beaconHeight / 2, 0]} />
+          <Cylinder visible={canPlaceBeacon} args={[minDistance, minDistance, 0.2, 16]} position={[0, 0, 0]}>
+            <meshBasicMaterial wireframe color={"#8D1919"} />
+          </Cylinder>
+          {/* <Circle args={[1, 8]} position={[0, 1, 0]} rotation-x={Math.PI / 2}>
+            <meshBasicMaterial color={"#ff0000"} />
+          </Circle> */}
+          <ConcentricCirclesAnimation />
         </group>
+        // </group>
       ))}
     </group>
   );

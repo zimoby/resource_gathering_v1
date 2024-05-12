@@ -63,9 +63,9 @@ export const FlyingDrone = () => {
                 <div className="flex flex-col items-end">
                   <div
                     key={phraseKey}
-                    className=" w-fit max-w-32 min-w-fit leading-4 text-sm text-left border select-none border-white py-0.5 px-1 bg-black/80"
+                    className=" w-44 max-w-xs min-w-fit leading-4 text-sm text-left border select-none border-white py-0.5 px-1 bg-black/80"
                   >
-                    <TypingText text={activePhrase.phrase} speed={10}/>
+                    <TypingText text={activePhrase.phrase} speed={50}/>
                   </div>
                   {activePhrase.skipped === false && (
                     <div

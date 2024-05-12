@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { PhrasesCollection } from "./PhrasesCollection";
 import { useGameStore } from "../../store";
 import { useCheckVariableRender } from "../../utils/functions";
+import { educationalStepsPhrases } from "./educationalStepsPhrases";
 
 interface PhraseSystemOptions {
   minDuration?: number;
@@ -24,25 +25,6 @@ const randomisePhrase = (activePhrase: string) => {
 
   return newPhrase;
 };
-
-export const educationalStepsPhrases = [
-  {
-    phrase: "Hello, I'm your drone. I will help you to gather resources.",
-    skipped: false,
-  },
-  {
-    phrase: "To gather resources, hold Space and Click on the ground.",
-    skipped: false,
-  },
-  {
-    phrase: "Great! Information about resources will appear on the left side of the screen.",
-    skipped: false,
-  },
-	{
-		phrase: "Now, let's collect some resources!",
-		skipped: false,
-	}
-];
 
 type ActivePhraseType = {
   phrase: string;
@@ -91,6 +73,8 @@ const usePhraseSystem = ({
 		if (educationalStepIndex === 2) {
 			soloPanelOpacity("collectedResourcesPanel")
 		} else if (educationalStepIndex === 3) {
+			soloPanelOpacity("progressPanel")
+		} else if (educationalStepIndex === educationalStepsPhrases.length - 1) {
 			resetPanelsOpacity();
 		}
 

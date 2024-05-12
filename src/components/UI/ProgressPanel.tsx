@@ -4,7 +4,7 @@ export const ProgressBlock = () => {
   const playerPoints = useGameStore((state) => state.playerPoints);
   const opacity = useGameStore((state) => state.uiPanelsState.progressPanel.opacity);
 
-  const goal = 10000; // The maximum points or goal
+  const goal = 20000; // The maximum points or goal
 
   // Calculate the percentage of progress for each block relative to the goal
   const progressPercent = playerPoints / goal * 100;
@@ -32,7 +32,7 @@ export const ProgressBlock = () => {
         </div>
         <div className="flex w-full h-4 justify-between px-1 border bg-neutral-200 border-neutral-200 orbitron text-end text-2xs uppercase text-neutral-900">
 					<p>
-						{playerPoints} / {goal}
+						Energy: {playerPoints} / {goal}
 					</p>
 					<p>
 						Progress

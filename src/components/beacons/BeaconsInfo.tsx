@@ -6,9 +6,8 @@ import { BasicPanelWrapper } from "../UI/BasicPanelWrapper";
 export const BeaconsInfo = () => {
   const beacons = useGameStore((state) => state.beacons);
   const opacity = useGameStore((state) => state.uiPanelsState.beaconPanel.opacity);
-  
+
   const memoizedBeacons = useMemo(() => {
-    if (beacons.length === 0) return <></>;
 
     return (
       <BasicPanelWrapper titleText="Beacons" opacity={opacity}>
