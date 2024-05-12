@@ -42,7 +42,7 @@ export const GameCanvas = () => {
           {!animationFirstStage && <ChunkGrid position={[0, -10, 0]} sizeExtend={80} />} */}
           </FlickeringEffect>
           {!terrainAppearing &&
-            <FlickeringEffect appearingOnly={true} disabled={disableAnimations} initialIntensity={10} randomFrequency={0.008} duration={50}>
+            <FlickeringEffect disabled={disableAnimations} initialIntensity={10} randomFrequency={0.008} duration={50}>
               <Line width={100} />
               <Line width={100} rotation={new Euler(0,Math.PI/2,0)} />
               <ChunkGrid position={[0, -1, 0]} sizeExtend={30} />

@@ -9,7 +9,7 @@ import { BasicGridShader } from "../components/gfx/BasicGridShader";
 import { Color, Mesh, ShaderMaterial } from "three";
 import FlickeringEffect from "../effects/FlickeringEffectWrapper";
 import FadingEffect from "../effects/FadingEffectWrapper";
-import { useIncreasingSpeed } from "../effects/IncreaseSceneSpeed";
+import { useIncreasingSpeed, useIncreasingSpeed2 } from "../effects/IncreaseSceneSpeed";
 import { PlaneTest } from "../components/gfx/pulsingAreaTest";
 
 const rulerGridY = 50;
@@ -21,33 +21,31 @@ export const Map = () => {
   const { width, depth } = useGameStore((state) => state.mapParams);
   const disableAnimations = useGameStore((state) => state.disableAnimations);
   const updateMapSize = useGameStore((state) => state.updateMapSize);
+  const animationFirstStage = useGameStore((state) => state.animationFirstStage);
 
   const { deltaX, deltaY } = useCalculateDeltas();
   const { speedRef: increasingSpeedRef } = useIncreasingSpeed(0, 1, 0.01, 2);
-  const { speedRef: increasingMapSpeedRef, speedReached, speedStarted } = useIncreasingSpeed(0, 1, 0.01, 1);
+  const { valueAnimation, valueReached, valueStarted } = useIncreasingSpeed2(0, 100, 1, 2);
   const { updateLocationAndOffset } = useUpdateMapMoving();
 
-  const lastExecution = useRef(Date.now());
-  const updateInterval = 300;
-
-  // useCheckVariableRender({variable: animationFirstStage, name: "animationFirstStage"});
-  
   useFrame(() => {
-    const now = Date.now();
-    if (!speedReached.current && speedStarted.current) {
+
+    if (!valueReached.current && valueStarted.current) {
       useGameStore.setState({ terrainAppearing: true });
-      updateMapSize(100 * increasingMapSpeedRef.current);
-    } else if (speedReached.current) {
+      updateMapSize(valueAnimation.value.get());
+    } else if (valueReached.current && !animationFirstStage) {
+      // console.log("valueReached.current:", valueReached.current);
       useGameStore.setState({ animationFirstStage: true });
     }
+    
 
     offset.current.x += deltaX * increasingSpeedRef.current;
     offset.current.y += deltaY * increasingSpeedRef.current;
 
-    if (now - lastExecution.current > updateInterval) {
-      lastExecution.current = now;
+    // if (now - lastExecution.current > updateInterval) {
+    //   lastExecution.current = now;
       updateLocationAndOffset(offset);
-    }
+    // }
     
     if (planeRef.current && planeRef.current.material instanceof ShaderMaterial && planeRef.current.material.uniforms.offset && planeRef.current.material.uniforms.offset.value) {
       planeRef.current.material.uniforms.offset.value.set(offset.current.x * 0.01, -offset.current.y * 0.01);

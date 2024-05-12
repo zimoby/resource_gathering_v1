@@ -1,6 +1,6 @@
 import { Color } from "three";
 import { create } from "zustand";
-import { generateWeather } from "./utils/generators";
+import { generateWeather, generateWorld } from "./utils/generators";
 // import { persist } from "zustand/middleware";
 
 export const minLevel = -10;
@@ -11,6 +11,7 @@ export const DEV_MODE = import.meta.env.VITE_APP_MODE === "development";
 export type TerrainType = "water" | "grass" | "dirt" | "snow" | "default";
 export type ResourceType = "r1" | "r2" | "r3" | "r4";
 export type WeatherCondition = "mild" | "moderate" | "severe";
+export type WorldState = "extreme" | "danger" | "normal" | "safe";
 
 export interface Terrain {
   color: Color;
@@ -83,10 +84,23 @@ export interface GameStoreActions {
   updateDisableAnimationsInStorage: (value: boolean) => void;
 }
 
+export type WorldParamsType = {
+  seed: string;
+  worldState: WorldState;
+  name: string;
+  temperature: number;
+  humidity: number;
+  windSpeed: number;
+  pollution: number;
+  radiation: number;
+  weatherCondition: WeatherCondition;
+}
 
 export type GameStoreState = {
   disableAnimations: boolean;
   educationMode: boolean;
+
+  worldParams: WorldParamsType;
 
   firstStart: boolean;
   terrainLoading: boolean;
@@ -105,10 +119,6 @@ export type GameStoreState = {
   beacons: BeaconType[];
   playerPoints: number;
   collectedResources: CollectedResources;
-  planetParams: {
-    name: string;
-    seed: string;
-  };
   logs: string[];
   eventsLog: string[];
   message: string;
@@ -182,6 +192,8 @@ function createGameStore() {
     terrainAppearing: false,
     animationFirstStage: false,
 
+    worldParams: generateWorld(),
+
     gridConfig: {
       chunkSize: 1,
       subGrids: 5,
@@ -214,10 +226,7 @@ function createGameStore() {
       r3: 0,
       r4: 0,
     },
-    planetParams: {
-      name: "Earth",
-      seed: "42",
-    },
+
     message: "",
     logs: [],
     eventsLog: [],

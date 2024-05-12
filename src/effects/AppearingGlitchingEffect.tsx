@@ -1,6 +1,6 @@
 import { RefObject, useEffect } from "react";
 import { Group } from "three";
-import { consoleLog } from "../utils/functions";
+// import { consoleLog } from "../utils/functions";
 
 export const useAppearingGlitchingEffect = ({
   disabled,
@@ -20,7 +20,7 @@ export const useAppearingGlitchingEffect = ({
     const group = groupRef.current;
 
     if (group) {
-      consoleLog("useAppearingGlitchingEffect");
+      // consoleLog("useAppearingGlitchingEffect");
       const timeouts = new Set<number>();
       group.children.forEach((child) => {
         let lastToggle = 0;

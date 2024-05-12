@@ -32,8 +32,6 @@ const FlickeringEffect: React.FC<FlickeringEffectProps> = ({
       return;
     }
 
-    console.log("disabled", disabled);
-
     const container = containerRef.current;
     if (container) {
       const timeouts = new Set<number>();
