@@ -3,7 +3,7 @@ import { BeaconsInfo } from "../beacons/BeaconsInfo";
 import AppearingGlitchEffect from "../../effects/AppearingUiEffectWrapper";
 import { SystemControls } from "./controlsUI/planetControls";
 import { ProgressBlock } from "./ProgressPanel";
-import { BeaconManagementPanel, ResourceDistributionPanel, ResourceExtractionPanel, WarningPanel } from "./ResourceDistributionPanel";
+// import { BeaconManagementPanel, ResourceDistributionPanel, ResourceExtractionPanel, WarningPanel } from "./ResourceDistributionPanel";
 import { TitlePanel } from "./TitlePanel";
 import { SystemMessagePanel } from "./SystemMessagePanel";
 import { ScanerParamPanel } from "./ScanerParamsPanel";

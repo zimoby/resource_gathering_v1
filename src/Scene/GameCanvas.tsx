@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
-import { Billboard, Html, OrbitControls, Ring, Sphere, Stats } from "@react-three/drei";
+import { Billboard, Html, OrbitControls, Stats } from "@react-three/drei";
 import FlickeringEffect from "../effects/FlickeringEffectWrapper";
 import { useGameStore } from "../store";
 import { ChunkGrid } from "../components/gfx/ChunkGrid";
@@ -11,7 +11,7 @@ import { SceneSettings } from "./scene";
 import { Map } from "./Map";
 import { FlyingDrone } from "../components/drone/Drone";
 import { Line } from "../components/gfx/Line";
-import { DoubleSide, Euler } from "three";
+import { Euler } from "three";
 
 export const GameCanvas = () => {
   const firstStart = useGameStore((state) => state.firstStart);

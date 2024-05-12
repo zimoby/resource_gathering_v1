@@ -2,7 +2,7 @@ import { useGameStore } from "../../store";
 import { Cylinder, Sphere } from "@react-three/drei";
 import { ConcentricCirclesAnimation } from "../gfx/concentricCircles";
 import { useFrame } from "@react-three/fiber";
-import { isOutOfBound, useCalculateDeltas, useCheckVariableRender } from "../../utils/functions";
+import { isOutOfBound, useCalculateDeltas } from "../../utils/functions";
 import { createRef, useLayoutEffect, useRef } from "react";
 import { Group } from "three";
 import { useIncreasingSpeed } from "../../effects/IncreaseSceneSpeed";
