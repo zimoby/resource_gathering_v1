@@ -11,6 +11,15 @@ export default {
         "3xs": ".5rem",
         "4xs": ".4rem"
       },
+      keyframes: {
+        "linear-move": {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
+      },
+      animation: {
+        "linear": "linear-move 10s linear infinite",
+      },
     },
   },
   plugins: [],

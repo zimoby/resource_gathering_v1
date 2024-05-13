@@ -47,7 +47,7 @@ const usePhraseSystem = ({
 	const uiPanelsState = useGameStore((state) => state.uiPanelsState);
 	const resetPanelsOpacity = useGameStore((state) => state.resetPanelsOpacity);
 
-	useCheckVariableRender({variable: uiPanelsState, name: "uiPanelsState"});
+	// useCheckVariableRender({variable: uiPanelsState, name: "uiPanelsState"});
 
   useEffect(() => {
     // console.log("educationMode:", educationMode, localStorage.getItem('educationMode'));

@@ -87,6 +87,7 @@ export interface GameStoreActions {
   updateWeather: () => WeatherCondition | null;
   updateEducationMode: (value: boolean) => void;
   resetEducationMode: () => void;
+  updateVariableInLocalStorage: (variableName: string, value: boolean) => void;
   updateDisableAnimationsInStorage: (value: boolean) => void;
 
   soloPanelOpacity: (panelName: PanelNamesT) => void;
@@ -112,6 +113,7 @@ type UiPanelsStateType = {
 
 export type GameStoreState = {
   disableAnimations: boolean;
+  disableSounds: boolean;
   educationMode: boolean;
 
   worldParams: WorldParamsType;
@@ -128,6 +130,7 @@ export type GameStoreState = {
     eventsPanel: UiPanelsStateType;
   };
 
+  startScreen: boolean;
   firstStart: boolean;
   terrainLoading: boolean;
   terrainAppearing: boolean;
@@ -223,9 +226,15 @@ type PanelNamesT =
 function createGameStore() {
   return create<GameStoreState>((set, get) => ({
     disableAnimations: localStorage.getItem("disableAnimations") === "true",
+    disableSounds: localStorage.getItem("disableSounds") === "true",
+
     educationMode:
       localStorage.getItem("educationMode") === "true" ||
       localStorage.getItem("educationMode") === null,
+
+    startScreen:
+      localStorage.getItem("startScreen") === "true" ||
+      localStorage.getItem("startScreen") === null,
 
     firstStart: false,
     terrainLoading: true,
@@ -374,6 +383,10 @@ function createGameStore() {
       }
     },
 
+    updateVariableInLocalStorage: (variableName: string, value: boolean) => {
+      set({ [variableName]: value });
+      localStorage.setItem(variableName, value.toString());
+    },
     updateDisableAnimationsInStorage: (value: boolean) => {
       set({ disableAnimations: value });
       localStorage.setItem("disableAnimations", value.toString());

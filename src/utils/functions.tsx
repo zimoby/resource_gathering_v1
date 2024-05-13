@@ -5,7 +5,7 @@ export const consoleLog = (message: string, data?: object) => {
   DEV_MODE && data ? console.log(message, { ...data }) : console.log(message);
 }
 
-export const useCheckVariableRender = ({variable, name}: {variable: object | string | number | boolean, name: string}) => {
+export const useCheckVariableRender = (variable: object | string | number | boolean, name: string) => {
   useEffect(() => {
 
     if (typeof variable === "object") {

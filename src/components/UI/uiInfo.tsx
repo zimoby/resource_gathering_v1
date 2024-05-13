@@ -25,7 +25,7 @@ export const UiInfo = () => {
   return (
     <>
       <div
-        className="fixed flex justify-between z-30 gap-1 bg-transparent select-none"
+        className="fixed flex justify-between z-30 gap-1 bg-transparent"
         style={{
           width: "calc(100vw - 1rem)",
           height: "calc(100vh - 1rem)",
@@ -65,7 +65,7 @@ export const UiInfo = () => {
 
       </div>
       <div
-        className="fixed flex justify-start items-end z-30 gap-1 bg-transparent select-none"
+        className="fixed flex justify-start items-end z-20 gap-1 bg-transparent"
         style={{
           width: "calc(100vw - 1rem)",
           height: "calc(100vh - 1rem)",

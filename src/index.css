@@ -48,6 +48,15 @@ body,
   display: none; 
 }
 
+@keyframes warningLines {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 .warning-sign {
   width: 200px;
   height: 100px;
@@ -81,4 +90,15 @@ body,
   align-items: center;
   font-weight: bold;
   font-size: 20px;
+}
+
+.warning-sign-animated {
+  background: repeating-linear-gradient(
+    -45deg,
+    white,
+    white 10px,
+    black 10px,
+    black 20px
+  );
+  animation: warningLines 10s linear infinite;
 }
