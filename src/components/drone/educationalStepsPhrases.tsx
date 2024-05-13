@@ -21,6 +21,10 @@ export const educationalStepsPhrases = [
 		skipped: false,
 	},
 	{
+		phrase: "To change direction of scanning, use WASD or arrow keys.",
+		skipped: false,
+	},
+	{
 		phrase: "Now, let's collect some resources!",
 		skipped: false,
 	}
