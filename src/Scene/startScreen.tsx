@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { corpLogoSvg } from "../assets/CorpLogo";
 import { useGameStore } from "../store";
 import { useCheckVariableRender } from "../utils/functions";
+import { ToggleButton } from "../components/UI/ToggleButton";
 
 const authorName = "Denys Bondartsov";
 
@@ -12,10 +14,15 @@ const StartScreen = () => {
 	const disableSounds = useGameStore((state) => state.disableSounds);
 	const startScreen = useGameStore((state) => state.startScreen);
 
+	const [skipStartScene, setSkipStartScene] = useState(false);
+
 	useCheckVariableRender(startScreen, "startScreen")
 
   const startGame = () => {
     setStartScreen("startScreen", false);
+		if (startScreen === skipStartScene) {
+			updateVariableInLocalStorage("startScreen", !skipStartScene)
+		}
   };
 
   return (
@@ -71,30 +78,21 @@ const StartScreen = () => {
           photosensitive epilepsy. If you find these effects uncomfortable you can disable them.
         </p>
         <div className="mt-2 flex flex-row gap-3">
-          <button
-            className={`w-fit h-fit px-2 border text-sm ${
-              disableAnimations ? "bg-red-700" : ""
-            }  hover:border-yellow-400  hover:bg-yellow-400 cursor-pointer uppercase  hover:text-neutral-900`}
-            onClick={() => updateVariableInLocalStorage("disableAnimations", !disableAnimations)}
-          >
-            Animations: {disableAnimations ? "off" : "on"}
-          </button>
-          <button
-            className={`w-fit h-fit px-2 border text-sm ${
-              disableSounds ? "bg-red-700" : ""
-            }  hover:border-yellow-400  hover:bg-yellow-400 cursor-pointer uppercase  hover:text-neutral-900`}
-            onClick={() => updateVariableInLocalStorage("disableSounds", !disableSounds)}
-          >
-            Sound: {disableSounds ? "off" : "on"}
-          </button>
-          <button
-            className={`w-fit h-fit px-2 border text-sm ${
-              !startScreen ? "bg-red-700" : ""
-            }  hover:border-yellow-400  hover:bg-yellow-400 cursor-pointer uppercase  hover:text-neutral-900`}
-            onClick={() => updateVariableInLocalStorage("startScreen", !startScreen)}
-          >
-            Skip Start page: {!startScreen ? "off" : "on"}
-          </button>
+					<ToggleButton
+						text={"Animations"}
+						onClick={() => updateVariableInLocalStorage("disableAnimations", !disableAnimations)}
+						state={disableAnimations}
+					/>
+					<ToggleButton
+						text={"Sound"}
+						onClick={() => updateVariableInLocalStorage("disableSounds", !disableSounds)}
+						state={disableSounds}
+					/>
+					<ToggleButton
+						text={"Skip start scene"}
+						onClick={() => setSkipStartScene(!skipStartScene)}
+						state={skipStartScene}
+					/>
         </div>
       </div>
     </div>
