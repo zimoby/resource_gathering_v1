@@ -1,0 +1,45 @@
+@keyframes slide1 {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes slide2 {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes slide3 {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes slide4 {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+#repeating-group-1 {
+  animation: slide1 10s linear infinite;
+}
+#repeating-group-2 {
+  animation: slide2 8s linear infinite;
+}
+#repeating-group-3 {
+  animation: slide3 12s linear infinite;
+}
+#repeating-group-4 {
+  animation: slide4 15s linear infinite;
+}

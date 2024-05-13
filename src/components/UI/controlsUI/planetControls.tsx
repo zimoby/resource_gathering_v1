@@ -31,61 +31,54 @@ export const SystemControls = () => {
   // });
 
   return (
-    <div className="absolute z-50 top-0 right-0 m-2 ">
-      {/* <div
-        className="absolute -top-3 -left-1 font-sans text-lg -m-2 select-none cursor-pointer text-red-600 hover:scale-150 hover:text-neutral-50"
-        onClick={() => setShow(!show)}
-      >
-        +
-      </div> */}
-      {/* <animated.div style={{ overflow: "hidden", ...animation }}> */}
-        {/* <div ref={ref} className=""> */}
-          <BasicPanelWrapper titleText="System Controls" opacity={opacity}> 
-            <div
-              className="w-fit space-y-1 bg-black/20 py-1 px-2 divide-y divide-white/40 rounded-md"
-            >
-              <div className=" space-y-1 pt-1 pb-1">
-                <SliderWithInput
-                  label="Map Width"
-                  value={mapWidth}
-                  max={200}
-                  onUpdate={(e) => updateMapParam("width", e)}
-                />
-                <SliderWithInput
-                  label="Map Depth"
-                  value={mapDepth}
-                  max={200}
-                  onUpdate={(e) => updateMapParam("depth", e)}
-                />
-                <SliderWithInput
-                  label="Resolution"
-                  value={mapResolution}
-                  max={10}
-                  onUpdate={(e) => updateMapParam("resolution", e)}
-                />
-                <SliderWithInput
-                  label="Speed"
-                  value={mapSpeed}
-                  min={0}
-                  max={0.5}
-                  step={0.01}
-                  onUpdate={(e) => updateMapParam("speed", e)}
-                />
-              </div>
-              <div className="space-y-1 pt-2">
-                {/* <div className="w-72 space-y-1 pt-1 flex flex-wrap justify-between"> */}
-                <CheckBox
-                  label="Disable Animations"
-                  value={disableAnimations}
-                  // onUpdate={() => updateStoreProperty("disableAnimations", !disableAnimations)}
-                  onUpdate={() => updateDisableAnimationsInStorage(!disableAnimations)}
 
-                />
-              </div>
-            </div>
-          </BasicPanelWrapper>
-        {/* </div> */}
-      {/* </animated.div> */}
+
+
+  <BasicPanelWrapper titleText="System Controls" opacity={opacity}> 
+    <div
+      className="w-full space-y-1 bg-black/20 px-1 divide-y divide-white/40 rounded-md"
+    >
+      <div className="w-full space-y-1 pt-1 pb-1">
+        <SliderWithInput
+          label="Map Width"
+          value={mapWidth}
+          max={200}
+          onUpdate={(e) => updateMapParam("width", e)}
+        />
+        <SliderWithInput
+          label="Map Depth"
+          value={mapDepth}
+          max={200}
+          onUpdate={(e) => updateMapParam("depth", e)}
+        />
+        <SliderWithInput
+          label="Resolution"
+          value={mapResolution}
+          max={10}
+          onUpdate={(e) => updateMapParam("resolution", e)}
+        />
+        <SliderWithInput
+          label="Speed"
+          value={mapSpeed}
+          min={0}
+          max={0.5}
+          step={0.01}
+          onUpdate={(e) => updateMapParam("speed", e)}
+        />
+      </div>
+      <div className="space-y-1 pt-2">
+        {/* <div className="w-72 space-y-1 pt-1 flex flex-wrap justify-between"> */}
+        <CheckBox
+          label="Disable Animations"
+          value={disableAnimations}
+          // onUpdate={() => updateStoreProperty("disableAnimations", !disableAnimations)}
+          onUpdate={() => updateDisableAnimationsInStorage(!disableAnimations)}
+
+        />
+      </div>
     </div>
+  </BasicPanelWrapper>
+
+
   );
 };

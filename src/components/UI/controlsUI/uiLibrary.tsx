@@ -39,13 +39,13 @@ export const CheckBox = ({ label, value, onUpdate }: CheckBoxProps) => {
           background: value ? "rgba(128, 0, 128, 0.7)" : "rgba(255, 255, 255, 0.1)",
         }}
       />
-      {value ? (
+      {/* {value ? (
         <div
-          className="absolute inset-0 m-auto w-1 h-1 rounded-full bg-white"
+          className=" size-1 m-0 p-0 rounded-full bg-white"
           style={{ zIndex: 1, pointerEvents: "none" }}
         />
       ) : null
-      }
+      } */}
     </div>
   )
 }
@@ -69,11 +69,11 @@ export const SliderWithInput = ({ label, value, min = 1, max = 100, step = 1, on
   }, [value])
 
   return (
-    <div className="relative flex flex-col space-y-1 text-xs justify-center items-start">
+    <div className="relative flex flex-col space-y-0 text-xs justify-center items-start">
       <div className="relative w-32 truncate select-none">{label}</div>
       <div className="w-full flex flex-row justify-between space-x-1 items-center">
         <input
-          className="h-2 w-24 cursor-pointer appearance-none rounded-sm"
+          className="h-2 mr-2 cursor-pointer appearance-none rounded-sm"
           style={{
             background: backgroundSliderCalc(localValue, min, max),
           }}
@@ -88,7 +88,7 @@ export const SliderWithInput = ({ label, value, min = 1, max = 100, step = 1, on
           // onMouseUp={handleMouseUp}
         />
         <input
-          className="h-hull ml-2 m-0 w-12 rounded-sm border-transparent bg-black/20 p-0 text-left text-xs text-white"
+          className="h-hull m-0 w-12 rounded-sm border-transparent bg-black/20 p-0 text-left text-xs text-white"
           min={min.toString()}
           max={max.toString()}
           step={currentStep.toString()}
