@@ -1,5 +1,4 @@
 import { corpLogoSvg } from "../assets/CorpLogo";
-import { CorpLogoPanel } from "../components/UI/CorpLogoPanel";
 import { useGameStore } from "../store";
 import { useCheckVariableRender } from "../utils/functions";
 

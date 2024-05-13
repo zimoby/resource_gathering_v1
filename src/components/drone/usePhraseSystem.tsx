@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { PhrasesCollection } from "./PhrasesCollection";
 import { useGameStore } from "../../store";
-import { useCheckVariableRender } from "../../utils/functions";
+// import { useCheckVariableRender } from "../../utils/functions";
 import { educationalStepsPhrases } from "./educationalStepsPhrases";
 
 interface PhraseSystemOptions {
@@ -44,7 +44,7 @@ const usePhraseSystem = ({
   const educationMode = useGameStore((state) => state.educationMode);
   const beacons = useGameStore((state) => state.beacons);
 	const soloPanelOpacity = useGameStore((state) => state.soloPanelOpacity);
-	const uiPanelsState = useGameStore((state) => state.uiPanelsState);
+	// const uiPanelsState = useGameStore((state) => state.uiPanelsState);
 	const resetPanelsOpacity = useGameStore((state) => state.resetPanelsOpacity);
 
 	// useCheckVariableRender({variable: uiPanelsState, name: "uiPanelsState"});
