@@ -229,8 +229,7 @@ function createGameStore() {
     disableSounds: localStorage.getItem("disableSounds") === "true",
 
     educationMode:
-      localStorage.getItem("educationMode") === "true" ||
-      localStorage.getItem("educationMode") === null,
+      localStorage.getItem("educationMode") === "true",
 
     startScreen:
       localStorage.getItem("startScreen") === "true" ||

@@ -21,7 +21,7 @@ export const educationalStepsPhrases = [
 		skipped: false,
 	},
 	{
-		phrase: "To change direction of scanning, use WASD or arrow keys.",
+		phrase: "To change direction of scanning, use WASD or arrow keys. Hold Shift to speed up.",
 		skipped: false,
 	},
 	{
