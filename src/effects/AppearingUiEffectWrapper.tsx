@@ -7,6 +7,7 @@ interface FlickeringEffectProps {
   initialIntensity?: number;
   randomFrequency?: number;
   duration?: number;
+  classStyles?: string;
 }
 
 const FlickeringEffect: React.FC<FlickeringEffectProps> = ({
@@ -14,6 +15,7 @@ const FlickeringEffect: React.FC<FlickeringEffectProps> = ({
   disabled = false,
   initialIntensity = 6,
   duration = 50,
+  classStyles = ""
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -54,7 +56,7 @@ const FlickeringEffect: React.FC<FlickeringEffectProps> = ({
     }
   }, [initialIntensity, duration, disabled, containerRef]);
 
-  return <div ref={containerRef}>{children}</div>;
+  return <div className={classStyles} ref={containerRef}>{children}</div>;
 };
 
 export default FlickeringEffect;
