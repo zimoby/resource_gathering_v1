@@ -6,13 +6,19 @@ export const useInitInfo = () => {
   const terrainLoading = useGameStore((state) => state.terrainLoading);
   const updateMapSize = useGameStore((state) => state.updateMapSize);
   const educationMode = useGameStore((state) => state.educationMode);
+  const disableSounds = useGameStore((state) => state.disableSounds);
   const updateVariableInLocalStorage = useGameStore((state) => state.updateVariableInLocalStorage);
 
   useEffect(() => {
     if (localStorage.getItem('educationMode') === null) {
       updateVariableInLocalStorage("educationMode", true);
     }
-  }, [educationMode, updateVariableInLocalStorage]);
+
+    if (localStorage.getItem('disableSounds') === null) {
+      updateVariableInLocalStorage("disableSounds", false);
+    }
+
+  }, [educationMode, disableSounds, updateVariableInLocalStorage]);
 
   useEffect(() => {
     if (!terrainLoading && !firstStart) {
