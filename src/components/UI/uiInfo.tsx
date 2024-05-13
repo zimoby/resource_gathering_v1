@@ -111,10 +111,16 @@ export const UiInfo = () => {
           top: "0.5rem"
         }}
       >
+        <div className="w-full  flex flex-row gap-1">
+          <div className="w-full flex flex-none space-x-1">
+
+            <EventsPanel />
+            <LogsPanel />
+            <SystemMessagePanel />
+            <div className="warning-sign2 w-full  flex flex-col space-y-1 items-end border "/>
+          </div>
+        </div>
         {/* <div className="h-full w-16 flex-none flex flex-col gap-1"> */}
-          <EventsPanel />
-          <LogsPanel />
-          <SystemMessagePanel />
         {/* </div> */}
       </div>
     </>
