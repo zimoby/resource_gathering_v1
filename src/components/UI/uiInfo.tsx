@@ -51,14 +51,7 @@ export const UiInfo = () => {
               backgroundSize: "1rem 1rem"
             }}
           >
-          {/* <svg width="100%" height="100%" viewBox="0 0 100 10" preserveAspectRatio="none">
-            <path d="M 0,5 Q 12.5,0 25,5 T 50,5 T 75,5 T 100,5" fill="transparent" stroke="white" strokeWidth="0.3"/>
-            <path d="M -5,5 Q 7.5,0 20,5 T 45,5 T 70,5 T 95,5 T 120,5" fill="transparent" stroke="yellow" strokeWidth="0.3"/>
-            <path d="M -10,5 Q 2.5,0 15,5 T 40,5 T 65,5 T 90,5 T 115,5" fill="transparent" stroke="blue" strokeWidth="0.3"/>
-            <path d="M -15,5 Q -2.5,0 10,5 T 35,5 T 60,5 T 85,5 T 110,5" fill="transparent" stroke="green" strokeWidth="0.3"/>
-          </svg> */}
             <svg width="200%" height="100%" viewBox="0 0 200 10" preserveAspectRatio="none">
-              {/* Generate multiple lines each with a unique id for individual animation control */}
               <g id="repeating-group-1" className="">
                 <path d="M 0,3 Q 12.5,-2 25,3 T 50,3 T 75,3 T 100,3 T 125,3 T 150,3 T 175,3 T 200,3" fill="transparent" stroke="white" strokeWidth="0.2"/>
               </g>
