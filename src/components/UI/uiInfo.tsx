@@ -97,6 +97,8 @@ export const UiInfo = () => {
               </div> */}
             </div>
             <SystemControls />
+            <div className="w-full h-48 flex flex-grow flex-row space-x-1 border">
+            </div>
           </div>
           
         </div>
