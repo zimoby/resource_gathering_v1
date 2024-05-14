@@ -3,7 +3,7 @@ export const WarningBlock = () => {
   
     return (
       <div
-        className="warning-sign absolute top-0 left-1/2 z-50 size-10"
+        className="absolute top-0 left-1/2 z-50 size-10"
         style={{
           width: blockSize.x + "px",
           height: blockSize.y + "px",

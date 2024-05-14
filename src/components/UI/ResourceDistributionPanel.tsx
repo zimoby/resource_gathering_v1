@@ -114,7 +114,7 @@ export const WarningPanel = () => {
   return (
     <BasicPanelWrapper titleText="Warnings" width="w-64">
       {eventsLog.map((warning, index) => (
-        <div key={index} className="mb-2 p-2 rounded bg-red-500 text-white">
+        <div key={index} className="mb-2 p-2 rounded bg-red-500 ">
           <div className="flex items-center">
             <span className="mr-2">⚠️</span>
             {/* <span className="font-bold">{warning.type}</span> */}

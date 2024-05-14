@@ -23,14 +23,14 @@ export const ProgressBlock = () => {
           {blockWidths.map((width, index) => (
             <div
               key={index}
-              className={`w-${width} h-full mb-1 border border-neutral-200`}
+              className={`w-${width} h-full mb-1 border border-uilines`}
               style={{
                 background: `linear-gradient(to right, rgba(255, 255, 255, ${0.5 * ((index + 1) / 2)}) 0%, rgba(255, 255, 255, ${0.5 * ((index + 1) / 2)}) ${blockFills[index]}%, rgba(255, 255, 255, 0) ${blockFills[index]}%, rgba(255, 255, 255, 0) 100%)`,
               }}
             />
           ))}
         </div>
-        <div className="flex w-full h-4 justify-between px-1 border bg-neutral-200 border-neutral-200 orbitron text-end text-2xs uppercase text-neutral-900">
+        <div className="flex w-full h-4 justify-between px-1 border bg-uilines border-uilines orbitron text-end text-2xs uppercase text-neutral-900">
 					<p>
 						Energy: {playerPoints} / {goal}
 					</p>
@@ -41,33 +41,3 @@ export const ProgressBlock = () => {
       </div>
   );
 };
-
-
-
-// export const ProgressBlock = () => {
-// 	const playerPoints = useGameStore((state) => state.playerPoints);
-
-//   return (
-//     <>
-//       <div className="flex w-80 h-16 flex-col -space-y-1">
-//         <div className="flex w-full h-full flex-row -space-x-1">
-//           <div
-//             className="w-44 h-full mb-1 border border-neutral-200"
-//             // style={{ width: `${playerPoints / 10}%` }}
-//             style={{
-//               background: `linear-gradient(to right, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.5) ${
-//                 playerPoints / 20
-//               }%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 100%)`,
-//             }}
-//           />
-//           <div className="w-24 h-full mb-1 border border-neutral-200 bg-neutral-900" />
-//           <div className="w-12 h-full mb-1 border border-neutral-200 bg-neutral-900" />
-//           <div className="w-3 h-full mb-1 border border-neutral-200 bg-neutral-900" />
-//         </div>
-//         <div className="flex w-full h-4 justify-end px-1 border bg-neutral-200 border-neutral-200 orbitron text-end text-2xs uppercase text-neutral-900">
-//           Progress
-//         </div>
-//       </div>
-//     </>
-//   );
-// };

@@ -4,6 +4,8 @@ import {
   ChromaticAberration,
   Noise,
   HueSaturation,
+  // Pixelation,
+  // Scanline,
 } from "@react-three/postprocessing";
 import { Vector2 } from "three";
 

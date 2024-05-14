@@ -78,7 +78,9 @@ const StartScreen = () => {
 
   const startGame = () => {
     setStarting(true);
-    sounds.click?.play();
+		if(!disableSounds && sounds.click) {
+			sounds.click.play();
+		}
     setTimeout(() => {
       setStartScreen("startScreen", false);
       if (startScreen === skipStartScene) {
@@ -115,7 +117,9 @@ const StartScreen = () => {
             {/* <div className="w-36 h-full overflow-hidden">
 						<div className="w-72 h-full flex flex-col justify-center items-center bg-repeat-x animate-linear" style={{ background: "repeating-linear-gradient(-45deg, transparent, transparent 10px, black 10px, black 20px)" }} />
 					</div> */}
-            <button className="w-32 m-2 uppercase text-center text-neutral-900">
+            <button
+							className="w-32 m-2 uppercase text-center text-neutral-900"
+						>
               Generate World
             </button>
             {/* <div className="w-36 h-full overflow-hidden">

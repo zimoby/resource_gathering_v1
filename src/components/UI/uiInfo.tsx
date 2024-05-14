@@ -41,7 +41,7 @@ export const UiInfo = () => {
             <CollectedResourcesPanel />
             <ScanerParamPanel />
             <BeaconsInfo />
-            <div className=" w-48 h-full flex flex-col flex-grow border"></div>
+            <div className=" w-48 h-full flex flex-col flex-grow border border-uilines"></div>
           </AppearingGlitchEffect>
           {/* </div> */}
           {/* <div className=" flex-none "> */}
@@ -59,7 +59,7 @@ export const UiInfo = () => {
               <CorpLogoPanel />
             </div>
             <SystemControls />
-            <div className="w-full h-48 flex flex-grow flex-row space-x-1 border" />
+            <div className="w-full h-48 flex flex-grow flex-row space-x-1 border border-uilines" />
           </AppearingGlitchEffect>
         </div>
 
@@ -77,7 +77,7 @@ export const UiInfo = () => {
           <EventsPanel />
           <LogsPanel />
           <SystemMessagePanel />
-          <div className="warning-sign2 w-full  flex flex-col space-y-1 items-end border "/>
+          <div className="warning-sign2 w-full flex flex-col space-y-1 items-end border border-uilines"/>
 
         </AppearingGlitchEffect>
         {/* <div className="h-full w-16 flex-none flex flex-col gap-1"> */}

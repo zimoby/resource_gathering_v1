@@ -20,6 +20,14 @@ body,
   line-height: 1.5;
   font-weight: 400;
 
+  --color-primary: #1da1f2;
+  --color-secondary: #14171a;
+  --color-background: #ffffff;
+
+  --color-uilines: #f1e31a;
+  --color-uitext: #f1e31a;
+  /* --color-uilines: #edece1; */
+
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
@@ -57,39 +65,14 @@ body,
   }
 }
 
-.warning-sign {
-  width: 200px;
-  height: 100px;
-  background: repeating-linear-gradient(
-    90deg,
-    yellow,
-    yellow 10px,
-    black 10px,
-    black 20px
-  );
-  color: white; 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  font-size: 20px;
-  transform: skewX(20deg);
-}
-
 .warning-sign2 {
   background: repeating-linear-gradient(
     45deg,
-    white,
-    white 10px,
+    var(--color-uilines),
+    var(--color-uilines) 10px,
     black 10px,
     black 20px
   );
-  color: white; 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  font-size: 20px;
 }
 
 .warning-sign-animated {

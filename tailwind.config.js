@@ -7,6 +7,13 @@ export default {
   ],
   theme: {
     extend: {
+      colors: {
+        primary: 'var(--color-primary)',
+        secondary: 'var(--color-secondary)',
+        background: 'var(--color-background)',
+        uitext: 'var(--color-uitext)',
+        uilines: 'var(--color-uilines)',
+      },
       fontSize: {
         "2xs": ".65rem",
         "3xs": ".5rem",

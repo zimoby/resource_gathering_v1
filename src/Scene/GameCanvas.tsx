@@ -69,7 +69,7 @@ export const GameCanvas = () => {
       <Billboard>
         <Html>
           <div
-            className="fixed -z-10 border"
+            className="fixed -z-10 border border-uilines"
             style={{
               width: "calc(100vw - 25.5rem)",
               height: "calc(100vh - 13.5rem)",

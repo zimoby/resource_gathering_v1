@@ -63,13 +63,13 @@ export const FlyingDrone = () => {
                 <div className="flex flex-col items-end">
                   <div
                     key={phraseKey}
-                    className=" w-44 max-w-xs min-w-fit leading-4 text-sm text-left border select-none border-white py-0.5 px-1 bg-black/80"
+                    className=" w-44 max-w-xs min-w-fit leading-4 text-uitext text-sm text-left border select-none border-uilines py-0.5 px-1 bg-black/80"
                   >
                     <TypingText text={activePhrase.phrase} speed={50}/>
                   </div>
                   {activePhrase.skipped === false && (
                     <div
-                      className="mt-1 text-sm text-white text-center py-0.5 px-1 bg-neutral-900 border hover:bg-neutral-200 hover:text-neutral-900 active:bg-neutral-400 active:text-neutral-900 select-none cursor-pointer"
+                      className="mt-1 text-sm text-uitext text-center py-0.5 px-1 bg-neutral-900 border hover:bg-uilines hover:text-neutral-900 active:bg-neutral-400 active:text-neutral-900 select-none cursor-pointer"
                       onClick={handleNextClick}
                     >
                       Next

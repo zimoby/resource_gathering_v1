@@ -12,10 +12,10 @@ export const BasicPanelWrapper = ({
   
   return (
     <div
-      className={` ${height} ${width} overflow-hidden text-left text-xs border border-white/80`}
+      className={` ${height} ${width} overflow-hidden text-left text-xs border border-uilines`}
       style={{ opacity: opacity }}
     >
-      <p className="w-full h-fit px-1 bg-neutral-200 text-neutral-900">{titleText}</p>
-      <div className="scrollbar w-full h-full p-1">{children}</div>
+      <p className="w-full h-fit px-1 bg-uilines text-neutral-900">{titleText}</p>
+      <div className="scrollbar w-full h-full p-1 text-uitext">{children}</div>
     </div>
 )};

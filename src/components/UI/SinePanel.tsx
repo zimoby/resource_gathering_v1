@@ -1,10 +1,10 @@
 export const SinePanel = () => {
   return (
     <div
-      className="h-full w-full border overflow-hidden"
+      className="h-full w-full border border-uilines overflow-hidden"
       style={{
         backgroundImage:
-          "linear-gradient(to right, rgba(204, 204, 204, 1) 0.5px, transparent 0.5px), linear-gradient(to bottom, rgba(204, 204, 204, 1) 0.5px, transparent 0.5px)",
+          "linear-gradient(to right, var(--color-uitext) 0.5px, transparent 0.5px), linear-gradient(to bottom, var(--color-uitext) 0.5px, transparent 0.5px)",
         backgroundSize: "1rem 1rem",
       }}
     >

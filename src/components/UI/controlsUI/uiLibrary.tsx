@@ -4,7 +4,7 @@ import "./styles.css"
 
 const backgroundSliderCalc = (value: number, minVal: number, maxVal: number): string => {
   const percent = maxVal === minVal ? 100 : ((value - minVal) / (maxVal - minVal)) * 100
-  return `linear-gradient(to right, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.3) ${percent}%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.1) 100%)`
+  return `linear-gradient(to right, var(--color-uitext) 0%, var(--color-uitext) ${percent}%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.1) 100%)`
 }
 
 type SliderWithInputProps = {
@@ -39,13 +39,6 @@ export const CheckBox = ({ label, value, onUpdate }: CheckBoxProps) => {
           background: value ? "rgba(128, 0, 128, 0.7)" : "rgba(255, 255, 255, 0.1)",
         }}
       />
-      {/* {value ? (
-        <div
-          className=" size-1 m-0 p-0 rounded-full bg-white"
-          style={{ zIndex: 1, pointerEvents: "none" }}
-        />
-      ) : null
-      } */}
     </div>
   )
 }
@@ -88,7 +81,7 @@ export const SliderWithInput = ({ label, value, min = 1, max = 100, step = 1, on
           // onMouseUp={handleMouseUp}
         />
         <input
-          className="h-hull m-0 w-12 rounded-sm border-transparent bg-black/20 p-0 text-left text-xs text-white"
+          className="h-hull m-0 w-12 rounded-sm border-transparent bg-black/20 p-0 text-left text-xs text-uitext"
           min={min.toString()}
           max={max.toString()}
           step={currentStep.toString()}
