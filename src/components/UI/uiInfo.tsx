@@ -16,12 +16,12 @@ import "./linearAnimation.css";
 import { SinePanel } from "./SinePanel";
 import { CorpLogoPanel } from "./CorpLogoPanel";
 import { BasicPanelWrapper } from "./BasicPanelWrapper";
-import { useState } from "react";
+
 
 export const UiInfo = () => {
   const disableAnimations = useGameStore((state) => state.disableAnimations);
   const animationFirstStage = useGameStore((state) => state.animationFirstStage);
-  const showSettingsModal = useGameStore((state) => state.showSettingsModal);
+  // const showSettingsModal = useGameStore((state) => state.showSettingsModal);
   const updateStoreProperty = useGameStore((state) => state.updateStoreProperty);
 
   if (!animationFirstStage) return null;
