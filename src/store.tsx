@@ -9,7 +9,7 @@ export const maxLevel = 100;
 export const DEV_MODE = import.meta.env.VITE_APP_MODE === "development";
 
 export type TerrainType = "water" | "grass" | "dirt" | "snow" | "default";
-export type ResourceType = "r1" | "r2" | "r3" | "r4";
+export type ResourceType = "Water" | "Metals" | "Rare Elements" | "Hydrocarbons";
 export type WeatherCondition = "mild" | "moderate" | "severe";
 export type WorldState =
   | "extreme"
@@ -116,6 +116,8 @@ export type GameStoreState = {
   disableSounds: boolean;
   educationMode: boolean;
 
+  showSettingsModal: boolean;
+
   worldParams: WorldParamsType;
   uiPanelsState: {
     titlePanel: UiPanelsStateType;
@@ -189,22 +191,22 @@ export interface ResourceTypesT {
 }
 
 export const resourceTypes: ResourceTypesT = {
-  r1: {
+  "Water": {
     color: new Color(0xffffff), // white
     threshold: 0.1,
     score: 10,
   },
-  r2: {
+  "Metals": {
     color: new Color(0xffa500), // orange
     threshold: 0.2,
     score: 7,
   },
-  r3: {
+  "Rare Elements": {
     color: new Color(0x800080), // purple
     threshold: 0.4,
     score: 5,
   },
-  r4: {
+  "Hydrocarbons": {
     color: new Color(0xff4080), // pink
     threshold: 1,
     score: 1,
@@ -227,6 +229,8 @@ function createGameStore() {
   return create<GameStoreState>((set, get) => ({
     disableAnimations: localStorage.getItem("disableAnimations") === "true",
     disableSounds: localStorage.getItem("disableSounds") === "true",
+
+    showSettingsModal: false,
 
     educationMode:
       localStorage.getItem("educationMode") === "true",
@@ -308,7 +312,7 @@ function createGameStore() {
     },
     currentOffset: { x: 0, y: 0 },
     showResources: false,
-    selectedResource: "r1",
+    selectedResource: "Water",
     selectedChunk: { x: 0, y: 0 },
     currentLocation: { x: 0, y: 0 },
     moveDirection: { x: 0, y: -1 },
@@ -316,10 +320,10 @@ function createGameStore() {
     beacons: [],
     playerPoints: 1000,
     collectedResources: {
-      r1: 0,
-      r2: 0,
-      r3: 0,
-      r4: 0,
+      "Water": 0,
+      "Metals": 0,
+      "Rare Elements": 0,
+      "Hydrocarbons": 0,
     },
 
     message: "",

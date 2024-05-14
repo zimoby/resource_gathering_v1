@@ -29,6 +29,7 @@ export const FlyingDrone = () => {
   const ref = useRef<Group>(null);
   const [firstAppearing, setFirstAppearing] = useState(true);
   const appearingHeightRef = useRef(-appearingHeight);
+  const showSettingsModal = useGameStore((state) => state.showSettingsModal);
 	
   const { activePhrase, phraseKey, handleNextClick } = usePhraseSystem({
     firstAppearing,
@@ -58,7 +59,7 @@ export const FlyingDrone = () => {
         <Float position={[0, 20, 0]} floatIntensity={10} speed={5}>
           <Drone />
           <Billboard>
-            <Html position={[4, 2, 0]}>
+            <Html position={[4, 2, 0]} visible={!showSettingsModal}>
               {activePhrase.phrase !== "" && (
                 <div className="flex flex-col items-end">
                   <div

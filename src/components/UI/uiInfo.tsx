@@ -12,13 +12,17 @@ import { PlanetDataPanel } from "./PlanetDataPanel";
 import { LogsPanel } from "./LogsPanel";
 import { EventsPanel } from "./EventsPanel";
 
-import './linearAnimation.css'
+import "./linearAnimation.css";
 import { SinePanel } from "./SinePanel";
 import { CorpLogoPanel } from "./CorpLogoPanel";
+import { BasicPanelWrapper } from "./BasicPanelWrapper";
+import { useState } from "react";
 
 export const UiInfo = () => {
   const disableAnimations = useGameStore((state) => state.disableAnimations);
   const animationFirstStage = useGameStore((state) => state.animationFirstStage);
+  const showSettingsModal = useGameStore((state) => state.showSettingsModal);
+  const updateStoreProperty = useGameStore((state) => state.updateStoreProperty);
 
   if (!animationFirstStage) return null;
 
@@ -30,18 +34,52 @@ export const UiInfo = () => {
           width: "calc(100vw - 1rem)",
           height: "calc(100vh - 1rem)",
           left: "0.5rem",
-          top: "0.5rem"
+          top: "0.5rem",
         }}
       >
+        {/* modal settings window */}
+        {/* <div
+          className="fixed flex justify-center items-center z-50 bg-black/50 w-full h-full"
+          style={{ display: showSettingsModal ? "flex" : "none" }}
+        >
+          <div className="bg-black/80 w-96 h-96 flex flex-col space-y-1 p-4 rounded-lg">
+            <div className="w-full h-8 flex justify-end items-center">
+              <button
+                className="text-uitext text-lg cursor-pointer hover:bg-uilines hover:text-neutral-900"
+                onClick={() => updateStoreProperty("showSettingsModal", false)}
+              >
+                X
+              </button>
+            </div>
+            <div className="w-full h-8 flex justify-center items-center text-uitext text-lg">
+              Settings
+            </div>
+            <div className="w-full h-8 flex justify-center items-center text-uitext text-lg">
+              <label htmlFor="disableAnimations" className="text-uitext">
+                Disable Animations
+              </label>
+              <input
+                type="checkbox"
+                id="disableAnimations"
+                name="disableAnimations"
+                checked={disableAnimations}
+                onChange={() => useGameStore.getState().toggleDisableAnimations()}
+              />
+            </div>
+          </div>
+        </div> */}
         <div className="w-full h-16 flex-none flex flex-row gap-1">
           {/* <div className=" flex-none space-y-1"> */}
-          <AppearingGlitchEffect disabled={disableAnimations} classStyles={"flex-none space-y-1"}>
+          <AppearingGlitchEffect
+            disabled={disableAnimations}
+            classStyles={"h-full flex flex-col flex-none space-y-1 "}
+          >
             <TitlePanel />
-            <PlanetDataPanel />
+            {/* <PlanetDataPanel />
             <CollectedResourcesPanel />
             <ScanerParamPanel />
             <BeaconsInfo />
-            <div className=" w-48 h-full flex flex-col flex-grow border border-uilines"></div>
+            <div className=" w-48 h-full flex flex-col flex-grow border border-uilines"></div> */}
           </AppearingGlitchEffect>
           {/* </div> */}
           {/* <div className=" flex-none "> */}
@@ -58,11 +96,41 @@ export const UiInfo = () => {
             <div className="w-48 h-24">
               <CorpLogoPanel />
             </div>
+            <BasicPanelWrapper>
+              <button
+                className="w-full text-lg text-uitext text-center cursor-pointer hover:bg-uilines hover:text-neutral-900"
+                onClick={() => updateStoreProperty("showSettingsModal", true)}
+              >
+                Settings
+              </button>
+            </BasicPanelWrapper>
             <SystemControls />
             <div className="w-full h-48 flex flex-grow flex-row space-x-1 border border-uilines" />
           </AppearingGlitchEffect>
         </div>
-
+      </div>
+      <div
+        className="fixed flex justify-start items-start mt-16 z-20 gap-1 bg-transparent"
+        style={{
+          width: "calc(100vw - 1rem)",
+          height: "calc(100vh - 1rem)",
+          left: "0.5rem",
+          top: "0.77rem",
+        }}
+      >
+        <AppearingGlitchEffect
+          disabled={disableAnimations}
+          classStyles={"h-full flex flex-col space-y-1 "}
+        >
+          {/* <div space-y-1 > */}
+          <PlanetDataPanel />
+          <CollectedResourcesPanel />
+          <ScanerParamPanel />
+          <BeaconsInfo />
+          {/* </div> */}
+          {/* <div className=" flex flex-grow border border-uilines"></div> */}
+          <div className=" h-44 mb-10 flex border border-uilines"></div>
+        </AppearingGlitchEffect>
       </div>
       <div
         className="fixed flex justify-start items-end z-20 gap-1 bg-transparent"
@@ -70,21 +138,23 @@ export const UiInfo = () => {
           width: "calc(100vw - 1rem)",
           height: "calc(100vh - 1rem)",
           left: "0.5rem",
-          top: "0.5rem"
+          top: "0.5rem",
         }}
       >
-        <AppearingGlitchEffect disabled={disableAnimations} classStyles="w-full flex flex-none space-x-1">
+        <AppearingGlitchEffect
+          disabled={disableAnimations}
+          classStyles="w-full flex flex-none space-x-1"
+        >
           <EventsPanel />
           <LogsPanel />
           <SystemMessagePanel />
-          <div className="warning-sign2 w-full flex flex-col space-y-1 items-end border border-uilines"/>
-
+          <div className="warning-sign2 w-full flex flex-col space-y-1 items-end border border-uilines" />
         </AppearingGlitchEffect>
         {/* <div className="h-full w-16 flex-none flex flex-col gap-1"> */}
         {/* </div> */}
       </div>
     </>
-  )
+  );
 
   // return (
   //   <>
@@ -121,7 +191,7 @@ export const UiInfo = () => {
 
   //           <div className="flex flex-row space-x-1">
   //             {/* <AppearingGlitchEffect disabled={disableAnimations}> */}
-              
+
   //               <div className="flex flex-col space-y-1">
   //                 <PlanetDataPanel />
   //                 <CollectedResourcesPanel />
@@ -133,7 +203,7 @@ export const UiInfo = () => {
   //                 {/* <ResourceExtractionPanel /> */}
   //                 {/* <WarningPanel /> */}
   //               </div>
-                
+
   //             {/* </AppearingGlitchEffect> */}
   //           </div>
   //         </div>
@@ -147,11 +217,10 @@ export const UiInfo = () => {
   //             {/* <AppearingGlitchEffect disabled={disableAnimations}>
   //             </AppearingGlitchEffect> */}
   //           </div>
-            
+
   //         </div>
   //       </div>
   //     </div>
   //   </>
   // );
-
 };

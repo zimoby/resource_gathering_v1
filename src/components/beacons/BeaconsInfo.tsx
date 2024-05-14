@@ -12,6 +12,7 @@ export const BeaconsInfo = () => {
     return (
       <BasicPanelWrapper titleText="Beacons" opacity={opacity}>
         <div className="scrollbar">
+          {beacons.length === 0 && "No beacons"}
           {beacons.slice(0, 100).map((beacon, index) => (
             <div key={index}>
               {convertChunkCoordinateToName({ x: beacon.chunkX, y: beacon.chunkY }) +
