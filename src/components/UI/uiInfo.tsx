@@ -5,7 +5,7 @@ import { SystemControls } from "./controlsUI/planetControls";
 import { ProgressBlock } from "./ProgressPanel";
 // import { BeaconManagementPanel, ResourceDistributionPanel, ResourceExtractionPanel, WarningPanel } from "./ResourceDistributionPanel";
 import { TitlePanel } from "./TitlePanel";
-import { SystemMessagePanel } from "./SystemMessagePanel";
+// import { SystemMessagePanel } from "./SystemMessagePanel";
 import { ScanerParamPanel } from "./ScanerParamsPanel";
 import { CollectedResourcesPanel } from "./CollectedResourcesPanel";
 import { PlanetDataPanel } from "./PlanetDataPanel";
@@ -27,57 +27,57 @@ export const UiInfo = () => {
   if (!animationFirstStage) return null;
 
   return (
-    <>
+    <div
+      className="fixed z-10"
+      style={{
+        width: "calc(100vw - 1rem)",
+        height: "calc(100vh - 1rem)",
+        left: "0.5rem",
+        top: "0.5rem",
+      }}
+    >
+      <SettingsModal />
       <div
-        className="fixed flex justify-between z-30 gap-1 bg-transparent"
+        className="absolute top-0 left-0 h-16 flex justify-between gap-1 bg-transparent"
         style={{
-          width: "calc(100vw - 1rem)",
-          height: "calc(100vh - 1rem)",
-          left: "0.5rem",
-          top: "0.5rem",
+          width: "calc(100vw - 13.23rem)",
         }}
       >
-        {/* modal settings window */}
-        <SettingsModal />
-        {/* <WarningBlock /> */}
-        <div className="w-full h-16 flex-none flex flex-row gap-1">
-          {/* <div className=" flex-none space-y-1"> */}
-          <FlickeringHtmlEffect
-            classStyles="flex flex-row space-x-1 w-full h-full"
-          >
-            <TitlePanel />
-            <ProgressBlock />
-            <SinePanel />
-          </FlickeringHtmlEffect>
-
-          <FlickeringHtmlEffect
-            classStyles={"h-full flex flex-col justify-between space-y-1 "}
-            styles={{ height: "calc(100vh - 9.26rem)" }}
-          >
-            <div className="w-48 h-24">
-              <CorpLogoPanel />
-            </div>
-            <BasicPanelWrapper>
-              <button
-                className="w-full text-lg text-uitext text-center cursor-pointer hover:bg-uilines hover:text-neutral-900"
-                onClick={() => updateStoreProperty("showSettingsModal", true)}
-              >
-                Settings
-              </button>
-            </BasicPanelWrapper>
-            <SystemControls />
-            <div className=" flex flex-grow border border-uilines"></div>
-            <div className="warning-sign2 h-16 mb-10 flex border border-uilines" />
-          </FlickeringHtmlEffect>
-        </div>
+        <FlickeringHtmlEffect
+          classStyles="flex flex-row space-x-1 w-full h-full"
+        >
+          <TitlePanel />
+          <ProgressBlock />
+          <SinePanel />
+        </FlickeringHtmlEffect>
       </div>
       <div
-        className="fixed flex justify-start items-start mt-16 z-30 gap-1 bg-transparent"
+        className="absolute right-0 top-0 flex justify-between gap-1 bg-transparent"
+      >
+        <FlickeringHtmlEffect
+          classStyles={"h-full flex flex-col justify-between space-y-1 "}
+          styles={{ height: "calc(100vh - 9.26rem)" }}
+        >
+          <div className="w-48 h-24">
+            <CorpLogoPanel />
+          </div>
+          <BasicPanelWrapper>
+            <button
+              className=" w-full text-lg text-uitext text-center cursor-pointer hover:bg-uilines hover:text-neutral-900"
+              onClick={() => updateStoreProperty("showSettingsModal", true)}
+            >
+              Settings
+            </button>
+          </BasicPanelWrapper>
+          <SystemControls />
+          <div className=" flex flex-grow border border-uilines"></div>
+          <div className="warning-sign2 h-16 mb-10 flex border border-uilines" />
+        </FlickeringHtmlEffect>
+      </div>
+      <div
+        className="absolute flex justify-start items-start gap-1 bg-transparent"
         style={{
-          width: "calc(100vw - 1rem)",
-          height: "calc(100vh - 1rem)",
-          left: "0.5rem",
-          top: "0.77rem",
+          top: "4.25rem",
         }}
       >
         <FlickeringHtmlEffect
@@ -89,34 +89,22 @@ export const UiInfo = () => {
             <CollectedResourcesPanel />
             <ScanerParamPanel />
             <BeaconsInfo />
-
           </>
-          {/* </div> */}
           <div className=" flex flex-grow border border-uilines"></div>
           <div className="warning-sign2 h-16 mb-10 flex border border-uilines" />
-          {/* <div className="warning-sign2 w-full flex flex-col space-y-1 items-end border border-uilines" /> */}
         </FlickeringHtmlEffect>
       </div>
       <div
-        className="fixed flex justify-start items-end z-30 gap-1 bg-transparent"
-        style={{
-          width: "calc(100vw - 1rem)",
-          height: "calc(100vh - 1rem)",
-          left: "0.5rem",
-          top: "0.5rem",
-        }}
+        className="absolute bottom-0 w-full flex justify-start items-end gap-1 bg-transparent"
       >
         <FlickeringHtmlEffect
           classStyles="w-full flex flex-none space-x-1"
         >
           <EventsPanel />
           <LogsPanel />
-          {/* <SystemMessagePanel /> */}
           <div className="warning-sign2 w-full flex flex-col space-y-1 items-end border border-uilines" />
         </FlickeringHtmlEffect>
-        {/* <div className="h-full w-16 flex-none flex flex-col gap-1"> */}
-        {/* </div> */}
       </div>
-    </>
+    </div>
   );
 };
