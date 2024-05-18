@@ -13,6 +13,7 @@ import { FlyingDrone } from "../components/drone/Drone";
 import { Line } from "../components/gfx/Line";
 import { Euler } from "three";
 import { WarningBlock } from "../components/UI/warningBlock";
+import { CenterScreenPanel } from "../components/UI/CenterScreenPanel";
 
 export const GameCanvas = () => {
   const firstStart = useGameStore((state) => state.firstStart);
@@ -67,21 +68,7 @@ export const GameCanvas = () => {
 
         </group>
       </Suspense>
-      { !showSettingsModal && <Billboard>
-        <Html>
-          <div
-            className="fixed -z-10 border border-uilines"
-            style={{
-              width: "calc(100vw - 25.5rem)",
-              height: "calc(100vh - 13.5rem)",
-              top: "calc(-50vh + 4.75rem)",
-              left: "calc(-50vw + 12.75rem)"
-            }}
-            // onClick={(e) => e.stopPropagation()}
-          />
-          <WarningBlock />
-        </Html>
-      </Billboard>}
+      <CenterScreenPanel />
       <OrbitControls enablePan={false} />
       <EffectsCollection />
     </Canvas>

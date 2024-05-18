@@ -10,8 +10,8 @@ export const BeaconsInfo = () => {
   const memoizedBeacons = useMemo(() => {
 
     return (
-      <BasicPanelWrapper titleText="Beacons" opacity={opacity}>
-        <div className="scrollbar">
+      <BasicPanelWrapper titleText="Beacons:" opacity={opacity}>
+        <div className="h-44">
           {beacons.length === 0 && "No beacons"}
           {beacons.slice(0, 100).map((beacon, index) => (
             <div key={index}>

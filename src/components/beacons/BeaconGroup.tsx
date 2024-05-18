@@ -3,19 +3,28 @@ import { Cylinder, Sphere } from "@react-three/drei";
 import { ConcentricCirclesAnimation } from "../gfx/concentricCircles";
 import { useFrame } from "@react-three/fiber";
 import { isOutOfBound, useCalculateDeltas } from "../../utils/functions";
-import { createRef, useLayoutEffect, useRef } from "react";
-import { Group } from "three";
+import { createRef, useLayoutEffect, useMemo, useRef } from "react";
+import { BufferGeometry, Group, Shape } from "three";
 import { useIncreasingSpeed } from "../../effects/IncreaseSceneSpeed";
 
 const beaconHeight = 10;
 const minDistance = 20;
 
 const ShapeCircle = () => {
+
+  const shapePoints = useMemo(() => {
+    const shape = new Shape();
+    shape.moveTo(0, 0);
+    shape.absarc(0, 0, minDistance, 0, Math.PI * 2, false);
+    const points = shape.getPoints(50);
+    const circleBuffer = new BufferGeometry().setFromPoints(points);
+    return circleBuffer;
+  }, []);
+
   return (
-    <mesh>
-      <circleGeometry args={[minDistance, 8]} />
-      <meshBasicMaterial color={"#ff0000"} />
-    </mesh>
+    <lineSegments geometry={shapePoints} rotation-x={Math.PI / 2}>
+      <lineBasicMaterial color={"#ff0000"} />
+    </lineSegments>
   );
 }
 
@@ -30,31 +39,38 @@ export const BeaconGroup = () => {
   const beaconRefs = useRef<React.RefObject<Group>[]>(beacons.map(() => createRef()));
   const { speedRef: increasingSpeedRef } = useIncreasingSpeed(0, 1, 0.01, 2);
 
+  const circleRefs = useRef<React.RefObject<Group>[]>(beacons.map(() => createRef()));
+
   // useCheckVariableRender({variable: beacons, name: "BeaconGroup"});
 
   // console.log("beacons:", beacons);
 
   useLayoutEffect(() => {
     beaconRefs.current = beaconRefs.current.slice(0, beacons.length);
+    circleRefs.current = circleRefs.current.slice(0, beacons.length);
     for (let i = beaconRefs.current.length; i < beacons.length; i++) {
         beaconRefs.current[i] = createRef();
+        circleRefs.current[i] = createRef();
     }
-    // console.log("beaconRefs:", beaconRefs.current);
   }, [beacons.length]);
 
-  useFrame(() => {
-    beaconRefs.current.forEach((beacon) => {
+  useFrame((_, delta) => {
+    beaconRefs.current.forEach((beacon, index) => {
       const beaconObject = beacon.current;
-      // console.log("beaconObject.position:", beaconObject);
+      const circleObject = circleRefs.current[index].current;
       if (beaconObject) {
         const checkBoundaries = isOutOfBound({x: beaconObject.position.x, y: beaconObject.position.z}, width, depth, offsetX, offsetY);
 
         beaconObject.position.x -= deltaX * increasingSpeedRef.current;
         beaconObject.position.z -= deltaY * increasingSpeedRef.current;
-
         beaconObject.visible = !checkBoundaries.x && !checkBoundaries.y;
       }
+
+      if (circleObject) {
+        circleObject.rotateY(delta / 2);
+      }
     });
+
   });
 
   return (
@@ -64,10 +80,12 @@ export const BeaconGroup = () => {
         <group key={beacon.id} position={[beacon.x, beacon.y + 1, beacon.z]} ref={beaconRefs.current[index]}>
           <Sphere args={[1, 8, 8]} position={[0, beaconHeight, 0]} />
           <Cylinder args={[0.1, 0.1, beaconHeight, 4]} position={[0, beaconHeight / 2, 0]} />
-          <ShapeCircle />
-          <Cylinder visible={canPlaceBeacon} args={[minDistance, minDistance, 0.2, 16]} position={[0, 0, 0]}>
+          <group key={"circle_of_" + beacon.id} ref={circleRefs.current[index]} visible={canPlaceBeacon}>
+            <ShapeCircle />
+          </group>
+          {/* <Cylinder visible={canPlaceBeacon} args={[minDistance, minDistance, 0.2, 16]} position={[0, 0, 0]}>
             <meshBasicMaterial wireframe color={"#8D1919"} />
-          </Cylinder>
+          </Cylinder> */}
           {/* <Circle args={[1, 8]} position={[0, 1, 0]} rotation-x={Math.PI / 2}>
             <meshBasicMaterial color={"#ff0000"} />
           </Circle> */}

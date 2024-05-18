@@ -72,7 +72,7 @@ export const UiInfo = () => {
         </div>
       </div>
       <div
-        className="fixed flex justify-start items-start mt-16 z-20 gap-1 bg-transparent"
+        className="fixed flex justify-start items-start mt-16 z-30 gap-1 bg-transparent"
         style={{
           width: "calc(100vw - 1rem)",
           height: "calc(100vh - 1rem)",
@@ -84,21 +84,21 @@ export const UiInfo = () => {
           classStyles={"h-full flex flex-col justify-between space-y-1 "}
           styles={{ height: "calc(100vh - 13.51rem)" }}
         >
-            <>
-              <PlanetDataPanel />
-              <CollectedResourcesPanel />
-              <ScanerParamPanel />
-              <BeaconsInfo />
+          <>
+            <PlanetDataPanel />
+            <CollectedResourcesPanel />
+            <ScanerParamPanel />
+            <BeaconsInfo />
 
-            </>
-            {/* </div> */}
-            <div className=" flex flex-grow border border-uilines"></div>
-            <div className="warning-sign2 h-16 mb-10 flex border border-uilines" />
-            {/* <div className="warning-sign2 w-full flex flex-col space-y-1 items-end border border-uilines" /> */}
+          </>
+          {/* </div> */}
+          <div className=" flex flex-grow border border-uilines"></div>
+          <div className="warning-sign2 h-16 mb-10 flex border border-uilines" />
+          {/* <div className="warning-sign2 w-full flex flex-col space-y-1 items-end border border-uilines" /> */}
         </FlickeringHtmlEffect>
       </div>
       <div
-        className="fixed flex justify-start items-end z-20 gap-1 bg-transparent"
+        className="fixed flex justify-start items-end z-30 gap-1 bg-transparent"
         style={{
           width: "calc(100vw - 1rem)",
           height: "calc(100vh - 1rem)",
@@ -111,7 +111,7 @@ export const UiInfo = () => {
         >
           <EventsPanel />
           <LogsPanel />
-          <SystemMessagePanel />
+          {/* <SystemMessagePanel /> */}
           <div className="warning-sign2 w-full flex flex-col space-y-1 items-end border border-uilines" />
         </FlickeringHtmlEffect>
         {/* <div className="h-full w-16 flex-none flex flex-col gap-1"> */}
