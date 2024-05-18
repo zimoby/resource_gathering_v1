@@ -4,8 +4,8 @@ import {
   ChromaticAberration,
   Noise,
   HueSaturation,
-  TiltShift2,
-  DotScreen,
+  // TiltShift2,
+  // DotScreen,
   // Pixelation,
   // Scanline,
 } from "@react-three/postprocessing";

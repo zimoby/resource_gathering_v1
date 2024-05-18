@@ -10,6 +10,7 @@ interface FlickeringHtmlEffectProps {
   duration?: number;
   classStyles?: string;
   delay?: number;
+  styles?: React.CSSProperties;
 }
 
 export const FlickeringHtmlEffect: React.FC<FlickeringHtmlEffectProps> = ({
@@ -18,7 +19,8 @@ export const FlickeringHtmlEffect: React.FC<FlickeringHtmlEffectProps> = ({
   initialIntensity = 6,
   duration = 50,
   delay = 250,
-  classStyles = ""
+  classStyles = "",
+  styles = {},
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const disableAnimations = useGameStore((state) => state.disableAnimations);
@@ -67,5 +69,5 @@ export const FlickeringHtmlEffect: React.FC<FlickeringHtmlEffectProps> = ({
     }
   }, [initialIntensity, duration, disabled, containerRef, disableAnimations, delay]);
 
-  return <div className={classStyles} ref={containerRef}>{children}</div>;
+  return <div className={classStyles} style={{...styles}} ref={containerRef}>{children}</div>;
 };
