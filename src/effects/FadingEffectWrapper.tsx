@@ -2,6 +2,7 @@ import React, { useRef, useEffect, ReactNode } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Group, Material, Mesh } from "three";
 import { useAppearingGlitchingEffect } from "./AppearingGlitchingEffect";
+import { useGameStore } from "../store";
 
 interface FadingEffectProps {
   children: ReactNode;
@@ -25,7 +26,7 @@ function updateMaterialOpacity(material: Material, opacity: number) {
   material.transparent = true;
 }
 
-const FadingEffect: React.FC<FadingEffectProps> = ({
+export const FadingEffect: React.FC<FadingEffectProps> = ({
   children,
   disabled = false,
   initialIntensity = 6,
@@ -33,11 +34,12 @@ const FadingEffect: React.FC<FadingEffectProps> = ({
   minOpacity = 0.1,
   maxOpacity = 1,
 }) => {
+  const disableAnimations = useGameStore((state) => state.disableAnimations);
   const groupRef = useRef<Group>(null);
 
   useEffect(() => {
     const group = groupRef.current;
-    if (disabled && group) {
+    if ((disabled || disableAnimations) && group) {
       group.children.forEach((child) => {
         if (child instanceof Mesh) {
           setMeshOpacity(child, maxOpacity);
@@ -45,14 +47,14 @@ const FadingEffect: React.FC<FadingEffectProps> = ({
       });
       return;
     }
-  }, [disabled, maxOpacity]);
+  }, [disabled, disableAnimations, maxOpacity]);
 
   useAppearingGlitchingEffect({ disabled, groupRef, initialIntensity });
 
   useFrame(() => {
     const group = groupRef.current;
 
-    if (disabled) {
+    if (disabled || disableAnimations) {
       return;
     }
 
@@ -67,5 +69,3 @@ const FadingEffect: React.FC<FadingEffectProps> = ({
 
   return <group ref={groupRef}>{children}</group>;
 };
-
-export default FadingEffect;

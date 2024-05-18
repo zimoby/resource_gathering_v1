@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Billboard, Html, OrbitControls, Stats } from "@react-three/drei";
-import FlickeringEffect from "../effects/FlickeringEffectWrapper";
+import { FlickeringEffect } from "../effects/FlickeringEffectWrapper";
 import { useGameStore } from "../store";
 import { ChunkGrid } from "../components/gfx/ChunkGrid";
 import { CoordinatesKeys } from "../components/gfx/CoordinatesKeys";
@@ -16,7 +16,6 @@ import { Euler } from "three";
 export const GameCanvas = () => {
   const firstStart = useGameStore((state) => state.firstStart);
   const animationFirstStage = useGameStore((state) => state.animationFirstStage);
-  const disableAnimations = useGameStore((state) => state.disableAnimations);
   const terrainAppearing = useGameStore((state) => state.terrainAppearing);
 
   return (
@@ -39,7 +38,7 @@ export const GameCanvas = () => {
             <meshBasicMaterial color="red" />
           </Sphere> */}
           <group position={[0, 0, 0]} visible={firstStart}>
-            <FlickeringEffect disabled={disableAnimations} initialIntensity={10} randomFrequency={0.008} duration={50}>
+            <FlickeringEffect initialIntensity={10} randomFrequency={0.008} duration={50}>
               <ChunkGrid position={[0, 0, 0]} sizeExtend={1} />
               <ChunkGrid position={[0, -10, 0]} sizeExtend={1} />
               <ChunkGrid position={[0, -10, 0]} sizeExtend={10} />
@@ -50,7 +49,7 @@ export const GameCanvas = () => {
             </FlickeringEffect>
 
             {!terrainAppearing &&
-              <FlickeringEffect disabled={disableAnimations} initialIntensity={10} randomFrequency={0.008} duration={50}>
+              <FlickeringEffect initialIntensity={10} randomFrequency={0.008} duration={50}>
                 <Line width={100} />
                 <Line width={100} rotation={new Euler(0,Math.PI/2,0)} />
                 <ChunkGrid position={[0, -1, 0]} sizeExtend={30} />

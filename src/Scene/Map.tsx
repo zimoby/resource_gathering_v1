@@ -7,8 +7,8 @@ import { Terrain } from "../components/terrain/Terrain";
 import { LinearGridShader } from "../components/gfx/LinearGridShader1";
 import { BasicGridShader } from "../components/gfx/BasicGridShader";
 import { Color, Mesh, ShaderMaterial } from "three";
-import FlickeringEffect from "../effects/FlickeringEffectWrapper";
-import FadingEffect from "../effects/FadingEffectWrapper";
+import { FlickeringEffect } from "../effects/FlickeringEffectWrapper";
+import { FadingEffect } from "../effects/FadingEffectWrapper";
 import { useIncreasingSpeed, useIncreasingSpeed2 } from "../effects/IncreaseSceneSpeed";
 import { PlaneTest } from "../components/gfx/pulsingAreaTest";
 
@@ -19,7 +19,7 @@ export const Map = () => {
   const planeRef = useRef<Mesh>(null);
   const offset = useRef({ x: 0, y: 0 });
   const { width, depth } = useGameStore((state) => state.mapParams);
-  const disableAnimations = useGameStore((state) => state.disableAnimations);
+
   const updateMapSize = useGameStore((state) => state.updateMapSize);
   const animationFirstStage = useGameStore((state) => state.animationFirstStage);
 
@@ -56,12 +56,12 @@ export const Map = () => {
   return (
     <group visible={firstStart}>
       <BeaconGroup />
-      <FadingEffect disabled={disableAnimations}>
+      <FadingEffect>
         <Terrain />
       </FadingEffect>
       {/* <TerrainVertex /> */}
       <group position={[0,-1,0]}>
-        <FlickeringEffect disabled={disableAnimations} appearingOnly={true} initialIntensity={10} randomFrequency={0.008} duration={50}>
+        <FlickeringEffect appearingOnly={true} initialIntensity={10} randomFrequency={0.008} duration={50}>
           <group position={[0,0,depth / 2 + 4]}>
             <LinearGridShader position={[0,0,-1]} sizeX={width} sizeY={2} width={rulerGridY / (100 / width)} depth={1} />
             <LinearGridShader position={[0,0,0]} sizeX={width} sizeY={5} width={rulerGridY / (100 / width) / 2} depth={1} />

@@ -1,6 +1,6 @@
 import { useGameStore } from "../../store";
 import { BeaconsInfo } from "../beacons/BeaconsInfo";
-import AppearingGlitchEffect from "../../effects/AppearingUiEffectWrapper";
+
 import { SystemControls } from "./controlsUI/planetControls";
 import { ProgressBlock } from "./ProgressPanel";
 // import { BeaconManagementPanel, ResourceDistributionPanel, ResourceExtractionPanel, WarningPanel } from "./ResourceDistributionPanel";
@@ -17,10 +17,10 @@ import { SinePanel } from "./SinePanel";
 import { CorpLogoPanel } from "./CorpLogoPanel";
 import { BasicPanelWrapper } from "./BasicPanelWrapper";
 import { WarningBlock } from "./warningBlock";
+import { FlickeringHtmlEffect } from "../../effects/AppearingUiEffectWrapper";
 
 
 export const UiInfo = () => {
-  const disableAnimations = useGameStore((state) => state.disableAnimations);
   const animationFirstStage = useGameStore((state) => state.animationFirstStage);
   // const showSettingsModal = useGameStore((state) => state.showSettingsModal);
   const updateStoreProperty = useGameStore((state) => state.updateStoreProperty);
@@ -72,8 +72,7 @@ export const UiInfo = () => {
         <WarningBlock />
         <div className="w-full h-16 flex-none flex flex-row gap-1">
           {/* <div className=" flex-none space-y-1"> */}
-          <AppearingGlitchEffect
-            disabled={disableAnimations}
+          <FlickeringHtmlEffect
             classStyles={"h-full flex flex-col flex-none space-y-1 "}
           >
             <TitlePanel />
@@ -82,19 +81,19 @@ export const UiInfo = () => {
             <ScanerParamPanel />
             <BeaconsInfo />
             <div className=" w-48 h-full flex flex-col flex-grow border border-uilines"></div> */}
-          </AppearingGlitchEffect>
+          </FlickeringHtmlEffect>
           {/* </div> */}
           {/* <div className=" flex-none "> */}
-          <AppearingGlitchEffect disabled={disableAnimations}>
+          <FlickeringHtmlEffect>
             <ProgressBlock />
-          </AppearingGlitchEffect>
-          <AppearingGlitchEffect disabled={disableAnimations}>
+          </FlickeringHtmlEffect>
+          <FlickeringHtmlEffect>
             <SinePanel />
-          </AppearingGlitchEffect>
+          </FlickeringHtmlEffect>
 
           {/* </div> */}
           {/* <SystemControls /> */}
-          <AppearingGlitchEffect disabled={disableAnimations} classStyles="flex-none space-y-1">
+          <FlickeringHtmlEffect classStyles="flex-none space-y-1">
             <div className="w-48 h-24">
               <CorpLogoPanel />
             </div>
@@ -108,7 +107,7 @@ export const UiInfo = () => {
             </BasicPanelWrapper>
             <SystemControls />
             <div className="w-full h-48 flex flex-grow flex-row space-x-1 border border-uilines" />
-          </AppearingGlitchEffect>
+          </FlickeringHtmlEffect>
         </div>
       </div>
       <div
@@ -120,8 +119,7 @@ export const UiInfo = () => {
           top: "0.77rem",
         }}
       >
-        <AppearingGlitchEffect
-          disabled={disableAnimations}
+        <FlickeringHtmlEffect
           classStyles={"h-full flex flex-col space-y-1 "}
         >
           {/* <div space-y-1 > */}
@@ -132,7 +130,7 @@ export const UiInfo = () => {
           {/* </div> */}
           {/* <div className=" flex flex-grow border border-uilines"></div> */}
           <div className=" h-44 mb-10 flex border border-uilines"></div>
-        </AppearingGlitchEffect>
+        </FlickeringHtmlEffect>
       </div>
       <div
         className="fixed flex justify-start items-end z-20 gap-1 bg-transparent"
@@ -143,15 +141,14 @@ export const UiInfo = () => {
           top: "0.5rem",
         }}
       >
-        <AppearingGlitchEffect
-          disabled={disableAnimations}
+        <FlickeringHtmlEffect
           classStyles="w-full flex flex-none space-x-1"
         >
           <EventsPanel />
           <LogsPanel />
           <SystemMessagePanel />
           <div className="warning-sign2 w-full flex flex-col space-y-1 items-end border border-uilines" />
-        </AppearingGlitchEffect>
+        </FlickeringHtmlEffect>
         {/* <div className="h-full w-16 flex-none flex flex-col gap-1"> */}
         {/* </div> */}
       </div>
@@ -179,12 +176,12 @@ export const UiInfo = () => {
   //       <div className="w-full fixed top-0 left-0 m-2">
   //         <div className="w-full flex flex-col">
   //           <div className="w-full flex flex-row space-x-1">
-  //             {/* <AppearingGlitchEffect disabled={disableAnimations}> */}
+  //             {/* <FlickeringHtmlEffect> */}
   //               <TitlePanel />
-  //             {/* </AppearingGlitchEffect> */}
-  //             {/* <AppearingGlitchEffect disabled={disableAnimations}> */}
+  //             {/* </FlickeringHtmlEffect> */}
+  //             {/* <FlickeringHtmlEffect> */}
   //               <ProgressBlock />
-  //             {/* </AppearingGlitchEffect> */}
+  //             {/* </FlickeringHtmlEffect> */}
   //             <div
   //               className="w-full h-full border"
   //               // style={{ width : "calc(100vw - 1rem)" }}
@@ -192,7 +189,7 @@ export const UiInfo = () => {
   //           </div>
 
   //           <div className="flex flex-row space-x-1">
-  //             {/* <AppearingGlitchEffect disabled={disableAnimations}> */}
+  //             {/* <FlickeringHtmlEffect> */}
 
   //               <div className="flex flex-col space-y-1">
   //                 <PlanetDataPanel />
@@ -206,7 +203,7 @@ export const UiInfo = () => {
   //                 {/* <WarningPanel /> */}
   //               </div>
 
-  //             {/* </AppearingGlitchEffect> */}
+  //             {/* </FlickeringHtmlEffect> */}
   //           </div>
   //         </div>
   //       </div>
@@ -216,8 +213,8 @@ export const UiInfo = () => {
   //             <LogsPanel />
   //             <SystemMessagePanel />
   //           <div className="flex flex-col space-y-1 items-end">
-  //             {/* <AppearingGlitchEffect disabled={disableAnimations}>
-  //             </AppearingGlitchEffect> */}
+  //             {/* <FlickeringHtmlEffect>
+  //             </FlickeringHtmlEffect> */}
   //           </div>
 
   //         </div>

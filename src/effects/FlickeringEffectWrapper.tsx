@@ -2,6 +2,7 @@ import { useEffect, useRef, ReactNode } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Group } from "three";
 import { useAppearingGlitchingEffect } from "./AppearingGlitchingEffect";
+import { useGameStore } from "../store";
 
 interface FlickeringEffectProps {
   children: ReactNode;
@@ -12,7 +13,7 @@ interface FlickeringEffectProps {
   duration?: number;
 }
 
-const FlickeringEffect: React.FC<FlickeringEffectProps> = ({
+export const FlickeringEffect: React.FC<FlickeringEffectProps> = ({
   children,
   disabled = false,
   appearingOnly = false,
@@ -21,16 +22,17 @@ const FlickeringEffect: React.FC<FlickeringEffectProps> = ({
   duration = 100,
 }) => {
   const groupRef = useRef<Group>(null);
+  const disableAnimations = useGameStore((state) => state.disableAnimations);
 
   useEffect(() => {
     const group = groupRef.current;
-    if (disabled && group) {
+    if ((disabled || disableAnimations) && group) {
       group.children.forEach((child) => {
         child.visible = true;
       });
       return;
     }
-  }, [disabled]);
+  }, [disableAnimations, disabled]);
 
 	useAppearingGlitchingEffect({ disabled, groupRef, duration, initialIntensity });
 
@@ -60,7 +62,6 @@ const FlickeringEffect: React.FC<FlickeringEffectProps> = ({
   return <group ref={groupRef}>{children}</group>;
 };
 
-export default FlickeringEffect;
 
 // import React, { useEffect, useRef } from 'react';
 // import { useFrame } from '@react-three/fiber';

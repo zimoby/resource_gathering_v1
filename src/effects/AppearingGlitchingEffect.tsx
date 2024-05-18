@@ -1,9 +1,10 @@
 import { RefObject, useEffect } from "react";
 import { Group } from "three";
+import { useGameStore } from "../store";
 // import { consoleLog } from "../utils/functions";
 
 export const useAppearingGlitchingEffect = ({
-  disabled,
+  disabled = false,
   groupRef,
   duration = 300,
   initialIntensity = 10,
@@ -13,8 +14,10 @@ export const useAppearingGlitchingEffect = ({
   duration?: number;
   initialIntensity?: number;
 }) => {
+  const disableAnimations = useGameStore((state) => state.disableAnimations);
+
   useEffect(() => {
-    if (disabled) {
+    if (disabled || disableAnimations) {
       return;
     }
     const group = groupRef.current;
@@ -36,7 +39,7 @@ export const useAppearingGlitchingEffect = ({
       });
       return () => timeouts.forEach(clearTimeout);
     }
-  }, [initialIntensity, duration, disabled, groupRef]);
+  }, [initialIntensity, duration, disabled, groupRef, disableAnimations]);
 };
 
 // enable visibility of every child as random time range

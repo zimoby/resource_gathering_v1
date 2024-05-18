@@ -26,7 +26,7 @@ export const ProgressBlock = () => {
     <div className="flex w-80 h-16 flex-col -space-y-1" style={{ opacity }}>
       <div className="flex w-full h-full flex-row space-x-0">
         {blockWidths.map((width, index) => (
-          <div className={`relative w-${width} mb-1 h-full border border-uilines`}>
+          <div key={width + "_" + index} className={`relative w-${width} mb-1 h-full border border-uilines`}>
             <div
               key={index}
               className={`absolute inset-0 h-full w-full `}

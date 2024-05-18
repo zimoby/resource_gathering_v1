@@ -1,4 +1,4 @@
-import FlickeringEffect from "../../effects/AppearingUiEffectWrapper";
+import { FlickeringHtmlEffect } from "../../effects/AppearingUiEffectWrapper";
 import { useGameStore } from "../../store";
 
 export const WarningBlock = () => {
@@ -8,8 +8,8 @@ export const WarningBlock = () => {
 
   return (
     <>
-      {weather === "severe" && (
-        <FlickeringEffect>
+      { weather === "severe" && (
+        <FlickeringHtmlEffect>
           <div
             className="fixed w-fit h-14 flex flex-row  z-20 top-24 animate-pulse"
             style={{ left: "calc(50vw - 125px)" }}
@@ -29,7 +29,7 @@ export const WarningBlock = () => {
               <div className="text-center">Some features may not work</div>
             </div> */}
           </div>
-        </FlickeringEffect>
+        </FlickeringHtmlEffect>
       )}
     </>
   );
@@ -46,11 +46,9 @@ const WarningLines = ({ direction, width = 150 }: { direction: string; width?: n
   }
 
   return (
-    <div className={`w-[${width}px] h-full overflow-hidden bg-uilines ${scaleInvert}`}>
+    <div className={`w-[150px] h-full overflow-hidden bg-uilines ${scaleInvert}`}>
       <div
-        className={`w-[${
-          width * 2
-        }px] h-full flex flex-col justify-center items-center bg-repeat-x animate-linear`}
+        className={`w-[300px] h-full flex flex-col justify-center items-center bg-repeat-x animate-linear`}
         style={{
           background:
             "repeating-linear-gradient(-45deg, transparent, transparent 20px, black 20px, black 40px)",
