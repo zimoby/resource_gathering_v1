@@ -16,6 +16,7 @@ import "./linearAnimation.css";
 import { SinePanel } from "./SinePanel";
 import { CorpLogoPanel } from "./CorpLogoPanel";
 import { BasicPanelWrapper } from "./BasicPanelWrapper";
+import { WarningBlock } from "./warningBlock";
 
 
 export const UiInfo = () => {
@@ -68,6 +69,7 @@ export const UiInfo = () => {
             </div>
           </div>
         </div> */}
+        <WarningBlock />
         <div className="w-full h-16 flex-none flex flex-row gap-1">
           {/* <div className=" flex-none space-y-1"> */}
           <AppearingGlitchEffect

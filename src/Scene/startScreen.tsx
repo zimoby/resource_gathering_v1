@@ -97,14 +97,14 @@ const StartScreen = () => {
         }`}
       >
         <div className="w-20 -mb-1 h-auto">
-          <div className="w-full h-full flex justify-center items-center">{corpLogoSvg}</div>
+          <div className="w-full h-full flex justify-center items-center fill-white">{corpLogoSvg}</div>
         </div>
-        <h1
+        <div
           className="orbitron text-7xl uppercase text-center text-yellow-400"
           style={{ transform: "perspective(40px) rotateX(5deg)" }}
         >
           World researcher
-        </h1>
+        </div>
         <h1 className="orbitron text-xs mt-3 uppercase -skew-x-12">
           Project for the Threejs.journey course
         </h1>

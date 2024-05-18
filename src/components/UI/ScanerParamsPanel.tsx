@@ -14,8 +14,10 @@ export const ScanerParamPanel = () => {
 
   return (
     <BasicPanelWrapper titleText="Scaner:" opacity={opacity}>
-      <div>Selected Chunk: {chunkName}</div>
-      <div>Selected Resource: {selectedResource}</div>
+      <div>Selected Chunk: </div>
+      <div>{chunkName}</div>
+      <div>Selected Resource:</div>
+      <div>{selectedResource}</div>
   </BasicPanelWrapper>
   )
 };

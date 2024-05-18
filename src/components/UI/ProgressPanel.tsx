@@ -4,14 +4,12 @@ export const ProgressBlock = () => {
   const playerPoints = useGameStore((state) => state.playerPoints);
   const opacity = useGameStore((state) => state.uiPanelsState.progressPanel.opacity);
 
-  const goal = 20000; // The maximum points or goal
+  const goal = 20000;
 
-  // Calculate the percentage of progress for each block relative to the goal
   const progressPercent = (playerPoints / goal) * 100;
-  const blockWidths = [44, 24, 12, 3]; // Widths of each block in arbitrary units
+  const blockWidths = [44, 20, 12, 4]; 
   // const totalWidth = blockWidths.reduce((total, width) => total + width, 0); // Sum of all block widths
 
-  // Calculate fill width of each block
   const blockFills = blockWidths.map((width) => {
     const fill = Math.max(
       0,
@@ -21,12 +19,12 @@ export const ProgressBlock = () => {
           blockWidths.slice(0, blockWidths.indexOf(width)).reduce((acc, w) => acc + w, 0)
       )
     );
-    return (fill / width) * 100; // Convert fill amount to percentage based on block's own width
+    return (fill / width) * 100;
   });
 
   return (
     <div className="flex w-80 h-16 flex-col -space-y-1" style={{ opacity }}>
-      <div className="flex w-full h-full flex-row -space-x-0">
+      <div className="flex w-full h-full flex-row space-x-0">
         {blockWidths.map((width, index) => (
           <div className={`relative w-${width} mb-1 h-full border border-uilines`}>
             <div
