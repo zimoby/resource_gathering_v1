@@ -44,7 +44,6 @@ export interface MapParams {
   depth: number;
   resolution: number;
   scale: number;
-  seed: string;
   offsetX: number;
   offsetY: number;
   speed: number;
@@ -76,6 +75,8 @@ export interface BeaconType {
 }
 
 export interface GameStoreActions {
+  regenerateWorld: () => void;
+  
   updateStoreProperty: (paramName: string, value: unknown) => void;
   updateMapSize: (value: number) => void;
   updateMapParam: (paramName: string, value: unknown) => void;
@@ -246,6 +247,25 @@ function createGameStore() {
 
     worldParams: generateWorld(),
 
+    regenerateWorld: () => {
+      set({
+        worldParams: generateWorld(),
+        beacons: [],
+        currentOffset: { x: 0, y: 0 },
+        currentLocation: { x: 0, y: 0 },
+        playerPoints: 1000,
+        collectedResources: {
+          "Water": 0,
+          "Metals": 0,
+          "Rare Elements": 0,
+          "Hydrocarbons": 0,
+        },
+        message: "",
+        scanRadius: 30,
+        weatherCondition: "mild",
+      });
+    },
+
     uiPanelsState: {
       titlePanel: { opacity: 1 },
       planetPanel: { opacity: 1 },
@@ -305,7 +325,6 @@ function createGameStore() {
       depth: 200,
       resolution: 3,
       scale: 50,
-      seed: "42",
       offsetX: 0,
       offsetY: 0,
       speed: 0.1,

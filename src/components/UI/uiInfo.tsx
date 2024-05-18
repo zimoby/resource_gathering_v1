@@ -69,6 +69,14 @@ export const UiInfo = () => {
               Settings
             </button>
           </BasicPanelWrapper>
+          <BasicPanelWrapper>
+            <button
+              className=" w-full text-lg text-uitext text-center cursor-pointer hover:bg-uilines hover:text-neutral-900"
+              onClick={() => useGameStore.getState().regenerateWorld()}
+            >
+              New World
+            </button>
+          </BasicPanelWrapper>
           <SystemControls />
           <div className=" flex flex-grow border border-uilines"></div>
           <div className="warning-sign2 h-16 mb-10 flex border border-uilines" />

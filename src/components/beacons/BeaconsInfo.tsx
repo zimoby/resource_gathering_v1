@@ -11,7 +11,7 @@ export const BeaconsInfo = () => {
 
     return (
       <BasicPanelWrapper titleText="Beacons:" opacity={opacity}>
-        <div className="h-44">
+        <div className="h:fit max-h-44">
           {beacons.length === 0 && "No beacons"}
           {beacons.slice(0, 100).map((beacon, index) => (
             <div key={index}>
