@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
+import { useGameStore } from '../store';
 
-interface FlickeringEffectProps {
+interface FlickeringHtmlEffectProps {
   children: React.ReactNode;
   disabled?: boolean;
   appearingOnly?: boolean;
@@ -10,7 +11,7 @@ interface FlickeringEffectProps {
   classStyles?: string;
 }
 
-const FlickeringEffect: React.FC<FlickeringEffectProps> = ({
+const FlickeringHtmlEffect: React.FC<FlickeringHtmlEffectProps> = ({
   children,
   disabled = false,
   initialIntensity = 6,
@@ -18,19 +19,20 @@ const FlickeringEffect: React.FC<FlickeringEffectProps> = ({
   classStyles = ""
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const disableAnimations = useGameStore((state) => state.disableAnimations);
 
   useEffect(() => {
     const container = containerRef.current;
-    if (disabled && container) {
+    if ((disabled || disableAnimations) && container) {
       container.childNodes.forEach((child) => {
         (child as HTMLElement).style.visibility = 'visible';
       });
       return;
     }
-  }, [disabled]);
+  }, [disableAnimations, disabled]);
 
   useEffect(() => {
-    if (disabled) {
+    if (disabled || disableAnimations) {
       return;
     }
 
@@ -54,9 +56,9 @@ const FlickeringEffect: React.FC<FlickeringEffectProps> = ({
 
       return () => timeouts.forEach(clearTimeout);
     }
-  }, [initialIntensity, duration, disabled, containerRef]);
+  }, [initialIntensity, duration, disabled, containerRef, disableAnimations]);
 
   return <div className={classStyles} ref={containerRef}>{children}</div>;
 };
 
-export default FlickeringEffect;
+export default FlickeringHtmlEffect;
