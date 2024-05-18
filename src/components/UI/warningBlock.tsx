@@ -3,16 +3,21 @@ import { useGameStore } from "../../store";
 
 export const WarningBlock = () => {
   const weather = useGameStore((state) => state.weatherCondition);
-  const blockSize = { x: 300, y: 100 };
-  const sizeAnim = 120;
+  // const blockSize = { x: 300, y: 100 };
+  // const sizeAnim = 120;
 
   return (
     <>
       { weather === "severe" && (
         <FlickeringHtmlEffect>
           <div
-            className="fixed w-fit h-14 flex flex-row  z-20 top-24 animate-pulse"
-            style={{ left: "calc(50vw - 125px)" }}
+            className="fixed top-0 w-fit h-14 flex flex-row z-20  animate-pulse"
+            style={{
+              top: "calc(-50vh + 90px)",
+              left: "-150px",
+              // left: "calc(-50vw)"
+            }}
+            // style={{ left: "-125px" }}
           >
             <div className="relative w-fit h-full flex flex-row">
               <div className="absolute z-30 w-full h-full flex justify-center items-center ">
@@ -35,7 +40,7 @@ export const WarningBlock = () => {
   );
 };
 
-const WarningLines = ({ direction, width = 150 }: { direction: string; width?: number }) => {
+const WarningLines = ({ direction }: { direction: string; width?: number }) => {
   let scaleInvert = "";
   if (direction === "xy") {
     scaleInvert = "-scale-x-100 -scale-y-100";

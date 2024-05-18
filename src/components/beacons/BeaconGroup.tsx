@@ -10,6 +10,15 @@ import { useIncreasingSpeed } from "../../effects/IncreaseSceneSpeed";
 const beaconHeight = 10;
 const minDistance = 20;
 
+const ShapeCircle = () => {
+  return (
+    <mesh>
+      <circleGeometry args={[minDistance, 8]} />
+      <meshBasicMaterial color={"#ff0000"} />
+    </mesh>
+  );
+}
+
 
 export const BeaconGroup = () => {
   const firstStart = useGameStore((state) => state.firstStart);
@@ -55,6 +64,7 @@ export const BeaconGroup = () => {
         <group key={beacon.id} position={[beacon.x, beacon.y + 1, beacon.z]} ref={beaconRefs.current[index]}>
           <Sphere args={[1, 8, 8]} position={[0, beaconHeight, 0]} />
           <Cylinder args={[0.1, 0.1, beaconHeight, 4]} position={[0, beaconHeight / 2, 0]} />
+          <ShapeCircle />
           <Cylinder visible={canPlaceBeacon} args={[minDistance, minDistance, 0.2, 16]} position={[0, 0, 0]}>
             <meshBasicMaterial wireframe color={"#8D1919"} />
           </Cylinder>

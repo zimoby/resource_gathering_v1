@@ -58,8 +58,9 @@ export const FlyingDrone = () => {
       <group ref={ref}>
         <Float position={[0, 20, 0]} floatIntensity={10} speed={5}>
           <Drone />
-          <Billboard>
-            <Html position={[4, 2, 0]} visible={!showSettingsModal}>
+
+          { !showSettingsModal && <Billboard>
+            <Html position={[4, 2, 0]}>
               {activePhrase.phrase !== "" && (
                 <div className="flex flex-col items-end">
                   <div
@@ -79,7 +80,7 @@ export const FlyingDrone = () => {
                 </div>
               )}
             </Html>
-          </Billboard>
+          </Billboard>}
         </Float>
       </group>
     </group>

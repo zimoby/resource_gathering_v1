@@ -12,9 +12,11 @@ import { Map } from "./Map";
 import { FlyingDrone } from "../components/drone/Drone";
 import { Line } from "../components/gfx/Line";
 import { Euler } from "three";
+import { WarningBlock } from "../components/UI/warningBlock";
 
 export const GameCanvas = () => {
   const firstStart = useGameStore((state) => state.firstStart);
+  const showSettingsModal = useGameStore((state) => state.showSettingsModal);
   const animationFirstStage = useGameStore((state) => state.animationFirstStage);
   const terrainAppearing = useGameStore((state) => state.terrainAppearing);
 
@@ -65,7 +67,7 @@ export const GameCanvas = () => {
 
         </group>
       </Suspense>
-      <Billboard>
+      { !showSettingsModal && <Billboard>
         <Html>
           <div
             className="fixed -z-10 border border-uilines"
@@ -77,8 +79,9 @@ export const GameCanvas = () => {
             }}
             // onClick={(e) => e.stopPropagation()}
           />
+          <WarningBlock />
         </Html>
-      </Billboard>
+      </Billboard>}
       <OrbitControls enablePan={false} />
       <EffectsCollection />
     </Canvas>

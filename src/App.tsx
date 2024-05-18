@@ -6,8 +6,15 @@ import { GameCanvas } from "./Scene/GameCanvas";
 import { useGameStore } from "./store";
 import StartScreen from "./Scene/startScreen";
 
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
+
+gsap.registerPlugin(useGSAP);
+
+
 const App = () => {
   const startScreen = useGameStore((state) => state.startScreen);
+  const firstStart = useGameStore((state) => state.firstStart);
 
   useInitInfo();
   useCalculateResources();
@@ -16,7 +23,7 @@ const App = () => {
 
   return (
     <>
-      {startScreen ? (
+      {startScreen && !firstStart ? (
         <StartScreen />
       ) : (
         <>

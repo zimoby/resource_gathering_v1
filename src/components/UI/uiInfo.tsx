@@ -16,13 +16,12 @@ import "./linearAnimation.css";
 import { SinePanel } from "./SinePanel";
 import { CorpLogoPanel } from "./CorpLogoPanel";
 import { BasicPanelWrapper } from "./BasicPanelWrapper";
-import { WarningBlock } from "./warningBlock";
 import { FlickeringHtmlEffect } from "../../effects/AppearingUiEffectWrapper";
+import { SettingsModal } from "./SettingsModal";
 
 
 export const UiInfo = () => {
   const animationFirstStage = useGameStore((state) => state.animationFirstStage);
-  // const showSettingsModal = useGameStore((state) => state.showSettingsModal);
   const updateStoreProperty = useGameStore((state) => state.updateStoreProperty);
 
   if (!animationFirstStage) return null;
@@ -39,37 +38,8 @@ export const UiInfo = () => {
         }}
       >
         {/* modal settings window */}
-        {/* <div
-          className="fixed flex justify-center items-center z-50 bg-black/50 w-full h-full"
-          style={{ display: showSettingsModal ? "flex" : "none" }}
-        >
-          <div className="bg-black/80 w-96 h-96 flex flex-col space-y-1 p-4 rounded-lg">
-            <div className="w-full h-8 flex justify-end items-center">
-              <button
-                className="text-uitext text-lg cursor-pointer hover:bg-uilines hover:text-neutral-900"
-                onClick={() => updateStoreProperty("showSettingsModal", false)}
-              >
-                X
-              </button>
-            </div>
-            <div className="w-full h-8 flex justify-center items-center text-uitext text-lg">
-              Settings
-            </div>
-            <div className="w-full h-8 flex justify-center items-center text-uitext text-lg">
-              <label htmlFor="disableAnimations" className="text-uitext">
-                Disable Animations
-              </label>
-              <input
-                type="checkbox"
-                id="disableAnimations"
-                name="disableAnimations"
-                checked={disableAnimations}
-                onChange={() => useGameStore.getState().toggleDisableAnimations()}
-              />
-            </div>
-          </div>
-        </div> */}
-        <WarningBlock />
+        <SettingsModal />
+        {/* <WarningBlock /> */}
         <div className="w-full h-16 flex-none flex flex-row gap-1">
           {/* <div className=" flex-none space-y-1"> */}
           <FlickeringHtmlEffect
