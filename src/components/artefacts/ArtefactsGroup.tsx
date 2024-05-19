@@ -52,8 +52,7 @@ export const ArtefactsGroup = () => {
   //     }
   //   }, [artefacts.length]);
 
-  useFrame((state_, delta) => {
-    const time = state_.clock.getElapsedTime();
+  useFrame((_, delta) => {
     beaconRefs.current.forEach((beacon, index) => {
       const beaconObject = beacon.current;
         const circleObject = circleRefs.current[index].current;

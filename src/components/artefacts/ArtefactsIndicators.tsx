@@ -1,40 +1,41 @@
-import { Plane, Ring, Text } from "@react-three/drei";
+import { Plane, Ring } from "@react-three/drei";
 import { useGameStore } from "../../store";
-import { FadingEffect } from "../../effects/FadingEffectWrapper";
-import { DoubleSide } from "three";
+import { DoubleSide, Euler, Vector3 } from "three";
 import { useMemo } from "react";
-import { useCheckVariableRender } from "../../utils/functions";
 import { ArtefactT } from "../../store/gameStateSlice";
 import { FlickeringEffect } from "../../effects/FlickeringEffectWrapper";
 
+const maxDistance = 3;
+const minOpacity = 0.1;
+const maxOpacity = 0.9;
+
 const calculateOpacity = (
-	filterCondition: (artefact: ArtefactT) => boolean,
-	currentCoord: number,
-	chunkCoord: keyof ArtefactT,
-	artefacts: ArtefactT[]
+  filterCondition: (artefact: ArtefactT) => boolean,
+  currentCoord: number,
+  chunkCoord: keyof ArtefactT,
+  artefacts: ArtefactT[]
 ): number => {
-	const existedArtefacts: ArtefactT[] = artefacts.filter(filterCondition);
-	if (existedArtefacts.length === 0) return 0;
+  const existedArtefacts: ArtefactT[] = artefacts.filter(filterCondition);
+  if (existedArtefacts.length === 0) return 0;
 
-	const closestDistance = Math.min(
-		...existedArtefacts.map((artefact) => Math.abs(Number(artefact[chunkCoord]) - currentCoord))
-	);
+  let closestDistance = Infinity;
+  for (const artefact of existedArtefacts) {
+    const distance = Math.abs(Number(artefact[chunkCoord]) - currentCoord);
+    if (distance === 0) return maxOpacity;
+    closestDistance = Math.min(closestDistance, distance);
+  }
 
-	const maxDistance: number = 3;
-	const minOpacity: number = 0.1;
-	const maxOpacity: number = 0.9;
+  const opacity = Math.max(
+    Math.min(
+      maxOpacity,
+      minOpacity + ((maxOpacity - minOpacity) * (maxDistance - closestDistance)) / maxDistance
+    ),
+    minOpacity
+  );
 
-	const opacity: number = Math.max(
-		Math.min(
-			maxOpacity,
-			minOpacity + ((maxOpacity - minOpacity) * (maxDistance - closestDistance)) / maxDistance
-		),
-		minOpacity
-	);
+  // console.log("opacity", { opacity });
 
-	console.log("opacity", { opacity });
-
-	return opacity;
+  return opacity;
 };
 
 const dist = 11;
@@ -100,24 +101,28 @@ export const ArtefactsPlanesIndicators = () => {
     [artefacts, currentLocation.x, currentLocation.y]
   );
 
-  const planesConfig = [
+  const planesConfig = useMemo(() => [
     {
-      position: [-width / 2 - dist, 0, 0],
-      rotation: [-Math.PI / 2, 0, Math.PI / 2],
+      position: new Vector3(-width / 2 - dist, 0, 0),
+      rotation: new Euler(-Math.PI / 2, 0, Math.PI / 2),
       opacity: artefactLeft,
     },
-    { position: [0, 0, -depth / 2 - dist], rotation: [-Math.PI / 2, 0, 0], opacity: artefactBottom },
     {
-      position: [width / 2 + dist, 0, 0],
-      rotation: [-Math.PI / 2, 0, -Math.PI / 2],
+      position: new Vector3(0, 0, -depth / 2 - dist),
+      rotation: new Euler(-Math.PI / 2, 0, 0),
+      opacity: artefactBottom,
+    },
+    {
+      position: new Vector3(width / 2 + dist, 0, 0),
+      rotation: new Euler(-Math.PI / 2, 0, -Math.PI / 2),
       opacity: artefactRight,
     },
     {
-      position: [0, 0, depth / 2 + dist],
-      rotation: [-Math.PI / 2, 0, Math.PI],
+      position: new Vector3(0, 0, depth / 2 + dist),
+      rotation: new Euler(-Math.PI / 2, 0, Math.PI),
       opacity: artefactTop,
     },
-  ];
+  ], [width, depth, artefactLeft, artefactTop, artefactRight, artefactBottom]);
 
   return (
     <group position={[0, -0.3, 0]}>
