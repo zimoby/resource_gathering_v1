@@ -64,6 +64,7 @@ export const CoordinatesKeys = () => {
         >
           S
         </Text>
+        
         <ChunkName />
 
       </FadingEffect>

@@ -56,9 +56,12 @@ export const useCalculateDeltas = () => {
   const dynamicSpeed = useGameStore((state) => state.dynamicSpeed);
   const { speed } = useGameStore((state) => state.mapParams);
   const direction = useGameStore((state) => state.moveDirection);
+  const invertDirection = useGameStore((state) => state.invertDirection);
 
-  const deltaX = direction.x * (speed * dynamicSpeed);
-  const deltaY = direction.y * (speed * dynamicSpeed);
+  const directionXY = invertDirection ? -1 : 1;
+
+  const deltaX = direction.x * directionXY * (speed * dynamicSpeed);
+  const deltaY = direction.y * directionXY * (speed * dynamicSpeed);
 
   return { deltaX, deltaY };
 };

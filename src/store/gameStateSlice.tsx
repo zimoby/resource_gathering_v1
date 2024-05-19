@@ -47,6 +47,7 @@ export interface GameStateSlice {
   disableAnimations: boolean;
   disableSounds: boolean;
   educationMode: boolean;
+  invertDirection: boolean;
   showSettingsModal: boolean;
   startScreen: boolean;
   firstStart: boolean;
@@ -94,6 +95,7 @@ export const createGameStateSlice: StateCreator<
   disableAnimations: localStorage.getItem("disableAnimations") === "true",
   disableSounds: localStorage.getItem("disableSounds") === "true",
   educationMode: localStorage.getItem("educationMode") === "true",
+  invertDirection: localStorage.getItem("invertDirection") === "true",
 
   showSettingsModal: false,
 

@@ -18,6 +18,10 @@ export const useInitInfo = () => {
     if (localStorage.getItem('disableSounds') === null) {
       updateVariableInLocalStorage("disableSounds", false);
     }
+    
+    if (localStorage.getItem('invertDirection') === null) {
+      updateVariableInLocalStorage("invertDirection", false);
+    }
 
   }, [educationMode, disableSounds, updateVariableInLocalStorage]);
 

@@ -34,6 +34,7 @@ export const ArtefactsGroup = () => {
   const canSetBeacon = useGameStore((state) => state.canPlaceBeacon);
   const { width, depth, offsetX, offsetY } = useGameStore((state) => state.mapParams);
   const { deltaX, deltaY } = useCalculateDeltas();
+  const timeRef = useRef(0);
 
   const beaconRefs = useRef<React.RefObject<Group>[]>(artefacts.map(() => createRef()));
   const { speedRef: increasingSpeedRef } = useIncreasingSpeed(0, 1, 0.01, 2);
@@ -69,11 +70,12 @@ export const ArtefactsGroup = () => {
         beaconObject.position.z -= deltaY * increasingSpeedRef.current;
 
         if (artefactSelected === artefacts[index].id && canSetBeacon) {
+          timeRef.current += delta;
           // sin anim
-          beaconObject.position.y = Math.sin(time * 2) * 3;
+          beaconObject.position.y = Math.sin(timeRef.current * 2) * 3;
 
           if (circleObject) {
-            circleObject.position.y = -Math.sin(time * 2) * 3;
+            circleObject.position.y = -Math.sin(timeRef.current * 2) * 3;
             // circleObject.rotateY(delta / 2);
           }
         }

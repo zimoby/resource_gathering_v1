@@ -20,7 +20,7 @@ export const ChunkName = () => {
   return (
     <Text
         visible={mapAnimationState === "idle"}
-        position={[width / 2 - 1, 0, depth / 2 + 2]}
+        position={[width / 2 + 12, 0.5, depth / 2 + 2]}
         rotation={[-Math.PI / 2, 0, Math.PI / 2]}
         font="/Orbitron-Bold.ttf"
         fontSize={12}

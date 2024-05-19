@@ -37,7 +37,7 @@ export const FlickeringEffect: React.FC<FlickeringEffectProps> = ({
 	useAppearingGlitchingEffect({ disabled, groupRef, duration, initialIntensity });
 
   useFrame(() => {
-    if (appearingOnly || disabled) return;
+    if (appearingOnly || (disabled || disableAnimations)) return;
 
     const group = groupRef.current;
 

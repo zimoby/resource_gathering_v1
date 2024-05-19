@@ -14,6 +14,7 @@ import { Line } from "../components/gfx/Line";
 import { Euler } from "three";
 // import { WarningBlock } from "../components/UI/warningBlock";
 import { CenterScreenPanel } from "../components/UI/CenterScreenPanel";
+import { ArtefactsPlanesIndicators } from "../components/artefacts/ArtefactsIndicators";
 
 export const GameCanvas = () => {
   const firstStart = useGameStore((state) => state.firstStart);
@@ -33,6 +34,7 @@ export const GameCanvas = () => {
           <Map />
           {animationFirstStage && <group position={[0, 0, 0]} visible={animationFirstStage}>
             <CoordinatesKeys />
+            <ArtefactsPlanesIndicators />
           </group>}
           {/* <Ring args={[100, 120, 4]} position={[0, -5, 0]} rotation={[Math.PI / 2, 0, Math.PI / 4]}>
             <meshBasicMaterial color="pink" opacity={0.01} transparent side={DoubleSide} />
