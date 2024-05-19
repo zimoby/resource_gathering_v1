@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { resourceTypes, useGameStore } from "../store";
+import { useGameStore } from "../store";
+import { resourceTypes } from "../store/worldParamsSlice";
 
 export const useCalculateResources = () => {
 	const canPlaceBeacon = useGameStore((state) => state.canPlaceBeacon);

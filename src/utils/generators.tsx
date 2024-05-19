@@ -1,4 +1,4 @@
-import { WeatherCondition, WorldState } from "../store";
+import { WeatherCondition, WorldState } from "../store/worldParamsSlice";
 import { WorldParamsType } from "../store/worldParamsSlice";
 
 export const generateWeather = (): WeatherCondition => {

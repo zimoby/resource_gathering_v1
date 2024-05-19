@@ -4,7 +4,10 @@ import {
   Float32BufferAttribute,
   NormalBufferAttributes
 } from "three";
-import { minLevel, terrainTypes, resourceTypes, ResourceType } from "../../store";
+import { minLevel } from "../../store/worldParamsSlice";
+import { ResourceType } from "../../store/worldParamsSlice";
+import { resourceTypes } from "../../store/worldParamsSlice";
+import { terrainTypes } from "../../store/worldParamsSlice";
 import { NoiseFunction2D } from "simplex-noise";
 
 const updateBufferAttribute = (geometry: BufferGeometry<NormalBufferAttributes>, attrName: string, data: Float32Array) => {
