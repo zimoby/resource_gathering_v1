@@ -16,7 +16,7 @@ export const SystemMessagePanel = () => {
 };
 
 export const SystemMessagePanelAlt = () => {
-  const opacity = useGameStore((state) => state.uiPanelsState.systemMessagePanel.opacity);
+  // const opacity = useGameStore((state) => state.uiPanelsState.systemMessagePanel.opacity);
   const message = useGameStore((state) => state.message);
 
   return (
