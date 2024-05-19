@@ -9,6 +9,7 @@ export const ChunkName = () => {
   const { width, depth } = useGameStore((state) => state.mapParams);
 
   const currentLocation = useGameStore((state) => state.currentLocation);
+  const mapAnimationState = useGameStore((state) => state.mapAnimationState);
 
   const currentChunkName = useMemo(() => {
     return convertChunkCoordinateToName(currentLocation);
@@ -18,6 +19,7 @@ export const ChunkName = () => {
 
   return (
     <Text
+        visible={mapAnimationState === "idle"}
         position={[width / 2 - 1, 0, depth / 2 + 2]}
         rotation={[-Math.PI / 2, 0, Math.PI / 2]}
         font="/Orbitron-Bold.ttf"

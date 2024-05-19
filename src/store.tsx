@@ -76,6 +76,8 @@ export interface BeaconType {
 
 export interface GameStoreActions {
   regenerateWorld: () => void;
+
+  setMapAnimationState: (state: 'idle' | 'shrinking' | 'enlarging') => void;
   
   updateStoreProperty: (paramName: string, value: unknown) => void;
   updateMapSize: (value: number) => void;
@@ -138,6 +140,8 @@ export type GameStoreState = {
   terrainLoading: boolean;
   terrainAppearing: boolean;
   animationFirstStage: boolean;
+
+  mapAnimationState: 'idle' | 'shrinking' | 'enlarging';
 
   gridConfig: GridConfig;
   mapParams: MapParams;
@@ -244,6 +248,9 @@ function createGameStore() {
     terrainLoading: true,
     terrainAppearing: false,
     animationFirstStage: false,
+
+    mapAnimationState: 'idle',
+    setMapAnimationState: (state) => set({ mapAnimationState: state }),
 
     worldParams: generateWorld(),
 

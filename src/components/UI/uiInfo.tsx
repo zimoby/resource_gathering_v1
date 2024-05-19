@@ -72,7 +72,7 @@ export const UiInfo = () => {
           <BasicPanelWrapper>
             <button
               className=" w-full text-lg text-uitext text-center cursor-pointer hover:bg-uilines hover:text-neutral-900"
-              onClick={() => useGameStore.getState().regenerateWorld()}
+              onClick={() => useGameStore.getState().setMapAnimationState('shrinking')}
             >
               New World
             </button>

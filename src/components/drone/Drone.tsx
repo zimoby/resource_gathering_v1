@@ -30,6 +30,7 @@ export const FlyingDrone = () => {
   const [firstAppearing, setFirstAppearing] = useState(true);
   const appearingHeightRef = useRef(-appearingHeight);
   const showSettingsModal = useGameStore((state) => state.showSettingsModal);
+  const setMapAnimationState = useGameStore((state) => state.setMapAnimationState);
 	
   const { activePhrase, phraseKey, handleNextClick } = usePhraseSystem({
     firstAppearing,
@@ -45,6 +46,7 @@ export const FlyingDrone = () => {
       ref.current.position.y += (appearingHeightRef.current - ref.current.position.y) * ease;
       if (Math.abs(ref.current.position.y - appearingHeightRef.current) < 2) {
         setFirstAppearing(false);
+        setMapAnimationState('enlarging');
       }
     } else {
       ref.current.position.x += (x - ref.current.position.x) * ease;

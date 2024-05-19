@@ -1,15 +1,20 @@
-import { useSpring, easings } from '@react-spring/core';
-import { useFrame } from '@react-three/fiber';
-import { useEffect, useRef } from 'react';
+import { useSpring, easings } from "@react-spring/core";
+import { useFrame } from "@react-three/fiber";
+import { useRef } from "react";
 
-export const useIncreasingSpeed = (initialSpeed = 0, goalSpeed = 1, increment = 0.01, startTime = 2) => {
+export const useIncreasingSpeed = (
+  initialSpeed = 0,
+  goalSpeed = 1,
+  increment = 0.01,
+  startTime = 2
+) => {
   const speedRef = useRef(initialSpeed);
   const speedReached = useRef(false);
   const speedStarted = useRef(false);
 
   useFrame(({ clock }) => {
     const time = clock.getElapsedTime();
-    
+
     if (time > startTime && speedRef.current < goalSpeed) {
       // consoleLog("time:", {time});
       speedStarted.current = true;
@@ -19,33 +24,38 @@ export const useIncreasingSpeed = (initialSpeed = 0, goalSpeed = 1, increment = 
     } else if (speedRef.current >= goalSpeed) {
       speedReached.current = true;
     }
-
   });
 
   return { speedRef, speedReached, speedStarted };
 };
 
-
-export const useIncreasingSpeed2 = (initialValue = 0, goalValue = 1, duration = 1, startTime = 2) => {
+export const useIncreasingSpeed2 = ({
+  initialValue = 0,
+  goalValue = 1,
+  duration = 1,
+  easing = easings.easeInOutCubic,
+}) => {
   const [valueAnimation, api] = useSpring(() => ({
     value: initialValue,
-    config: { duration: duration * 1000, easing: easings.easeInOutCubic},
-    onRest: () => {
-      valueReached.current = true;
-    },
+    config: { duration: duration * 1000, easing },
   }));
 
   const valueReached = useRef(false);
   const valueStarted = useRef(false);
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      valueStarted.current = true;
-      api.start({ value: goalValue });
-    }, startTime * 1000);
+  const startAnimation = () => {
+    valueReached.current = false;
+    valueStarted.current = true;
+    api.stop();
+    api.start({
+      from: { value: initialValue },
+      to: { value: goalValue },
+      config: { duration: duration * 1000, easing },
+      onRest: () => {
+        valueReached.current = true;
+      },
+    });
+  };
 
-    return () => clearTimeout(timeout);
-  }, [api, goalValue, startTime]);
-
-  return { valueAnimation, valueReached, valueStarted };
+  return { valueAnimation, valueReached, valueStarted, startAnimation };
 };

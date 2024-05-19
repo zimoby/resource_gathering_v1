@@ -1,4 +1,4 @@
-import { RefObject, useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import {
   DoubleSide, Color, Vector2,
   PlaneGeometry,
@@ -6,7 +6,10 @@ import {
   Mesh
 } from "three";
 import { useGameStore } from "../../store";
-import { BufferGeometry, Material, Object3DEventMap } from "three";
+// import { BufferGeometry, Material, Object3DEventMap } from "three";
+import { useFrame } from "@react-three/fiber";
+import { useCalculateDeltas, useUpdateMapMoving } from "../../utils/functions";
+import { useIncreasingSpeed } from "../../effects/IncreaseSceneSpeed";
 
 
 // import { vertexShader, fragmentShader } from './chunkGridShader';
@@ -51,12 +54,17 @@ const fragmentShader = `
 
 export interface BasicGridShaderProps {
   position?: [number, number, number];
-  planeRef: RefObject<Mesh<BufferGeometry, Material | Material[], Object3DEventMap>>;
 }
 
-export const BasicGridShader = ({ position = [0,0,0], planeRef }: BasicGridShaderProps) => {
+export const BasicGridShader = ({ position = [0,0,0] }: BasicGridShaderProps) => {
   const { width, depth } = useGameStore((state) => state.mapParams);
   const gridConfig = useGameStore((state) => state.gridConfig);
+  const planeRef = useRef<Mesh>(null);
+  const offset = useRef({ x: 0, y: 0 });
+
+  const { deltaX, deltaY } = useCalculateDeltas();
+  const { speedRef: increasingSpeedRef } = useIncreasingSpeed(0, 1, 0.01, 2);
+  const { updateLocationAndOffset } = useUpdateMapMoving();
 
   useEffect(() => {
     generateGridGeometry();
@@ -89,6 +97,30 @@ export const BasicGridShader = ({ position = [0,0,0], planeRef }: BasicGridShade
     };
   }, [width, depth, gridConfig.chunkSize, gridConfig.subGrids, gridConfig.lineWidth, gridConfig.gridColor, gridConfig.subGridColor, planeRef]);
 
+
+  useFrame(() => {
+
+    offset.current.x += deltaX * increasingSpeedRef.current;
+    offset.current.y += deltaY * increasingSpeedRef.current;
+
+    // if (now - lastExecution.current > updateInterval) {
+    //   lastExecution.current = now;
+    updateLocationAndOffset(offset);
+    // }
+
+    if (
+      planeRef.current &&
+      planeRef.current.material instanceof ShaderMaterial &&
+      planeRef.current.material.uniforms.offset &&
+      planeRef.current.material.uniforms.offset.value
+    ) {
+      planeRef.current.material.uniforms.offset.value.set(
+        offset.current.x * 0.01,
+        -offset.current.y * 0.01
+      );
+    }
+  });
+
   return (
     <group position={position}>
       <mesh ref={planeRef} rotation={[-Math.PI / 2, 0, 0]}>
@@ -97,5 +129,4 @@ export const BasicGridShader = ({ position = [0,0,0], planeRef }: BasicGridShade
       </mesh>
     </group>
   );
-
 };
