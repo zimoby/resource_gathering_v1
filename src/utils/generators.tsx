@@ -1,4 +1,5 @@
 import { WeatherCondition, WorldState } from "../store";
+import { WorldParamsType } from "../store/worldParamsSlice";
 
 export const generateWeather = (): WeatherCondition => {
   const randomValue = Math.random();
@@ -12,18 +13,6 @@ export const generateWeather = (): WeatherCondition => {
 };
 
 // const worldStates = ["safe", "normal", "danger", "extreme", "hazardous", "stormy", "extreme temperature"]
-
-type WorldParamsType = {
-  seed: string;
-  worldState: WorldState;
-  name: string;
-  temperature: number;
-  humidity: number;
-  windSpeed: number;
-  pollution: number;
-  radiation: number;
-  weatherCondition: WeatherCondition;
-}
 
 export const generateWorld = (): WorldParamsType => {
   const worldSeed = Math.random().toString(36).substring(7);

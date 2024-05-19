@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { useGameStore, ChunkType, DEV_MODE } from "../store";
+import { useGameStore, DEV_MODE } from "../store";
+import { ChunkType } from "../store/gameStateSlice";
 
 export const consoleLog = (message: string, data?: object) => {
   DEV_MODE && data ? console.log(message, { ...data }) : console.log(message);
