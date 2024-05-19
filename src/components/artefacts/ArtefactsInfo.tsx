@@ -17,7 +17,9 @@ export const ArtefactsInfo = () => {
             <div key={index}>
               {convertChunkCoordinateToName({ x: artefact.chunkX, y: artefact.chunkY }) +
                 ": " +
-                artefact.chunkX + ":" + artefact.chunkY}
+                artefact.chunkX + ":" + artefact.chunkY +
+                ": " + Math.round(artefact.x) + ":" + Math.round(artefact.z)  
+              }
             </div>
           ))}
         </div>

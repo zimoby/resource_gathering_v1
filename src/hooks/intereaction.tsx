@@ -192,12 +192,17 @@ export const useCanvasHover = ({
           y: point.z + depth / 2 + useGameStore.getState().currentOffset.y,
         };
 
+        // const roundedPoint = {
+        //   x: Math.round(point.x),
+        //   y: Math.round(point.z),
+        // }
+
         const relativeChunkPosition = {
-          x: Math.abs(currentPosition.x) % width - 50,
-          y: (Math.abs(currentPosition.y) % width - 50),
+          x: Math.round(Math.abs(currentPosition.x) % width - 50),
+          y: Math.round(Math.abs(currentPosition.y) % width - 50),
         };
 
-        // consoleLog("relativeChunkPosition",    relativeChunkPosition);
+        // consoleLog("relativeChunkPosition", roundedPoint);
 
         const getArtefactInRadius = (position: { x: number; y: number }) => {
           return visibleArtefacts.find((beacon: { x: number; z: number }) => {
@@ -219,7 +224,7 @@ export const useCanvasHover = ({
 
         throttledSetState({
           selectedResource: resource,
-          currentOffset: currentPosition,
+          // currentOffset: currentPosition,
           selectedChunk: getChunkCoordinates(currentPosition.x, currentPosition.y, width),
         });
 
@@ -227,7 +232,7 @@ export const useCanvasHover = ({
 
         if (event.type === "click") {
           if (isWithinRadius) {
-            consoleLog("takeArtefact", isWithinRadius);
+            // consoleLog("takeArtefact", isWithinRadius);
             takeArtefact({ artefactId: isWithinRadius.id });
             return;
           }

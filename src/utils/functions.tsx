@@ -65,6 +65,8 @@ export const useCalculateDeltas = () => {
 
 export const useUpdateMapMoving = () => {
   const { width, depth, offsetX, offsetY } = useGameStore((state) => state.mapParams);
+  const currentLocation = useGameStore((state) => state.currentLocation);
+  const currentOffset = useGameStore((state) => state.currentOffset);
 
   const updateLocationAndOffset = (offset: { current: { x: number; y: number; }; }) => {
 
@@ -74,10 +76,30 @@ export const useUpdateMapMoving = () => {
       width
     );
 
-    useGameStore.setState({
-      currentLocation: { x: currentChunk.x, y: currentChunk.y },
-      currentOffset: { x: offset.current.x, y: offset.current.y },
-    });
+    if (currentLocation.x !== currentChunk.x || currentLocation.y !== currentChunk.y) {
+      // consoleLog("set currentChunk", currentChunk);
+      useGameStore.setState({
+        currentLocation: { x: currentChunk.x, y: currentChunk.y },
+      });
+    }
+
+    // consoleLog("currentChunk", offset.current);
+
+    const roundedOffset = {
+      x: Math.round(offset.current.x),
+      y: Math.round(offset.current.y),
+    };
+
+    if (currentOffset.x !== roundedOffset.x || currentOffset.y !== roundedOffset.y) {
+      // consoleLog("set currentOffset", {roundedOffset, currentOffset});
+      useGameStore.setState({
+        // currentLocation: { x: currentChunk.x, y: currentChunk.y },
+        currentOffset: { x: roundedOffset.x, y: roundedOffset.y },
+      });
+      // return;
+    }
+
+    
   }
 
   return { updateLocationAndOffset };
