@@ -61,6 +61,7 @@ export interface GameStateSlice {
   dynamicSpeed: number;
   beacons: BeaconType[];
   artefacts: ArtefactT[];
+  artefactSelected: string;
   playerPoints: number;
   collectedResources: CollectedResources;
   message: string;
@@ -81,6 +82,8 @@ export interface GameStateSlice {
   addEventLog: (eventName: string) => void;
   removeFirstEventLog: () => void;
 }
+
+export const artefactAmount = 10;
 
 export const createGameStateSlice: StateCreator<
   GameStoreState,
@@ -110,7 +113,11 @@ export const createGameStateSlice: StateCreator<
   moveDirection: { x: 0, y: -1 },
   dynamicSpeed: 1,
   beacons: [],
-  artefacts: generateArtefacts({amount: 10}),
+
+  // artefactsAmount: 10,
+  artefacts: generateArtefacts({ amount: artefactAmount }),
+  artefactSelected: "",
+
   playerPoints: 1000,
   collectedResources: {
     Water: 0,

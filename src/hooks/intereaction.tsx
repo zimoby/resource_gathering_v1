@@ -4,8 +4,10 @@ import { useGameStore } from "../store";
 import { ResourceType } from "../store/worldParamsSlice";
 import { debounce, throttle } from "lodash";
 import { useProcessBeacons } from "../components/beacons/beaconUtils";
-import { getChunkCoordinates } from "../utils/functions";
+import { consoleLog, getChunkCoordinates } from "../utils/functions";
 import { useProcessArtefacts } from "../components/artefacts/artefactUtils";
+import { ArtefactT } from "../store/gameStateSlice";
+
 
 const getIntersection = (
   event: { clientX: number; clientY: number },
@@ -128,22 +130,13 @@ export const useCanvasHover = ({
   resources: { current: Array<ResourceType> };
 }) => {
   const canPlaceBeacon = useGameStore((state) => state.canPlaceBeacon);
-  const artefacts = useGameStore((state) => state.artefacts);
   const { width, depth, offsetX, offsetY } = useGameStore((state) => state.mapParams);
   const { addBeacon } = useProcessBeacons();
-  const { takeArtefact } = useProcessArtefacts();
-  // const mousePositionRef = useRef({ x: 0, y: 0 });
+  const { takeArtefact, checkArtefactInRadius } = useProcessArtefacts();
 
   const throttledSetState = throttle((state) => {
     useGameStore.setState(state);
   }, 100);
-
-  const visibleArtefacts =  artefacts.filter((artefact) => artefact.visible);
-  // const visibleArtefacts = useMemo(() => artefacts.filter((artefact) => artefact.visible), [artefacts]);
-
-  // useEffect(() => {
-  //   consoleLog("visibleArtefacts", visibleArtefacts);
-  // }, [visibleArtefacts]);
 
   const handleCanvasHover = useCallback(
     (event: { clientX: number; clientY: number; type: string }) => {
@@ -187,41 +180,13 @@ export const useCanvasHover = ({
           });
         }, 100)();
 
+        const { currentOffset } = useGameStore.getState();
+
         const currentPosition = {
-          x: point.x + width / 2 + useGameStore.getState().currentOffset.x,
-          y: point.z + depth / 2 + useGameStore.getState().currentOffset.y,
+          x: point.x + width / 2 + currentOffset.x,
+          y: point.z + depth / 2 + currentOffset.y,
         };
-
-        // const roundedPoint = {
-        //   x: Math.round(point.x),
-        //   y: Math.round(point.z),
-        // }
-
-        const relativeChunkPosition = {
-          x: Math.round(Math.abs(currentPosition.x) % width - 50),
-          y: Math.round(Math.abs(currentPosition.y) % width - 50),
-        };
-
-        // consoleLog("relativeChunkPosition", roundedPoint);
-
-        const getArtefactInRadius = (position: { x: number; y: number }) => {
-          return visibleArtefacts.find((beacon: { x: number; z: number }) => {
-            const dx = position.x - beacon.x;
-            const dz = position.y - beacon.z;
-            const distance = Math.sqrt(dx * dx + dz * dz);
-            return distance < 10;
-          });
-        };
-
-        const isWithinRadius = getArtefactInRadius(relativeChunkPosition);
-
-
-        // if (isWithinRadius) {
-        //   consoleLog("artefact in radius", isWithinRadius)
-        //   // useGameStore.setState({ message: "Cannot place beacon too close to another beacon." });
-        //   // return;
-        // }
-
+        
         throttledSetState({
           selectedResource: resource,
           // currentOffset: currentPosition,
@@ -229,6 +194,9 @@ export const useCanvasHover = ({
         });
 
         // consoleLog("selectedResource", relativeChunkPosition);
+
+        const isWithinRadius = checkArtefactInRadius({ point });
+
 
         if (event.type === "click") {
           if (isWithinRadius) {
@@ -250,21 +218,7 @@ export const useCanvasHover = ({
         }
       }
     },
-    [
-      canPlaceBeacon,
-      meshRef,
-      raycaster,
-      camera,
-      resources,
-      width,
-      depth,
-      throttledSetState,
-      addBeacon,
-      offsetX,
-      offsetY,
-      visibleArtefacts,
-      takeArtefact,
-    ]
+    [canPlaceBeacon, meshRef, raycaster, camera, resources, width, depth, throttledSetState, checkArtefactInRadius, addBeacon, offsetX, offsetY, takeArtefact]
   );
 
   useEffect(() => {

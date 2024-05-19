@@ -30,13 +30,15 @@ const beaconHeight = 10;
 export const ArtefactsGroup = () => {
   const firstStart = useGameStore((state) => state.firstStart);
   const artefacts = useGameStore((state) => state.artefacts);
+  const artefactSelected = useGameStore((state) => state.artefactSelected);
+  const canSetBeacon = useGameStore((state) => state.canPlaceBeacon);
   const { width, depth, offsetX, offsetY } = useGameStore((state) => state.mapParams);
   const { deltaX, deltaY } = useCalculateDeltas();
 
   const beaconRefs = useRef<React.RefObject<Group>[]>(artefacts.map(() => createRef()));
   const { speedRef: increasingSpeedRef } = useIncreasingSpeed(0, 1, 0.01, 2);
 
-  //   const circleRefs = useRef<React.RefObject<Group>[]>(artefacts.map(() => createRef()));
+  const circleRefs = useRef<React.RefObject<Group>[]>(artefacts.map(() => createRef()));
 
   // console.log("artefacts:", { artefacts, beaconRefs });
 
@@ -49,10 +51,11 @@ export const ArtefactsGroup = () => {
   //     }
   //   }, [artefacts.length]);
 
-  useFrame((_, delta) => {
+  useFrame((state_, delta) => {
+    const time = state_.clock.getElapsedTime();
     beaconRefs.current.forEach((beacon, index) => {
       const beaconObject = beacon.current;
-      //   const circleObject = circleRefs.current[index].current;
+        const circleObject = circleRefs.current[index].current;
       if (beaconObject) {
         const checkBoundaries = isOutOfBound(
           { x: beaconObject.position.x, y: beaconObject.position.z },
@@ -64,6 +67,17 @@ export const ArtefactsGroup = () => {
 
         beaconObject.position.x -= deltaX * increasingSpeedRef.current;
         beaconObject.position.z -= deltaY * increasingSpeedRef.current;
+
+        if (artefactSelected === artefacts[index].id && canSetBeacon) {
+          // sin anim
+          beaconObject.position.y = Math.sin(time * 2) * 3;
+
+          if (circleObject) {
+            circleObject.position.y = -Math.sin(time * 2) * 3;
+            // circleObject.rotateY(delta / 2);
+          }
+        }
+
 				beaconObject.rotateY(delta / 2);
         beaconObject.visible = !checkBoundaries.x && !checkBoundaries.y;
 
@@ -77,9 +91,7 @@ export const ArtefactsGroup = () => {
 				}
       }
 
-      //   if (circleObject) {
-      //     circleObject.rotateY(delta / 2);
-      //   }
+
     });
   });
 
@@ -99,7 +111,9 @@ export const ArtefactsGroup = () => {
           {/* <group key={"circle_of_" + beacon.id} ref={circleRefs.current[index]}>
             <ShapeCircle />
           </group> */}
-          <ConcentricCirclesAnimation />
+          <group ref={circleRefs.current[index]}>
+            <ConcentricCirclesAnimation />
+          </group>
         </group>
       ))}
     </group>
