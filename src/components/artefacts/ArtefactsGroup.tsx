@@ -72,14 +72,14 @@ export const ArtefactsGroup = () => {
 
   // console.log("artefacts:", { artefacts, artefactRefs });
 
-  //   useLayoutEffect(() => {
-  //     artefactRefs.current = artefactRefs.current.slice(0, artefacts.length);
-  //     circleRefs.current = circleRefs.current.slice(0, artefacts.length);
-  //     for (let i = artefactRefs.current.length; i < artefacts.length; i++) {
-  //         artefactRefs.current[i] = createRef();
-  //         circleRefs.current[i] = createRef();
-  //     }
-  //   }, [artefacts.length]);
+  // useLayoutEffect(() => {
+  //   artefactRefs.current = artefactRefs.current.slice(0, artefacts.length);
+  //   circleRefs.current = circleRefs.current.slice(0, artefacts.length);
+  //   for (let i = artefactRefs.current.length; i < artefacts.length; i++) {
+  //       artefactRefs.current[i] = createRef();
+  //       circleRefs.current[i] = createRef();
+  //   }
+  // }, [artefacts.length]);
 
   useFrame((_, delta) => {
     artefactRefs.current.forEach((beacon, index) => {

@@ -12,8 +12,8 @@ export const ArtefactsInfo = () => {
 
     return (
       <BasicPanelWrapper titleText="Artefacts:" opacity={opacity}>
-        <div className="h:fit max-h-44">
-          <p>Amount: {artefacts.length} / {artefactAmount}</p>
+        <div className="scrollbar h-fit max-h-44">
+          <p className=" text-lg">Amount: {artefacts.length} / {artefactAmount}</p>
           {artefacts.length === 0 && "No artefacts"}
           {artefacts.slice(0, 100).map((artefact, index) => (
             <div key={index}>

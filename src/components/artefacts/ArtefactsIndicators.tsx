@@ -103,21 +103,25 @@ export const ArtefactsPlanesIndicators = () => {
 
   const planesConfig = useMemo(() => [
     {
+			size: depth,
       position: new Vector3(-width / 2 - dist, 0, 0),
       rotation: new Euler(-Math.PI / 2, 0, Math.PI / 2),
       opacity: artefactLeft,
     },
     {
+			size: width,
       position: new Vector3(0, 0, -depth / 2 - dist),
       rotation: new Euler(-Math.PI / 2, 0, 0),
       opacity: artefactBottom,
     },
     {
+			size: depth,
       position: new Vector3(width / 2 + dist, 0, 0),
       rotation: new Euler(-Math.PI / 2, 0, -Math.PI / 2),
       opacity: artefactRight,
     },
     {
+			size: width,
       position: new Vector3(0, 0, depth / 2 + dist),
       rotation: new Euler(-Math.PI / 2, 0, Math.PI),
       opacity: artefactTop,
@@ -140,7 +144,7 @@ export const ArtefactsPlanesIndicators = () => {
       </Ring>
 			<FlickeringEffect appearingOnly={true}>
 				{planesConfig.map((config, index) => (
-					<Plane key={index} args={[width, 3]} position={config.position} rotation={config.rotation}>
+					<Plane key={index} args={[config.size, 3]} position={config.position} rotation={config.rotation}>
 						<meshBasicMaterial
 							side={DoubleSide}
 							color={"#ffffff"}

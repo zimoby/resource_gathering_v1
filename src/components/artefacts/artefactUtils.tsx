@@ -27,14 +27,14 @@ export const useProcessArtefacts = () => {
           const newArtefacts = state.artefacts.filter((artefact) => artefact.id !== artefactId);
           return { artefacts: newArtefacts };
         });
-        useGameStore.setState({ message: `Artefact taken.` });
-        addLog(`Artefact taken.`);
+        useGameStore.setState({ message: `Artefact taken` });
+        addLog(`Artefact taken`);
       }
     },
     [addLog, artefacts]
   );
 
-  const checkArtefactInRadius = useCallback(({ point }) => {
+  const checkArtefactInRadius = useCallback(({ point }: { point: { x: number; y: number, z: number } }) => {
       const visibleArtefacts = artefacts.filter((artefact) => artefact.visible);
 
       const { currentOffset } = useGameStore.getState();

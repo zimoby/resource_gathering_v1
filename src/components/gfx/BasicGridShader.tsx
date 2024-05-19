@@ -25,6 +25,8 @@ const vertexShader = `
 
 const fragmentShader = `
   uniform float chunkSize;
+  uniform float mapWidth;
+  uniform float mapDepth;
   uniform vec2 offset;
   uniform float subGrids;
   uniform float lineWidth;
@@ -34,22 +36,24 @@ const fragmentShader = `
   varying vec2 vUv;
 
   void main() {
-    vec2 coord = (vUv + offset / chunkSize) * chunkSize;
-    
+    // Scale vUv to map dimensions
+    vec2 scaledUv = vec2(vUv.x * mapWidth, vUv.y * mapDepth);
+    vec2 coord = (scaledUv + offset / chunkSize) * chunkSize;
+
     vec2 grid = abs(fract(coord - 0.5) - 0.5) / fwidth(coord);
     float line = min(grid.x, grid.y);
-    
+
     vec2 subGrid = abs(fract(coord * subGrids - 0.5) - 0.5) / fwidth(coord * subGrids);
     float subLine = min(subGrid.x, subGrid.y);
-    
+
     float alpha = 1.0 - min(line, 1.0);
     float subAlpha = 1.0 - min(subLine, 1.0);
-    
+
     vec3 color = mix(subGridColor, gridColor, step(lineWidth * 1.0, line));
     color = mix(color, vec3(0.0), step(lineWidth, subLine));
-    
+
     gl_FragColor = vec4(color, max(alpha, subAlpha));
-  }
+}
 `;
 
 export interface BasicGridShaderProps {
@@ -76,6 +80,8 @@ export const BasicGridShader = ({ position = [0,0,0] }: BasicGridShaderProps) =>
     const planeGeometry = new PlaneGeometry(width, depth, 1, 1);
     const planeMaterial = new ShaderMaterial({
       uniforms: {
+        mapWidth: { value: width / 100 },
+        mapDepth: { value: depth / 100 },
         chunkSize: { value: gridConfig.chunkSize },
         offset: { value: new Vector2(0, 0) },
         subGrids: { value: gridConfig.subGrids },

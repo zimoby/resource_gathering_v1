@@ -4,9 +4,9 @@ import { useGameStore } from "../store";
 import { ResourceType } from "../store/worldParamsSlice";
 import { debounce, throttle } from "lodash";
 import { useProcessBeacons } from "../components/beacons/beaconUtils";
-import { consoleLog, getChunkCoordinates } from "../utils/functions";
+import { getChunkCoordinates } from "../utils/functions";
 import { useProcessArtefacts } from "../components/artefacts/artefactUtils";
-import { ArtefactT } from "../store/gameStateSlice";
+// import { ArtefactT } from "../store/gameStateSlice";
 
 
 const getIntersection = (
@@ -39,7 +39,7 @@ export const useKeyboardControls = ({
   meshRef: RefObject<Mesh>;
 }): void => {
   const canPlaceBeacon = useGameStore((state) => state.canPlaceBeacon);
-  const invertDirection = useGameStore((state) => state.invertDirection);
+  // const invertDirection = useGameStore((state) => state.invertDirection);
   const mouseEventRef = useRef<MouseEvent | null>(null);
 
   const handleMousePosition = useCallback((event: MouseEvent) => {
