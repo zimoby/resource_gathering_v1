@@ -1,4 +1,4 @@
-import { ArtefactT } from "../store/gameStateSlice";
+import { ArtefactT, ArtefactType } from "../store/gameStateSlice";
 import { WeatherCondition, WorldState } from "../store/worldParamsSlice";
 import { WorldParamsType } from "../store/worldParamsSlice";
 
@@ -52,6 +52,17 @@ export const generateWorld = (): WorldParamsType => {
   };
 }
 
+const randomRarestTypes = (): ArtefactType => {
+  const randomValue = Math.random();
+  if (randomValue < 0.7) {
+    return "usual";
+  } else if (randomValue < 0.9) {
+    return "rare";
+  } else {
+    return "legendary";
+  }
+}
+
 export const generateArtefacts = ({amount = 10}: {amount?: number}): ArtefactT[] => {
   const artefacts: ArtefactT[] = [];
   for (let i = 0; i < amount; i++) {
@@ -59,7 +70,7 @@ export const generateArtefacts = ({amount = 10}: {amount?: number}): ArtefactT[]
       x: Math.floor(Math.random() * 100) - 50,
       y: 0,
       z: Math.floor(Math.random() * 100) - 50,
-      type: "other",
+      type: randomRarestTypes(),
       chunkX: Math.floor(Math.random() * 10) - 5,
       chunkY: Math.floor(Math.random() * 10) - 5,
       visible: true,

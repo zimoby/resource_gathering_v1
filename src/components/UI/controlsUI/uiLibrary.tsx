@@ -52,7 +52,6 @@ export const SliderWithInput = ({ label, value, min = 1, max = 100, step = 1, on
   }
 
   const allChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("currentStep", localValue);
     setLocalValue(Number(e.target.value))
     onUpdate(Number(e.target.value))
   }

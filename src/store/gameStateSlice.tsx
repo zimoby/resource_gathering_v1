@@ -29,7 +29,7 @@ export interface BeaconType {
   id: string;
 }
 
-export type ArtefactType = "other" | "rare" | "legendary";
+export type ArtefactType = "usual" | "rare" | "legendary";
 
 export interface ArtefactT {
   x: number;
