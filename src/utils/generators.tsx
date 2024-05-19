@@ -54,9 +54,9 @@ export const generateWorld = (): WorldParamsType => {
 
 const randomRarestTypes = (): ArtefactType => {
   const randomValue = Math.random();
-  if (randomValue < 0.7) {
+  if (randomValue < 0.6) {
     return "usual";
-  } else if (randomValue < 0.9) {
+  } else if (randomValue < 0.8) {
     return "rare";
   } else {
     return "legendary";
