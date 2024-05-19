@@ -17,9 +17,7 @@ export const Map = () => {
   const regenerateWorld = useGameStore((state) => state.regenerateWorld);
   const setMapAnimationState = useGameStore((state) => state.setMapAnimationState);
   const terrainAppearing = useGameStore((state) => state.terrainAppearing);
-
-  // const currentLocation = useGameStore((state) => state.currentLocation);
-
+  
   const {
     valueAnimation,
     valueReached,
@@ -50,10 +48,8 @@ export const Map = () => {
     } else if (mapAnimationState === 'shrinking' && valueReachedDecr.current) {
       regenerateWorld();
       setMapAnimationState('enlarging');
-      // console.log("currentLocation:", currentLocation);
     } else if (mapAnimationState === 'enlarging' && !valueStarted.current) {
       startAnimation();
-      // console.log("currentLocation:", currentLocation);
     } else if (mapAnimationState === 'enlarging' && !valueReached.current && valueStarted.current) {
       updateMapSize(valueAnimation.value.get());
     } else if (mapAnimationState === 'enlarging' && valueReached.current) {

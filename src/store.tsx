@@ -260,6 +260,7 @@ function createGameStore() {
         beacons: [],
         currentOffset: { x: 0, y: 0 },
         currentLocation: { x: 0, y: 0 },
+
         playerPoints: 1000,
         collectedResources: {
           "Water": 0,
@@ -337,10 +338,14 @@ function createGameStore() {
       speed: 0.1,
     },
     currentOffset: { x: 0, y: 0 },
+    resetCurrentOffset: () => set({ currentOffset: { x: 0, y: 0 } }),
+
     showResources: false,
     selectedResource: "Water",
     selectedChunk: { x: 0, y: 0 },
     currentLocation: { x: 0, y: 0 },
+    resetCurrentLocation: () => set({ currentLocation: { x: 0, y: 0 } }),
+
     moveDirection: { x: 0, y: -1 },
     dynamicSpeed: 1,
     beacons: [],
@@ -358,6 +363,8 @@ function createGameStore() {
     scanRadius: 30,
     canPlaceBeacon: false,
     activePosition: { x: 0, y: 0, z: 0 },
+    resetActivePosition: () => set({ activePosition: { x: 0, y: 0, z: 0 } }),
+
     weatherCondition: "mild",
     updateStoreProperty: (paramName, value) => {
       set(() => ({ [paramName]: value }));

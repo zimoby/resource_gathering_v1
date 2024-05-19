@@ -58,6 +58,7 @@ export interface BasicGridShaderProps {
 
 export const BasicGridShader = ({ position = [0,0,0] }: BasicGridShaderProps) => {
   const { width, depth } = useGameStore((state) => state.mapParams);
+  const mapAnimationState = useGameStore((state) => state.mapAnimationState);
   const gridConfig = useGameStore((state) => state.gridConfig);
   const planeRef = useRef<Mesh>(null);
   const offset = useRef({ x: 0, y: 0 });
@@ -100,8 +101,14 @@ export const BasicGridShader = ({ position = [0,0,0] }: BasicGridShaderProps) =>
 
   useFrame(() => {
 
+    if (mapAnimationState === "enlarging") {
+      offset.current.x = 0;
+      offset.current.y = 0;
+    }
+
     offset.current.x += deltaX * increasingSpeedRef.current;
     offset.current.y += deltaY * increasingSpeedRef.current;
+    // console.log("offset.current:", {deltaX, deltaY});
 
     // if (now - lastExecution.current > updateInterval) {
     //   lastExecution.current = now;
