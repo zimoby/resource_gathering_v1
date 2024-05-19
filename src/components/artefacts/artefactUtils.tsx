@@ -1,9 +1,5 @@
 import { useCallback } from "react";
 import { useGameStore } from "../../store";
-import { ResourceType } from "../../store/worldParamsSlice";
-import { ArtefactT, BeaconType } from "../../store/gameStateSlice";
-
-const minDistance = 20;
 
 export const useProcessArtefacts = () => {
   const addLog = useGameStore((state) => state.addLog);
@@ -23,7 +19,7 @@ export const useProcessArtefacts = () => {
         addLog(`Artefact taken.`);
       }
     },
-    [artefacts]
+    [addLog, artefacts]
   );
 
   //   const destroyBeacons = useCallback(() => {

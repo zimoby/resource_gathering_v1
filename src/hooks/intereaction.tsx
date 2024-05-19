@@ -1,4 +1,4 @@
-import { RefObject, useCallback, useEffect, useMemo, useRef } from "react";
+import { RefObject, useCallback, useEffect, useRef } from "react";
 import { Camera, Mesh, Raycaster, Vector2 } from "three";
 import { useGameStore } from "../store";
 import { ResourceType } from "../store/worldParamsSlice";
@@ -257,6 +257,8 @@ export const useCanvasHover = ({
       addBeacon,
       offsetX,
       offsetY,
+      visibleArtefacts,
+      takeArtefact,
     ]
   );
 

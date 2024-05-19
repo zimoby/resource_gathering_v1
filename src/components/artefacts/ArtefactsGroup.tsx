@@ -1,10 +1,10 @@
 import { useGameStore } from "../../store";
-import { Cylinder, Octahedron, Sphere } from "@react-three/drei";
+import { Octahedron } from "@react-three/drei";
 import { ConcentricCirclesAnimation } from "../gfx/concentricCircles";
 import { useFrame } from "@react-three/fiber";
 import { isOutOfBound, useCalculateDeltas } from "../../utils/functions";
-import { createRef, useLayoutEffect, useMemo, useRef } from "react";
-import { BufferGeometry, Group, Shape } from "three";
+import { createRef, useRef } from "react";
+import { Group } from "three";
 import { useIncreasingSpeed } from "../../effects/IncreaseSceneSpeed";
 
 const beaconHeight = 10;
