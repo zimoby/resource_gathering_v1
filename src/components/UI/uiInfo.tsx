@@ -18,6 +18,7 @@ import { CorpLogoPanel } from "./CorpLogoPanel";
 import { BasicPanelWrapper } from "./BasicPanelWrapper";
 import { FlickeringHtmlEffect } from "../../effects/AppearingUiEffectWrapper";
 import { SettingsModal } from "./SettingsModal";
+import { ArtefactsInfo } from "../artefacts/ArtefactsInfo";
 
 
 export const UiInfo = () => {
@@ -97,6 +98,7 @@ export const UiInfo = () => {
             <CollectedResourcesPanel />
             <ScanerParamPanel />
             <BeaconsInfo />
+            <ArtefactsInfo />
           </>
           <div className=" flex flex-grow border border-uilines"></div>
           <div className="warning-sign2 h-16 mb-10 flex border border-uilines" />

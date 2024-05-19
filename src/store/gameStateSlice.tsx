@@ -1,7 +1,7 @@
 import { StateCreator } from "zustand";
 import { GameStoreState } from "../store";
 import { ResourceType } from "./worldParamsSlice";
-import { generateWeather } from "../utils/generators";
+import { generateArtefacts, generateWeather } from "../utils/generators";
 import { WeatherCondition } from "./worldParamsSlice";
 
 export interface Offset {
@@ -29,6 +29,20 @@ export interface BeaconType {
   id: string;
 }
 
+export type ArtefactType = "other" | "rare" | "legendary";
+
+export interface ArtefactT {
+  x: number;
+  y: number;
+  z: number;
+  type: ArtefactType;
+  chunkX: number;
+  chunkY: number;
+  visible: boolean;
+  id: string;
+}
+
+
 export interface GameStateSlice {
   disableAnimations: boolean;
   disableSounds: boolean;
@@ -46,6 +60,7 @@ export interface GameStateSlice {
   moveDirection: Offset;
   dynamicSpeed: number;
   beacons: BeaconType[];
+  artefacts: ArtefactT[];
   playerPoints: number;
   collectedResources: CollectedResources;
   message: string;
@@ -65,9 +80,6 @@ export interface GameStateSlice {
   addLog: (log: string) => void;
   addEventLog: (eventName: string) => void;
   removeFirstEventLog: () => void;
-  resetCurrentOffset: () => void;
-  resetCurrentLocation: () => void;
-  resetActivePosition: () => void;
 }
 
 export const createGameStateSlice: StateCreator<
@@ -98,6 +110,7 @@ export const createGameStateSlice: StateCreator<
   moveDirection: { x: 0, y: -1 },
   dynamicSpeed: 1,
   beacons: [],
+  artefacts: generateArtefacts({amount: 10}),
   playerPoints: 1000,
   collectedResources: {
     Water: 0,
@@ -168,7 +181,4 @@ export const createGameStateSlice: StateCreator<
       return { eventsLog: updatedEvents };
     });
   },
-  resetCurrentOffset: () => set({ currentOffset: { x: 0, y: 0 } }),
-  resetCurrentLocation: () => set({ currentLocation: { x: 0, y: 0 } }),
-  resetActivePosition: () => set({ activePosition: { x: 0, y: 0, z: 0 } }),
 });

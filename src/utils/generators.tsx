@@ -1,3 +1,4 @@
+import { ArtefactT } from "../store/gameStateSlice";
 import { WeatherCondition, WorldState } from "../store/worldParamsSlice";
 import { WorldParamsType } from "../store/worldParamsSlice";
 
@@ -49,4 +50,21 @@ export const generateWorld = (): WorldParamsType => {
     radiation,
     weatherCondition,
   };
+}
+
+export const generateArtefacts = ({amount = 10}: {amount?: number}): ArtefactT[] => {
+  const artefacts: ArtefactT[] = [];
+  for (let i = 0; i < amount; i++) {
+    artefacts.push({
+      x: Math.floor(Math.random() * 100) - 50,
+      y: 0,
+      z: Math.floor(Math.random() * 100) - 50,
+      type: "other",
+      chunkX: Math.floor(Math.random() * 10) - 5,
+      chunkY: Math.floor(Math.random() * 10) - 5,
+      visible: true,
+      id: Math.random().toString(36).substr(2, 9),
+    });
+  }
+  return artefacts;
 }

@@ -8,6 +8,7 @@ import { FadingEffect } from "../effects/FadingEffectWrapper";
 import { useIncreasingSpeed2 } from "../effects/IncreaseSceneSpeed";
 import { PlaneTest } from "../components/gfx/pulsingAreaTest";
 import { RulersFourSides } from "../components/gfx/RulersFourSides";
+import { ArtefactsGroup } from "../components/artefacts/ArtefactsGroup";
 
 export const Map = () => {
   const firstStart = useGameStore((state) => state.firstStart);
@@ -64,6 +65,7 @@ export const Map = () => {
   return (
     <group visible={firstStart}>
       <BeaconGroup />
+      <ArtefactsGroup />
       <FadingEffect>
         <Terrain />
       </FadingEffect>
