@@ -1,13 +1,15 @@
-import { Plane, Ring } from "@react-three/drei";
+import { Plane } from "@react-three/drei";
 import { useGameStore } from "../../store";
 import { DoubleSide, Euler, Vector3 } from "three";
 import { useMemo } from "react";
-import { ArtefactT } from "../../store/gameStateSlice";
 import { FlickeringEffect } from "../../effects/FlickeringEffectWrapper";
+import { ArtefactT } from "../../store/worldParamsSlice";
+import { RingPlaneShader } from "../gfx/RingShader";
 
 const maxDistance = 3;
-const minOpacity = 0.1;
+const minOpacity = 0.02;
 const maxOpacity = 0.9;
+const dist = 11;
 
 const calculateOpacity = (
   filterCondition: (artefact: ArtefactT) => boolean,
@@ -33,127 +35,99 @@ const calculateOpacity = (
     minOpacity
   );
 
-  // console.log("opacity", { opacity });
-
   return opacity;
 };
 
-const dist = 11;
-
-export const ArtefactsPlanesIndicators = () => {
-  const { width, depth } = useGameStore((state) => state.mapParams);
+export const ArtefactsPlanesIndicators: React.FC = () => {
+	const width = useGameStore((state) => state.mapParams.width);
+	const depth = useGameStore((state) => state.mapParams.depth);
   const artefacts = useGameStore((state) => state.artefacts);
   const currentLocation = useGameStore((state) => state.currentLocation);
 
-  const artefactLeft = useMemo(
-    () =>
-      calculateOpacity(
+  const memoizedOpacities = useMemo(() => {
+    return {
+      artefactLeft: calculateOpacity(
         (artefact) => artefact.chunkX <= currentLocation.x,
         currentLocation.x,
         "chunkX",
-				artefacts
+        artefacts
       ),
-    [artefacts, currentLocation.x]
-  );
-
-  const artefactTop = useMemo(
-    () =>
-      calculateOpacity(
+      artefactTop: calculateOpacity(
         (artefact) => artefact.chunkY >= currentLocation.y,
         currentLocation.y,
         "chunkY",
-				artefacts
+        artefacts
       ),
-    [artefacts, currentLocation.y]
-  );
-
-  const artefactRight = useMemo(
-    () =>
-      calculateOpacity(
+      artefactRight: calculateOpacity(
         (artefact) => artefact.chunkX >= currentLocation.x,
         currentLocation.x,
         "chunkX",
-				artefacts
+        artefacts
       ),
-    [artefacts, currentLocation.x]
-  );
-
-  const artefactBottom = useMemo(
-    () =>
-      calculateOpacity(
+      artefactBottom: calculateOpacity(
         (artefact) => artefact.chunkY <= currentLocation.y,
         currentLocation.y,
         "chunkY",
-				artefacts
+        artefacts
       ),
-    [artefacts, currentLocation.y]
-  );
-
-  const artefactCenter = useMemo(
-    () =>
-      calculateOpacity(
+      artefactCenter: calculateOpacity(
         (artefact) =>
           artefact.chunkX === currentLocation.x && artefact.chunkY === currentLocation.y,
         currentLocation.x,
         "chunkX",
-				artefacts
+        artefacts
       ),
-    [artefacts, currentLocation.x, currentLocation.y]
-  );
-
-  const planesConfig = useMemo(() => [
+    };
+  }, [artefacts, currentLocation]);
+	
+  const updatedPlanesConfig = useMemo(() => [
     {
-			size: depth,
+      size: depth,
       position: new Vector3(-width / 2 - dist, 0, 0),
       rotation: new Euler(-Math.PI / 2, 0, Math.PI / 2),
-      opacity: artefactLeft,
+      opacity: memoizedOpacities.artefactLeft,
     },
     {
-			size: width,
+      size: width,
       position: new Vector3(0, 0, -depth / 2 - dist),
       rotation: new Euler(-Math.PI / 2, 0, 0),
-      opacity: artefactBottom,
+      opacity: memoizedOpacities.artefactBottom,
     },
     {
-			size: depth,
+      size: depth,
       position: new Vector3(width / 2 + dist, 0, 0),
       rotation: new Euler(-Math.PI / 2, 0, -Math.PI / 2),
-      opacity: artefactRight,
+      opacity: memoizedOpacities.artefactRight,
     },
     {
-			size: width,
+      size: width,
       position: new Vector3(0, 0, depth / 2 + dist),
       rotation: new Euler(-Math.PI / 2, 0, Math.PI),
-      opacity: artefactTop,
+      opacity: memoizedOpacities.artefactTop,
     },
-  ], [width, depth, artefactLeft, artefactTop, artefactRight, artefactBottom]);
+  ], [depth, width, memoizedOpacities.artefactLeft, memoizedOpacities.artefactBottom, memoizedOpacities.artefactRight, memoizedOpacities.artefactTop]);
+
 
   return (
     <group position={[0, -0.3, 0]}>
-      <Ring
-        args={[width - 21, width - 19, 4]}
-        position={[0, 1, 0]}
-        rotation={[-Math.PI / 2, 0, Math.PI / 4]}
-      >
-        <meshBasicMaterial
-          side={DoubleSide}
-          color={"#00ff00"}
-          transparent
-          opacity={artefactCenter}
-        />
-      </Ring>
-			<FlickeringEffect appearingOnly={true}>
-				{planesConfig.map((config, index) => (
-					<Plane key={index} args={[config.size, 3]} position={config.position} rotation={config.rotation}>
-						<meshBasicMaterial
-							side={DoubleSide}
-							color={"#ffffff"}
-							transparent
-							opacity={config.opacity}
-						/>
-					</Plane>
-				))}
-			</FlickeringEffect>
+      <RingPlaneShader
+        color={"#00ff00"}
+        position={new Vector3(0, 1, 0)}
+        rotation={new Euler(-Math.PI / 2, 0, 0)}
+        opacity={memoizedOpacities.artefactCenter}
+      />
+      <FlickeringEffect appearingOnly={true}>
+        {updatedPlanesConfig.map((config, index) => (
+          <Plane key={index} args={[config.size, 3]} position={config.position} rotation={config.rotation}>
+            <meshBasicMaterial
+              side={DoubleSide}
+              color={"#ffffff"}
+              transparent
+              opacity={config.opacity}
+            />
+          </Plane>
+        ))}
+      </FlickeringEffect>
     </group>
   );
 };

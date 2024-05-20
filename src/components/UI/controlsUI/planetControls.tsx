@@ -36,7 +36,7 @@ export const SystemControls = () => {
 
   <BasicPanelWrapper titleText="System Controls" opacity={opacity}> 
     <div
-      className="w-full space-y-1 bg-black/20 px-1 divide-y divide-uilines rounded-md"
+      className="w-full space-y-1 bg-black/20 px-1 mb-2 divide-y divide-uilines rounded-md"
     >
       <div className="w-full space-y-1 pt-1 pb-1">
         <SliderWithInput

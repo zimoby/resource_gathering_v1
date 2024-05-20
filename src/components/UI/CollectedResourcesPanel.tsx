@@ -13,9 +13,9 @@ export const CollectedResourcesPanel = () => {
 
   return (
     <BasicPanelWrapper titleText="Collected Resources:" opacity={opacity}>
-      <div className="w-full p-1 flex flex-wrap justify-center items-center">
+      <div className="w-full p-1 m-0 flex flex-wrap justify-center items-center">
         {Object.entries(collectedResources).map(([resource, count]) => (
-          <div key={resource} className="w-1/2 h-12 flex flex-col text-center justify-start items-center">
+          <div key={resource} className="w-1/2 flex flex-col text-center justify-start items-center">
             <div className="orbitron text-2xl">{numberSimplified(count)}</div>
             <div className=" text-xs leading-3">{resource}</div>
           </div>

@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useGameStore } from "../../store";
 import { convertChunkCoordinateToName } from "../../utils/functions";
 import { BasicPanelWrapper } from "../UI/BasicPanelWrapper";
-import { artefactAmount } from "../../store/gameStateSlice";
+import { artefactAmount } from "../../store/worldParamsSlice";
 
 export const ArtefactsInfo = () => {
   const artefacts = useGameStore((state) => state.artefacts);
@@ -12,12 +12,13 @@ export const ArtefactsInfo = () => {
 
     return (
       <BasicPanelWrapper titleText="Artefacts:" opacity={opacity}>
-        <div className="scrollbar h-fit max-h-44">
+        <div className="h-fit max-h-36">
           <p className=" text-lg">Amount: {artefacts.length} / {artefactAmount}</p>
           {artefacts.length === 0 && "No artefacts"}
           {artefacts.slice(0, 100).map((artefact, index) => (
             <div key={index}>
-              {convertChunkCoordinateToName({ x: artefact.chunkX, y: artefact.chunkY }) +
+              { (index + 1) + "." +
+                convertChunkCoordinateToName({ x: artefact.chunkX, y: artefact.chunkY }) +
                 ": " +
                 artefact.chunkX + ":" + artefact.chunkY +
                 ": " + Math.round(artefact.x) + ":" + Math.round(artefact.z)  

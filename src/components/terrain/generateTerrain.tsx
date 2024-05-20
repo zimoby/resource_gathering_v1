@@ -79,11 +79,13 @@ const applyResources = ({ resources, widthCount, depthCount, scale, offsetX, off
   // console.log("Resources:", resources[0]);
 };
 
-const generateHeight = (x: number, y: number, scale: number, offsetX: number, offsetY: number, noise2D: NoiseFunction2D) => {
+const generateHeight = (x: number, y: number, scale: number, offsetX: number, offsetY: number, noise2D: NoiseFunction2D, depth: number) => {
   const scaleCorrection = scale * 5;
-  const largeScale = noise2D((x + offsetX) / scaleCorrection, (y + offsetY) / scaleCorrection) * 0.5;
-  const mediumScale = noise2D((x + offsetX) / (scaleCorrection * 0.5), (y + offsetY) / (scaleCorrection * 0.5)) * 0.25; 
-  const smallScale = noise2D((x + offsetX) / (scaleCorrection * 0.25), (y + offsetY) / (scaleCorrection * 0.25)) * 0.25;
+  const depthOffCorrection = depth - 100;
+  // console.log("depthOffCorrection:", depthOffCorrection);
+  const largeScale = noise2D((x + offsetX) / scaleCorrection, (y + offsetY - depthOffCorrection / 2) / scaleCorrection) * 0.5;
+  const mediumScale = noise2D((x + offsetX) / (scaleCorrection * 0.5), (y + offsetY - depthOffCorrection / 2) / (scaleCorrection * 0.5)) * 0.25; 
+  const smallScale = noise2D((x + offsetX) / (scaleCorrection * 0.25), (y + offsetY - depthOffCorrection / 2) / (scaleCorrection * 0.25)) * 0.25;
 
   // return Math.pow(largeScale, 1);
   const combined = largeScale + mediumScale + smallScale;
@@ -94,6 +96,9 @@ const generateHeight = (x: number, y: number, scale: number, offsetX: number, of
     return combined;
   }
 };
+
+const heightMultiplier = 20;
+const baseLineOffset = -5;
 
 export const generateTerrain = (
   width: number,
@@ -113,13 +118,11 @@ export const generateTerrain = (
   widthCount: number,
   depthCount: number
 ) => {
-  const heightMultiplier = 20;
-  const baseLineOffset = -5;
 
   for (let i = 0; i <= depthCount; i++) {
     for (let j = 0; j <= widthCount; j++) {
       const x = j * resolution - width / 2;
-      const heightNoise = generateHeight(x, i * resolution, scale, offsetX, offsetY, noise2D);
+      const heightNoise = generateHeight(x, i * resolution, scale, offsetX, offsetY, noise2D, depth);
       // console.log("heightNoise:", heightNoise);
       const y = Math.max(heightNoise * heightMultiplier + baseLineOffset, minLevel);
       // const y = Math.max(heightNoise * (heightMultiplier + heightMultiplier / 2) - heightMultiplier / 2, -heightMultiplier);

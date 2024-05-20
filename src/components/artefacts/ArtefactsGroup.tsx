@@ -84,8 +84,16 @@ export const ArtefactsGroup = () => {
   useFrame((_, delta) => {
     artefactRefs.current.forEach((beacon, index) => {
       const artefactObject = beacon.current;
-        const circleObject = circleRefs.current[index].current;
+      const circleObject = circleRefs.current[index].current;
+
       if (artefactObject) {
+
+        // artefactObject.position.x -= deltaX;
+        // artefactObject.position.z -= deltaY;
+        artefactObject.position.x -= deltaX * increasingSpeedRef.current;
+        artefactObject.position.z -= deltaY * increasingSpeedRef.current;
+
+        
         const checkBoundaries = isOutOfBound(
           { x: artefactObject.position.x, y: artefactObject.position.z },
           width,
@@ -94,8 +102,6 @@ export const ArtefactsGroup = () => {
           offsetY
         );
 
-        artefactObject.position.x -= deltaX * increasingSpeedRef.current;
-        artefactObject.position.z -= deltaY * increasingSpeedRef.current;
 
         if (artefactSelected === artefacts[index].id && canSetBeacon) {
           timeRef.current += delta;

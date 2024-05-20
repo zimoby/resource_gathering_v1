@@ -36,9 +36,12 @@ const fragmentShader = `
   varying vec2 vUv;
 
   void main() {
-    // Scale vUv to map dimensions
+    float xCorrection = (mapWidth - 1.0) * 0.5;
+    float yCorrection = (mapDepth - 1.0) * 0.5;
+    
     vec2 scaledUv = vec2(vUv.x * mapWidth, vUv.y * mapDepth);
-    vec2 coord = (scaledUv + offset / chunkSize) * chunkSize;
+    vec2 coord = (scaledUv + (offset - vec2(xCorrection, yCorrection)) / chunkSize) * chunkSize;
+
 
     vec2 grid = abs(fract(coord - 0.5) - 0.5) / fwidth(coord);
     float line = min(grid.x, grid.y);
@@ -53,7 +56,7 @@ const fragmentShader = `
     color = mix(color, vec3(0.0), step(lineWidth, subLine));
 
     gl_FragColor = vec4(color, max(alpha, subAlpha));
-}
+  }
 `;
 
 export interface BasicGridShaderProps {
@@ -62,7 +65,7 @@ export interface BasicGridShaderProps {
 
 export const BasicGridShader = ({ position = [0,0,0] }: BasicGridShaderProps) => {
   const { width, depth } = useGameStore((state) => state.mapParams);
-  const mapAnimationState = useGameStore((state) => state.mapAnimationState);
+  // const mapAnimationState = useGameStore((state) => state.mapAnimationState);
   const gridConfig = useGameStore((state) => state.gridConfig);
   const planeRef = useRef<Mesh>(null);
   const offset = useRef({ x: 0, y: 0 });
@@ -107,11 +110,13 @@ export const BasicGridShader = ({ position = [0,0,0] }: BasicGridShaderProps) =>
 
   useFrame(() => {
 
-    if (mapAnimationState === "enlarging") {
-      offset.current.x = 0;
-      offset.current.y = 0;
-    }
+    // if (mapAnimationState === "enlarging") {
+    //   offset.current.x = 0;
+    //   offset.current.y = 0;
+    // }
 
+    // offset.current.x += deltaX;
+    // offset.current.y += deltaY;
     offset.current.x += deltaX * increasingSpeedRef.current;
     offset.current.y += deltaY * increasingSpeedRef.current;
     // console.log("offset.current:", {deltaX, deltaY});

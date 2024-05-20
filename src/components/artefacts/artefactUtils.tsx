@@ -1,16 +1,15 @@
 import { useCallback } from "react";
 import { useGameStore } from "../../store";
-import { ArtefactT } from "../../store/gameStateSlice";
+import { ArtefactT } from "../../store/worldParamsSlice";
 
 const getArtefactInRadius = (visibleArtefacts: ArtefactT[], position: { x: number; y: number }) => {
   return visibleArtefacts.find((beacon: { x: number; z: number }) => {
     const dx = position.x - beacon.x;
     const dz = position.y - beacon.z;
     const distance = Math.sqrt(dx * dx + dz * dz);
-    return distance < 20;
+    return distance < 10;
   });
 };
-
 
 export const useProcessArtefacts = () => {
   const addLog = useGameStore((state) => state.addLog);

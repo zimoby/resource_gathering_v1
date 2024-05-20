@@ -16,6 +16,6 @@ export const BasicPanelWrapper = ({
       style={{ opacity: opacity }}
     >
       <p className="w-full h-fit px-1 bg-uilines text-neutral-900 select-none">{titleText}</p>
-      <div className="scrollbar w-full h-full p-1 text-uitext">{children}</div>
+      <div className="scrollbar w-full h-fit p-1 text-uitext">{children}</div>
     </div>
 )};

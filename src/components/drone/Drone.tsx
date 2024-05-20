@@ -44,10 +44,13 @@ export const FlyingDrone = () => {
 
     if (firstAppearing && time > 0.3) {
       ref.current.position.y += (appearingHeightRef.current - ref.current.position.y) * ease;
-      if (Math.abs(ref.current.position.y - appearingHeightRef.current) < 2) {
+      if (Math.abs(ref.current.position.y - appearingHeightRef.current) < 5) {
         setFirstAppearing(false);
         setMapAnimationState('enlarging');
+        // console.log("setMapAnimationState('enlarging')");
       }
+
+      
     } else {
       ref.current.position.x += (x - ref.current.position.x) * ease;
       ref.current.position.y += (y - appearingHeight - ref.current.position.y) * ease;

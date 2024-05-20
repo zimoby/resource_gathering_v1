@@ -26,7 +26,7 @@ export const ScanerParamPanel = () => {
       <div>Current Offset:</div>
       <div>{Math.round(currentOffset.x) + ":" + Math.round(currentOffset.y)}</div>
       <div>Active Position:</div>
-      <div>{Math.round(activePosition.x) + ":" + Math.round(activePosition.y)}</div>
+      <div>{Math.round(activePosition.x) + ":" + Math.round(activePosition.z)}</div>
   </BasicPanelWrapper>
   )
 };

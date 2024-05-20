@@ -11,11 +11,11 @@ export const BeaconsInfo = () => {
 
     return (
       <BasicPanelWrapper titleText="Beacons:" opacity={opacity}>
-        <div className="h:fit max-h-44">
+        <div className="h-fit max-h-40">
           {beacons.length === 0 && "No beacons"}
           {beacons.slice(0, 100).map((beacon, index) => (
             <div key={index}>
-              {convertChunkCoordinateToName({ x: beacon.chunkX, y: beacon.chunkY }) +
+              {(index + 1) + "." + convertChunkCoordinateToName({ x: beacon.chunkX, y: beacon.chunkY }) +
                 ": " +
                 beacon.resource}
             </div>

@@ -71,7 +71,7 @@ export const GameCanvas = () => {
         </group>
       </Suspense>
       <CenterScreenPanel />
-      <OrbitControls enablePan={false} />
+      <OrbitControls enablePan={false} minZoom={4} maxZoom={15} />
       <EffectsCollection />
     </Canvas>
   );

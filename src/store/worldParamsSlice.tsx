@@ -1,5 +1,5 @@
 import { StateCreator } from "zustand";
-import { generateWorld } from "../utils/generators";
+import { generateArtefacts, generateWorld } from "../utils/generators";
 import { GameStoreState } from "../store";
 import { Color } from "three";
 
@@ -95,18 +95,55 @@ export const resourceTypes: ResourceTypesT = {
   },
 };
 
+export type ArtefactType = "usual" | "rare" | "legendary";
+
+export interface BeaconType {
+  x: number;
+  y: number;
+  z: number;
+  resource: ResourceType;
+  chunkX: number;
+  chunkY: number;
+  visible: boolean;
+  id: string;
+}
+
+export interface ArtefactT {
+  x: number;
+  y: number;
+  z: number;
+  type: ArtefactType;
+  chunkX: number;
+  chunkY: number;
+  visible: boolean;
+  id: string;
+}
+
 export interface WorldParamsSlice {
   worldParams: WorldParamsType;
+  beacons: BeaconType[];
+
+  artefacts: ArtefactT[];
+  artefactSelected: string;
+
   regenerateWorld: () => void;
 }
+
+export const artefactAmount = 10;
 
 export const createWorldParamsSlice: StateCreator<GameStoreState, [], [], WorldParamsSlice> = (
   set
 ) => ({
+  beacons: [],
+
+  artefacts: generateArtefacts({ amount: artefactAmount }),
+  artefactSelected: "",
+
   worldParams: generateWorld(),
   regenerateWorld: () => {
     set({
       worldParams: generateWorld(),
+      artefacts: generateArtefacts({ amount: artefactAmount }),
       beacons: [],
       currentOffset: { x: 0, y: 0 },
       currentLocation: { x: 0, y: 0 },

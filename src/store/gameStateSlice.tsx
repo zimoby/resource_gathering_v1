@@ -1,7 +1,7 @@
 import { StateCreator } from "zustand";
 import { GameStoreState } from "../store";
 import { ResourceType } from "./worldParamsSlice";
-import { generateArtefacts, generateWeather } from "../utils/generators";
+import { generateWeather } from "../utils/generators";
 import { WeatherCondition } from "./worldParamsSlice";
 
 export interface Offset {
@@ -17,31 +17,6 @@ export interface ChunkType {
 export interface CollectedResources {
   [key: string]: number;
 }
-
-export interface BeaconType {
-  x: number;
-  y: number;
-  z: number;
-  resource: ResourceType;
-  chunkX: number;
-  chunkY: number;
-  visible: boolean;
-  id: string;
-}
-
-export type ArtefactType = "usual" | "rare" | "legendary";
-
-export interface ArtefactT {
-  x: number;
-  y: number;
-  z: number;
-  type: ArtefactType;
-  chunkX: number;
-  chunkY: number;
-  visible: boolean;
-  id: string;
-}
-
 
 export interface GameStateSlice {
   disableAnimations: boolean;
@@ -60,9 +35,6 @@ export interface GameStateSlice {
   currentLocation: ChunkType;
   moveDirection: Offset;
   dynamicSpeed: number;
-  beacons: BeaconType[];
-  artefacts: ArtefactT[];
-  artefactSelected: string;
   playerPoints: number;
   collectedResources: CollectedResources;
   message: string;
@@ -84,7 +56,7 @@ export interface GameStateSlice {
   removeFirstEventLog: () => void;
 }
 
-export const artefactAmount = 10;
+
 
 export const createGameStateSlice: StateCreator<
   GameStoreState,
@@ -114,11 +86,6 @@ export const createGameStateSlice: StateCreator<
   currentLocation: { x: 0, y: 0 },
   moveDirection: { x: 0, y: -1 },
   dynamicSpeed: 1,
-  beacons: [],
-
-  // artefactsAmount: 10,
-  artefacts: generateArtefacts({ amount: artefactAmount }),
-  artefactSelected: "",
 
   playerPoints: 1000,
   collectedResources: {

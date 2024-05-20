@@ -61,6 +61,8 @@ export const BeaconGroup = () => {
       if (beaconObject) {
         const checkBoundaries = isOutOfBound({x: beaconObject.position.x, y: beaconObject.position.z}, width, depth, offsetX, offsetY);
 
+        // beaconObject.position.x -= deltaX;
+        // beaconObject.position.z -= deltaY;
         beaconObject.position.x -= deltaX * increasingSpeedRef.current;
         beaconObject.position.z -= deltaY * increasingSpeedRef.current;
         beaconObject.visible = !checkBoundaries.x && !checkBoundaries.y;
