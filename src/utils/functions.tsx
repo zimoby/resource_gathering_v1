@@ -4,27 +4,27 @@ import { ChunkType } from "../store/gameStateSlice";
 
 export const consoleLog = (message: string, data?: object) => {
   DEV_MODE && data ? console.log(message, { ...data }) : console.log(message);
-}
+};
 
-export const useCheckVariableRender = (variable: object | string | number | boolean, name: string) => {
+export const useCheckVariableRender = (
+  variable: object | string | number | boolean,
+  name: string
+) => {
   useEffect(() => {
-
     if (typeof variable === "object") {
       consoleLog(name || `variable:`, { ...variable });
     } else {
       console.log(name || `variable:`, variable);
     }
-
   }, [name, variable]);
-}
+};
 
 export const useCheckComponentRender = (name: string) => {
   useEffect(() => {
-    // consoleLog(name);
     console.log(name);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-}
+};
 
 export const convertChunkCoordinateToName = (chunk: ChunkType) => {
   const ns = chunk.y >= 0 ? "N" : "S";
@@ -41,7 +41,7 @@ export const getChunkCoordinates = (globalX: number, globalY: number, chunkSize:
 };
 
 export const isOutOfBound = (
-  position: { x: number; y: number; z?: number; },
+  position: { x: number; y: number; z?: number },
   width: number,
   depth: number,
   offsetX: number,
@@ -71,8 +71,7 @@ export const useUpdateMapMoving = () => {
   const currentLocation = useGameStore((state) => state.currentLocation);
   const currentOffset = useGameStore((state) => state.currentOffset);
 
-  const updateLocationAndOffset = (offset: { current: { x: number; y: number; }; }) => {
-
+  const updateLocationAndOffset = (offset: { current: { x: number; y: number } }) => {
     const currentChunk = getChunkCoordinates(
       offset.current.x + offsetX + width / 2,
       offset.current.y + offsetY + depth / 2,
@@ -80,13 +79,10 @@ export const useUpdateMapMoving = () => {
     );
 
     if (currentLocation.x !== currentChunk.x || currentLocation.y !== currentChunk.y) {
-      // consoleLog("set currentChunk", currentChunk);
       useGameStore.setState({
         currentLocation: { x: currentChunk.x, y: currentChunk.y },
       });
     }
-
-    // consoleLog("currentChunk", offset.current);
 
     const roundedOffset = {
       x: Math.round(offset.current.x),
@@ -94,16 +90,11 @@ export const useUpdateMapMoving = () => {
     };
 
     if (currentOffset.x !== roundedOffset.x || currentOffset.y !== roundedOffset.y) {
-      // consoleLog("set currentOffset", {roundedOffset, currentOffset});
       useGameStore.setState({
-        // currentLocation: { x: currentChunk.x, y: currentChunk.y },
         currentOffset: { x: roundedOffset.x, y: roundedOffset.y },
       });
-      // return;
     }
-
-    
-  }
+  };
 
   return { updateLocationAndOffset };
 };

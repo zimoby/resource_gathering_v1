@@ -24,7 +24,6 @@ export const CenterScreenPanel = () => {
                 top: "calc(-50vh + 4.75rem)",
                 left: "calc(-50vw + 12.75rem)",
               }}
-              // onClick={(e) => e.stopPropagation()}
             >
               <FlickeringHtmlEffect classStyles="w-full h-full">
                 <div
@@ -33,7 +32,6 @@ export const CenterScreenPanel = () => {
                 />
                 <div
                   className="absolute bottom-3 right-0"
-                  // onClick={(e) => e.stopPropagation()}
                 >
                   <SystemMessagePanelAlt />
                 </div>

@@ -1,5 +1,5 @@
 import { StateCreator } from "zustand";
-import { generateArtefacts, generateWorld } from "../utils/generators";
+import { generateArtefacts, generateRandomColor, generateWorld } from "../utils/generators";
 import { GameStoreState } from "../store";
 import { Color } from "three";
 
@@ -41,25 +41,32 @@ export type WorldParamsType = {
   weatherCondition: WeatherCondition;
 };
 
+const classicTerrainPalette = {
+  water: new Color(0x0000ff), // blue
+  grass: new Color(0x00ff00), // green
+  dirt: new Color(0xff0000), // red
+  snow: new Color(0xffffff), // white
+};
+
 export const terrainTypes: TerrainTypesT = {
   water: {
-    color: new Color(255), // blue
+    color: classicTerrainPalette.water,
     level: minLevel + 1,
   },
   grass: {
-    color: new Color(32768), // green
+    color: classicTerrainPalette.grass,
     level: 0,
   },
   dirt: {
-    color: new Color(10824234), // brown
+    color: classicTerrainPalette.dirt,
     level: 5,
   },
   snow: {
-    color: new Color(16777215), // white
+    color: classicTerrainPalette.snow,
     level: 10,
   },
   default: {
-    color: new Color(16777215), // brown
+    color: new Color(0xffffff),
     level: 0,
   },
 };
@@ -125,6 +132,7 @@ export interface WorldParamsSlice {
 
   artefacts: ArtefactT[];
   artefactSelected: string;
+  terrainColors: TerrainTypesT;
 
   regenerateWorld: () => void;
 }
@@ -138,11 +146,21 @@ export const createWorldParamsSlice: StateCreator<GameStoreState, [], [], WorldP
 
   artefacts: generateArtefacts({ amount: artefactAmount }),
   artefactSelected: "",
+  terrainColors: terrainTypes,
 
   worldParams: generateWorld(),
   regenerateWorld: () => {
+    const newTerrainColors = {
+      water: { color: generateRandomColor(), level: minLevel + 1 },
+      grass: { color: generateRandomColor(), level: 0 },
+      dirt: { color: generateRandomColor(), level: 5 },
+      snow: { color: generateRandomColor(), level: 10 },
+      default: { color: new Color(0xffffff), level: 0 },
+    };
+
     set({
       worldParams: generateWorld(),
+      terrainColors: newTerrainColors,
       artefacts: generateArtefacts({ amount: artefactAmount }),
       beacons: [],
       currentOffset: { x: 0, y: 0 },

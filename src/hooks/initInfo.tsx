@@ -8,7 +8,6 @@ export const useInitInfo = () => {
   const educationMode = useGameStore((state) => state.educationMode);
   const disableSounds = useGameStore((state) => state.disableSounds);
   const updateVariableInLocalStorage = useGameStore((state) => state.updateVariableInLocalStorage);
-  // const setMapAnimationState = useGameStore((state) => state.setMapAnimationState);
 
   useEffect(() => {
     if (localStorage.getItem('educationMode') === null) {
@@ -26,10 +25,6 @@ export const useInitInfo = () => {
   }, [educationMode, disableSounds, updateVariableInLocalStorage]);
 
   useEffect(() => {
-    // if (terrainLoading) {
-    //   setMapAnimationState('enlarging');
-    // }
-
     if (!terrainLoading && !firstStart) {
       useGameStore.setState({ firstStart: true });
     }

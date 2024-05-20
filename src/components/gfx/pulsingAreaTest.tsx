@@ -22,7 +22,6 @@ const PulsingShaderMaterial = shaderMaterial(
     transparent: true,
     side: DoubleSide,
   },
-  // Vertex shader
   `
     varying vec2 vUv;
     void main() {
@@ -30,7 +29,6 @@ const PulsingShaderMaterial = shaderMaterial(
       gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     }
   `,
-  // Fragment shader
   `
     uniform float uTime;
     uniform vec3 uColor;
@@ -45,7 +43,6 @@ const PulsingShaderMaterial = shaderMaterial(
   `
 );
 
-// Extend drei's shaders with our custom shader
 extend({ PulsingShaderMaterial });
 
 declare global {

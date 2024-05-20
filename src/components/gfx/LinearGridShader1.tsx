@@ -2,8 +2,6 @@ import { useEffect, useMemo, useRef } from "react";
 import { DoubleSide, Color, Vector2, PlaneGeometry, ShaderMaterial, Mesh } from "three";
 import { useGameStore } from "../../store";
 
-// import { vertexShader, fragmentShader } from './chunkGridShader';
-
 const vertexShader = `
   varying vec2 vUv;
 
@@ -28,7 +26,6 @@ const fragmentShader = `
 	void main() {
     vec2 coord = (vUv + offset / chunkSize) * chunkSize;
     
-    // Calculate edge fading with a sharp cutoff based on lineWidth
     float edgeFadeX = step(lineWidth / chunkSize, min(coord.x, gridSize.x - coord.x));
     float edgeFadeY = step(lineWidth / chunkSize, min(coord.y, gridSize.y - coord.y));
     float edgeFade = edgeFadeY;
@@ -59,8 +56,8 @@ export const LinearGridShader = ({position = [0,0,0] as [number, number, number]
 			uniforms: {
 					chunkSize: { value: gridConfig.chunkSize },
 					offset: { value: new Vector2(0, 0) },
-					subGridsX: { value: width }, // Adjusted to handle X axis
-					subGridsY: { value: depth }, // Adjusted to handle Y axis
+					subGridsX: { value: width },
+					subGridsY: { value: depth },
 					lineWidth: { value: gridConfig.lineWidth },
 					gridColor: { value: new Color(gridConfig.subGridColor) },
 					subGridColor: { value: new Color(gridConfig.subGridColor) },

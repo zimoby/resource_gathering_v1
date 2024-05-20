@@ -14,7 +14,6 @@ const terrainVertexShader = `
   uniform float heightMultiplier;
   uniform float baseLineOffset;
 
-  // Hash function
   float hash(float n) { 
     return fract(sin(n) * 1e4); 
   }

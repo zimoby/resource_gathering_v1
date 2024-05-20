@@ -13,8 +13,6 @@ export const Line = ({ width = 1, position = [0,0,0], rotation = new Euler(0,0,0
   rotation?: Euler,
   sizeExtend?: number
 }) => {
-  // const { width } = useGameStore((state) => state.mapParams);
-
   const gridGeometry = useMemo(() => {
     const geometry = new BufferGeometry();
     const positions = [];

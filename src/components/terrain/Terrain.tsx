@@ -47,6 +47,8 @@ export const Terrain = () => {
   const scanRadius = useGameStore((state) => state.scanRadius);
   const activePosition = useGameStore((state) => state.activePosition);
   const playerPoints = useGameStore((state) => state.playerPoints);
+  const terrainColors = useGameStore((state) => state.terrainColors);
+  const resetValues = useGameStore((state) => state.resetValues);
 
   const widthCount = Math.floor(width / resolution);
   const depthCount = Math.floor(depth / resolution) + 1;
@@ -56,9 +58,6 @@ export const Terrain = () => {
   const meshRef = useRef<Mesh>(null);
   const offset = useRef({ x: 0, y: 0 });
 
-  // const increasingSpeedRef = useRef(0);
-  // const goalSpeed = 1;
-
   const colors = useRef(new Float32Array((widthCount + 1) * (depthCount + 1) * 3));
   const positions = useRef(new Float32Array((widthCount + 1) * (depthCount + 1) * 3));
   const resources = useRef(new Array((widthCount + 1) * (depthCount + 1)).fill(null));
@@ -66,7 +65,6 @@ export const Terrain = () => {
   const indices = useMemo(() => {
     const indicesPrecalc = new Uint16Array(widthCount * depthCount * 6);
     generateIndices(widthCount, depthCount, indicesPrecalc);
-    // console.log("indices precalculated:", indicesPrecalc, indicesPrecalc.length);
     return indicesPrecalc;
   }, [widthCount, depthCount]);
 
@@ -98,6 +96,7 @@ export const Terrain = () => {
       positions.current,
       widthCount,
       depthCount,
+      terrainColors
     );
 
     colorAttribute.current.array = generatedColors;
@@ -119,13 +118,14 @@ export const Terrain = () => {
 
   const { deltaX, deltaY } = useCalculateDeltas();
   const { speedRef: increasingSpeedRef } = useIncreasingSpeed(0, 1, 0.01, 2);
-
-  // console.log("terrain generating:");
   
   useFrame(() => {
 
-    // offset.current.x += deltaX;
-    // offset.current.y += deltaY;
+    if (resetValues) {
+      offset.current.x = 0;
+      offset.current.y = 0;
+    }
+
     offset.current.x += deltaX * increasingSpeedRef.current;
     offset.current.y += deltaY * increasingSpeedRef.current;
 

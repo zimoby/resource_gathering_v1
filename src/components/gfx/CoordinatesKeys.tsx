@@ -11,8 +11,6 @@ export const CoordinatesKeys = () => {
   const speed = useGameStore((state) => state.mapParams.speed);
   const moveDirection = useGameStore((state) => state.moveDirection);
 
-  // useCheckComponentRender("CoordinatesKeys");
-
   return (
     <group position={[0, 0.3, 0]}>
       <FadingEffect randomFrequency={0.2} minOpacity={0.8}>

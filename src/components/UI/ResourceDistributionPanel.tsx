@@ -23,54 +23,21 @@ export const ResourceDistributionPanel = () => {
   );
 };
 
-// export const ScanProgressPanel = () => {
-//   const mapParams = useGameStore((state) => state.mapParams);
-//   const scannedChunks = useGameStore((state) => state.scannedChunks);
-
-//   const totalChunks =
-//     (mapParams.width / mapParams.resolution) * (mapParams.depth / mapParams.resolution);
-//   const scanPercentage = (scannedChunks / totalChunks) * 100;
-
-//   return (
-//     <BasicPanelWrapper titleText="Scan Progress" width="w-64">
-//       <div className="flex justify-between">
-//         <span>Scanned Chunks</span>
-//         <span>{scannedChunks}</span>
-//       </div>
-//       <div className="flex justify-between">
-//         <span>Total Chunks</span>
-//         <span>{totalChunks}</span>
-//       </div>
-//       <div className="flex justify-between">
-//         <span>Progress</span>
-//         <span>{scanPercentage.toFixed(2)}%</span>
-//       </div>
-//     </BasicPanelWrapper>
-//   );
-// };
-
 export const BeaconManagementPanel = () => {
   const beacons = useGameStore((state) => state.beacons);
 
   const handleRemoveBeacon = (beaconId: string) => {
-    // Remove the beacon from the store
     useGameStore.setState((state) => ({
       beacons: state.beacons.filter((beacon) => beacon.id !== beaconId),
     }));
   };
 
-  // const handleHighlightBeacon = (beaconId: string) => {
-  //   // Highlight the beacon on the planet's surface
-  //   // Implement the highlighting logic based on your requirements
-  // };
-
   return (
-    <BasicPanelWrapper titleText="Beacon Management" >
+    <BasicPanelWrapper titleText="Beacon Management">
       {beacons.map((beacon) => (
         <div key={beacon.id} className="flex justify-between items-center">
           <span>Beacon {beacon.id}</span>
           <div>
-            {/* <button onClick={() => handleHighlightBeacon(beacon.id)}>Highlight</button> */}
             <button onClick={() => handleRemoveBeacon(beacon.id)}>Remove</button>
           </div>
         </div>
@@ -86,11 +53,6 @@ export const ResourceExtractionPanel = () => {
     { id: 3, name: "Laser Extraction", time: 45, energyCost: 150 },
   ];
 
-  // const handleStartExtraction = (methodId: number) => {
-  //   // Initiate the resource extraction process based on the selected method
-  //   // Implement the extraction logic based on your requirements
-  // };
-
   return (
     <BasicPanelWrapper titleText="Resource Extraction">
       {extractionMethods.map((method) => (
@@ -99,7 +61,6 @@ export const ResourceExtractionPanel = () => {
           <div>
             <span>Time: {method.time}s</span>
             <span>Energy: {method.energyCost}</span>
-            {/* <button onClick={() => handleStartExtraction(method.id)}>Start</button> */}
           </div>
         </div>
       ))}
@@ -108,8 +69,7 @@ export const ResourceExtractionPanel = () => {
 };
 
 export const WarningPanel = () => {
-  // const warnings = useGameStore((state) => state.warnings);
-	const eventsLog = useGameStore((state) => state.eventsLog);
+  const eventsLog = useGameStore((state) => state.eventsLog);
 
   return (
     <BasicPanelWrapper titleText="Warnings" width="w-64">
@@ -117,7 +77,6 @@ export const WarningPanel = () => {
         <div key={index} className="mb-2 p-2 rounded bg-red-500 ">
           <div className="flex items-center">
             <span className="mr-2">⚠️</span>
-            {/* <span className="font-bold">{warning.type}</span> */}
           </div>
           <p>{warning}</p>
         </div>

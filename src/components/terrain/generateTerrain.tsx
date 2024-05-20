@@ -4,7 +4,7 @@ import {
   Float32BufferAttribute,
   NormalBufferAttributes
 } from "three";
-import { minLevel } from "../../store/worldParamsSlice";
+import { Terrain, TerrainTypesT, minLevel } from "../../store/worldParamsSlice";
 import { ResourceType } from "../../store/worldParamsSlice";
 import { resourceTypes } from "../../store/worldParamsSlice";
 import { terrainTypes } from "../../store/worldParamsSlice";
@@ -17,7 +17,6 @@ const updateBufferAttribute = (geometry: BufferGeometry<NormalBufferAttributes>,
     attr.needsUpdate = true;
   } else {
     geometry.setAttribute(attrName, new Float32BufferAttribute(data, 3));
-    // console.log("new attribute created", attrName);
   }
 };
 
@@ -26,7 +25,7 @@ const getResourceColor = (resourceType: ResourceType) => {
 };
 
 const checkResource = (height: number) => {
-  for (const [type, { level }] of Object.entries(terrainTypes) as [string, { color: Color; level: number; }][] ) {
+  for (const [type, { level }] of Object.entries(terrainTypes) as [string, Terrain][] ) {
     if (height < level) {
       return type;
     }
@@ -39,6 +38,7 @@ const applyTerrainColors = (
   colors: Float32Array,
   widthCount: number,
   depthCount: number,
+  terrainColors: TerrainTypesT
 ) => {
   for (let i = 0; i <= depthCount; i++) {
     for (let j = 0; j <= widthCount; j++) {
@@ -46,7 +46,7 @@ const applyTerrainColors = (
       const height = positions[idx + 1];
 
       const resource = checkResource(height);
-      const color = terrainTypes[resource].color;
+      const color = terrainColors[resource].color;
 
       colors[idx] = color.r;
       colors[idx + 1] = color.g;
@@ -76,18 +76,15 @@ const applyResources = ({ resources, widthCount, depthCount, scale, offsetX, off
     }
   }
 
-  // console.log("Resources:", resources[0]);
 };
 
 const generateHeight = (x: number, y: number, scale: number, offsetX: number, offsetY: number, noise2D: NoiseFunction2D, depth: number) => {
   const scaleCorrection = scale * 5;
   const depthOffCorrection = depth - 100;
-  // console.log("depthOffCorrection:", depthOffCorrection);
   const largeScale = noise2D((x + offsetX) / scaleCorrection, (y + offsetY - depthOffCorrection / 2) / scaleCorrection) * 0.5;
   const mediumScale = noise2D((x + offsetX) / (scaleCorrection * 0.5), (y + offsetY - depthOffCorrection / 2) / (scaleCorrection * 0.5)) * 0.25; 
   const smallScale = noise2D((x + offsetX) / (scaleCorrection * 0.25), (y + offsetY - depthOffCorrection / 2) / (scaleCorrection * 0.25)) * 0.25;
 
-  // return Math.pow(largeScale, 1);
   const combined = largeScale + mediumScale + smallScale;
 
   if (combined >= 0) {
@@ -116,14 +113,14 @@ export const generateTerrain = (
   colors: Float32Array,
   positions: Float32Array,
   widthCount: number,
-  depthCount: number
+  depthCount: number,
+  terrainColors: TerrainTypesT
 ) => {
 
   for (let i = 0; i <= depthCount; i++) {
     for (let j = 0; j <= widthCount; j++) {
       const x = j * resolution - width / 2;
       const heightNoise = generateHeight(x, i * resolution, scale, offsetX, offsetY, noise2D, depth);
-      // console.log("heightNoise:", heightNoise);
       const y = Math.max(heightNoise * heightMultiplier + baseLineOffset, minLevel);
       // const y = Math.max(heightNoise * (heightMultiplier + heightMultiplier / 2) - heightMultiplier / 2, -heightMultiplier);
       const z = i * resolution - depth / 2;
@@ -134,7 +131,7 @@ export const generateTerrain = (
     }
   }
 
-  applyTerrainColors(positions, colors, widthCount, depthCount);
+  applyTerrainColors(positions, colors, widthCount, depthCount, terrainColors);
 
 
   // if (canPlaceBeacon) {
@@ -149,6 +146,7 @@ export const generateTerrain = (
   //   }
   // }
   // const alwaycanPlaceBeacon = true;  
+  
   if (canPlaceBeacon) {
     const mousePosX = activePosition.x + width / 2;
     const mousePosZ = activePosition.z + depth / 2;

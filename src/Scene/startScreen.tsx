@@ -114,17 +114,11 @@ const StartScreen = () => {
 
         {!userActive && (
           <div className="w-fit h-fit mt-16 flex flex-row items-center justify-center border border-neutral-100 hover:border-yellow-400 overflow-hidden bg-neutral-100 hover:bg-yellow-400 cursor-pointer">
-            {/* <div className="w-36 h-full overflow-hidden">
-						<div className="w-72 h-full flex flex-col justify-center items-center bg-repeat-x animate-linear" style={{ background: "repeating-linear-gradient(-45deg, transparent, transparent 10px, black 10px, black 20px)" }} />
-					</div> */}
             <button
 							className="w-32 m-2 uppercase text-center text-neutral-900"
 						>
               Generate World
             </button>
-            {/* <div className="w-36 h-full overflow-hidden">
-						<div className="w-72 h-full flex flex-col justify-center items-center bg-repeat-x animate-linear" style={{ background: "repeating-linear-gradient(-45deg, transparent, transparent 10px, black 10px, black 20px)" }} />
-					</div> */}
           </div>
         )}
 

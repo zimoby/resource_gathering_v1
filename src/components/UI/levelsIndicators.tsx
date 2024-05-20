@@ -17,7 +17,6 @@ export const LevelsIndicators = () => {
           className=" h-28 w-3 border border-uilines"
           style={{
             background: `linear-gradient( to top, var(--color-uilines) 0%, var(--color-uilines) ${posHeightRange}%, rgba(255, 255, 255, 0) ${posHeightRange}%)`,
-            // opacity: `0.5`
           }}
         />
       </div>

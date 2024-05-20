@@ -10,12 +10,10 @@ export const useCalculateResources = () => {
     const interval = setInterval(() => {
       useGameStore.setState((state) => {
 
-        // Calculate the new player points
         let newPlayerPoints =
           state.playerPoints +
           state.beacons.reduce((total, beacon) => total + resourceTypes[beacon.resource].score, 0);
 
-        // Calculate the new collected resources
         const newCollectedResources = { ...state.collectedResources };
         state.beacons.forEach((beacon) => {
           if (Object.prototype.hasOwnProperty.call(newCollectedResources, beacon.resource)) {

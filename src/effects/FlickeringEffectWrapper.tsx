@@ -38,17 +38,7 @@ export const FlickeringEffect: React.FC<FlickeringEffectProps> = ({
 
   useFrame(() => {
     if (appearingOnly || (disabled || disableAnimations)) return;
-
     const group = groupRef.current;
-
-    // if (disabled) {
-    //     if (group) {
-    //         group.children.forEach(child => {
-    //             child.visible = true;
-    //         });
-    //     }
-    //     return;
-    // }
 
     if (group) {
       group.children.forEach((child) => {
@@ -61,45 +51,3 @@ export const FlickeringEffect: React.FC<FlickeringEffectProps> = ({
 
   return <group ref={groupRef}>{children}</group>;
 };
-
-
-// import React, { useEffect, useRef } from 'react';
-// import { useFrame } from '@react-three/fiber';
-
-// const FlickeringEffect = ({ children, initialIntensity = 10, randomFrequency = 0.008, duration = 100 }) => {
-//   const isVisible = useRef(true);
-//   const groupRef = useRef();
-
-//   useEffect(() => {
-//     const timeouts = [];
-//     let lastToggle = 0;
-//     for (let i = 0; i < initialIntensity; i++) {
-//       lastToggle += Math.random() * duration;
-//       timeouts.push(setTimeout(() => {
-//         isVisible.current = !isVisible.current;
-//         if (groupRef.current) {
-//           groupRef.current.visible = isVisible.current;
-//         }
-//       }, lastToggle));
-//     }
-
-//     return () => timeouts.forEach(clearTimeout);
-//   }, [initialIntensity, duration]);
-
-//   useFrame(() => {
-//     if (Math.random() < randomFrequency) {
-//       isVisible.current = !isVisible.current;
-//       if (groupRef.current) {
-//         groupRef.current.visible = isVisible.current;
-//       }
-//     }
-//   });
-
-//   return (
-//     <group ref={groupRef} visible={isVisible.current}>
-//       {children}
-//     </group>
-//   );
-// };
-
-// export default FlickeringEffect;

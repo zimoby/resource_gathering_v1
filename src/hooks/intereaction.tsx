@@ -6,8 +6,6 @@ import { debounce, throttle } from "lodash";
 import { useProcessBeacons } from "../components/beacons/beaconUtils";
 import { getChunkCoordinates } from "../utils/functions";
 import { useProcessArtefacts } from "../components/artefacts/artefactUtils";
-// import { ArtefactT } from "../store/gameStateSlice";
-
 
 const getIntersection = (
   event: { clientX: number; clientY: number },
@@ -39,7 +37,6 @@ export const useKeyboardControls = ({
   meshRef: RefObject<Mesh>;
 }): void => {
   const canPlaceBeacon = useGameStore((state) => state.canPlaceBeacon);
-  // const invertDirection = useGameStore((state) => state.invertDirection);
   const mouseEventRef = useRef<MouseEvent | null>(null);
 
   const handleMousePosition = useCallback((event: MouseEvent) => {
@@ -100,8 +97,6 @@ export const useKeyboardControls = ({
         break;
       case " ":
         useGameStore.setState({ canPlaceBeacon: false });
-        // console.log("Space key up", mouseEventRef.current);
-        // setSpaceKeyPressed(false);
         break;
     }
   }, []);
@@ -141,23 +136,7 @@ export const useCanvasHover = ({
 
   const handleCanvasHover = useCallback(
     (event: { clientX: number; clientY: number; type: string }) => {
-      // mousePositionRef.current = { x: event.clientX, y: event.clientY };
-
-      // const reltimeIntersect = getIntersection(event, raycaster, meshRef.current, camera);
-      // if (reltimeIntersect.length > 0) {
-      //   console.log("reltimeIntersect", canPlaceBeacon);
-      //   const { point, face } = reltimeIntersect[0];
-      //   if (!face) return;
-      //   debounce(() => {
-      //     useGameStore.setState({
-      //       activePosition: point,
-      //     });
-      //   }, 100)();
-      // }
-
-      // console.log("mouse", mousePositionRef.current);
       if (!canPlaceBeacon || !meshRef.current) {
-        // useGameStore.setState({ showResources: false });
         return;
       }
 
@@ -187,21 +166,16 @@ export const useCanvasHover = ({
           x: point.x + width / 2 + currentOffset.x,
           y: point.z + depth / 2 + currentOffset.y,
         };
-        
+
         throttledSetState({
           selectedResource: resource,
-          // currentOffset: currentPosition,
           selectedChunk: getChunkCoordinates(currentPosition.x, currentPosition.y, width),
         });
 
-        // consoleLog("selectedResource", relativeChunkPosition);
-
         const isWithinRadius = checkArtefactInRadius({ point });
-
 
         if (event.type === "click") {
           if (isWithinRadius) {
-            // consoleLog("takeArtefact", isWithinRadius);
             takeArtefact({ artefactId: isWithinRadius.id });
             return;
           }
@@ -219,7 +193,21 @@ export const useCanvasHover = ({
         }
       }
     },
-    [canPlaceBeacon, meshRef, raycaster, camera, resources, width, depth, throttledSetState, checkArtefactInRadius, addBeacon, offsetX, offsetY, takeArtefact]
+    [
+      canPlaceBeacon,
+      meshRef,
+      raycaster,
+      camera,
+      resources,
+      width,
+      depth,
+      throttledSetState,
+      checkArtefactInRadius,
+      addBeacon,
+      offsetX,
+      offsetY,
+      takeArtefact,
+    ]
   );
 
   useEffect(() => {

@@ -1,3 +1,4 @@
+import { Color } from "three";
 import { ArtefactT, ArtefactType, WeatherCondition, WorldState } from "../store/worldParamsSlice";
 import { WorldParamsType } from "../store/worldParamsSlice";
 
@@ -12,13 +13,9 @@ export const generateWeather = (): WeatherCondition => {
   }
 };
 
-// const worldStates = ["safe", "normal", "danger", "extreme", "hazardous", "stormy", "extreme temperature"]
-
 export const generateWorld = (): WorldParamsType => {
   const worldSeed = Math.random().toString(36).substring(7);
-  // const worldState = worldStates[Math.floor(Math.random() * worldStates.length)];
   const worldName = "";
-  // const worldName = worldSeed + "-" + worldState;
   const temperature = Math.floor(-50 + Math.random() * 150);
   const humidity = Math.floor(Math.random() * 100);
   const windSpeed = Math.floor(Math.random() * 200);
@@ -26,7 +23,6 @@ export const generateWorld = (): WorldParamsType => {
   const radiation = Math.floor(Math.random() * 1000);
   const weatherCondition = generateWeather();
 
-  // calculate world state depending on the values
   let worldState = "safe";
   if (pollution > 300 || radiation > 300) {
     worldState = "hazardous";
@@ -88,4 +84,11 @@ export const generateArtefacts = ({amount = 10}: {amount?: number}): ArtefactT[]
     });
   }
   return artefacts;
+}
+
+export const generateRandomColor = () => {
+  const hue = Math.random() * 360;
+  const saturation = 70;
+  const lightness = 70;
+  return new Color(`hsl(${hue}, ${saturation}%, ${lightness}%)`);
 }

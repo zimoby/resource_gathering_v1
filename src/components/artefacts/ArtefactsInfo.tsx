@@ -14,9 +14,7 @@ export const ArtefactsInfo = () => {
       titleText={`Artefacts: ${artefacts.length} / ${artefactAmount}`}
       opacity={opacity}
     >
-      <>
-        {/* <div className="h-auto min-h-12 max-h-36"> */}
-        {/* <p className=" text-base">Amount: {artefacts.length} / {artefactAmount}</p> */}
+      <div className="h-full w-full">
         {artefacts.length === 0 && "No artefacts"}
         {artefacts.slice(0, 100).map((artefact, index) => (
           <div
@@ -38,7 +36,8 @@ export const ArtefactsInfo = () => {
               Math.round(artefact.z)}
           </div>
         ))}
-      </>
+        <div className="h-5"></div>
+      </div>
     </BasicPanelWrapper>
   );
 };

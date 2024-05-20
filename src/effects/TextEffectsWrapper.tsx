@@ -9,7 +9,7 @@ const TypingText: React.FC<TypingTextProps> = ({ text, speed = 100 }) => {
   const [displayText, setDisplayText] = useState("");
 
   useEffect(() => {
-    setDisplayText(""); // Reset displayText to an empty string when text prop changes
+    setDisplayText("");
 
     let currentIndex = -1;
     const typingInterval = setInterval(() => {

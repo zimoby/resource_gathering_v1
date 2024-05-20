@@ -34,7 +34,7 @@ export const ChunkGrid = ({ position, sizeExtend = 0 }: {
       gridColor.r, gridColor.g, gridColor.b
     );
 
-    // geometry.dispose();
+    geometry.dispose();
 
     geometry.setAttribute('position', new Float32BufferAttribute(positions, 3));
     geometry.setAttribute('color', new Float32BufferAttribute(colors, 3));

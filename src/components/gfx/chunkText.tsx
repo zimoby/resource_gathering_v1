@@ -15,8 +15,6 @@ export const ChunkName = () => {
     return convertChunkCoordinateToName(currentLocation);
   }, [currentLocation]);
 
-//   console.log("currentChunkName", currentChunkName);
-
   return (
     <Text
         visible={mapAnimationState === "idle"}

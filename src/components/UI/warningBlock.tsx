@@ -1,35 +1,31 @@
 import { FlickeringHtmlEffect } from "../../effects/AppearingUiEffectWrapper";
 import { useGameStore } from "../../store";
 
-export const SimpleWarningLines = ({ classes, size = "" }: {classes?: string, size?: string}) => {
+export const SimpleWarningLines = ({ classes, size = "" }: { classes?: string; size?: string }) => {
   return (
     <div
-      // className={`warning-sign3 ${classes} flex ${size === "" ? "flex-grow" : size } border border-uilines`}
-      className={`warning-sign3 ${classes} flex ${size === "" ? "flex-grow" : size } aug-border-yellow-500`}
+      className={`warning-sign3 ${classes} flex ${
+        size === "" ? "flex-grow" : size
+      } aug-border-yellow-500`}
       data-augmented-ui={`border br-clip-x --aug-border-bg`}
     />
-  )
-}
+  );
+};
 
 export const WarningBlock = () => {
   const weather = useGameStore((state) => state.weatherCondition);
-  // const blockSize = { x: 300, y: 100 };
-  // const sizeAnim = 120;
 
   return (
     <>
-      { weather === "severe" && (
-      // { (
+      {weather === "severe" && (
         <FlickeringHtmlEffect>
           <div
             className="fixed top-0 w-fit h-14 flex flex-row z-20 animate-pulse aug-border-yellow-500"
             style={{
               top: "calc(-50vh + 90px)",
               left: "-150px",
-              // left: "calc(-50vw)"
             }}
             data-augmented-ui="border bl-clip-x br-clip-x --aug-border-bg"
-            // style={{ left: "-125px" }}
           >
             <div className="relative w-fit h-full flex flex-row">
               <div className="absolute z-30 w-full h-full flex justify-center items-center ">
@@ -43,11 +39,6 @@ export const WarningBlock = () => {
               <WarningLines direction="xy" />
               <WarningLines direction="y" />
             </div>
-            {/* <div className="bg-red-500 text-white text-xs p-1 rounded-md">
-              <div className="text-center">Warning!</div>
-              <div className="text-center">This is a test version</div>
-              <div className="text-center">Some features may not work</div>
-            </div> */}
           </div>
         </FlickeringHtmlEffect>
       )}

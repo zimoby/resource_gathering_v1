@@ -77,7 +77,6 @@ export const SliderWithInput = ({ label, value, min = 1, max = 100, step = 1, on
           onChange={allChange}
           onKeyDown={handleStepChange}
           onKeyUp={handleStepChange}
-          // onMouseUp={handleMouseUp}
         />
         <input
           className="h-hull m-0 w-12 rounded-sm border-transparent bg-black/20 p-0 text-left text-xs text-uitext"

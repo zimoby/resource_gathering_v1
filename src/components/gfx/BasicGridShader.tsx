@@ -6,13 +6,9 @@ import {
   Mesh
 } from "three";
 import { useGameStore } from "../../store";
-// import { BufferGeometry, Material, Object3DEventMap } from "three";
 import { useFrame } from "@react-three/fiber";
 import { useCalculateDeltas, useUpdateMapMoving } from "../../utils/functions";
 import { useIncreasingSpeed } from "../../effects/IncreaseSceneSpeed";
-
-
-// import { vertexShader, fragmentShader } from './chunkGridShader';
 
 const vertexShader = `
   varying vec2 vUv;
@@ -65,7 +61,7 @@ export interface BasicGridShaderProps {
 
 export const BasicGridShader = ({ position = [0,0,0] }: BasicGridShaderProps) => {
   const { width, depth } = useGameStore((state) => state.mapParams);
-  // const mapAnimationState = useGameStore((state) => state.mapAnimationState);
+  const resetValues = useGameStore((state) => state.resetValues);
   const gridConfig = useGameStore((state) => state.gridConfig);
   const planeRef = useRef<Mesh>(null);
   const offset = useRef({ x: 0, y: 0 });
@@ -107,24 +103,18 @@ export const BasicGridShader = ({ position = [0,0,0] }: BasicGridShaderProps) =>
     };
   }, [width, depth, gridConfig.chunkSize, gridConfig.subGrids, gridConfig.lineWidth, gridConfig.gridColor, gridConfig.subGridColor, planeRef]);
 
-
   useFrame(() => {
 
-    // if (mapAnimationState === "enlarging") {
-    //   offset.current.x = 0;
-    //   offset.current.y = 0;
-    // }
+    if (resetValues) {
+      console.log("resetValues:", resetValues);
+      offset.current.x = 0;
+      offset.current.y = 0;
+    }
 
-    // offset.current.x += deltaX;
-    // offset.current.y += deltaY;
     offset.current.x += deltaX * increasingSpeedRef.current;
     offset.current.y += deltaY * increasingSpeedRef.current;
-    // console.log("offset.current:", {deltaX, deltaY});
 
-    // if (now - lastExecution.current > updateInterval) {
-    //   lastExecution.current = now;
     updateLocationAndOffset(offset);
-    // }
 
     if (
       planeRef.current &&

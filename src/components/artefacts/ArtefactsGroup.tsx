@@ -8,24 +8,6 @@ import { Group, TorusKnotGeometry } from "three";
 import { useIncreasingSpeed } from "../../effects/IncreaseSceneSpeed";
 
 const beaconHeight = 10;
-// const minDistance = 10;
-
-// const ShapeCircle = () => {
-//   const shapePoints = useMemo(() => {
-//     const shape = new Shape();
-//     shape.moveTo(0, 0);
-//     shape.absarc(0, 0, minDistance, 0, Math.PI * 2, false);
-//     const points = shape.getPoints(50);
-//     const circleBuffer = new BufferGeometry().setFromPoints(points);
-//     return circleBuffer;
-//   }, []);
-
-//   return (
-//     <lineSegments geometry={shapePoints} rotation-x={Math.PI / 2}>
-//       <lineBasicMaterial color={"#ff0000"} />
-//     </lineSegments>
-//   );
-// };
 
 const UsualArtefact = () => {
   return (
@@ -70,29 +52,14 @@ export const ArtefactsGroup = () => {
 
   const circleRefs = useRef<React.RefObject<Group>[]>(artefacts.map(() => createRef()));
 
-  // console.log("artefacts:", { artefacts, artefactRefs });
-
-  // useLayoutEffect(() => {
-  //   artefactRefs.current = artefactRefs.current.slice(0, artefacts.length);
-  //   circleRefs.current = circleRefs.current.slice(0, artefacts.length);
-  //   for (let i = artefactRefs.current.length; i < artefacts.length; i++) {
-  //       artefactRefs.current[i] = createRef();
-  //       circleRefs.current[i] = createRef();
-  //   }
-  // }, [artefacts.length]);
-
   useFrame((_, delta) => {
     artefactRefs.current.forEach((beacon, index) => {
       const artefactObject = beacon.current;
       const circleObject = circleRefs.current[index].current;
 
       if (artefactObject) {
-
-        // artefactObject.position.x -= deltaX;
-        // artefactObject.position.z -= deltaY;
         artefactObject.position.x -= deltaX * increasingSpeedRef.current;
         artefactObject.position.z -= deltaY * increasingSpeedRef.current;
-
         
         const checkBoundaries = isOutOfBound(
           { x: artefactObject.position.x, y: artefactObject.position.z },
@@ -102,32 +69,25 @@ export const ArtefactsGroup = () => {
           offsetY
         );
 
-
         if (artefactSelected === artefacts[index].id && canSetBeacon) {
           timeRef.current += delta;
-          // sin anim
           artefactObject.position.y = Math.sin(timeRef.current * 2) * 3;
 
           if (circleObject) {
             circleObject.position.y = -Math.sin(timeRef.current * 2) * 3;
-            // circleObject.rotateY(delta / 2);
           }
         }
 
 				artefactObject.rotateY(delta / 2);
         artefactObject.visible = !checkBoundaries.x && !checkBoundaries.y;
 
-				// if visibility changes, update the beacon object in the store
 				if (artefactObject.visible !== artefacts[index].visible) {
-					// console.log("visibility changed", artefacts[index]);
 					useGameStore.setState((state) => {
 						state.artefacts[index].visible = artefactObject.visible;
 						return state;
 					});
 				}
       }
-
-
     });
   });
 
@@ -142,12 +102,6 @@ export const ArtefactsGroup = () => {
           {artefact.type === "usual" && <UsualArtefact />}
           {artefact.type === "rare" && <RareArtefact />}
           {artefact.type === "legendary" && <LegendaryArtefact />}
-          {/* <LegendaryArtefact /> */}
-          {/* <Sphere args={[1, 8, 8]} position={[0, beaconHeight, 0]} />
-          <Cylinder args={[0.1, 0.1, beaconHeight, 4]} position={[0, beaconHeight / 2, 0]} /> */}
-          {/* <group key={"circle_of_" + beacon.id} ref={circleRefs.current[index]}>
-            <ShapeCircle />
-          </group> */}
           <group ref={circleRefs.current[index]}>
             <ConcentricCirclesAnimation />
           </group>

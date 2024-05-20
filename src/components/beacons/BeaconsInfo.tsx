@@ -14,7 +14,6 @@ export const BeaconsInfo = () => {
       opacity={opacity}
     >
       <>
-        {/* <div className="h-fit max-h-40"> */}
         {beacons.length === 0 && "No beacons"}
         {beacons.slice(0, 100).map((beacon, index) => (
           <div

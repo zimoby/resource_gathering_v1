@@ -51,10 +51,10 @@ export const Map = () => {
       setMapAnimationState('enlarging');
     } else if (mapAnimationState === 'enlarging' && !valueStarted.current) {
       startAnimation();
-      // console.log('startAnimation');
+      useGameStore.setState({ resetValues: true })
     } else if (mapAnimationState === 'enlarging' && !valueReached.current && valueStarted.current) {
+      useGameStore.setState({ resetValues: false });
       updateMapSize(valueAnimation.value.get());
-      // console.log('updateMapSize');
     } else if (mapAnimationState === 'enlarging' && valueReached.current) {
       setMapAnimationState('idle');
       valueReachedDecr.current = false;

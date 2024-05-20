@@ -16,7 +16,6 @@ export const BasicPanelWrapper = ({
   augUi?: string;
   list?: boolean;
 }) => {
-  // console.log(titleText, opacity);
 
   return (
     <div

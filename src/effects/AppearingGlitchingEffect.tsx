@@ -1,7 +1,6 @@
 import { RefObject, useEffect } from "react";
 import { Group } from "three";
 import { useGameStore } from "../store";
-// import { consoleLog } from "../utils/functions";
 
 export const useAppearingGlitchingEffect = ({
   disabled = false,
@@ -23,7 +22,6 @@ export const useAppearingGlitchingEffect = ({
     const group = groupRef.current;
 
     if (group) {
-      // consoleLog("useAppearingGlitchingEffect");
       const timeouts = new Set<number>();
       group.children.forEach((child) => {
         let lastToggle = 0;
@@ -41,30 +39,3 @@ export const useAppearingGlitchingEffect = ({
     }
   }, [initialIntensity, duration, disabled, groupRef, disableAnimations]);
 };
-
-// enable visibility of every child as random time range
-// useEffect(() => {
-//   if (disabled) { return; }
-//   const group = groupRef.current;
-
-//   if (group) {
-//     const timeouts = new Set<number>();
-//     group.children.forEach(
-//       (child) => {
-//         let lastToggle = 0;
-//         // console.log("child:", child);
-//         for (let i = 0; i < initialIntensity; i++) {
-//           lastToggle += Math.random() * 1000;
-//           timeouts.add(
-//             setTimeout(() => {
-//               if (child instanceof Mesh) {
-//                 setMeshOpacity(child, Math.random() * (maxOpacity - minOpacity) + minOpacity);
-//               }
-//             }, lastToggle)
-//           );
-//         }
-//       }
-//     );
-//     return () => timeouts.forEach(clearTimeout);
-//   }
-// }, [children, initialIntensity, minOpacity, maxOpacity, disabled]);

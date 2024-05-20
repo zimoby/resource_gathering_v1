@@ -20,7 +20,6 @@ export const SinePanel = () => {
             stroke="white"
             strokeWidth="0.2"
 						style={{
-							// strokeDasharray: "0.5 0.5",
 							transform: `scaleY(${Math.min(collectedResources["Metals"] / 100, 1)})`,
 							transformOrigin: "center",
 						}}
@@ -33,7 +32,6 @@ export const SinePanel = () => {
             stroke="yellow"
             strokeWidth="0.2"
 						style={{
-							// strokeDasharray: "0.5 0.5",
 							transform: `scaleY(${Math.min(collectedResources["Water"] / 100, 1)})`,
 							transformOrigin: "center",
 						}}

@@ -29,6 +29,9 @@ export interface GameStateSlice {
   terrainLoading: boolean;
   terrainAppearing: boolean;
   animationFirstStage: boolean;
+
+  resetValues: boolean;
+
   currentOffset: Offset;
   selectedResource: ResourceType;
   selectedChunk: ChunkType;
@@ -79,6 +82,8 @@ export const createGameStateSlice: StateCreator<
   terrainLoading: true,
   terrainAppearing: false,
   animationFirstStage: false,
+
+  resetValues: false,
   
   currentOffset: { x: 0, y: 0 },
   selectedResource: "Water",

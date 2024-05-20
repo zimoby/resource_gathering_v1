@@ -3,9 +3,7 @@ import { BeaconsInfo } from "../beacons/BeaconsInfo";
 
 import { SystemControls } from "./controlsUI/planetControls";
 import { ProgressBlock } from "./ProgressPanel";
-// import { BeaconManagementPanel, ResourceDistributionPanel, ResourceExtractionPanel, WarningPanel } from "./ResourceDistributionPanel";
 import { TitlePanel } from "./TitlePanel";
-// import { SystemMessagePanel } from "./SystemMessagePanel";
 import { ScanerParamPanel } from "./ScanerParamsPanel";
 import { CollectedResourcesPanel } from "./CollectedResourcesPanel";
 import { PlanetDataPanel } from "./PlanetDataPanel";
@@ -83,7 +81,6 @@ export const UiInfo = () => {
           <SystemControls />
           <EmptyGrowPanel />
           <SimpleWarningLines size="h-16" />
-          {/* <div className="warning-sign2 h-16 mb-10 flex border border-uilines" /> */}
         </FlickeringHtmlEffect>
       </div>
       <div
@@ -103,7 +100,6 @@ export const UiInfo = () => {
           </>
           <EmptyGrowPanel />
           <SimpleWarningLines size="h-16" />
-          {/* <div className="warning-sign2 h-16 flex border border-uilines" /> */}
         </FlickeringHtmlEffect>
       </div>
       <div

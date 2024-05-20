@@ -16,11 +16,8 @@ export const useIncreasingSpeed = (
     const time = clock.getElapsedTime();
 
     if (time > startTime && speedRef.current < goalSpeed) {
-      // consoleLog("time:", {time});
       speedStarted.current = true;
       speedRef.current = speedRef.current + increment;
-      // speedRef.current = Math.pow(speedRef.current, 1) + increment;
-      // speedRef.current = Math.pow(speedRef.current, 1/1.1) + increment;
     } else if (speedRef.current >= goalSpeed) {
       speedReached.current = true;
     }

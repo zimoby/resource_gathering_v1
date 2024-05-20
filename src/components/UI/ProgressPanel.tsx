@@ -8,7 +8,6 @@ export const ProgressBlock = () => {
 
   const progressPercent = (playerPoints / goal) * 100;
   const blockWidths = [44, 20, 12, 4]; 
-  // const totalWidth = blockWidths.reduce((total, width) => total + width, 0); // Sum of all block widths
 
   const blockFills = blockWidths.map((width) => {
     const fill = Math.max(

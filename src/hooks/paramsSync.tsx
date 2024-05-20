@@ -3,8 +3,6 @@ import { useEffect } from "react";
 import { useGameStore } from "../store";
 
 export const useParamsSync = () => {
-  // const mapParams = useGameStore((state) => state.mapParams);
-
   const { width, depth, resolution, scale, offsetX, offsetY, speed } = useControls({
     width: { value: 200, min: 1, max: 200 },
     depth: { value: 200, min: 1, max: 200 },
@@ -17,13 +15,5 @@ export const useParamsSync = () => {
 
   useEffect(() => {
 		useGameStore.setState({ mapParams: { width, depth, resolution, scale, offsetX, offsetY, speed } });
-		// console.log("mapPgame store updated");
 	}, [width, depth, resolution, scale, offsetX, offsetY, speed]);
-
-	// useEffect(() => {
-	// 	levaStore.set({ ...mapParams });
-	// 	console.log("leva store updated");
-	// }, [mapParams]);
-
-
 };
