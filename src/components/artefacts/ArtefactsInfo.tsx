@@ -21,7 +21,7 @@ export const ArtefactsInfo = () => {
         {artefacts.slice(0, 100).map((artefact, index) => (
           <div
             key={index}
-            className="list-selecting"
+            className="list-selecting pr-4"
             onClick={() => useGameStore.setState({ message: `Artefact: ${artefact.id}` })}
           >
             {index +

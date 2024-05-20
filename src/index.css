@@ -76,6 +76,16 @@ body,
   );
 }
 
+.warning-sign3 {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--color-uilines),
+    var(--color-uilines) 19px,
+    black 19px,
+    black 25px
+  );
+}
+
 .warning-sign-animated {
   background: repeating-linear-gradient(
     -45deg,

@@ -19,6 +19,8 @@ import { BasicPanelWrapper } from "./BasicPanelWrapper";
 import { FlickeringHtmlEffect } from "../../effects/AppearingUiEffectWrapper";
 import { SettingsModal } from "./SettingsModal";
 import { ArtefactsInfo } from "../artefacts/ArtefactsInfo";
+import { SimpleWarningLines } from "./warningBlock";
+import { EmptyGrowPanel } from "../gfx/EmptyPanel";
 
 
 export const UiInfo = () => {
@@ -64,7 +66,7 @@ export const UiInfo = () => {
           </div>
           <BasicPanelWrapper styles="hover:bg-uilines" augUi={`border tl-clip br-clip --aug-border-bg`}>
             <button
-              className=" w-full text-lg text-uitext text-center cursor-pointer hover:text-neutral-900"
+              className=" orbitron w-full h-8 text-base text-uitext text-center cursor-pointer hover:text-neutral-900"
               onClick={() => updateStoreProperty("showSettingsModal", true)}
             >
               Settings
@@ -72,15 +74,16 @@ export const UiInfo = () => {
           </BasicPanelWrapper>
           <BasicPanelWrapper styles="hover:bg-uilines"  augUi={`border tl-clip br-clip --aug-border-bg`}>
             <button
-              className=" w-full text-lg text-uitext text-center cursor-pointer hover:text-neutral-900"
+              className=" orbitron w-full h-8 text-base text-uitext text-center cursor-pointer hover:text-neutral-900"
               onClick={() => useGameStore.getState().setMapAnimationState('shrinking')}
             >
               New World
             </button>
           </BasicPanelWrapper>
           <SystemControls />
-          <div className=" flex flex-grow border border-uilines"></div>
-          <div className="warning-sign2 h-16 mb-10 flex border border-uilines" />
+          <EmptyGrowPanel />
+          <SimpleWarningLines size="h-16" />
+          {/* <div className="warning-sign2 h-16 mb-10 flex border border-uilines" /> */}
         </FlickeringHtmlEffect>
       </div>
       <div
@@ -97,10 +100,10 @@ export const UiInfo = () => {
             <PlanetDataPanel />
             <CollectedResourcesPanel />
             <ScanerParamPanel />
-
           </>
-          <div className=" flex flex-grow border border-uilines"></div>
-          <div className="warning-sign2 h-16 mb-10 flex border border-uilines" />
+          <EmptyGrowPanel />
+          <SimpleWarningLines size="h-16" />
+          {/* <div className="warning-sign2 h-16 flex border border-uilines" /> */}
         </FlickeringHtmlEffect>
       </div>
       <div
@@ -113,9 +116,7 @@ export const UiInfo = () => {
           <LogsPanel />
           <BeaconsInfo />
           <ArtefactsInfo />
-          {/* <div className=" flex flex-grow border border-uilines"></div> */}
-          {/* <div className="warning-sign2 h-16 mb-10 flex border border-uilines" /> */}
-          <div className="warning-sign2 flex flex-grow border border-uilines" />
+          <SimpleWarningLines />
         </FlickeringHtmlEffect>
       </div>
     </div>

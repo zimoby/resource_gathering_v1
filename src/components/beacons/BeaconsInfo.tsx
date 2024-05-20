@@ -19,7 +19,7 @@ export const BeaconsInfo = () => {
         {beacons.slice(0, 100).map((beacon, index) => (
           <div
             key={index}
-            className="list-selecting"
+            className="list-selecting pr-3"
             onClick={() => useGameStore.setState({ message: `Beacon: ${beacon.resource}` })}
           >
             {index +

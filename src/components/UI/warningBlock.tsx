@@ -1,6 +1,16 @@
 import { FlickeringHtmlEffect } from "../../effects/AppearingUiEffectWrapper";
 import { useGameStore } from "../../store";
 
+export const SimpleWarningLines = ({ classes, size = "" }: {classes?: string, size?: string}) => {
+  return (
+    <div
+      // className={`warning-sign3 ${classes} flex ${size === "" ? "flex-grow" : size } border border-uilines`}
+      className={`warning-sign3 ${classes} flex ${size === "" ? "flex-grow" : size } aug-border-yellow-500`}
+      data-augmented-ui={`border br-clip-x --aug-border-bg`}
+    />
+  )
+}
+
 export const WarningBlock = () => {
   const weather = useGameStore((state) => state.weatherCondition);
   // const blockSize = { x: 300, y: 100 };
