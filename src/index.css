@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Share+Tech+Mono&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap');
+@import 'augmented-ui/augmented-ui.min.css';
 
 @import "tailwindcss/base";
 @import "tailwindcss/components";
@@ -84,4 +85,9 @@ body,
     black 20px
   );
   animation: warningLines 10s linear infinite;
+}
+
+.aug-border-yellow-500 {
+  --aug-border-bg: var(--color-uilines);
+  --aug-border-all: 1px;
 }
