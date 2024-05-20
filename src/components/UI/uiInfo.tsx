@@ -62,17 +62,17 @@ export const UiInfo = () => {
           <div className="w-48 h-24">
             <CorpLogoPanel />
           </div>
-          <BasicPanelWrapper>
+          <BasicPanelWrapper styles="hover:bg-uilines" augUi={`border tl-clip br-clip --aug-border-bg`}>
             <button
-              className=" w-full text-lg text-uitext text-center cursor-pointer hover:bg-uilines hover:text-neutral-900"
+              className=" w-full text-lg text-uitext text-center cursor-pointer hover:text-neutral-900"
               onClick={() => updateStoreProperty("showSettingsModal", true)}
             >
               Settings
             </button>
           </BasicPanelWrapper>
-          <BasicPanelWrapper>
+          <BasicPanelWrapper styles="hover:bg-uilines"  augUi={`border tl-clip br-clip --aug-border-bg`}>
             <button
-              className=" w-full text-lg text-uitext text-center cursor-pointer hover:bg-uilines hover:text-neutral-900"
+              className=" w-full text-lg text-uitext text-center cursor-pointer hover:text-neutral-900"
               onClick={() => useGameStore.getState().setMapAnimationState('shrinking')}
             >
               New World
@@ -97,8 +97,7 @@ export const UiInfo = () => {
             <PlanetDataPanel />
             <CollectedResourcesPanel />
             <ScanerParamPanel />
-            <BeaconsInfo />
-            <ArtefactsInfo />
+
           </>
           <div className=" flex flex-grow border border-uilines"></div>
           <div className="warning-sign2 h-16 mb-10 flex border border-uilines" />
@@ -112,7 +111,11 @@ export const UiInfo = () => {
         >
           <EventsPanel />
           <LogsPanel />
-          <div className="warning-sign2 w-full flex flex-col space-y-1 items-end border border-uilines" />
+          <BeaconsInfo />
+          <ArtefactsInfo />
+          {/* <div className=" flex flex-grow border border-uilines"></div> */}
+          {/* <div className="warning-sign2 h-16 mb-10 flex border border-uilines" /> */}
+          <div className="warning-sign2 flex flex-grow border border-uilines" />
         </FlickeringHtmlEffect>
       </div>
     </div>

@@ -4,7 +4,7 @@ import { GameStoreState } from "../store";
 import { Color } from "three";
 
 export const minLevel = -10;
-export const maxLevel = 100;
+export const maxLevel = 20;
 
 export type TerrainType = "water" | "grass" | "dirt" | "snow" | "default";
 export type ResourceType = "Water" | "Metals" | "Rare Elements" | "Hydrocarbons";

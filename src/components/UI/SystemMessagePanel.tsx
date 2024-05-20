@@ -22,7 +22,7 @@ export const SystemMessagePanelAlt = () => {
   return (
     // <BasicPanelWrapper height="h-32" width="w-72" titleText="System Message" opacity={opacity}>
       <div className=" h-fit w-fit max-w-72 leading-4 border-l-4 bg-black/50 border-uilines pl-2 text-sm m-3">
-        <TypingText text={message} />
+        <TypingText text={message} speed={50} />
       </div>
     // </BasicPanelWrapper>
   )

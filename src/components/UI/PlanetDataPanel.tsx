@@ -8,14 +8,18 @@ export const PlanetDataPanel = () => {
 
   return (
     <BasicPanelWrapper titleText="Planet:" opacity={opacity}>
-      {Object.entries(worldParams)
-        .filter(([key, value]) => value !== "" && key !== "weatherCondition")
-        .map(([key, value]) => (
-          <div key={key}>
-            {key}: {value}
-          </div>
-        ))}
-      <p>Weather: {weatherCondition}</p>
+      <div >
+        {Object.entries(worldParams)
+          .filter(([key, value]) => value !== "" && key !== "weatherCondition")
+          .map(([key, value]) => (
+            <div className="list-selecting" key={key}
+              onClick={() => useGameStore.setState({ message: `Planet: ${key}: ${value}` })}
+            >
+              {key}: {value}
+            </div>
+          ))}
+        <p className="list-selecting">Weather: {weatherCondition}</p>
+      </div>
     </BasicPanelWrapper>
   );
 };

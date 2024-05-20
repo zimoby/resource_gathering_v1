@@ -1,7 +1,6 @@
 import { useCallback } from "react";
 import { useGameStore } from "../../store";
-import { ResourceType } from "../../store/worldParamsSlice";
-import { BeaconType } from "../../store/gameStateSlice";
+import { BeaconType, ResourceType } from "../../store/worldParamsSlice";
 
 const minDistance = 20;
 

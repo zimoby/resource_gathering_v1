@@ -8,7 +8,13 @@ export const LogsPanel = () => {
   return (
     <BasicPanelWrapper height="h-32" width="w-72" titleText="Logs:" opacity={opacity}>
       {logs.map((log, index) => (
-        <div key={index}>{log}</div>
+        <div
+          key={index}
+          className="list-selecting"
+          onClick={() => useGameStore.setState({ message: log })}
+        >
+          {log}
+        </div>
       ))}
     </BasicPanelWrapper>
   );

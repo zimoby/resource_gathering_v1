@@ -25,7 +25,7 @@ body,
   --color-secondary: #14171a;
   --color-background: #ffffff;
 
-  --color-uilines: #f1e31a;
+  --color-uilines: #eeba11;
   --color-uitext: #f1e31a;
   /* --color-uilines: #edece1; */
 
@@ -90,4 +90,10 @@ body,
 .aug-border-yellow-500 {
   --aug-border-bg: var(--color-uilines);
   --aug-border-all: 1px;
+}
+
+@layer components {
+  .list-selecting {
+    @apply w-full bg-transparent hover:bg-uilines hover:text-neutral-900 hover:pl-0;
+  }
 }

@@ -26,15 +26,18 @@ export const ProgressBlock = () => {
     <div className="flex w-80 h-16 flex-col -space-y-1" style={{ opacity }}>
       <div className="flex w-full h-full flex-row space-x-0">
         {blockWidths.map((width, index) => (
-          <div key={width + "_" + index} className={`relative w-${width} mb-1 h-full border border-uilines`}>
+          <div key={width + "_" + index} className={`relative w-${width} mb-1 h-auto border border-uilines hover:border-4`}>
             <div
               key={index}
-              className={`absolute inset-0 h-full w-full `}
+              className={`absolute inset-0 h-full w-full`}
               style={{
                 background: `linear-gradient(to right, var(--color-uilines) 0%, var(--color-uilines) ${ blockFills[index]
                 }%, rgba(255, 255, 255, 0) ${blockFills[index]}%, rgba(255, 255, 255, 0) 100%)`,
                 opacity: `${0.5 * ((index + 1) / 2)}`,
               }}
+              onClick={() => useGameStore.setState({
+                message: "You need to gather more energy: " + (blockFills[index]) + "%",
+              })}
             />
           </div>
         ))}
