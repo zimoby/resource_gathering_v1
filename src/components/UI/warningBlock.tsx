@@ -9,19 +9,24 @@ export const WarningBlock = () => {
   return (
     <>
       { weather === "severe" && (
+      // { (
         <FlickeringHtmlEffect>
           <div
-            className="fixed top-0 w-fit h-14 flex flex-row z-20  animate-pulse"
+            className="fixed top-0 w-fit h-14 flex flex-row z-20 animate-pulse aug-border-yellow-500"
             style={{
               top: "calc(-50vh + 90px)",
               left: "-150px",
               // left: "calc(-50vw)"
             }}
+            data-augmented-ui="border bl-clip-x br-clip-x --aug-border-bg"
             // style={{ left: "-125px" }}
           >
             <div className="relative w-fit h-full flex flex-row">
               <div className="absolute z-30 w-full h-full flex justify-center items-center ">
-                <div className="text-white text-center text-sm  orbitron bg-neutral-900 uppercase px-6 py-1">
+                <div
+                  className="text-white text-center text-sm  orbitron bg-neutral-900 uppercase px-6 py-1 aug-border-yellow-500"
+                  data-augmented-ui="border bl-clip br-clip --aug-border-bg"
+                >
                   danger weather
                 </div>
               </div>

@@ -12,13 +12,14 @@ export const CenterScreenPanel = () => {
         { !showSettingsModal && <Billboard>
             <Html>
               <div
-                className="fixed -z-10 border border-uilines"
+                className="fixed -z-10 border border-uilines aug-border-yellow-500"
                 style={{
                   width: "calc(100vw - 25.5rem)",
                   height: "calc(100vh - 13.5rem)",
                   top: "calc(-50vh + 4.75rem)",
                   left: "calc(-50vw + 12.75rem)"
                 }}
+                data-augmented-ui="border tl-2-clip-x br-2-clip-x --aug-border-bg"
                 // onClick={(e) => e.stopPropagation()}
               >
                 <div
