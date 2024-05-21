@@ -8,6 +8,10 @@ export const useProcessBeacons = () => {
   const addLog = useGameStore((state) => state.addLog);
   const beacons = useGameStore((state) => state.beacons);
   const weatherCondition = useGameStore((state) => state.weatherCondition);
+  const costs = useGameStore((state) => state.costs);
+  const decreasePlayerPoints = useGameStore((state) => state.decreasePlayerPoints);
+  const playerPoints = useGameStore((state) => state.playerPoints);
+  const beaconsLimit = useGameStore((state) => state.beaconsLimit);
 
   const addBeacon = useCallback(
     ({
@@ -41,6 +45,15 @@ export const useProcessBeacons = () => {
         return;
       }
 
+      if (beacons.length >= beaconsLimit) {
+        useGameStore.setState({ message: "Maximum beacons limit reached. You can increase it in the Beacons panel" });
+        return;
+      }
+
+      if (playerPoints > costs.placeBeacon.value) {
+        decreasePlayerPoints(costs.placeBeacon.value);
+      }
+
       addLog(`Beacon placed at ${currentChunk.x}, ${currentChunk.y}`);
 
       useGameStore.setState((state: { beacons: BeaconType[] }) => {
@@ -60,7 +73,7 @@ export const useProcessBeacons = () => {
         return { beacons: newBeacons };
       });
     },
-    [addLog, beacons]
+    [addLog, beacons, beaconsLimit, costs.placeBeacon.value, decreasePlayerPoints, playerPoints]
   );
 
   const destroyBeacons = useCallback(() => {

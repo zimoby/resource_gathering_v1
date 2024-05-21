@@ -1,5 +1,5 @@
-import { FlickeringHtmlEffect } from "../../effects/AppearingUiEffectWrapper";
-import { useGameStore } from "../../store";
+import { FlickeringHtmlEffect } from "../../../effects/AppearingUiEffectWrapper";
+import { useGameStore } from "../../../store";
 
 export const SimpleWarningLines = ({ classes, size = "" }: { classes?: string; size?: string }) => {
   return (

@@ -1,7 +1,7 @@
 import { useMemo } from "react";
-import { useGameStore } from "../../store";
-import { BasicPanelWrapper } from "./BasicPanelWrapper";
-import { convertChunkCoordinateToName } from "../../utils/functions";
+import { useGameStore } from "../../../store";
+import { BasicPanelWrapper } from "../BasicPanelWrapper";
+import { convertChunkCoordinateToName } from "../../../utils/functions";
 
 export const ScanerParamPanel = () => {
   const opacity = useGameStore((state) => state.uiPanelsState.scanerPanel.opacity);

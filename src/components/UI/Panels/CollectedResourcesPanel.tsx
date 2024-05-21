@@ -1,5 +1,5 @@
-import { useGameStore } from "../../store";
-import { BasicPanelWrapper } from "./BasicPanelWrapper";
+import { useGameStore } from "../../../store";
+import { BasicPanelWrapper } from "../BasicPanelWrapper";
 
 const numberSimplified = (number: number) => {
   if (number < 1000) return number;

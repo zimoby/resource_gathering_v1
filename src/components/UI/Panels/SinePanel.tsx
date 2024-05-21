@@ -1,4 +1,4 @@
-import { useGameStore } from "../../store";
+import { useGameStore } from "../../../store";
 
 export const SinePanel = () => {
 	const collectedResources = useGameStore((state) => state.collectedResources);

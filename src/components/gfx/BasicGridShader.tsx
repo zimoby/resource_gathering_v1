@@ -106,7 +106,7 @@ export const BasicGridShader = ({ position = [0,0,0] }: BasicGridShaderProps) =>
   useFrame(() => {
 
     if (resetValues) {
-      console.log("resetValues:", resetValues);
+      // console.log("resetValues:", resetValues);
       offset.current.x = 0;
       offset.current.y = 0;
     }

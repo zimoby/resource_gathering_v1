@@ -12,7 +12,7 @@ import { Map } from "./Map";
 import { FlyingDrone } from "../components/drone/Drone";
 import { Line } from "../components/gfx/Line";
 import { Euler } from "three";
-import { CenterScreenPanel } from "../components/UI/CenterScreenPanel";
+import { CenterScreenPanel } from "../components/UI/Panels/CenterScreenPanel";
 import { ArtefactsPlanesIndicators } from "../components/artefacts/ArtefactsIndicators";
 
 export const GameCanvas = () => {

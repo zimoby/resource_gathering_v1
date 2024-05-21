@@ -2,24 +2,25 @@ import { useGameStore } from "../../store";
 import { BeaconsInfo } from "../beacons/BeaconsInfo";
 
 import { SystemControls } from "./controlsUI/planetControls";
-import { ProgressBlock } from "./ProgressPanel";
-import { TitlePanel } from "./TitlePanel";
-import { ScanerParamPanel } from "./ScanerParamsPanel";
-import { CollectedResourcesPanel } from "./CollectedResourcesPanel";
-import { PlanetDataPanel } from "./PlanetDataPanel";
-import { LogsPanel } from "./LogsPanel";
-import { EventsPanel } from "./EventsPanel";
+import { ProgressBlock } from "./Panels/ProgressPanel";
+import { TitlePanel } from "./Panels/TitlePanel";
+import { ScanerParamPanel } from "./Panels/ScanerParamsPanel";
+import { CollectedResourcesPanel } from "./Panels/CollectedResourcesPanel";
+import { PlanetDataPanel } from "./Panels/PlanetDataPanel";
+import { LogsPanel } from "./Panels/LogsPanel";
+import { EventsPanel } from "./Panels/EventsPanel";
 
 import "./linearAnimation.css";
-import { SinePanel } from "./SinePanel";
+import { SinePanel } from "./Panels/SinePanel";
 import { CorpLogoPanel } from "./CorpLogoPanel";
-import { BasicPanelWrapper } from "./BasicPanelWrapper";
 import { FlickeringHtmlEffect } from "../../effects/AppearingUiEffectWrapper";
 import { SettingsModal } from "./SettingsModal";
 import { ArtefactsInfo } from "../artefacts/ArtefactsInfo";
-import { SimpleWarningLines } from "./warningBlock";
+import { SimpleWarningLines } from "./Panels/warningBlock";
 import { EmptyGrowPanel } from "../gfx/EmptyPanel";
-
+import { BigButtons } from "./BigButtons";
+import { CostsPanel } from "./Panels/CostsPanel";
+import { FlyToNewWorld } from "./FlyToNewWorldButton";
 
 export const UiInfo = () => {
   const animationFirstStage = useGameStore((state) => state.animationFirstStage);
@@ -44,17 +45,13 @@ export const UiInfo = () => {
           width: "calc(100vw - 13.23rem)",
         }}
       >
-        <FlickeringHtmlEffect
-          classStyles="flex flex-row space-x-1 w-full h-full"
-        >
+        <FlickeringHtmlEffect classStyles="flex flex-row space-x-1 w-full h-full">
           <TitlePanel />
           <ProgressBlock />
           <SinePanel />
         </FlickeringHtmlEffect>
       </div>
-      <div
-        className="absolute right-0 top-0 flex justify-between gap-1 bg-transparent"
-      >
+      <div className="absolute right-0 top-0 flex justify-between gap-1 bg-transparent">
         <FlickeringHtmlEffect
           classStyles={"h-full flex flex-col justify-between space-y-1 "}
           styles={{ height: "calc(100vh - 9.26rem)" }}
@@ -62,23 +59,13 @@ export const UiInfo = () => {
           <div className="w-48 h-24">
             <CorpLogoPanel />
           </div>
-          <BasicPanelWrapper styles="hover:bg-uilines" augUi={`border tl-clip br-clip --aug-border-bg`}>
-            <button
-              className=" orbitron w-full h-8 text-base text-uitext text-center cursor-pointer hover:text-neutral-900"
-              onClick={() => updateStoreProperty("showSettingsModal", true)}
-            >
-              Settings
-            </button>
-          </BasicPanelWrapper>
-          <BasicPanelWrapper styles="hover:bg-uilines"  augUi={`border tl-clip br-clip --aug-border-bg`}>
-            <button
-              className=" orbitron w-full h-8 text-base text-uitext text-center cursor-pointer hover:text-neutral-900"
-              onClick={() => useGameStore.getState().setMapAnimationState('shrinking')}
-            >
-              New World
-            </button>
-          </BasicPanelWrapper>
+          <BigButtons
+            text="Settings"
+            onClick={() => updateStoreProperty("showSettingsModal", true)}
+          />
+          <FlyToNewWorld />
           <SystemControls />
+          <CostsPanel />
           <EmptyGrowPanel />
           <SimpleWarningLines size="h-16" />
         </FlickeringHtmlEffect>
@@ -102,12 +89,8 @@ export const UiInfo = () => {
           <SimpleWarningLines size="h-16" />
         </FlickeringHtmlEffect>
       </div>
-      <div
-        className="absolute bottom-0 w-full flex justify-start items-end gap-1 bg-transparent"
-      >
-        <FlickeringHtmlEffect
-          classStyles="w-full flex flex-none space-x-1"
-        >
+      <div className="absolute bottom-0 w-full flex justify-start items-end gap-1 bg-transparent">
+        <FlickeringHtmlEffect classStyles="w-full flex flex-none space-x-1">
           <EventsPanel />
           <LogsPanel />
           <BeaconsInfo />

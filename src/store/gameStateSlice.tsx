@@ -18,6 +18,10 @@ export interface CollectedResources {
   [key: string]: number;
 }
 
+export interface CostsT {
+  [key: string]: { name: string; value: number, valueAlt?: string };
+}
+
 export interface GameStateSlice {
   disableAnimations: boolean;
   disableSounds: boolean;
@@ -39,6 +43,8 @@ export interface GameStateSlice {
   moveDirection: Offset;
   dynamicSpeed: number;
   playerPoints: number;
+  decreasePlayerPoints: (points: number) => void;
+  
   collectedResources: CollectedResources;
   message: string;
   logs: string[];
@@ -47,6 +53,7 @@ export interface GameStateSlice {
   canPlaceBeacon: boolean;
   activePosition: { x: number; y: number; z: number };
   weatherCondition: WeatherCondition;
+  costs: CostsT;
   updateWeather: () => WeatherCondition | null;
   updateStoreProperty: (paramName: string, value: unknown) => void;
   updateVariableInLocalStorage: (variableName: string, value: boolean) => void;
@@ -58,8 +65,6 @@ export interface GameStateSlice {
   addEventLog: (eventName: string) => void;
   removeFirstEventLog: () => void;
 }
-
-
 
 export const createGameStateSlice: StateCreator<
   GameStoreState,
@@ -93,6 +98,13 @@ export const createGameStateSlice: StateCreator<
   dynamicSpeed: 1,
 
   playerPoints: 1000,
+
+  decreasePlayerPoints: (points: number) => {
+    set((state) => {
+      return { playerPoints: state.playerPoints - points };
+    });
+  },
+
   collectedResources: {
     Water: 0,
     Metals: 0,
@@ -106,6 +118,14 @@ export const createGameStateSlice: StateCreator<
   canPlaceBeacon: false,
   activePosition: { x: 0, y: 0, z: 0 },
   weatherCondition: "mild",
+
+  costs: {
+    scanning: { name: "Scanning per sec", value: 50 },
+    flyToNewWorld: { name: "Fly to new world", value: 10000 },
+    placeBeacon: { name: "Place beacon", value: 100 },
+    extendBeaconLimits: { name: "Extend beacon limits", value: 1000 },
+  },
+
   updateWeather: (): WeatherCondition | null => {
     const newWeather = generateWeather();
     if (newWeather === get().weatherCondition) {

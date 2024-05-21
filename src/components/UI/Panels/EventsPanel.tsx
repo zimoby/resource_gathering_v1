@@ -1,5 +1,5 @@
-import { useGameStore } from "../../store";
-import { BasicPanelWrapper } from "./BasicPanelWrapper";
+import { useGameStore } from "../../../store";
+import { BasicPanelWrapper } from "../BasicPanelWrapper";
 
 export const EventsPanel = () => {
   const opacity = useGameStore((state) => state.uiPanelsState.eventsPanel.opacity);

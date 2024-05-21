@@ -1,9 +1,9 @@
 import { Billboard, Html } from "@react-three/drei";
 import { WarningBlock } from "./warningBlock";
-import { useGameStore } from "../../store";
-import { SystemMessagePanelAlt } from "./SystemMessagePanel";
-import { LevelsIndicators } from "./levelsIndicators";
-import { FlickeringHtmlEffect } from "../../effects/AppearingUiEffectWrapper";
+import { useGameStore } from "../../../store";
+import { SystemMessagePanelAlt } from "../SystemMessagePanel";
+import { LevelsIndicators } from "../levelsIndicators";
+import { FlickeringHtmlEffect } from "../../../effects/AppearingUiEffectWrapper";
 
 export const CenterScreenPanel = () => {
   const showSettingsModal = useGameStore((state) => state.showSettingsModal);

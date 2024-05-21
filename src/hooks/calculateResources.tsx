@@ -5,14 +5,11 @@ import { resourceTypes } from "../store/worldParamsSlice";
 export const useCalculateResources = () => {
 	const canPlaceBeacon = useGameStore((state) => state.canPlaceBeacon);
   const addEventLog = useGameStore((state) => state.addEventLog);
+  const costs = useGameStore((state) => state.costs);
 	
   useEffect(() => {
     const interval = setInterval(() => {
       useGameStore.setState((state) => {
-
-        let newPlayerPoints =
-          state.playerPoints +
-          state.beacons.reduce((total, beacon) => total + resourceTypes[beacon.resource].score, 0);
 
         const newCollectedResources = { ...state.collectedResources };
         state.beacons.forEach((beacon) => {
@@ -23,20 +20,35 @@ export const useCalculateResources = () => {
           }
         });
 
-        if (canPlaceBeacon && state.playerPoints >= 50) {
-          newPlayerPoints -= 50;
-          addEventLog("Scanning. -50 points");
+        return {
+          collectedResources: newCollectedResources,
+        };
+      });
+    }, 1000);
+
+    const intervalUpdate = setInterval(() => {
+      useGameStore.setState((state) => {
+
+        let newPlayerPoints =
+          state.playerPoints +
+          state.beacons.reduce((total, beacon) => total + resourceTypes[beacon.resource].score, 0);
+
+        if (canPlaceBeacon && state.playerPoints >= costs.scanning.value) {
+          newPlayerPoints -= costs.scanning.value;
+          addEventLog(`Scanning. -${costs.scanning.value} points`);
+        } else if ( state.playerPoints < costs.scanning.value && canPlaceBeacon) {
+          useGameStore.setState({ message: `Not enough points to scan. Need ${costs.scanning.value} points.`})
         }
 
         return {
           playerPoints: newPlayerPoints,
-          collectedResources: newCollectedResources,
         };
       });
     }, 1000);
 
     return () => {
       clearInterval(interval);
+      clearInterval(intervalUpdate);
     };
-  }, [addEventLog, canPlaceBeacon]);
+  }, [addEventLog, canPlaceBeacon, costs.scanning.value]);
 };

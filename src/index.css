@@ -104,6 +104,6 @@ body,
 
 @layer components {
   .list-selecting {
-    @apply w-full bg-transparent hover:bg-uilines hover:text-neutral-900 hover:pl-0;
+    @apply w-full bg-transparent hover:bg-uilines hover:text-neutral-900 hover:pl-0 cursor-pointer;
   }
 }

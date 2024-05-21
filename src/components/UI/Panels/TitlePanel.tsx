@@ -1,4 +1,4 @@
-import { useGameStore } from "../../store";
+import { useGameStore } from "../../../store";
 
 export const TitlePanel = () => {
   const uiPanelsState = useGameStore((state) => state.uiPanelsState);
