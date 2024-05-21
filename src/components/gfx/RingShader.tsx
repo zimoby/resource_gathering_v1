@@ -1,7 +1,7 @@
 import { useMemo, useRef } from "react";
 import { ShaderMaterial, DoubleSide, Color, PlaneGeometry, Mesh, Vector3, Euler } from "three";
 import { useFrame } from "@react-three/fiber";
-import { useGameStore } from "../../store";
+import { useGameStore } from "../../store/store";
 
 const vertexShader = `
   varying vec2 vUv;

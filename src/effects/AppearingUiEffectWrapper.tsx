@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { useGameStore } from '../store';
+import { useGameStore } from '../store/store';
 
 interface FlickeringHtmlEffectProps {
   children: React.ReactNode;

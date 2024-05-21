@@ -1,6 +1,6 @@
 import { RefObject, useCallback, useEffect, useRef } from "react";
 import { Camera, Mesh, Raycaster, Vector2 } from "three";
-import { useGameStore } from "../store";
+import { useGameStore } from "../store/store";
 import { ResourceType } from "../store/worldParamsSlice";
 import { debounce, throttle } from "lodash";
 import { useProcessBeacons } from "../components/beacons/beaconUtils";

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { PhrasesCollection } from "./PhrasesCollection";
-import { useGameStore } from "../../store";
+import { useGameStore } from "../../store/store";
 import { educationalStepsPhrases } from "./educationalStepsPhrases";
 
 interface PhraseSystemOptions {

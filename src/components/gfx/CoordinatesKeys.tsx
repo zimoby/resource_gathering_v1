@@ -1,5 +1,5 @@
 import { Text } from "@react-three/drei";
-import { useGameStore } from "../../store";
+import { useGameStore } from "../../store/store";
 import { FadingEffect } from "../../effects/FadingEffectWrapper";
 import { ChunkName } from "./chunkText";
 

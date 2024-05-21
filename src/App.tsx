@@ -3,7 +3,7 @@ import { UiInfo } from "./components/UI/uiInfo";
 import { useInitInfo } from "./hooks/initInfo";
 import { useGameLoop } from "./hooks/GameLoop";
 import { GameCanvas } from "./Scene/GameCanvas";
-import { useGameStore } from "./store";
+import { useGameStore } from "./store/store";
 import StartScreen from "./Scene/startScreen";
 
 import gsap from 'gsap';

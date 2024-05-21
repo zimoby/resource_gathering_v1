@@ -1,6 +1,6 @@
 import { StateCreator } from "zustand";
 import { generateArtefacts, generateRandomColor, generateWorld } from "../utils/generators";
-import { GameStoreState } from "../store";
+import { GameStoreState } from "./store";
 import { Color } from "three";
 
 export const minLevel = -10;

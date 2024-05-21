@@ -1,8 +1,7 @@
-import { useFrame } from '@react-three/fiber';
+import { extend, useFrame } from '@react-three/fiber';
 import { useRef } from 'react';
 import { Mesh, PlaneGeometry, ShaderMaterial } from 'three';
-import { useGameStore } from "../../store";
-import { extend } from 'lodash';
+import { useGameStore } from "../../store/store";
 
 const terrainVertexShader = `
   uniform float width;

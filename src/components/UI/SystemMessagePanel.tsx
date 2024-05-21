@@ -1,5 +1,5 @@
 import TypingText from "../../effects/TextEffectsWrapper";
-import { useGameStore } from "../../store";
+import { useGameStore } from "../../store/store";
 import { BasicPanelWrapper } from "./BasicPanelWrapper";
 
 export const SystemMessagePanel = () => {

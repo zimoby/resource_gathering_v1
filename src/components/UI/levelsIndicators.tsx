@@ -1,4 +1,4 @@
-import { useGameStore } from "../../store";
+import { useGameStore } from "../../store/store";
 import { maxLevel, minLevel } from "../../store/worldParamsSlice";
 
 export const LevelsIndicators = () => {

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef } from "react";
 import { DoubleSide, Color, Vector2, PlaneGeometry, ShaderMaterial, Mesh } from "three";
-import { useGameStore } from "../../store";
+import { useGameStore } from "../../store/store";
 
 const vertexShader = `
   varying vec2 vUv;

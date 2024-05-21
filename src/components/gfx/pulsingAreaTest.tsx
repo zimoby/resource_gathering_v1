@@ -2,7 +2,7 @@ import { shaderMaterial } from "@react-three/drei";
 import { Object3DNode, extend, useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import { Color, DoubleSide, Mesh, PlaneGeometry, ShaderMaterial, Vector3 } from "three";
-import { useGameStore } from "../../store";
+import { useGameStore } from "../../store/store";
 
 interface PulsingShaderMaterialUniforms {
   uTime: number;

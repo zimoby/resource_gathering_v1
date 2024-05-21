@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useGameStore } from "../../../store";
+import { useGameStore } from "../../../store/store";
 import { BasicPanelWrapper } from "../BasicPanelWrapper";
 import { convertChunkCoordinateToName } from "../../../utils/functions";
 

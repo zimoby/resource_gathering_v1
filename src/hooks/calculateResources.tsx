@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useGameStore } from "../store";
+import { useGameStore } from "../store/store";
 import { resourceTypes } from "../store/worldParamsSlice";
 
 export const useCalculateResources = () => {

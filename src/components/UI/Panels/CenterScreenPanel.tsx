@@ -1,6 +1,6 @@
 import { Billboard, Html } from "@react-three/drei";
 import { WarningBlock } from "./warningBlock";
-import { useGameStore } from "../../../store";
+import { useGameStore } from "../../../store/store";
 import { SystemMessagePanelAlt } from "../SystemMessagePanel";
 import { LevelsIndicators } from "../levelsIndicators";
 import { FlickeringHtmlEffect } from "../../../effects/AppearingUiEffectWrapper";

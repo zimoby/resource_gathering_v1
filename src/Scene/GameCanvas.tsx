@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stats } from "@react-three/drei";
 import { FlickeringEffect } from "../effects/FlickeringEffectWrapper";
-import { useGameStore } from "../store";
+import { useGameStore } from "../store/store";
 import { ChunkGrid } from "../components/gfx/ChunkGrid";
 import { CoordinatesKeys } from "../components/gfx/CoordinatesKeys";
 import { PulsingCircle } from "../components/gfx/PulsingCircle";

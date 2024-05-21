@@ -1,5 +1,5 @@
 import { Plane } from "@react-three/drei";
-import { useGameStore } from "../../store";
+import { useGameStore } from "../../store/store";
 import { DoubleSide, Euler, Vector3 } from "three";
 import { useMemo } from "react";
 import { FlickeringEffect } from "../../effects/FlickeringEffectWrapper";

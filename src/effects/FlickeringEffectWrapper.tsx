@@ -2,7 +2,7 @@ import { useEffect, useRef, ReactNode } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Group } from "three";
 import { useAppearingGlitchingEffect } from "./AppearingGlitchingEffect";
-import { useGameStore } from "../store";
+import { useGameStore } from "../store/store";
 
 interface FlickeringEffectProps {
   children: ReactNode;

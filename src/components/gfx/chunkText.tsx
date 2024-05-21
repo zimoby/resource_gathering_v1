@@ -1,7 +1,7 @@
 import { Text } from "@react-three/drei";
 import { convertChunkCoordinateToName } from "../../utils/functions";
 import { useMemo } from "react";
-import { useGameStore } from "../../store";
+import { useGameStore } from "../../store/store";
 
 const lightColor = "#afafaf";
 

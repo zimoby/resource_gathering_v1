@@ -5,7 +5,7 @@ import {
   ShaderMaterial,
   Mesh
 } from "three";
-import { useGameStore } from "../../store";
+import { useGameStore } from "../../store/store";
 import { useFrame } from "@react-three/fiber";
 import { useCalculateDeltas, useUpdateMapMoving } from "../../utils/functions";
 import { useIncreasingSpeed } from "../../effects/IncreaseSceneSpeed";

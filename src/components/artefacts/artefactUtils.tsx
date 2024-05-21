@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useGameStore } from "../../store";
+import { useGameStore } from "../../store/store";
 import { ArtefactT } from "../../store/worldParamsSlice";
 
 const getArtefactInRadius = (visibleArtefacts: ArtefactT[], position: { x: number; y: number }) => {

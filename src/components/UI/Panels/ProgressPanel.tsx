@@ -1,4 +1,4 @@
-import { useGameStore } from "../../../store";
+import { useGameStore } from "../../../store/store";
 
 export const ProgressBlock = () => {
   const playerPoints = useGameStore((state) => state.playerPoints);

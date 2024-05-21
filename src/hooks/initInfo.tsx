@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useGameStore } from "../store";
+import { useGameStore } from "../store/store";
 
 export const useInitInfo = () => {
 	const firstStart = useGameStore((state) => state.firstStart);

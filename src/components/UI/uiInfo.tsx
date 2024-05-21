@@ -1,4 +1,4 @@
-import { useGameStore } from "../../store";
+import { useGameStore } from "../../store/store";
 import { BeaconsInfo } from "../beacons/BeaconsInfo";
 
 import { SystemControls } from "./controlsUI/planetControls";

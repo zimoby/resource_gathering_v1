@@ -1,4 +1,4 @@
-import { useGameStore } from "../../store";
+import { useGameStore } from "../../store/store";
 import { convertChunkCoordinateToName } from "../../utils/functions";
 import { BasicPanelWrapper } from "../UI/BasicPanelWrapper";
 import { artefactAmount } from "../../store/worldParamsSlice";

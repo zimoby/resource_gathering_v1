@@ -1,4 +1,4 @@
-import { useGameStore } from "../../store";
+import { useGameStore } from "../../store/store";
 
 import "./linearAnimation.css";
 import { BigButtons } from "./BigButtons";

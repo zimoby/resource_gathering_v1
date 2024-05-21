@@ -1,7 +1,7 @@
 import { Billboard, Float, Html, Sphere } from "@react-three/drei";
 import { useRef, useState } from "react";
 import { Group, Mesh } from "three";
-import { useGameStore } from "../../store";
+import { useGameStore } from "../../store/store";
 import { useFrame } from "@react-three/fiber";
 import TypingText from "../../effects/TextEffectsWrapper";
 import usePhraseSystem from "./usePhraseSystem";

@@ -1,5 +1,5 @@
 import { FlickeringEffect } from "../../effects/FlickeringEffectWrapper";
-import { useGameStore } from "../../store";
+import { useGameStore } from "../../store/store";
 import { LinearGridShader } from "./LinearGridShader1";
 
 const rulerGridY = 50;

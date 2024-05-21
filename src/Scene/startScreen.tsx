@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { corpLogoSvg } from "../assets/CorpLogo";
-import { useGameStore } from "../store";
+import { useGameStore } from "../store/store";
 import { useCheckVariableRender } from "../utils/functions";
 import { ToggleButton } from "../components/UI/ToggleButton";
 import { Howl } from "howler";

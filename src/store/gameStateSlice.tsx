@@ -1,5 +1,5 @@
 import { StateCreator } from "zustand";
-import { GameStoreState } from "../store";
+import { GameStoreState } from "./store";
 import { ResourceType } from "./worldParamsSlice";
 import { generateWeather } from "../utils/generators";
 import { WeatherCondition } from "./worldParamsSlice";

@@ -1,11 +1,6 @@
-import { useGameStore } from "../../../store";
+import { useGameStore } from "../../../store/store";
+import { numberSimplified } from "../../../utils/functions";
 import { BasicPanelWrapper } from "../BasicPanelWrapper";
-
-const numberSimplified = (number: number) => {
-  if (number < 1000) return number;
-  if (number < 1000000) return `${(number / 1000).toFixed(1)}k`;
-  return `${(number / 1000000).toFixed(1)}M`;
-}
 
 export const CollectedResourcesPanel = () => {
   const opacity = useGameStore((state) => state.uiPanelsState.collectedResourcesPanel.opacity);

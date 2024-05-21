@@ -1,5 +1,5 @@
 import { SliderWithInput, CheckBox } from "./uiLibrary";
-import { useGameStore } from "../../../store";
+import { useGameStore } from "../../../store/store";
 import { BasicPanelWrapper } from "../BasicPanelWrapper";
 
 export const SystemControls = () => {

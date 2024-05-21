@@ -1,5 +1,5 @@
 import { StateCreator } from "zustand";
-import { GameStoreState } from "../store";
+import { GameStoreState } from "./store";
 
 type UiPanelsStateType = {
   opacity: number;

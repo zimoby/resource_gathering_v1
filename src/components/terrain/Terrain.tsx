@@ -8,7 +8,7 @@ import {
   BufferAttribute,
   Mesh
 } from "three";
-import { useGameStore } from "../../store";
+import { useGameStore } from "../../store/store";
 import { useKeyboardControls } from "../../hooks/intereaction";
 import { useCanvasHover } from "../../hooks/intereaction";
 import { generateTerrain } from "./generateTerrain";

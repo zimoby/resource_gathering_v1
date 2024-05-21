@@ -1,4 +1,4 @@
-import { useGameStore } from "../../store";
+import { useGameStore } from "../../store/store";
 import { Cylinder, Sphere } from "@react-three/drei";
 import { ConcentricCirclesAnimation } from "../gfx/concentricCircles";
 import { useFrame } from "@react-three/fiber";

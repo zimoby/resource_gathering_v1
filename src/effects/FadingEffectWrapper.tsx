@@ -2,7 +2,7 @@ import React, { useRef, useEffect, ReactNode } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Group, Material, Mesh } from "three";
 import { useAppearingGlitchingEffect } from "./AppearingGlitchingEffect";
-import { useGameStore } from "../store";
+import { useGameStore } from "../store/store";
 
 interface FadingEffectProps {
   children: ReactNode;

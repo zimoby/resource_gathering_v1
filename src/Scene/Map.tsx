@@ -1,5 +1,5 @@
 import { useFrame } from "@react-three/fiber";
-import { useGameStore } from "../store";
+import { useGameStore } from "../store/store";
 import { BeaconGroup } from "../components/beacons/BeaconGroup";
 import { Terrain } from "../components/terrain/Terrain";
 import { BasicGridShader } from "../components/gfx/BasicGridShader";

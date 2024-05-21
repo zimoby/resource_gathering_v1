@@ -1,6 +1,6 @@
 import { RefObject, useEffect } from "react";
 import { Group } from "three";
-import { useGameStore } from "../store";
+import { useGameStore } from "../store/store";
 
 export const useAppearingGlitchingEffect = ({
   disabled = false,

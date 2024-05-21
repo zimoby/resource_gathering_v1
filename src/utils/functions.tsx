@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useGameStore, DEV_MODE } from "../store";
+import { useGameStore, DEV_MODE } from "../store/store";
 import { ChunkType } from "../store/gameStateSlice";
 
 export const consoleLog = (message: string, data?: object) => {
@@ -98,3 +98,10 @@ export const useUpdateMapMoving = () => {
 
   return { updateLocationAndOffset };
 };
+
+export const numberSimplified = (number: number) => {
+  if (number < 1000) return number;
+  if (number < 1000000) return `${(number / 1000).toFixed(1)}k`;
+  return `${(number / 1000000).toFixed(1)}M`;
+};
+
