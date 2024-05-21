@@ -17,7 +17,6 @@ export const CollectedAftefacts = () => {
 						className="h-24 w-24 p-3 flex flex-col space-y-2 text-center justify-center items-center hover:bg-uilines hover:text-neutral-900 cursor-pointer"
 						onClick={() => useGameStore.setState({ message: `Collected Artefacts: ${key}: ${artefactsCollectedByTypes[key]}` })}
 					>
-            {/* <div className=" text-5xl leading-3">+</div> */}
 						{key === "usual" && <div className=" text-4xl leading-3 my-3">🍆</div>}
 						{key === "rare" && <div className=" text-4xl leading-3 my-3">🍅</div>}
 						{key === "legendary" && <div className=" text-4xl leading-3 my-3">🍊</div>}
@@ -25,11 +24,6 @@ export const CollectedAftefacts = () => {
             <div className=" text-xs leading-3">{(artefactsCollectedByTypes[key])}</div>
 					</div>
 				))}
-        {/* {artefactsCollectedByTypes.map((artefact, index) => (
-          <div key={index}>
-            {artefact.name} - {artefact.amount}
-          </div>
-        ))} */}
       </div>
     </BasicPanelWrapper>
   );
