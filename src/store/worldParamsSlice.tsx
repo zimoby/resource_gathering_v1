@@ -79,6 +79,10 @@ export interface ResourceTypesT {
   [key: string]: Resource;
 }
 
+export interface ArtefactsCollectedT {
+  [key: string]: number;
+}
+
 export const resourceTypes: ResourceTypesT = {
   Water: {
     color: new Color(16777215), // white
@@ -132,11 +136,13 @@ export interface WorldParamsSlice {
   beaconsLimit: number;
 
   artefacts: ArtefactT[];
+  artefactsCollectedByTypes: ArtefactsCollectedT;
   artefactSelected: string;
   terrainColors: TerrainTypesT;
 
   regenerateWorld: () => void;
   increaseBeconsLimit: () => void;
+  addArtefactToCollection: (type: ArtefactType) => void;
 }
 
 export const artefactAmount = 10;
@@ -149,7 +155,6 @@ export const createWorldParamsSlice: StateCreator<GameStoreState, [], [], WorldP
 
   increaseBeconsLimit: () => {
     set((state) => {
-      console.log("state.beaconsLimit", state.beaconsLimit);
       if (state.playerPoints >= state.costs.extendBeaconLimits.value) {
         return {
           beaconsLimit: state.beaconsLimit + 1,
@@ -158,7 +163,7 @@ export const createWorldParamsSlice: StateCreator<GameStoreState, [], [], WorldP
         };
       } else {
         return {
-          message: `Not enough points to increase beacons limit`,
+          message: `Not enough energy to increase beacons limit`,
         };
       }
     });
@@ -166,6 +171,23 @@ export const createWorldParamsSlice: StateCreator<GameStoreState, [], [], WorldP
 
   artefacts: generateArtefacts({ amount: artefactAmount }),
   artefactSelected: "",
+  artefactsCollectedByTypes: {
+    usual: 0,
+    rare: 0,
+    legendary: 0,
+  },
+
+  addArtefactToCollection: (type: ArtefactType) => {
+    set((state) => {
+      return {
+        artefactsCollectedByTypes: {
+          ...state.artefactsCollectedByTypes,
+          [type]: state.artefactsCollectedByTypes[type] + 1,
+        },
+      };
+    });
+  },
+
   terrainColors: terrainTypes,
 
   worldParams: generateWorld(),

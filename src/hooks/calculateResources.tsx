@@ -35,9 +35,9 @@ export const useCalculateResources = () => {
 
         if (canPlaceBeacon && state.playerPoints >= costs.scanning.value) {
           newPlayerPoints -= costs.scanning.value;
-          addEventLog(`Scanning. -${costs.scanning.value} points`);
+          addEventLog(`Scanning. -${costs.scanning.value} energy`);
         } else if ( state.playerPoints < costs.scanning.value && canPlaceBeacon) {
-          useGameStore.setState({ message: `Not enough points to scan. Need ${costs.scanning.value} points.`})
+          useGameStore.setState({ message: `Not enough energy to scan. Need ${costs.scanning.value} energy`})
         }
 
         return {

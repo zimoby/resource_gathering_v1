@@ -16,7 +16,7 @@ export const FlyToNewWorld = () => {
       useGameStore.getState().setMapAnimationState("shrinking");
     } else {
       useGameStore.setState({
-        message: `Not enough points to move to the new world. Need ${costs.flyToNewWorld.value} points`,
+        message: `Not enough energy to move to the new world. Need ${costs.flyToNewWorld.value} energy`,
       });
     }
   }, [costs, decreasePlayerPoints, playerPoints]);

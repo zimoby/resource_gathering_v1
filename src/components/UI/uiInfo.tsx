@@ -21,6 +21,7 @@ import { EmptyGrowPanel } from "../gfx/EmptyPanel";
 import { BigButtons } from "./BigButtons";
 import { CostsPanel } from "./Panels/CostsPanel";
 import { FlyToNewWorld } from "./FlyToNewWorldButton";
+import { CollectedAftefacts } from "./Panels/CollectedAftefacts";
 
 export const UiInfo = () => {
   const animationFirstStage = useGameStore((state) => state.animationFirstStage);
@@ -95,6 +96,7 @@ export const UiInfo = () => {
           <LogsPanel />
           <BeaconsInfo />
           <ArtefactsInfo />
+          <CollectedAftefacts />
           <SimpleWarningLines />
         </FlickeringHtmlEffect>
       </div>

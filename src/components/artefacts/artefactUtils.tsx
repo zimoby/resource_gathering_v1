@@ -15,6 +15,7 @@ export const useProcessArtefacts = () => {
   const addLog = useGameStore((state) => state.addLog);
   const artefacts = useGameStore((state) => state.artefacts);
   const { width, depth } = useGameStore((state) => state.mapParams);
+  const addArtefactToCollection = useGameStore((state) => state.addArtefactToCollection);
 
   const takeArtefact = useCallback(
     ({ artefactId }: { artefactId: string }) => {
@@ -26,9 +27,10 @@ export const useProcessArtefacts = () => {
         });
         useGameStore.setState({ message: `Artefact taken` });
         addLog(`Artefact taken`);
+        addArtefactToCollection(artefact.type);
       }
     },
-    [addLog, artefacts]
+    [addArtefactToCollection, addLog, artefacts]
   );
 
   const checkArtefactInRadius = useCallback(
