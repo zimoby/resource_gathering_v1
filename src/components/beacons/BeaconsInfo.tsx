@@ -19,7 +19,7 @@ export const BeaconsInfo = () => {
         {beacons.length === 0 && "No beacons"}
         {beacons.length === beaconsLimit && (
           <button
-            className="w-fit px-2 mb-1 flex justify-center items-center bg-uilines text-neutral-900 text-center h-5 hover:bg-orange-500 cursor-pointer"
+            className="w-48 px-2 mb-1 flex leading-4 justify-center items-center bg-uilines text-neutral-900 text-center h-5 hover:bg-orange-500 cursor-pointer"
             onClick={increaseBeconsLimit}
           >
             + Extend beacons limit +
