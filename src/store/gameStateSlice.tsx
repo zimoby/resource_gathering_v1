@@ -1,8 +1,9 @@
 import { StateCreator } from "zustand";
 import { GameStoreState } from "./store";
-import { ResourceType } from "./worldParamsSlice";
+import { ResourceType, resourceTypes } from "./worldParamsSlice";
 import { generateWeather } from "../utils/generators";
 import { WeatherCondition } from "./worldParamsSlice";
+import { consoleLog } from "../utils/functions";
 
 export interface Offset {
   x: number;
@@ -45,6 +46,7 @@ export interface GameStateSlice {
   playerPoints: number;
   decreasePlayerPoints: (points: number) => void;
   
+  updateResourcesAndPoints: () => void;
   collectedResources: CollectedResources;
   message: string;
   logs: string[];
@@ -111,6 +113,35 @@ export const createGameStateSlice: StateCreator<
     "Rare Elements": 0,
     Hydrocarbons: 0,
   },
+
+  updateResourcesAndPoints: () => {
+    const { beacons, collectedResources, playerPoints, canPlaceBeacon, costs, addEventLog } = get();
+  
+    const newCollectedResources = beacons.reduce((resources, beacon) => {
+      resources[beacon.resource] = (resources[beacon.resource] || 0) + 1;
+      return resources;
+    }, { ...collectedResources });
+
+    const pointsEarned = beacons.reduce((total, beacon) => total + resourceTypes[beacon.resource].score, 0);
+    let newPlayerPoints = playerPoints + pointsEarned;
+  
+    let message = "";
+    if (canPlaceBeacon) {
+      if (newPlayerPoints >= costs.scanning.value) {
+        newPlayerPoints -= costs.scanning.value;
+        addEventLog(`Scanning. -${costs.scanning.value} energy`);
+      } else {
+        message = `Not enough energy to scan. Need ${costs.scanning.value} energy`;
+      }
+    }
+
+    set({
+      collectedResources: newCollectedResources,
+      playerPoints: newPlayerPoints,
+      message: message
+    });
+  },
+  
   message: "",
   logs: [],
   eventsLog: [],
