@@ -14,6 +14,7 @@ import { Line } from "../components/gfx/Line";
 import { Euler } from "three";
 import { CenterScreenPanel } from "../components/UI/Panels/CenterScreenPanel";
 import { ArtefactsPlanesIndicators } from "../components/artefacts/ArtefactsIndicators";
+// import { Perf } from "r3f-perf";
 
 export const GameCanvas = () => {
   const firstStart = useGameStore((state) => state.firstStart);
@@ -23,7 +24,7 @@ export const GameCanvas = () => {
   return (
     <Canvas flat shadows dpr={[1, 1.5]} gl={{ antialias: false }}>
       <Stats showPanel={2} />
-      {/* <Perf position="top-left" /> */}
+      {/* <Perf position="bottom-left" /> */}
       <SceneSettings />
       <Suspense fallback={null}>
         <group position={[0,0,0]}>
