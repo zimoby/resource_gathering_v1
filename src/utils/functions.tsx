@@ -21,7 +21,7 @@ export const useCheckVariableRender = (
 
 export const useCheckComponentRender = (name: string) => {
   useEffect(() => {
-    console.log(name);
+    console.log("CR: " + name);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 };
