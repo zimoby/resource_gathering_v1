@@ -50,7 +50,7 @@ export const useProcessBeacons = () => {
         return;
       }
 
-      if (playerPoints > costs.placeBeacon.value) {
+      if (playerPoints >= costs.placeBeacon.value) {
         decreasePlayerPoints(costs.placeBeacon.value);
       }
 
