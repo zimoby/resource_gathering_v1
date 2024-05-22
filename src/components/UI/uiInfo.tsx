@@ -50,6 +50,8 @@ export const UiInfo = () => {
           <TitlePanel />
           <ProgressBlock />
           <SinePanel />
+          {/* <EmptyGrowPanel /> */}
+          <SimpleWarningLines size="w-52 h-full" />
         </FlickeringHtmlEffect>
       </div>
       <div className="absolute right-0 top-0 flex justify-between gap-1 bg-transparent">
