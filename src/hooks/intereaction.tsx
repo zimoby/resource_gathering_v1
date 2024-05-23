@@ -4,7 +4,7 @@ import { useGameStore } from "../store/store";
 import { ResourceType } from "../store/worldParamsSlice";
 import { debounce, throttle } from "lodash";
 import { useProcessBeacons } from "../components/beacons/beaconUtils";
-import { getChunkCoordinates, useCheckVariableRender } from "../utils/functions";
+import { getChunkCoordinates } from "../utils/functions";
 import { useProcessArtefacts } from "../components/artefacts/artefactUtils";
 
 const getIntersection = (
@@ -26,34 +26,6 @@ const getIntersection = (
     return [];
   }
 };
-
-// const useMultiKeyControls = () => {
-//   const [activeKeys, setActiveKeys] = useState(new Set());
-
-//   useEffect(() => {
-//       const handleKeyDown = (event) => {
-//           setActiveKeys(prev => new Set(prev.add(event.key)));
-//       };
-
-//       const handleKeyUp = (event) => {
-//           setActiveKeys(prev => {
-//               const newKeys = new Set(prev);
-//               newKeys.delete(event.key);
-//               return newKeys;
-//           });
-//       };
-
-//       window.addEventListener('keydown', handleKeyDown);
-//       window.addEventListener('keyup', handleKeyUp);
-
-//       return () => {
-//           window.removeEventListener('keydown', handleKeyDown);
-//           window.removeEventListener('keyup', handleKeyUp);
-//       };
-//   }, []);
-
-//   return activeKeys;
-// };
 
 const keyToVector: { [key: string]: { x: number; y: number } } = {
   'ArrowUp': { x: 0, y: -1 },
@@ -78,8 +50,6 @@ export const useKeyboardControls = ({
   const canPlaceBeacon = useGameStore((state) => state.canPlaceBeacon);
   const mouseEventRef = useRef<MouseEvent | null>(null);
   const [activeKeys, setActiveKeys] = useState({});
-
-  // useCheckVariableRender(activeKeys, "activeKeys");
 
   const handleMousePosition = useCallback((event: MouseEvent) => {
     mouseEventRef.current = event;
