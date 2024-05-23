@@ -53,14 +53,17 @@ export const Map = () => {
       startAnimation();
       useGameStore.setState({ resetValues: true })
     } else if (mapAnimationState === 'enlarging' && !valueReached.current && valueStarted.current) {
-      useGameStore.setState({ resetValues: false });
+      // useGameStore.setState({ resetValues: false });
       updateMapSize(valueAnimation.value.get());
+      // console.log(valueAnimation.value.get());
     } else if (mapAnimationState === 'enlarging' && valueReached.current) {
       setMapAnimationState('idle');
       valueReachedDecr.current = false;
       valueReached.current = false;
       valueStartedDecr.current = false;
       valueStarted.current = false;
+      // useGameStore.setState({ resetValues: false });
+      // console.log('enlarging finished');
     }
   });
 

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { MutableRefObject, useEffect } from "react";
 import { useGameStore, DEV_MODE } from "../store/store";
 import { ChunkType } from "../store/gameStateSlice";
 
@@ -52,16 +52,30 @@ export const isOutOfBound = (
   return { x: xOutOfBounds, y: yOutOfBounds };
 };
 
+export const useResetOffset = (offset: MutableRefObject<{ x: number; y: number }>) => {
+  const resetValues = useGameStore((state) => state.resetValues);
+
+  useEffect(() => {
+    if (resetValues) {
+      offset.current.x = 0;
+      offset.current.y = 0;
+      useGameStore.setState({ resetValues: false });
+    }
+  }, [resetValues, offset]);
+};
+
 export const useCalculateDeltas = () => {
   const dynamicSpeed = useGameStore((state) => state.dynamicSpeed);
-  const { speed } = useGameStore((state) => state.mapParams);
-  const direction = useGameStore((state) => state.moveDirection);
+  const speed = useGameStore((state) => state.mapParams.speed);
+  const moveDirection = useGameStore((state) => state.moveDirection);
   const invertDirection = useGameStore((state) => state.invertDirection);
 
   const directionXY = invertDirection ? -1 : 1;
 
-  const deltaX = direction.x * directionXY * (speed * dynamicSpeed);
-  const deltaY = direction.y * directionXY * (speed * dynamicSpeed);
+  // consoleLog("speed", speed);
+
+  const deltaX = moveDirection.x * directionXY * (speed * dynamicSpeed);
+  const deltaY = moveDirection.y * directionXY * (speed * dynamicSpeed);
 
   return { deltaX, deltaY };
 };

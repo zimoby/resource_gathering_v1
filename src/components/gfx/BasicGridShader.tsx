@@ -111,6 +111,8 @@ export const BasicGridShader = ({ position = [0,0,0] }: BasicGridShaderProps) =>
       offset.current.y = 0;
     }
 
+    // offset.current.x += deltaX;
+    // offset.current.y += deltaY;
     offset.current.x += deltaX * increasingSpeedRef.current;
     offset.current.y += deltaY * increasingSpeedRef.current;
 

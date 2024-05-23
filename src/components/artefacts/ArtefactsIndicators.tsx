@@ -1,7 +1,7 @@
 import { Plane } from "@react-three/drei";
 import { useGameStore } from "../../store/store";
 import { DoubleSide, Euler, Vector3 } from "three";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { FlickeringEffect } from "../../effects/FlickeringEffectWrapper";
 import { ArtefactT } from "../../store/worldParamsSlice";
 import { RingPlaneShader } from "../gfx/RingShader";
@@ -37,6 +37,16 @@ const calculateOpacity = (
 
   return opacity;
 };
+
+type ArtefactsPlaneIndicatorProps = {
+	config: {
+		size: number;
+		position: Vector3;
+		rotation: Euler;
+		opacity: number;
+	};
+};
+
 
 export const ArtefactsPlanesIndicators: React.FC = () => {
 	const width = useGameStore((state) => state.mapParams.width);
@@ -105,7 +115,7 @@ export const ArtefactsPlanesIndicators: React.FC = () => {
       rotation: new Euler(-Math.PI / 2, 0, Math.PI),
       opacity: memoizedOpacities.artefactTop,
     },
-  ], [depth, width, memoizedOpacities.artefactLeft, memoizedOpacities.artefactBottom, memoizedOpacities.artefactRight, memoizedOpacities.artefactTop]);
+  ], [depth, width, memoizedOpacities]);
 
 
   return (
@@ -118,16 +128,21 @@ export const ArtefactsPlanesIndicators: React.FC = () => {
       />
       <FlickeringEffect appearingOnly={true}>
         {updatedPlanesConfig.map((config, index) => (
-          <Plane key={index} args={[config.size, 3]} position={config.position} rotation={config.rotation}>
-            <meshBasicMaterial
-              side={DoubleSide}
-              color={"#ffffff"}
-              transparent
-              opacity={config.opacity}
-            />
-          </Plane>
+					<ArtefactsPlaneIndicator key={index} config={config} />
         ))}
       </FlickeringEffect>
     </group>
   );
 };
+
+
+const ArtefactsPlaneIndicator: React.FC<ArtefactsPlaneIndicatorProps> = React.memo(({ config }) => (
+	<Plane args={[config.size, 3]} position={config.position} rotation={config.rotation}>
+		<meshBasicMaterial
+			side={DoubleSide}
+			color={"#ffffff"}
+			transparent
+			opacity={config.opacity}
+		/>
+	</Plane>
+));

@@ -15,7 +15,7 @@ import { generateTerrain } from "./generateTerrain";
 
 import { NoiseFunction2D, createNoise2D } from "simplex-noise";
 import seedrandom from "seedrandom";
-import { useCalculateDeltas } from "../../utils/functions";
+import { useCalculateDeltas, useResetOffset } from "../../utils/functions";
 import { useIncreasingSpeed } from "../../effects/IncreaseSceneSpeed";
 
 const generateIndices = (widthCount: number, depthCount: number, indices: Uint16Array) => {
@@ -49,7 +49,7 @@ export const Terrain = () => {
   const activePosition = useGameStore((state) => state.activePosition);
   const playerPoints = useGameStore((state) => state.playerPoints);
   const terrainColors = useGameStore((state) => state.terrainColors);
-  const resetValues = useGameStore((state) => state.resetValues);
+  // const resetValues = useGameStore((state) => state.resetValues);
 
   const widthCount = Math.floor(width / resolution);
   const depthCount = Math.floor(depth / resolution) + 1;
@@ -119,15 +119,13 @@ export const Terrain = () => {
   };
 
   const { deltaX, deltaY } = useCalculateDeltas();
+  useResetOffset(offset);
   const { speedRef: increasingSpeedRef } = useIncreasingSpeed(0, 1, 0.01, 2);
   
   useFrame(() => {
 
-    if (resetValues) {
-      offset.current.x = 0;
-      offset.current.y = 0;
-    }
-
+    // offset.current.x += deltaX;
+    // offset.current.y += deltaY;
     offset.current.x += deltaX * increasingSpeedRef.current;
     offset.current.y += deltaY * increasingSpeedRef.current;
 

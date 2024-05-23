@@ -58,6 +58,8 @@ export const ArtefactsGroup = () => {
       const circleObject = circleRefs.current[index].current;
 
       if (artefactObject) {
+        // artefactObject.position.x -= deltaX;
+        // artefactObject.position.z -= deltaY;
         artefactObject.position.x -= deltaX * increasingSpeedRef.current;
         artefactObject.position.z -= deltaY * increasingSpeedRef.current;
         

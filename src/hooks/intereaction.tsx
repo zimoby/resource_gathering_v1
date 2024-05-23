@@ -51,6 +51,7 @@ export const useKeyboardControls = ({
   const mouseEventRef = useRef<MouseEvent | null>(null);
   const [activeKeys, setActiveKeys] = useState({});
   const moveDirection = useGameStore((state) => state.moveDirection);
+  const animationFirstStage = useGameStore((state) => state.animationFirstStage);
 
   const handleMousePosition = useCallback((event: MouseEvent) => {
     mouseEventRef.current = event;
@@ -58,6 +59,10 @@ export const useKeyboardControls = ({
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
+      // if (!animationFirstStage) { return; }
+
+      // console.log(event.code);
+
       if (keyToVector[event.code]) {
         setActiveKeys((prev) => ({ ...prev, [event.code]: true }));
       }
@@ -121,7 +126,7 @@ export const useKeyboardControls = ({
     ) {
       useGameStore.setState({ moveDirection: newMoveDirection });
     }
-  }, [activeKeys, moveDirection]);
+  }, [activeKeys, animationFirstStage, moveDirection]);
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
@@ -154,6 +159,7 @@ export const useCanvasHover = ({
   const addNewMessage = useGameStore((state) => state.addNewMessage);
   const costs = useGameStore((state) => state.costs);
   const playerPoints = useGameStore((state) => state.playerPoints);
+  const animationFirstStage = useGameStore((state) => state.animationFirstStage);
 
   const throttledSetState = useRef(throttle((state) => {
     useGameStore.setState(state);
@@ -161,6 +167,10 @@ export const useCanvasHover = ({
 
   const handleCanvasHover = useCallback(
     (event: { clientX: number; clientY: number; type: string }) => {
+      if (!animationFirstStage) { return; }
+
+      // console.log(event.type);
+
       if (!canPlaceBeacon || !meshRef.current) {
         if(playerPoints < costs.scanning.value) {
           addNewMessage("Not enough energy to scan");
@@ -224,7 +234,7 @@ export const useCanvasHover = ({
       }
 
     },
-    [canPlaceBeacon, meshRef, raycaster, camera, playerPoints, costs.scanning.value, addNewMessage, resources, width, depth, throttledSetState, checkArtefactInRadius, addBeacon, offsetX, offsetY, takeArtefact]
+    [animationFirstStage, canPlaceBeacon, meshRef, raycaster, camera, resources, width, depth, throttledSetState, checkArtefactInRadius, playerPoints, costs.scanning.value, addNewMessage, addBeacon, offsetX, offsetY, takeArtefact]
   );
 
   useEffect(() => {
