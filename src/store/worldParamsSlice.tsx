@@ -29,6 +29,12 @@ export interface Resource {
   score: number;
 }
 
+export type MapDetailesType = [
+  largeDetailes: number,
+  mediumDetailes: number,
+  smallDetailes: number
+];
+
 export type WorldParamsType = {
   seed: string;
   worldState: WorldState;
@@ -39,6 +45,7 @@ export type WorldParamsType = {
   pollution: number;
   radiation: number;
   weatherCondition: WeatherCondition;
+  mapDetailes: MapDetailesType;
 };
 
 const classicTerrainPalette = {

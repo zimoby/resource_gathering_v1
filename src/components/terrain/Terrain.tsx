@@ -43,6 +43,7 @@ export const Terrain = () => {
   const terrainLoading = useGameStore((state) => state.terrainLoading);
   const { width, depth, resolution, scale, offsetX, offsetY } = useGameStore((state) => state.mapParams);
   const seed = useGameStore((state) => state.worldParams.seed);
+  const mapDetailes = useGameStore((state) => state.worldParams.mapDetailes);
   const canPlaceBeacon = useGameStore((state) => state.canPlaceBeacon);
   const scanRadius = useGameStore((state) => state.scanRadius);
   const activePosition = useGameStore((state) => state.activePosition);
@@ -96,7 +97,8 @@ export const Terrain = () => {
       positions.current,
       widthCount,
       depthCount,
-      terrainColors
+      terrainColors,
+      mapDetailes
     );
 
     colorAttribute.current.array = generatedColors;

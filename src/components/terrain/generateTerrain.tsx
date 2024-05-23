@@ -4,7 +4,7 @@ import {
   Float32BufferAttribute,
   NormalBufferAttributes
 } from "three";
-import { Terrain, TerrainTypesT, minLevel } from "../../store/worldParamsSlice";
+import { MapDetailesType, Terrain, TerrainTypesT, minLevel } from "../../store/worldParamsSlice";
 import { ResourceType } from "../../store/worldParamsSlice";
 import { resourceTypes } from "../../store/worldParamsSlice";
 import { terrainTypes } from "../../store/worldParamsSlice";
@@ -78,12 +78,12 @@ const applyResources = ({ resources, widthCount, depthCount, scale, offsetX, off
 
 };
 
-const generateHeight = (x: number, y: number, scale: number, offsetX: number, offsetY: number, noise2D: NoiseFunction2D, depth: number) => {
+const generateHeight = (x: number, y: number, scale: number, offsetX: number, offsetY: number, noise2D: NoiseFunction2D, depth: number, mapDetailes: MapDetailesType) => {
   const scaleCorrection = scale * 5;
   const depthOffCorrection = depth - 100;
-  const largeScale = noise2D((x + offsetX) / scaleCorrection, (y + offsetY - depthOffCorrection / 2) / scaleCorrection) * 0.5;
-  const mediumScale = noise2D((x + offsetX) / (scaleCorrection * 0.5), (y + offsetY - depthOffCorrection / 2) / (scaleCorrection * 0.5)) * 0.25; 
-  const smallScale = noise2D((x + offsetX) / (scaleCorrection * 0.25), (y + offsetY - depthOffCorrection / 2) / (scaleCorrection * 0.25)) * 0.25;
+  const largeScale = noise2D((x + offsetX) / scaleCorrection, (y + offsetY - depthOffCorrection / 2) / scaleCorrection) * mapDetailes[0]; // 0.5;
+  const mediumScale = noise2D((x + offsetX) / (scaleCorrection * 0.5), (y + offsetY - depthOffCorrection / 2) / (scaleCorrection * 0.5)) * mapDetailes[1]; // 0.25; 
+  const smallScale = noise2D((x + offsetX) / (scaleCorrection * 0.25), (y + offsetY - depthOffCorrection / 2) / (scaleCorrection * 0.25)) * mapDetailes[2] // * 0.25;
 
   const combined = largeScale + mediumScale + smallScale;
 
@@ -114,13 +114,14 @@ export const generateTerrain = (
   positions: Float32Array,
   widthCount: number,
   depthCount: number,
-  terrainColors: TerrainTypesT
+  terrainColors: TerrainTypesT,
+  mapDetailes: MapDetailesType,
 ) => {
 
   for (let i = 0; i <= depthCount; i++) {
     for (let j = 0; j <= widthCount; j++) {
       const x = j * resolution - width / 2;
-      const heightNoise = generateHeight(x, i * resolution, scale, offsetX, offsetY, noise2D, depth);
+      const heightNoise = generateHeight(x, i * resolution, scale, offsetX, offsetY, noise2D, depth, mapDetailes);
       const y = Math.max(heightNoise * heightMultiplier + baseLineOffset, minLevel);
       // const y = Math.max(heightNoise * (heightMultiplier + heightMultiplier / 2) - heightMultiplier / 2, -heightMultiplier);
       const z = i * resolution - depth / 2;

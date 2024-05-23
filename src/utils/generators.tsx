@@ -23,6 +23,11 @@ export const generateWorld = (): WorldParamsType => {
   const radiation = Math.floor(Math.random() * 1000);
   const weatherCondition = generateWeather();
 
+  // min 0.1, max 0.9
+  const largeDetailes = Math.random() * 0.8 + 0.1;
+  const mediumDetailes = Math.random() * 0.8 + 0.1;
+  const smallDetailes = Math.random() * 0.8 + 0.1;
+
   let worldState = "safe";
   if (pollution > 300 || radiation > 300) {
     worldState = "hazardous";
@@ -44,6 +49,11 @@ export const generateWorld = (): WorldParamsType => {
     pollution,
     radiation,
     weatherCondition,
+    mapDetailes: [
+      largeDetailes,
+      mediumDetailes,
+      smallDetailes,
+    ]
   };
 }
 
