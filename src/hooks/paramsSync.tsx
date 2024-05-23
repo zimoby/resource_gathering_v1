@@ -1,6 +1,6 @@
-import { useControls } from "leva";
-import { useEffect } from "react";
-import { useGameStore } from "../store/store";
+// import { useControls } from "leva";
+// import { useEffect } from "react";
+// import { useGameStore } from "../store/store";
 
 export const useParamsSync = () => {
   // const { width, depth, resolution, scale, offsetX, offsetY, speed } = useControls({

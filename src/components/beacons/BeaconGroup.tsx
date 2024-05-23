@@ -3,7 +3,7 @@ import { Cylinder, Sphere } from "@react-three/drei";
 import { ConcentricCirclesAnimation } from "../gfx/concentricCircles";
 import { useFrame } from "@react-three/fiber";
 import { isOutOfBound, useCalculateDeltas } from "../../utils/functions";
-import React, { createRef, useLayoutEffect, useMemo, useRef } from "react";
+import React, { createRef, useMemo } from "react";
 import { BufferGeometry, Group, Shape } from "three";
 import { useIncreasingSpeed } from "../../effects/IncreaseSceneSpeed";
 

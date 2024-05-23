@@ -3,7 +3,7 @@ import { GameStoreState } from "./store";
 import { ResourceType, resourceTypes } from "./worldParamsSlice";
 import { generateWeather } from "../utils/generators";
 import { WeatherCondition } from "./worldParamsSlice";
-import { consoleLog } from "../utils/functions";
+// import { consoleLog } from "../utils/functions";
 
 export interface Offset {
   x: number;
@@ -99,7 +99,7 @@ export const createGameStateSlice: StateCreator<
   moveDirection: { x: 0, y: -1 },
   dynamicSpeed: 1,
 
-  playerPoints: 1000,
+  playerPoints: 10000,
 
   decreasePlayerPoints: (points: number) => {
     set((state) => {

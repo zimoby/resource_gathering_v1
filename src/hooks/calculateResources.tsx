@@ -15,6 +15,6 @@ export const useCalculateResources = () => {
         clearInterval(intervalRef.current);
       }
     };
-  }, []);
+  }, [updateResourcesAndPoints]);
 
 };
