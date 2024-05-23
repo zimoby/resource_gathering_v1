@@ -20,7 +20,7 @@ export const CoordinatesKeys = () => {
           font="/Orbitron-Bold.ttf"
           fontSize={9}
           fontWeight={"bold"}
-          color={(moveDirection.x === -1 && moveDirection.y === 0) && speed > 0 ? redColor : lightColor}
+          color={(moveDirection.x === -1) && speed > 0 ? redColor : lightColor}
           anchorX="left"
           anchorY="top"
         >
@@ -32,7 +32,7 @@ export const CoordinatesKeys = () => {
           font="/Orbitron-Bold.ttf"
           fontSize={10}
           fontWeight={"bold"}
-          color={(moveDirection.x === 1 && moveDirection.y === 0) && speed > 0 ? redColor : lightColor}
+          color={(moveDirection.x === 1) && speed > 0 ? redColor : lightColor}
           anchorX="right"
           anchorY="bottom"
         >
@@ -44,7 +44,7 @@ export const CoordinatesKeys = () => {
           font="/Orbitron-Bold.ttf"
           fontSize={8}
           fontWeight={"bold"}
-          color={(moveDirection.x === 0 && moveDirection.y === -1) && speed > 0 ? redColor : lightColor}
+          color={(moveDirection.y === -1) && speed > 0 ? redColor : lightColor}
           anchorX="left"
           anchorY="top"
         >
@@ -56,7 +56,7 @@ export const CoordinatesKeys = () => {
           font="/Orbitron-Bold.ttf"
           fontSize={11}
           fontWeight={"bold"}
-          color={(moveDirection.x === 0 && moveDirection.y === 1) && speed > 0 ? redColor : lightColor}
+          color={(moveDirection.y === 1) && speed > 0 ? redColor : lightColor}
           anchorX="right"
           anchorY="bottom"
         >
