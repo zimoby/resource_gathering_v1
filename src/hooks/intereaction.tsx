@@ -189,7 +189,7 @@ export const useCanvasHover = ({
             resource,
             currentChunk: getChunkCoordinates(currentPosition.x, currentPosition.y, width),
           });
-          useGameStore.setState({ canPlaceBeacon: false });
+          // useGameStore.setState({ canPlaceBeacon: false });
         }
       }
     },
