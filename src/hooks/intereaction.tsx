@@ -50,6 +50,7 @@ export const useKeyboardControls = ({
   const canPlaceBeacon = useGameStore((state) => state.canPlaceBeacon);
   const mouseEventRef = useRef<MouseEvent | null>(null);
   const [activeKeys, setActiveKeys] = useState({});
+  const moveDirection = useGameStore((state) => state.moveDirection);
 
   const handleMousePosition = useCallback((event: MouseEvent) => {
     mouseEventRef.current = event;
@@ -57,43 +58,37 @@ export const useKeyboardControls = ({
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
-      
       if (keyToVector[event.code]) {
         setActiveKeys((prev) => ({ ...prev, [event.code]: true }));
       }
-    
-      const intersects = getIntersection(
-        mouseEventRef.current || { clientX: 0, clientY: 0 },
-        raycaster,
-        meshRef.current,
-        camera
-      );
 
-      switch (event.code) {
-        case "ShiftLeft":
-        case "ShiftRight":
-          useGameStore.setState({ dynamicSpeed: 3 });
-          break;
-        case "Space":
-          useGameStore.setState({ canPlaceBeacon: true });
+      if (event.code === "Space") {
+        const intersects = getIntersection(
+          { clientX: window.innerWidth / 2, clientY: window.innerHeight / 2 },
+          raycaster,
+          meshRef.current,
+          camera
+        );
 
-          if (intersects.length > 0 && !canPlaceBeacon) {
-            const { point, face } = intersects[0];
-            if (!face) return;
-
+        if (intersects.length > 0 && !canPlaceBeacon) {
+          const { point, face } = intersects[0];
+          if (face) {
             useGameStore.setState({
+              canPlaceBeacon: true,
               activePosition: point,
             });
           }
+        }
+      }
 
-          break;
+      if (event.code === "ShiftLeft" || event.code === "ShiftRight") {
+        useGameStore.setState({ dynamicSpeed: 3 });
       }
     },
     [camera, canPlaceBeacon, meshRef, raycaster]
   );
 
   const handleKeyUp = useCallback((event: KeyboardEvent) => {
-
     setActiveKeys((prev) => {
       const newKeys: { [key: string]: boolean } = { ...prev };
       delete newKeys[event.code];
@@ -112,7 +107,7 @@ export const useKeyboardControls = ({
   }, []);
 
   useEffect(() => {
-    const moveDirection = Object.entries(activeKeys).reduce((acc, [key, active]) => {
+    const newMoveDirection = Object.entries(activeKeys).reduce((acc, [key, active]) => {
       if (active && keyToVector[key]) {
         acc.x += keyToVector[key].x;
         acc.y += keyToVector[key].y;
@@ -120,11 +115,13 @@ export const useKeyboardControls = ({
       return acc;
     }, { x: 0, y: 0 });
 
-    if (moveDirection.x !== 0 || moveDirection.y !== 0) {
-      // console.log("moveDirection", moveDirection);
-      useGameStore.setState({ moveDirection });
+    if (
+      (newMoveDirection.x !== 0 || newMoveDirection.y !== 0) &&
+      (newMoveDirection.x !== moveDirection.x || newMoveDirection.y !== moveDirection.y)
+    ) {
+      useGameStore.setState({ moveDirection: newMoveDirection });
     }
-  }, [activeKeys]);
+  }, [activeKeys, moveDirection]);
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
