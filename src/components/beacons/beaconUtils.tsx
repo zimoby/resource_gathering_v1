@@ -52,9 +52,11 @@ export const useProcessBeacons = () => {
 
       if (playerPoints >= costs.placeBeacon.value) {
         decreasePlayerPoints(costs.placeBeacon.value);
+        addLog(`Beacon placed at ${currentChunk.x}, ${currentChunk.y}`);
+      } else {
+        useGameStore.setState({ message: "Not enough energy to place a beacon." });
+        return;
       }
-
-      addLog(`Beacon placed at ${currentChunk.x}, ${currentChunk.y}`);
 
       useGameStore.setState((state: { beacons: BeaconType[] }) => {
         const newBeacons = [

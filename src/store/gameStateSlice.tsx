@@ -49,6 +49,7 @@ export interface GameStateSlice {
   updateResourcesAndPoints: () => void;
   collectedResources: CollectedResources;
   message: string;
+  addNewMessage: (message: string) => void;
   logs: string[];
   eventsLog: string[];
   scanRadius: number;
@@ -99,7 +100,7 @@ export const createGameStateSlice: StateCreator<
   moveDirection: { x: 0, y: -1 },
   dynamicSpeed: 1,
 
-  playerPoints: 10000,
+  playerPoints: 1000,
 
   decreasePlayerPoints: (points: number) => {
     set((state) => {
@@ -125,24 +126,33 @@ export const createGameStateSlice: StateCreator<
     const pointsEarned = beacons.reduce((total, beacon) => total + resourceTypes[beacon.resource].score, 0);
     let newPlayerPoints = playerPoints + pointsEarned;
   
-    let message = "";
+    // let message = "";
     if (canPlaceBeacon) {
       if (newPlayerPoints >= costs.scanning.value) {
         newPlayerPoints -= costs.scanning.value;
         addEventLog(`Scanning. -${costs.scanning.value} energy`);
       } else {
-        message = `Not enough energy to scan. Need ${costs.scanning.value} energy`;
+        // message = `Not enough energy to scan. Need ${costs.scanning.value} energy`;
       }
     }
 
     set({
       collectedResources: newCollectedResources,
       playerPoints: newPlayerPoints,
-      message: message
+      // message: message
     });
   },
   
   message: "",
+
+  addNewMessage: (message: string) => {
+    if (get().message === message) {
+      return;
+    }
+    set({ message });
+  },
+    
+
   logs: [],
   eventsLog: [],
   scanRadius: 30,
