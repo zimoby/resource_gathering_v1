@@ -29,30 +29,30 @@ export const ScanerParamPanel = () => {
         title: "Current Location:",
         value: Math.round(currentLocation.x) + ":" + Math.round(currentLocation.y),
       },
-      {
-        title: "Active Position:",
-        value:
-          Math.round(activePosition.x) +
-          ":" +
-          Math.round(activePosition.z) +
-          ":" +
-          Math.round(activePosition.y),
-      },
-      {
-        title: "Current Offset:",
-        value: Math.round(currentOffset.x) + ":" + Math.round(currentOffset.y),
-      },
+      // {
+      //   title: "Active Position:",
+      //   value:
+      //     Math.round(activePosition.x) +
+      //     ":" +
+      //     Math.round(activePosition.z) +
+      //     ":" +
+      //     Math.round(activePosition.y),
+      // },
+      // {
+      //   title: "Current Offset:",
+      //   value: Math.round(currentOffset.x) + ":" + Math.round(currentOffset.y),
+      // },
     ];
   }, [
     chunkName,
     selectedResource,
     currentLocation.x,
     currentLocation.y,
-    activePosition.x,
-    activePosition.z,
-    activePosition.y,
-    currentOffset.x,
-    currentOffset.y,
+    // activePosition.x,
+    // activePosition.z,
+    // activePosition.y,
+    // currentOffset.x,
+    // currentOffset.y,
   ]);
 
   return (
