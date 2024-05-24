@@ -8,8 +8,8 @@ export const ScanerParamPanel = () => {
   const selectedChunk = useGameStore((state) => state.selectedChunk);
   const selectedResource = useGameStore((state) => state.selectedResource);
   const currentLocation = useGameStore((state) => state.currentLocation);
-  const currentOffset = useGameStore((state) => state.currentOffset);
-  const activePosition = useGameStore((state) => state.activePosition);
+  // const currentOffset = useGameStore((state) => state.currentOffset);
+  // const activePosition = useGameStore((state) => state.activePosition);
 
   const chunkName = useMemo(() => {
     return convertChunkCoordinateToName(selectedChunk);

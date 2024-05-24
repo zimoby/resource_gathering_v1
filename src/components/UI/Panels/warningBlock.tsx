@@ -17,7 +17,7 @@ export const WarningBlock = () => {
 
   return (
     <>
-      {weather === "severe" && (
+      {weather.toLowerCase() === "severe" && (
         <FlickeringHtmlEffect>
           <div
             className="fixed top-0 w-fit h-14 flex flex-row z-20 animate-pulse aug-border-yellow-500"

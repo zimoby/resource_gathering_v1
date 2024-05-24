@@ -69,7 +69,7 @@ export const Terrain = () => {
     return indicesPrecalc;
   }, [widthCount, depthCount]);
 
-  const noise2D: NoiseFunction2D = useMemo(() => createNoise2D(seedrandom(seed)), [seed]);
+  const noise2D: NoiseFunction2D = useMemo(() => createNoise2D(seedrandom(seed.value)), [seed]);
   
   const raycaster = useRef(new Raycaster());
   const terrainGeometry = useRef(new BufferGeometry());

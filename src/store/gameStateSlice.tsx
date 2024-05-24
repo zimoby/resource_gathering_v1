@@ -158,7 +158,7 @@ export const createGameStateSlice: StateCreator<
   scanRadius: 30,
   canPlaceBeacon: false,
   activePosition: { x: 0, y: 0, z: 0 },
-  weatherCondition: "mild",
+  weatherCondition: "Mild",
 
   costs: {
     scanning: { name: "Scanning per sec", value: 50 },

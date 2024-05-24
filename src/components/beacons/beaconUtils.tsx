@@ -79,7 +79,7 @@ export const useProcessBeacons = () => {
   );
 
   const destroyBeacons = useCallback(() => {
-    if (weatherCondition === "severe") {
+    if (weatherCondition.toLowerCase() === "severe") {
       const destroyPercentage = 0.2;
       const numBeaconsToDestroy = Math.floor(beacons.length * destroyPercentage);
 

@@ -5,11 +5,11 @@ import { WorldParamsType } from "../store/worldParamsSlice";
 export const generateWeather = (): WeatherCondition => {
   const randomValue = Math.random();
   if (randomValue < 0.7) {
-    return "mild";
+    return "Mild";
   } else if (randomValue < 0.9) {
-    return "moderate";
+    return "Moderate";
   } else {
-    return "severe";
+    return "Severe";
   }
 };
 
@@ -28,26 +28,60 @@ export const generateWorld = (): WorldParamsType => {
   const mediumDetailes = Math.random() * 0.8 + 0.1;
   const smallDetailes = Math.random() * 0.8 + 0.1;
 
-  let worldState = "safe";
+  let worldState = "Safe";
   if (pollution > 300 || radiation > 300) {
-    worldState = "hazardous";
+    worldState = "Hazardous";
   } else if (windSpeed > 100) {
-    worldState = "stormy";
+    worldState = "Stormy";
   } else if (temperature > 50 || temperature < -20) {
-    worldState = "extreme temperature";
+    worldState = "Extreme temperature";
   } else if (radiation > 100 || pollution > 100) {
-    worldState = "danger";
+    worldState = "Danger";
   }
 
   return {
-    seed: worldSeed,
-    worldState: worldState as WorldState, 
-    name: worldName,
-    temperature,
-    humidity,
-    windSpeed,
-    pollution,
-    radiation,
+    seed: {
+      value: worldSeed,
+      name: "Seed",
+    },
+    worldState: {
+      name: "World",
+      value: worldState
+    } as WorldState, 
+    name: {
+      value: worldName,
+      name: "Name",
+    },
+    temperature: {
+      name: "Temperature",
+      value: temperature,
+      max: 50,
+      min: -20,
+    },
+    humidity: {
+      name: "Humidity",
+      value:humidity,
+      max: 150,
+      min: -50, 
+    },
+    windSpeed: {
+      name: "Wind Speed",
+      value: windSpeed,
+      max: 100,
+      min: 0,
+    },
+    pollution: {
+      name: "Pollution",
+      value: pollution,
+      max: 100,
+      min: 0,
+    },
+    radiation: {
+      name: "Radiation",
+      value: radiation,
+      max: 100,
+      min: 0,
+    },
     weatherCondition,
     mapDetailes: [
       largeDetailes,

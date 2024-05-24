@@ -8,15 +8,12 @@ export const maxLevel = 20;
 
 export type TerrainType = "water" | "grass" | "dirt" | "snow" | "default";
 export type ResourceType = "Water" | "Metals" | "Rare Elements" | "Hydrocarbons";
-export type WeatherCondition = "mild" | "moderate" | "severe";
-export type WorldState =
-  | "extreme"
-  | "danger"
-  | "normal"
-  | "safe"
-  | "hazardous"
-  | "stormy"
-  | "extreme temperature";
+export type WeatherCondition = "Mild" | "Moderate" | "Severe";
+export type WorldState = {
+  value: "Extreme" | "Danger" | "Normal" | "Safe" | "Hazardous" | "Stormy" | "Extreme temperature";
+  name: string;
+};
+
 
 export interface Terrain {
   color: Color;
@@ -35,15 +32,27 @@ export type MapDetailesType = [
   smallDetailes: number
 ];
 
-export type WorldParamsType = {
-  seed: string;
-  worldState: WorldState;
+export type WorldNumberParamT = {
   name: string;
-  temperature: number;
-  humidity: number;
-  windSpeed: number;
-  pollution: number;
-  radiation: number;
+  value: number;
+  max: number;
+  min: number;
+}
+
+export type WorldStringParamT = {
+  name: string;
+  value: string;
+}
+
+export type WorldParamsType = {
+  seed: WorldStringParamT;
+  worldState: WorldState;
+  name: WorldStringParamT;
+  temperature: WorldNumberParamT;
+  humidity: WorldNumberParamT;
+  windSpeed: WorldNumberParamT;
+  pollution: WorldNumberParamT;
+  radiation: WorldNumberParamT;
   weatherCondition: WeatherCondition;
   mapDetailes: MapDetailesType;
 };
@@ -223,7 +232,7 @@ export const createWorldParamsSlice: StateCreator<GameStoreState, [], [], WorldP
       },
       message: "",
       scanRadius: 30,
-      weatherCondition: "mild",
+      weatherCondition: "Mild",
     });
   },
 });
