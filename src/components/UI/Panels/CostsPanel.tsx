@@ -6,6 +6,7 @@ export const CostsPanel = () => {
   const opacity = useGameStore((state) => state.uiPanelsState.logsPanel.opacity);
   const costs = useGameStore((state) => state.costs);
   const playerPoints = useGameStore((state) => state.playerPoints);
+  const increaseBeconsLimit = useGameStore((state) => state.increaseBeconsLimit);
 
   return (
     <BasicPanelWrapper titleText="Costs:" styles="" opacity={opacity}>
@@ -13,7 +14,12 @@ export const CostsPanel = () => {
         <div
           key={index}
           className={` ${playerPoints < costs[cost].value ? "text-uitext opacity-50 cursor-pointer" : "list-selecting"}  flex flex-row justify-between w-full pr-4`}
-          onClick={() => useGameStore.setState({ message: `Cost: ${costs[cost].name}` })}
+          onClick={() => {
+            if (cost === "extendBeaconLimits") {
+              increaseBeconsLimit();
+            }
+            useGameStore.setState({ message: `Cost: ${costs[cost].name}` })
+          }}
         >
           <div className="w-2/3">
             {costs[cost].name}:
