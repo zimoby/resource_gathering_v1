@@ -164,7 +164,7 @@ export const createGameStateSlice: StateCreator<
     scanning: { name: "Scanning per sec", value: 50 },
     flyToNewWorld: { name: "Fly to new world", value: 10000 },
     placeBeacon: { name: "Place beacon", value: 100 },
-    extendBeaconLimits: { name: "Extend beacon limits", value: 1000 },
+    extendBeaconLimits: { name: "Extend beacons limits", value: 1000 },
   },
 
   updateWeather: (): WeatherCondition | null => {

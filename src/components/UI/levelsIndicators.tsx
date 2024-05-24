@@ -14,34 +14,37 @@ export const LevelsIndicators = () => {
 	const posDepthRange = (activePosition.z * ( 100 / depth )) + 50;
 
   return (
-    <div className="absolute top-2 right-2">
+    <div className="absolute top-2 right-2 mr-1">
 			<div className="flex flex-row gap-2">
-				<div className="flex flex-col space-y-1 justify-center items-center">
-					<p className="text-uitext">X</p>
+				<div className="flex w-3 flex-col space-y-1 justify-center items-center">
+					<p className="text-uitext text-xs">X</p>
 					<div
 						className=" h-28 w-3 border border-uilines"
 						style={{
 							background: `linear-gradient( to top, var(--color-uilines) 0%, var(--color-uilines) ${posWidthRange}%, rgba(255, 255, 255, 0) ${posWidthRange}%)`,
 						}}
 					/>
+					<div className=" font-mono text-center text-2xs text-uitext">{Math.round(activePosition.x)}</div>
 				</div>
-				<div className="flex flex-col space-y-1 justify-center items-center">
-					<p className="text-uitext">Y</p>
+				<div className="flex w-3 flex-col space-y-1 justify-center items-center">
+					<p className="text-uitext text-xs">Y</p>
 					<div
 						className=" h-28 w-3 border border-uilines"
 						style={{
 							background: `linear-gradient( to top, var(--color-uilines) 0%, var(--color-uilines) ${posDepthRange}%, rgba(255, 255, 255, 0) ${posDepthRange}%)`,
 						}}
 					/>
+					<div className=" font-mono text-center text-2xs text-uitext">{Math.round(activePosition.y)}</div>
 				</div>
-				<div className="flex flex-col space-y-1 justify-center items-center">
-					<p className="text-uitext">Z</p>
+				<div className="flex w-3 flex-col space-y-1 justify-center items-center">
+					<p className="text-uitext text-xs">Z</p>
 					<div
 						className=" h-28 w-3 border border-uilines"
 						style={{
 							background: `linear-gradient( to top, var(--color-uilines) 0%, var(--color-uilines) ${posHeightRange}%, rgba(255, 255, 255, 0) ${posHeightRange}%)`,
 						}}
 					/>
+					<div className=" font-mono text-center text-2xs text-uitext">{Math.round(activePosition.z)}</div>
 				</div>
 			</div>
     </div>
