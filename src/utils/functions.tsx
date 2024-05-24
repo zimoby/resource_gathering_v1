@@ -74,8 +74,8 @@ export const useCalculateDeltas = () => {
 
   // consoleLog("speed", speed);
 
-  const deltaX = moveDirection.x * directionXY * (speed * dynamicSpeed);
-  const deltaY = moveDirection.y * directionXY * (speed * dynamicSpeed);
+  const deltaX = moveDirection.x * directionXY * (speed / 10 * dynamicSpeed);
+  const deltaY = moveDirection.y * directionXY * (speed / 10 * dynamicSpeed);
 
   return { deltaX, deltaY };
 };

@@ -84,7 +84,7 @@ export const SliderWithInput = ({ label, value, min = 1, max = 100, step = 1, on
           max={max.toString()}
           step={currentStep.toString()}
           type="number"
-          value={step >= 1 ? localValue.toFixed(0) : localValue.toFixed(2)}
+          value={step >= 1 ? localValue.toFixed(0) : localValue.toFixed(1)}
           onChange={allChange}
           onKeyDown={handleStepChange}
           onKeyUp={handleStepChange}

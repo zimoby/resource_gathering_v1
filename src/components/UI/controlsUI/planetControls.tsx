@@ -34,15 +34,16 @@ export const SystemControls = () => {
           <SliderWithInput
             label="Resolution"
             value={mapResolution}
-            max={10}
+            min={2}
+            max={7}
             onUpdate={(e) => updateMapParam("resolution", e)}
           />
           <SliderWithInput
             label="Speed"
             value={mapSpeed}
             min={0}
-            max={0.5}
-            step={0.01}
+            max={5}
+            step={0.1}
             onUpdate={(e) => updateMapParam("speed", e)}
           />
         </div>

@@ -50,7 +50,7 @@ export const createMapParamsSlice: StateCreator<
     scale: 50,
     offsetX: 0,
     offsetY: 0,
-    speed: 0.1,
+    speed: 1,
   },
   showResources: false,
   mapAnimationState: "idle",
