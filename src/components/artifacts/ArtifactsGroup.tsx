@@ -9,7 +9,7 @@ import { useIncreasingSpeed } from "../../effects/IncreaseSceneSpeed";
 
 const beaconHeight = 10;
 
-const UsualArtefact = () => {
+const UsualArtifact = () => {
   return (
     <Octahedron args={[4, 0]} position={[0, beaconHeight, 0]} scale={[1,2,1]}>
       <meshStandardMaterial  color={"#ffffff"} />
@@ -17,7 +17,7 @@ const UsualArtefact = () => {
   );
 }
 
-const RareArtefact = () => {
+const RareArtifact = () => {
   return (
     <Tetrahedron args={[4, 0]} position={[0, beaconHeight, 0]} scale={[1,2,1]}>
       <meshStandardMaterial  color={"#00ff00"} />
@@ -25,7 +25,7 @@ const RareArtefact = () => {
   );
 }
 
-const LegendaryArtefact = () => {
+const LegendaryArtifact = () => {
 
   const geometry = useMemo(() => {
     return new TorusKnotGeometry(3, 1, 64, 16);
@@ -38,54 +38,54 @@ const LegendaryArtefact = () => {
   );
 }
 
-export const ArtefactsGroup = () => {
+export const ArtifactsGroup = () => {
   const firstStart = useGameStore((state) => state.firstStart);
-  const artefacts = useGameStore((state) => state.artefacts);
-  const artefactSelected = useGameStore((state) => state.artefactSelected);
+  const artifacts = useGameStore((state) => state.artifacts);
+  const artifactSelected = useGameStore((state) => state.artifactSelected);
   const canSetBeacon = useGameStore((state) => state.canPlaceBeacon);
   const { width, depth, offsetX, offsetY } = useGameStore((state) => state.mapParams);
   const { deltaX, deltaY } = useCalculateDeltas();
   const timeRef = useRef(0);
 
-  const artefactRefs = useRef<React.RefObject<Group>[]>(artefacts.map(() => createRef()));
+  const artifactRefs = useRef<React.RefObject<Group>[]>(artifacts.map(() => createRef()));
   const { speedRef: increasingSpeedRef } = useIncreasingSpeed(0, 1, 0.01, 2);
 
-  const circleRefs = useRef<React.RefObject<Group>[]>(artefacts.map(() => createRef()));
+  const circleRefs = useRef<React.RefObject<Group>[]>(artifacts.map(() => createRef()));
 
   useFrame((_, delta) => {
-    artefactRefs.current.forEach((beacon, index) => {
-      const artefactObject = beacon.current;
+    artifactRefs.current.forEach((beacon, index) => {
+      const artifactObject = beacon.current;
       const circleObject = circleRefs.current[index].current;
 
-      if (artefactObject) {
-        // artefactObject.position.x -= deltaX;
-        // artefactObject.position.z -= deltaY;
-        artefactObject.position.x -= deltaX * increasingSpeedRef.current;
-        artefactObject.position.z -= deltaY * increasingSpeedRef.current;
+      if (artifactObject) {
+        // artifactObject.position.x -= deltaX;
+        // artifactObject.position.z -= deltaY;
+        artifactObject.position.x -= deltaX * increasingSpeedRef.current;
+        artifactObject.position.z -= deltaY * increasingSpeedRef.current;
         
         const checkBoundaries = isOutOfBound(
-          { x: artefactObject.position.x, y: artefactObject.position.z },
+          { x: artifactObject.position.x, y: artifactObject.position.z },
           width,
           depth,
           offsetX,
           offsetY
         );
 
-        if (artefactSelected === artefacts[index].id && canSetBeacon) {
+        if (artifactSelected === artifacts[index].id && canSetBeacon) {
           timeRef.current += delta;
-          artefactObject.position.y = Math.sin(timeRef.current * 2) * 3;
+          artifactObject.position.y = Math.sin(timeRef.current * 2) * 3;
 
           if (circleObject) {
             circleObject.position.y = -Math.sin(timeRef.current * 2) * 3;
           }
         }
 
-				artefactObject.rotateY(delta / 2);
-        artefactObject.visible = !checkBoundaries.x && !checkBoundaries.y;
+				artifactObject.rotateY(delta / 2);
+        artifactObject.visible = !checkBoundaries.x && !checkBoundaries.y;
 
-				if (artefactObject.visible !== artefacts[index].visible) {
+				if (artifactObject.visible !== artifacts[index].visible) {
 					useGameStore.setState((state) => {
-						state.artefacts[index].visible = artefactObject.visible;
+						state.artifacts[index].visible = artifactObject.visible;
 						return state;
 					});
 				}
@@ -95,15 +95,15 @@ export const ArtefactsGroup = () => {
 
   return (
     <group visible={firstStart}>
-      {artefacts.map((artefact, index) => (
+      {artifacts.map((artifact, index) => (
         <group
-          key={artefact.id}
-          position={[artefact.x + artefact.chunkX * 100, artefact.y + 1, artefact.z + artefact.chunkY * 100]}
-          ref={artefactRefs.current[index]}
+          key={artifact.id}
+          position={[artifact.x + artifact.chunkX * 100, artifact.y + 1, artifact.z + artifact.chunkY * 100]}
+          ref={artifactRefs.current[index]}
         >
-          {artefact.type === "usual" && <UsualArtefact />}
-          {artefact.type === "rare" && <RareArtefact />}
-          {artefact.type === "legendary" && <LegendaryArtefact />}
+          {artifact.type === "usual" && <UsualArtifact />}
+          {artifact.type === "rare" && <RareArtifact />}
+          {artifact.type === "legendary" && <LegendaryArtifact />}
           {/* <group ref={circleRefs.current[index]}>
             <ConcentricCirclesAnimation />
           </group> */}

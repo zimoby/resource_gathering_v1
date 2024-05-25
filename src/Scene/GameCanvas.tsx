@@ -13,7 +13,7 @@ import { FlyingDrone } from "../components/drone/Drone";
 import { Line } from "../components/gfx/Line";
 import { Euler } from "three";
 import { CenterScreenPanel } from "../components/UI/Panels/CenterScreenPanel";
-import { ArtefactsPlanesIndicators } from "../components/artefacts/ArtefactsIndicators";
+import { ArtifactsPlanesIndicators } from "../components/artifacts/ArtifactsIndicators";
 // import { Perf } from "r3f-perf";
 
 export const GameCanvas = () => {
@@ -32,7 +32,7 @@ export const GameCanvas = () => {
           <Map />
           {animationFirstStage && <group position={[0, 0, 0]} visible={animationFirstStage}>
             <CoordinatesKeys />
-            <ArtefactsPlanesIndicators />
+            <ArtifactsPlanesIndicators />
           </group>}
           <group position={[0, 0, 0]} visible={firstStart}>
             <FlickeringEffect initialIntensity={10} randomFrequency={0.008} duration={50}>

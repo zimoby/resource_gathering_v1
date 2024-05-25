@@ -15,7 +15,7 @@ import { SinePanel } from "./Panels/SinePanel";
 import { CorpLogoPanel } from "./CorpLogoPanel";
 import { FlickeringHtmlEffect } from "../../effects/AppearingUiEffectWrapper";
 import { SettingsModal } from "./SettingsModal";
-import { ArtefactsInfo } from "../artefacts/ArtefactsInfo";
+import { ArtifactsInfo } from "../artifacts/ArtifactsInfo";
 import { SimpleWarningLines } from "./Panels/warningBlock";
 import { EmptyGrowPanel } from "../gfx/EmptyPanel";
 import { BigButtons } from "./BigButtons";
@@ -93,7 +93,7 @@ export const UiInfo = () => {
           <EventsPanel />
           <LogsPanel />
           <BeaconsInfo />
-          <ArtefactsInfo />
+          <ArtifactsInfo />
           <CollectedAftefacts />
           <SimpleWarningLines />
         </FlickeringHtmlEffect>

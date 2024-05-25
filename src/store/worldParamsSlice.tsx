@@ -1,5 +1,5 @@
 import { StateCreator } from "zustand";
-import { generateArtefacts, generateRandomColor, generateWorld } from "../utils/generators";
+import { generateArtifacts, generateRandomColor, generateWorld } from "../utils/generators";
 import { GameStoreState } from "./store";
 import { Color } from "three";
 
@@ -95,7 +95,7 @@ export interface ResourceTypesT {
   [key: string]: Resource;
 }
 
-export interface ArtefactsCollectedT {
+export interface ArtifactsCollectedT {
   [key: string]: number;
 }
 
@@ -122,7 +122,7 @@ export const resourceTypes: ResourceTypesT = {
   },
 };
 
-export type ArtefactType = "usual" | "rare" | "legendary";
+export type ArtifactType = "usual" | "rare" | "legendary";
 
 export interface BeaconType {
   x: number;
@@ -135,11 +135,11 @@ export interface BeaconType {
   id: string;
 }
 
-export interface ArtefactT {
+export interface ArtifactT {
   x: number;
   y: number;
   z: number;
-  type: ArtefactType;
+  type: ArtifactType;
   chunkX: number;
   chunkY: number;
   visible: boolean;
@@ -151,17 +151,17 @@ export interface WorldParamsSlice {
   beacons: BeaconType[];
   beaconsLimit: number;
 
-  artefacts: ArtefactT[];
-  artefactsCollectedByTypes: ArtefactsCollectedT;
-  artefactSelected: string;
+  artifacts: ArtifactT[];
+  artifactsCollectedByTypes: ArtifactsCollectedT;
+  artifactSelected: string;
   terrainColors: TerrainTypesT;
 
   regenerateWorld: () => void;
   increaseBeconsLimit: () => void;
-  addArtefactToCollection: (type: ArtefactType) => void;
+  addArtifactToCollection: (type: ArtifactType) => void;
 }
 
-export const artefactAmount = 10;
+export const artifactAmount = 10;
 
 export const createWorldParamsSlice: StateCreator<GameStoreState, [], [], WorldParamsSlice> = (
   set
@@ -185,20 +185,20 @@ export const createWorldParamsSlice: StateCreator<GameStoreState, [], [], WorldP
     });
   },
 
-  artefacts: generateArtefacts({ amount: artefactAmount }),
-  artefactSelected: "",
-  artefactsCollectedByTypes: {
+  artifacts: generateArtifacts({ amount: artifactAmount }),
+  artifactSelected: "",
+  artifactsCollectedByTypes: {
     usual: 0,
     rare: 0,
     legendary: 0,
   },
 
-  addArtefactToCollection: (type: ArtefactType) => {
+  addArtifactToCollection: (type: ArtifactType) => {
     set((state) => {
       return {
-        artefactsCollectedByTypes: {
-          ...state.artefactsCollectedByTypes,
-          [type]: state.artefactsCollectedByTypes[type] + 1,
+        artifactsCollectedByTypes: {
+          ...state.artifactsCollectedByTypes,
+          [type]: state.artifactsCollectedByTypes[type] + 1,
         },
       };
     });
@@ -219,7 +219,7 @@ export const createWorldParamsSlice: StateCreator<GameStoreState, [], [], WorldP
     set({
       worldParams: generateWorld(),
       terrainColors: newTerrainColors,
-      artefacts: generateArtefacts({ amount: artefactAmount }),
+      artifacts: generateArtifacts({ amount: artifactAmount }),
       beacons: [],
       currentOffset: { x: 0, y: 0 },
       currentLocation: { x: 0, y: 0 },

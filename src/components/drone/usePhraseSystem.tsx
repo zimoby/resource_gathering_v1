@@ -64,8 +64,8 @@ const usePhraseSystem = ({ firstAppearing }: PhraseSystemOptions) => {
       soloPanelOpacity("costsPanel");
     } else if (educationalStepsPhrases[educationalStepIndex].stage === "newWorldButton") {
       soloPanelOpacity("newWorldButton");
-    } else if (educationalStepsPhrases[educationalStepIndex].stage === "collectedArtefactsPanel") {
-      soloPanelOpacity("collectedArtefactsPanel");
+    } else if (educationalStepsPhrases[educationalStepIndex].stage === "collectedArtifactsPanel") {
+      soloPanelOpacity("collectedArtifactsPanel");
     } else {
       resetPanelsOpacity();
     }

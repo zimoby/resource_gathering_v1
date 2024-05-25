@@ -1,5 +1,5 @@
 import { Color } from "three";
-import { ArtefactT, ArtefactType, WeatherCondition, WorldState } from "../store/worldParamsSlice";
+import { ArtifactT, ArtifactType, WeatherCondition, WorldState } from "../store/worldParamsSlice";
 import { WorldParamsType } from "../store/worldParamsSlice";
 
 export const generateWeather = (): WeatherCondition => {
@@ -91,7 +91,7 @@ export const generateWorld = (): WorldParamsType => {
   };
 }
 
-const randomRarestTypes = (): ArtefactType => {
+const randomRarestTypes = (): ArtifactType => {
   const randomValue = Math.random();
   if (randomValue < 0.6) {
     return "usual";
@@ -102,8 +102,8 @@ const randomRarestTypes = (): ArtefactType => {
   }
 }
 
-export const generateArtefacts = ({amount = 10}: {amount?: number}): ArtefactT[] => {
-  const artefacts: ArtefactT[] = [
+export const generateArtifacts = ({amount = 10}: {amount?: number}): ArtifactT[] => {
+  const artifacts: ArtifactT[] = [
     // {
     //   x: 0,
     //   y: 0,
@@ -116,7 +116,7 @@ export const generateArtefacts = ({amount = 10}: {amount?: number}): ArtefactT[]
     // },
   ];
   for (let i = 0; i < amount; i++) {
-    artefacts.push({
+    artifacts.push({
       x: Math.floor(Math.random() * 100) - 50,
       y: -10,
       z: Math.floor(Math.random() * 100) - 50,
@@ -127,7 +127,7 @@ export const generateArtefacts = ({amount = 10}: {amount?: number}): ArtefactT[]
       id: Math.random().toString(36).substr(2, 9),
     });
   }
-  return artefacts;
+  return artifacts;
 }
 
 export const generateRandomColor = () => {

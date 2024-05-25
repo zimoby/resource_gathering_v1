@@ -17,7 +17,7 @@ export type UiPanelsStateSlice = {
     logsPanel: UiPanelsStateType;
     beaconPanel: UiPanelsStateType;
     eventsPanel: UiPanelsStateType;
-    collectedArtefactsPanel: UiPanelsStateType;
+    collectedArtifactsPanel: UiPanelsStateType;
     costsPanel: UiPanelsStateType;
     emptyPanel: UiPanelsStateType;
     supportPanels: UiPanelsStateType;
@@ -40,7 +40,7 @@ type PanelNamesT =
   | "logsPanel"
   | "beaconPanel"
   | "eventsPanel"
-  | "collectedArtefactsPanel"
+  | "collectedArtifactsPanel"
   | "costsPanel"
   | "emptyPanel"
   | "supportPanels"
@@ -61,7 +61,7 @@ export const createUiPanelsStateSlice: StateCreator<GameStoreState, [], [], UiPa
     logsPanel: { opacity: 1 },
     beaconPanel: { opacity: 1 },
     eventsPanel: { opacity: 1 },
-    collectedArtefactsPanel: { opacity: 1 },
+    collectedArtifactsPanel: { opacity: 1 },
     costsPanel: { opacity: 1 },
     emptyPanel: { opacity: 1 },
     supportPanels: { opacity: 1 },

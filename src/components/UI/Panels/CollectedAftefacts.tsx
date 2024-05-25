@@ -2,12 +2,12 @@ import { useGameStore } from "../../../store/store";
 import { BasicPanelWrapper } from "../BasicPanelWrapper";
 
 export const CollectedAftefacts = () => {
-  const artefactsCollectedByTypes = useGameStore((state) => state.artefactsCollectedByTypes);
-	const opacity = useGameStore((state) => state.uiPanelsState.collectedArtefactsPanel.opacity);
+  const artifactsCollectedByTypes = useGameStore((state) => state.artifactsCollectedByTypes);
+	const opacity = useGameStore((state) => state.uiPanelsState.collectedArtifactsPanel.opacity);
 
   return (
     <BasicPanelWrapper
-			titleText="Collected Artefacts:"
+			titleText="Collected Artifacts:"
 			height="h-32"
       width="w-fit"
 			opacity={opacity}
@@ -15,11 +15,11 @@ export const CollectedAftefacts = () => {
       <div
 				className=" flex flex-row justify-center items-center divide-x divide-uilines"
 			>
-				{Object.keys(artefactsCollectedByTypes).map((key, index) => (
+				{Object.keys(artifactsCollectedByTypes).map((key, index) => (
 					<div
 						key={index}
 						className="h-24 w-20 p-3 flex flex-col space-y-2 text-center justify-center items-center  hover:fill-neutral-900 "
-						onClick={() => useGameStore.setState({ message: `Collected Artefacts: ${key}: ${artefactsCollectedByTypes[key]}` })}
+						onClick={() => useGameStore.setState({ message: `Collected Artifacts: ${key}: ${artifactsCollectedByTypes[key]}` })}
 					>
 						{key === "usual" &&
 							<svg className="size-7 fill-uilines " width="93" height="81" viewBox="0 0 93 81" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -42,7 +42,7 @@ export const CollectedAftefacts = () => {
 							</svg>
 						}
             <div className=" text-xs leading-3 uppercase">{key}</div>
-            <div className=" text-xs leading-3">{(artefactsCollectedByTypes[key])}</div>
+            <div className=" text-xs leading-3">{(artifactsCollectedByTypes[key])}</div>
 					</div>
 				))}
       </div>

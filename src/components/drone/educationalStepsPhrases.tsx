@@ -33,12 +33,12 @@ export const educationalStepsPhrases = [
     skipped: false,
   },
   {
-    phrase: "On the planet you will find Artefacts. The white light around the map shows the side where the Artefact is. Brighter light means closer Artefact.",
+    phrase: "On the planet you will find Artifacts. The white light around the map shows the side where the Artifact is. Brighter light means closer Artifact.",
 		skipped: false,
-		stage: "collectedArtefactsPanel",
+		stage: "collectedArtifactsPanel",
   },
   {
-    phrase: "To take the Artefact, move drone close to it with hold Space. Click on the artifact when it starts to move up or down.",
+    phrase: "To take the Artifact, move drone close to it with hold Space. Click on the artifact when it starts to move up or down.",
 		skipped: false,
   },
   {
