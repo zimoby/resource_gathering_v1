@@ -5,7 +5,7 @@ import { artefactAmount } from "../../store/worldParamsSlice";
 
 export const ArtefactsInfo = () => {
   const artefacts = useGameStore((state) => state.artefacts);
-  const opacity = useGameStore((state) => state.uiPanelsState.beaconPanel.opacity);
+  const opacity = useGameStore((state) => state.uiPanelsState.collectedArtefactsPanel.opacity);
 
   return (
     <BasicPanelWrapper
@@ -29,11 +29,12 @@ export const ArtefactsInfo = () => {
               ": " +
               artefact.chunkX +
               ":" +
-              artefact.chunkY +
-              ": " +
-              Math.round(artefact.x) +
-              ":" +
-              Math.round(artefact.z)}
+              artefact.chunkY
+              // ": " +
+              // Math.round(artefact.x) +
+              // ":" +
+              // Math.round(artefact.z)
+            }
           </div>
         ))}
         <div className="h-5"></div>

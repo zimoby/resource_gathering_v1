@@ -3,7 +3,7 @@ import { BasicPanelWrapper } from "../BasicPanelWrapper";
 
 
 export const CostsPanel = () => {
-  const opacity = useGameStore((state) => state.uiPanelsState.logsPanel.opacity);
+  const opacity = useGameStore((state) => state.uiPanelsState.costsPanel.opacity);
   const costs = useGameStore((state) => state.costs);
   const playerPoints = useGameStore((state) => state.playerPoints);
   const increaseBeconsLimit = useGameStore((state) => state.increaseBeconsLimit);

@@ -9,6 +9,7 @@ export const FlyToNewWorld = () => {
   const decreasePlayerPoints = useGameStore((state) => state.decreasePlayerPoints);
   const playerPoints = useGameStore((state) => state.playerPoints);
   const costs = useGameStore((state) => state.costs);
+  const opacity = useGameStore((state) => state.uiPanelsState.newWorldButton.opacity);
 
   const moveToTheNewWorld = useCallback(() => {
     if (playerPoints >= costs.flyToNewWorld.value) {
@@ -23,5 +24,9 @@ export const FlyToNewWorld = () => {
 
   if (!animationFirstStage) return null;
 
-  return <BigButtons text="New World" onClick={moveToTheNewWorld} />;
+  return (
+    <div style={{ opacity }}>
+      <BigButtons text="New World" onClick={moveToTheNewWorld} />
+    </div>
+  );
 };

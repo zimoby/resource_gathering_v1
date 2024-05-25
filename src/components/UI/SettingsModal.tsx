@@ -10,8 +10,8 @@ const ToggleButton = ({
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }) => {
   return (
-    <div className="w-3/4 h-6 flex justify-between items-center text-uitext text-lg hover:bg-uilines hover:text-neutral-900">
-      <label htmlFor={label} className="pl-5 tracking-tight">
+    <div className="w-3/4 h-fit py-1 flex justify-between items-center text-uitext text-lg hover:bg-uilines hover:text-neutral-900">
+      <label htmlFor={label} className="pl-5 tracking-tight leading-4 mr-2">
         {label}
       </label>
       <input type="checkbox" className="mr-5" id={label} name={label} checked={checked} onChange={onChange} />
@@ -25,6 +25,7 @@ export const SettingsModal = () => {
   const showSettingsModal = useGameStore((state) => state.showSettingsModal);
   const startScreen = useGameStore((state) => state.startScreen);
   const invertDirection = useGameStore((state) => state.invertDirection);
+  const educationMode = useGameStore((state) => state.educationMode);
 
   const updateStoreProperty = useGameStore((state) => state.updateStoreProperty);
   const updateVariableInLocalStorage = useGameStore((state) => state.updateVariableInLocalStorage);
@@ -51,26 +52,37 @@ export const SettingsModal = () => {
           Settings
         </div>
         <div className=" w-full mb-8 flex flex-col justify-center items-center text-uitext text-2xl">
-					<ToggleButton
-						label="Show start screen"
-						checked={startScreen}
-						onChange={() => updateVariableInLocalStorage("startScreen", !startScreen)}
-					/>
-					<ToggleButton
-						label="Invert keys direction"
-						checked={invertDirection}
-						onChange={() => updateVariableInLocalStorage("invertDirection", !invertDirection)}
-					/>
-					<ToggleButton
-						label="Disable Animations"
-						checked={disableAnimations}
-						onChange={() => updateVariableInLocalStorage("disableAnimations", !disableAnimations)}
-					/>
-					<ToggleButton
-						label="Disable Sound"
-						checked={disableSounds}
-						onChange={() => updateVariableInLocalStorage("disableSounds", !disableSounds)}
-					/>
+          <div className="w-full mb-3 flex flex-col justify-center items-center">
+            <ToggleButton
+              label="Show start screen"
+              checked={startScreen}
+              onChange={() => updateVariableInLocalStorage("startScreen", !startScreen)}
+            />
+            <ToggleButton
+              label="Show education"
+              checked={educationMode}
+              onChange={() => updateVariableInLocalStorage("educationMode", !educationMode)}
+            />
+          </div>
+          <div className="w-full mb-3 flex flex-col justify-center items-center">
+            <ToggleButton
+              label="Invert keys direction"
+              checked={invertDirection}
+              onChange={() => updateVariableInLocalStorage("invertDirection", !invertDirection)}
+            />
+          </div>
+          <div className="w-full mb-3 flex flex-col justify-center items-center">
+            <ToggleButton
+              label="Disable Animations"
+              checked={disableAnimations}
+              onChange={() => updateVariableInLocalStorage("disableAnimations", !disableAnimations)}
+            />
+            <ToggleButton
+              label="Disable Sound"
+              checked={disableSounds}
+              onChange={() => updateVariableInLocalStorage("disableSounds", !disableSounds)}
+            />
+          </div>
         </div>
       </div>
     </div>

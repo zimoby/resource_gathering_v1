@@ -4,6 +4,7 @@ import { maxLevel, minLevel } from "../../store/worldParamsSlice";
 export const LevelsIndicators = () => {
   const activePosition = useGameStore((state) => state.activePosition);
 	const { width, depth } = useGameStore((state) => state.mapParams);
+	const opacity = useGameStore((state) => state.uiPanelsState.supportPanels.opacity);
 
   const posHeightRange = Math.max(
     0,
@@ -14,7 +15,10 @@ export const LevelsIndicators = () => {
 	const posDepthRange = (activePosition.z * ( 100 / depth )) + 50;
 
   return (
-    <div className="absolute top-2 right-2 mr-1">
+    <div
+			className="absolute top-2 right-2 mr-1"
+			style={{ opacity }}
+		>
 			<div className="flex flex-row gap-2">
 				<div className="flex w-3 flex-col space-y-1 justify-center items-center">
 					<p className="text-uitext text-xs">X</p>

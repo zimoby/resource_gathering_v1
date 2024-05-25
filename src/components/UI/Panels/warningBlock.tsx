@@ -2,12 +2,14 @@ import { FlickeringHtmlEffect } from "../../../effects/AppearingUiEffectWrapper"
 import { useGameStore } from "../../../store/store";
 
 export const SimpleWarningLines = ({ classes, size = "" }: { classes?: string; size?: string }) => {
+  const opacity = useGameStore((state) => state.uiPanelsState.emptyPanel.opacity);
   return (
     <div
       className={`warning-sign3 ${classes} flex ${
         size === "" ? "flex-grow" : size
       } aug-border-yellow-500`}
       data-augmented-ui={`border br-clip-x --aug-border-bg`}
+      style={{ opacity }}
     />
   );
 };

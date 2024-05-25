@@ -22,6 +22,7 @@ import { BigButtons } from "./BigButtons";
 import { CostsPanel } from "./Panels/CostsPanel";
 import { FlyToNewWorld } from "./FlyToNewWorldButton";
 import { CollectedAftefacts } from "./Panels/CollectedAftefacts";
+import { SettingsButton } from "./SettingsButton";
 
 export const UiInfo = () => {
   const animationFirstStage = useGameStore((state) => state.animationFirstStage);
@@ -59,13 +60,8 @@ export const UiInfo = () => {
           classStyles={"h-full flex flex-col justify-between space-y-1 "}
           styles={{ height: "calc(100vh - 9.26rem)" }}
         >
-          <div className="w-48 h-24">
-            <CorpLogoPanel />
-          </div>
-          <BigButtons
-            text="Settings"
-            onClick={() => updateStoreProperty("showSettingsModal", true)}
-          />
+          <CorpLogoPanel />
+          <SettingsButton />
           <FlyToNewWorld />
           <SystemControls />
           <CostsPanel />

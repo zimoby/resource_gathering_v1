@@ -7,7 +7,7 @@ const getArtefactInRadius = (visibleArtefacts: ArtefactT[], position: { x: numbe
     const dx = position.x - beacon.x;
     const dz = position.y - beacon.z;
     const distance = Math.sqrt(dx * dx + dz * dz);
-    return distance < 10;
+    return distance < 20;
   });
 };
 

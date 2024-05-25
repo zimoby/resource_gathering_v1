@@ -3,14 +3,18 @@ import { BasicPanelWrapper } from "../BasicPanelWrapper";
 
 export const CollectedAftefacts = () => {
   const artefactsCollectedByTypes = useGameStore((state) => state.artefactsCollectedByTypes);
+	const opacity = useGameStore((state) => state.uiPanelsState.collectedArtefactsPanel.opacity);
 
   return (
     <BasicPanelWrapper
 			titleText="Collected Artefacts:"
 			height="h-32"
       width="w-fit"
+			opacity={opacity}
 		>
-      <div className=" flex flex-row justify-center items-center divide-x divide-uilines">
+      <div
+				className=" flex flex-row justify-center items-center divide-x divide-uilines"
+			>
 				{Object.keys(artefactsCollectedByTypes).map((key, index) => (
 					<div
 						key={index}

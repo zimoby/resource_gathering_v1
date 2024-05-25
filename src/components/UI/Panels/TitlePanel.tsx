@@ -40,7 +40,7 @@ export const TitlePanel = () => {
 
       </div>
       <div className="h-fit w-full px-1 content-end orbitron text-2xl text-end uppercase leading-6 text-uitext">
-        {`Planet-${worldParams.seed}`}
+        {`Planet-${worldParams.seed.value}`}
       </div>
     </div>
   );

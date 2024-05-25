@@ -1,5 +1,4 @@
 export const PhrasesCollection = [
-	"Hi!",
 	"Hello there!",
 	"How are you today?",
 	"Nice weather, isn't it?",

@@ -34,7 +34,6 @@ export const PlanetDataPanel = () => {
   const paramNames: (keyof WorldParamsType)[] = [
     "seed",
     "worldState",
-    "name",
     "temperature",
     "humidity",
     "windSpeed",

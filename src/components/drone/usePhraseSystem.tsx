@@ -56,11 +56,17 @@ const usePhraseSystem = ({ firstAppearing }: PhraseSystemOptions) => {
       }
     }
 
-    if (educationalStepIndex === 2) {
+    if (educationalStepsPhrases[educationalStepIndex].stage === "collectedResourcesPanel" ) {
       soloPanelOpacity("collectedResourcesPanel");
-    } else if (educationalStepIndex === 3) {
+    } else if (educationalStepsPhrases[educationalStepIndex].stage === "progressPanel") {
       soloPanelOpacity("progressPanel");
-    } else if (educationalStepIndex === educationalStepsPhrases.length - 1) {
+    } else if (educationalStepsPhrases[educationalStepIndex].stage === "costsPanel") {
+      soloPanelOpacity("costsPanel");
+    } else if (educationalStepsPhrases[educationalStepIndex].stage === "newWorldButton") {
+      soloPanelOpacity("newWorldButton");
+    } else if (educationalStepsPhrases[educationalStepIndex].stage === "collectedArtefactsPanel") {
+      soloPanelOpacity("collectedArtefactsPanel");
+    } else {
       resetPanelsOpacity();
     }
 

@@ -118,7 +118,7 @@ export const generateArtefacts = ({amount = 10}: {amount?: number}): ArtefactT[]
   for (let i = 0; i < amount; i++) {
     artefacts.push({
       x: Math.floor(Math.random() * 100) - 50,
-      y: 0,
+      y: -10,
       z: Math.floor(Math.random() * 100) - 50,
       type: randomRarestTypes(),
       chunkX: Math.floor(Math.random() * 10) - 5,

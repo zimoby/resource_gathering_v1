@@ -17,6 +17,12 @@ export type UiPanelsStateSlice = {
     logsPanel: UiPanelsStateType;
     beaconPanel: UiPanelsStateType;
     eventsPanel: UiPanelsStateType;
+    collectedArtefactsPanel: UiPanelsStateType;
+    costsPanel: UiPanelsStateType;
+    emptyPanel: UiPanelsStateType;
+    supportPanels: UiPanelsStateType;
+    settingsButton: UiPanelsStateType;
+    newWorldButton: UiPanelsStateType;
   };
   updatePanelOpacity: (panelName: PanelNamesT, value: number) => void;
   soloPanelOpacity: (panelName: PanelNamesT) => void;
@@ -33,7 +39,13 @@ type PanelNamesT =
   | "systemControlsPanel"
   | "logsPanel"
   | "beaconPanel"
-  | "eventsPanel";
+  | "eventsPanel"
+  | "collectedArtefactsPanel"
+  | "costsPanel"
+  | "emptyPanel"
+  | "supportPanels"
+  | "settingsButton"
+  | "newWorldButton";
 
 export const createUiPanelsStateSlice: StateCreator<GameStoreState, [], [], UiPanelsStateSlice> = (
   set
@@ -49,6 +61,12 @@ export const createUiPanelsStateSlice: StateCreator<GameStoreState, [], [], UiPa
     logsPanel: { opacity: 1 },
     beaconPanel: { opacity: 1 },
     eventsPanel: { opacity: 1 },
+    collectedArtefactsPanel: { opacity: 1 },
+    costsPanel: { opacity: 1 },
+    emptyPanel: { opacity: 1 },
+    supportPanels: { opacity: 1 },
+    settingsButton: { opacity: 1 },
+    newWorldButton: { opacity: 1 },
   },
   updatePanelOpacity: (panelName: PanelNamesT, value: number) => {
     set((state) => ({

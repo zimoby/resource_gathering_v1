@@ -1,6 +1,6 @@
 import { useGameStore } from "../../store/store";
 import { Octahedron, Tetrahedron } from "@react-three/drei";
-import { ConcentricCirclesAnimation } from "../gfx/concentricCircles";
+// import { ConcentricCirclesAnimation } from "../gfx/concentricCircles";
 import { useFrame } from "@react-three/fiber";
 import { isOutOfBound, useCalculateDeltas } from "../../utils/functions";
 import { createRef, useMemo, useRef } from "react";
@@ -104,9 +104,9 @@ export const ArtefactsGroup = () => {
           {artefact.type === "usual" && <UsualArtefact />}
           {artefact.type === "rare" && <RareArtefact />}
           {artefact.type === "legendary" && <LegendaryArtefact />}
-          <group ref={circleRefs.current[index]}>
+          {/* <group ref={circleRefs.current[index]}>
             <ConcentricCirclesAnimation />
-          </group>
+          </group> */}
         </group>
       ))}
     </group>

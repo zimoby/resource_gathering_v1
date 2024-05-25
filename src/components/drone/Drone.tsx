@@ -1,5 +1,5 @@
 import { Billboard, Float, Html, Sphere } from "@react-three/drei";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Group, Mesh } from "three";
 import { useGameStore } from "../../store/store";
 import { useFrame } from "@react-three/fiber";
@@ -31,10 +31,29 @@ export const FlyingDrone = () => {
   const appearingHeightRef = useRef(-appearingHeight);
   const showSettingsModal = useGameStore((state) => state.showSettingsModal);
   const setMapAnimationState = useGameStore((state) => state.setMapAnimationState);
-	
+  const educationMode = useGameStore((state) => state.educationMode);
+
+
   const { activePhrase, phraseKey, handleNextClick } = usePhraseSystem({
     firstAppearing,
   });
+
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.key === 'Enter') {
+        handleNextClick();
+      }
+    };
+
+    if (educationMode) {
+      window.addEventListener('keydown', handleKeyPress);
+    }
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [educationMode, handleNextClick]);
+    
 
   useFrame(({ clock }) => {
     const time = clock.getElapsedTime();
@@ -73,11 +92,14 @@ export const FlyingDrone = () => {
                     <TypingText text={activePhrase.phrase} speed={50}/>
                   </div>
                   {activePhrase.skipped === false && (
-                    <div
-                      className="mt-1 text-sm text-uitext text-center py-0.5 px-1 bg-neutral-900 border hover:bg-uilines hover:text-neutral-900 active:bg-neutral-400 active:text-neutral-900 select-none cursor-pointer"
-                      onClick={handleNextClick}
-                    >
-                      Next
+                    <div className="flex flex-row justify-center items-center">
+                      <p className=" text-xs opacity-60 mr-2 mt-1 select-none">Or press Enter</p>
+                      <div
+                        className="z-50 mt-1 text-sm text-uitext text-center py-0.5 px-1 bg-neutral-900 border border-uilines hover:bg-uilines hover:text-neutral-900 active:bg-uilines active:opacity-50 active:text-neutral-900 select-none cursor-pointer"
+                        onClick={handleNextClick}
+                      >
+                        Next
+                      </div>
                     </div>
                   )}
                 </div>

@@ -2,6 +2,7 @@ import { useGameStore } from "../../../store/store";
 
 export const SinePanel = () => {
 	const collectedResources = useGameStore((state) => state.collectedResources);
+  const opacity = useGameStore((state) => state.uiPanelsState.supportPanels.opacity);
 
   return (
     <div
@@ -10,6 +11,7 @@ export const SinePanel = () => {
         backgroundImage:
           "linear-gradient(to right, var(--color-uitext) 0.5px, transparent 0.5px), linear-gradient(to bottom, var(--color-uitext) 0.5px, transparent 0.5px)",
         backgroundSize: "1rem 1rem",
+        opacity
       }}
     >
       <svg width="200%" height="100%" viewBox="0 0 200 10" preserveAspectRatio="none">
