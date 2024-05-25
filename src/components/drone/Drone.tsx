@@ -33,7 +33,6 @@ export const FlyingDrone = () => {
   const setMapAnimationState = useGameStore((state) => state.setMapAnimationState);
   const educationMode = useGameStore((state) => state.educationMode);
 
-
   const { activePhrase, phraseKey, handleNextClick } = usePhraseSystem({
     firstAppearing,
   });

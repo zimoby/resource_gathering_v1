@@ -39,18 +39,20 @@ const usePhraseSystem = ({ firstAppearing }: PhraseSystemOptions) => {
   const beacons = useGameStore((state) => state.beacons);
   const soloPanelOpacity = useGameStore((state) => state.soloPanelOpacity);
   const resetPanelsOpacity = useGameStore((state) => state.resetPanelsOpacity);
+  const animationFirstStage = useGameStore((state) => state.animationFirstStage);
 
   useEffect(() => {
     if (!educationMode) {
       setFirstGreetings(false);
     }
 
-    if (firstGreetings && !firstAppearing) {
+    if (firstGreetings && animationFirstStage) {
+      console.log("educationalStepIndex", educationalStepIndex);
       setActivePhrase(educationalStepsPhrases[educationalStepIndex]);
       setPhraseKey((prevKey) => prevKey + 1);
     }
 
-    if (firstGreetings && !firstAppearing && beacons.length > 0 && educationalStepIndex === 1) {
+    if (firstGreetings && animationFirstStage && beacons.length > 0 && educationalStepIndex === 1) {
       if (educationalStepIndex < educationalStepsPhrases.length - 1) {
         setEducationalStepIndex((prevIndex) => prevIndex + 1);
       }
@@ -71,7 +73,7 @@ const usePhraseSystem = ({ firstAppearing }: PhraseSystemOptions) => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [beacons.length, educationMode, educationalStepIndex, firstAppearing, firstGreetings]);
+  }, [beacons.length, educationMode, educationalStepIndex, animationFirstStage, firstGreetings]);
 
   useEffect(() => {
     if (!firstGreetings) {
