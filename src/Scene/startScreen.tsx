@@ -15,7 +15,8 @@ const StartScreen = () => {
   const startScreen = useGameStore((state) => state.startScreen);
 
   const [loadingProgress, setLoadingProgress] = useState(0);
-  const [userActive, setUserActive] = useState(false);
+  // const [userActive, setUserActive] = useState(false);
+  const [startToGenerate, setStartToGenerate] = useState(false);
   const [skipStartScene, setSkipStartScene] = useState(false);
   const [starting, setStarting] = useState(false);
   const [sounds, setSounds] = useState<{ ambient: Howl | null; click: Howl | null }>({
@@ -23,22 +24,22 @@ const StartScreen = () => {
     click: null,
   });
 
-  useEffect(() => {
-    const handleUserGesture = () => {
-      setUserActive(true);
-    };
+  // useEffect(() => {
+  //   const handleUserGesture = () => {
+  //     setUserActive(true);
+  //   };
 
-    document.addEventListener("click", handleUserGesture);
+  //   document.addEventListener("click", handleUserGesture);
 
-    return () => {
-      document.removeEventListener("click", handleUserGesture);
-    };
-  }, []);
+  //   return () => {
+  //     document.removeEventListener("click", handleUserGesture);
+  //   };
+  // }, []);
 
   useCheckVariableRender(loadingProgress, "loadingProgress");
 
   useEffect(() => {
-    if (!userActive) return;
+    if (!startToGenerate) return;
 
     if (!sounds.ambient) {
       const ambientSound = new Howl({
@@ -66,7 +67,7 @@ const StartScreen = () => {
       if (sounds.click) sounds.click.unload();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userActive]);
+  }, [startToGenerate]);
 
   useEffect(() => {
     if (disableSounds && sounds.ambient) {
@@ -112,17 +113,18 @@ const StartScreen = () => {
           {`Course by Bruno Simon Design by ${authorName} story by ${authorName} animation by ${authorName} development by ${authorName} testing by ${authorName} vfx by ${authorName}`}
         </p>
 
-        {!userActive && (
+        {!startToGenerate && (
           <div className="w-fit h-fit mt-16 flex flex-row items-center justify-center border border-neutral-100 hover:border-yellow-400 overflow-hidden bg-neutral-100 hover:bg-yellow-400 cursor-pointer">
             <button
 							className="w-32 m-2 uppercase text-center text-neutral-900"
+              onClick={() => setStartToGenerate(true)}
 						>
               Generate World
             </button>
           </div>
         )}
 
-        {userActive && loadingProgress < 100 && (
+        {startToGenerate && loadingProgress < 100 && (
           <div className="w-[300px] h-10 mt-16 bg-neutral-800 border">
             <div
               className="h-full overflow-hidden bg-neutral-200"
@@ -140,7 +142,7 @@ const StartScreen = () => {
           </div>
         )}
 
-        {userActive && loadingProgress === 100 && (
+        {startToGenerate && loadingProgress === 100 && (
           <div className="w-fit h-fit mt-16 flex flex-row items-center justify-center border border-neutral-100 hover:border-yellow-400 overflow-hidden bg-neutral-100 hover:bg-yellow-400 cursor-pointer">
             <div className="w-36 h-full overflow-hidden">
               <div
@@ -184,7 +186,7 @@ const StartScreen = () => {
               state={disableSounds}
             />
             <ToggleButton
-              text={"Skip start scene"}
+              text={"Show start screen"}
               onClick={() => setSkipStartScene(!skipStartScene)}
               state={skipStartScene}
             />
