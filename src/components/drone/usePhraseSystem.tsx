@@ -3,12 +3,12 @@ import { PhrasesCollection } from "./PhrasesCollection";
 import { useGameStore } from "../../store/store";
 import { educationalStepsPhrases } from "./educationalStepsPhrases";
 
-interface PhraseSystemOptions {
-  minDuration?: number;
-  maxDuration?: number;
-  phraseDuration?: number;
-  firstAppearing?: boolean;
-}
+// interface PhraseSystemOptions {
+//   minDuration?: number;
+//   maxDuration?: number;
+//   phraseDuration?: number;
+//   firstAppearing?: boolean;
+// }
 
 const getRandomPhrase = () => {
   const randomIndex = Math.floor(Math.random() * PhrasesCollection.length);
@@ -30,7 +30,7 @@ type ActivePhraseType = {
   skipped?: boolean;
 };
 
-const usePhraseSystem = ({ firstAppearing }: PhraseSystemOptions) => {
+const usePhraseSystem = () => {
   const [activePhrase, setActivePhrase] = useState<ActivePhraseType>({ phrase: "" });
   const [phraseKey, setPhraseKey] = useState<number>(0);
   const [firstGreetings, setFirstGreetings] = useState<boolean>(true);
