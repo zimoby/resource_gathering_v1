@@ -7,6 +7,7 @@ import { useProcessBeacons } from "../components/beacons/beaconUtils";
 import { getChunkCoordinates } from "../utils/functions";
 import { useProcessArtifacts } from "../components/artifacts/artifactUtils";
 
+
 const getIntersection = (
   event: { clientX: number; clientY: number },
   raycaster: Raycaster,

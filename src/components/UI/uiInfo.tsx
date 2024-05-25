@@ -15,18 +15,16 @@ import { SinePanel } from "./Panels/SinePanel";
 import { CorpLogoPanel } from "./CorpLogoPanel";
 import { FlickeringHtmlEffect } from "../../effects/AppearingUiEffectWrapper";
 import { SettingsModal } from "./SettingsModal";
-import { ArtifactsInfo } from "../artifacts/ArtifactsInfo";
 import { SimpleWarningLines } from "./Panels/warningBlock";
 import { EmptyGrowPanel } from "../gfx/EmptyPanel";
-import { BigButtons } from "./BigButtons";
 import { CostsPanel } from "./Panels/CostsPanel";
 import { FlyToNewWorld } from "./FlyToNewWorldButton";
 import { CollectedAftefacts } from "./Panels/CollectedAftefacts";
 import { SettingsButton } from "./SettingsButton";
+import { ArtifactsInfo } from "../artifacts/ArtifactsInfo";
 
 export const UiInfo = () => {
   const animationFirstStage = useGameStore((state) => state.animationFirstStage);
-  const updateStoreProperty = useGameStore((state) => state.updateStoreProperty);
 
   if (!animationFirstStage) return null;
 
