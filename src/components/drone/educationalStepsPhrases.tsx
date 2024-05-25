@@ -4,7 +4,7 @@ export const educationalStepsPhrases = [
     skipped: false,
   },
   {
-    phrase: "To gather resources, hold Space and Click on the ground.",
+    phrase: "To gather resources, hold Space and Click on the ground to add Beacon.",
     skipped: false,
   },
   {
@@ -12,6 +12,10 @@ export const educationalStepsPhrases = [
     skipped: false,
     stage: "collectedResourcesPanel",
   },
+	{
+		phrase: "Important tip. Exteme weather conditions can destroy the beacons. Be careful!",
+		skipped: false,
+	},
   {
     phrase:
       "Resources gives you energy. Energy is needed for scaner work. Hold Space key to see how much energy the scanner is using. ",

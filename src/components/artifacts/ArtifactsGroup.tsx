@@ -4,39 +4,65 @@ import { Octahedron, Tetrahedron } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { isOutOfBound, useCalculateDeltas } from "../../utils/functions";
 import { createRef, useMemo, useRef } from "react";
-import { Group, TorusKnotGeometry } from "three";
+import { Color, Group, TorusKnotGeometry } from "three";
 import { useIncreasingSpeed } from "../../effects/IncreaseSceneSpeed";
 
 const beaconHeight = 10;
 
-const UsualArtifact = () => {
+const artifactColors = {
+  default: new Color('white'),
+  selected: new Color('yellow')
+}
+
+const Artifact = ({ type, selected }: { type: string, selected: boolean }) => {
+  const Component = useMemo(() => {
+    switch (type) {
+      case "usual":
+        return UsualArtifact;
+      case "rare":
+        return RareArtifact;
+      case "legendary":
+        return LegendaryArtifact;
+      default:
+        return UsualArtifact;
+    }
+  }, [type]);
+
+  const color = selected ? artifactColors.selected : artifactColors.default;
+
+  return <Component color={color} />;
+}
+
+const UsualArtifact = ({ color }: { color: Color }) => {
+
   return (
-    <Octahedron args={[4, 0]} position={[0, beaconHeight, 0]} scale={[1,2,1]}>
-      <meshStandardMaterial  color={"#ffffff"} />
+    <Octahedron args={[4, 0]} position={[0, beaconHeight, 0]} scale={[1, 2, 1]}>
+      <meshStandardMaterial color={color} />
     </Octahedron>
   );
-}
+};
 
-const RareArtifact = () => {
+const RareArtifact = ({ color }: { color: Color }) => {
+
+
   return (
-    <Tetrahedron args={[4, 0]} position={[0, beaconHeight, 0]} scale={[1,2,1]}>
-      <meshStandardMaterial  color={"#00ff00"} />
+    <Tetrahedron args={[4, 0]} position={[0, beaconHeight, 0]} scale={[1, 2, 1]}>
+      <meshStandardMaterial color={color} />
     </Tetrahedron>
   );
-}
+};
 
-const LegendaryArtifact = () => {
-
+const LegendaryArtifact = ({ color }: { color: Color }) => {
   const geometry = useMemo(() => {
     return new TorusKnotGeometry(3, 1, 64, 16);
   }, []);
 
   return (
     <mesh geometry={geometry} position={[0, beaconHeight, 0]}>
-      <meshStandardMaterial color={"#ffffff"} />
+      <meshStandardMaterial color={color} />
     </mesh>
   );
-}
+};
 
 export const ArtifactsGroup = () => {
   const firstStart = useGameStore((state) => state.firstStart);
@@ -93,7 +119,7 @@ export const ArtifactsGroup = () => {
     });
   });
 
-  return (
+ return (
     <group visible={firstStart}>
       {artifacts.map((artifact, index) => (
         <group
@@ -101,12 +127,7 @@ export const ArtifactsGroup = () => {
           position={[artifact.x + artifact.chunkX * 100, artifact.y + 1, artifact.z + artifact.chunkY * 100]}
           ref={artifactRefs.current[index]}
         >
-          {artifact.type === "usual" && <UsualArtifact />}
-          {artifact.type === "rare" && <RareArtifact />}
-          {artifact.type === "legendary" && <LegendaryArtifact />}
-          {/* <group ref={circleRefs.current[index]}>
-            <ConcentricCirclesAnimation />
-          </group> */}
+          <Artifact type={artifact.type} selected={artifactSelected === artifact.id} />
         </group>
       ))}
     </group>
