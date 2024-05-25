@@ -99,10 +99,10 @@ export const ArtifactsGroup = () => {
 
         if (artifactSelected === artifacts[index].id && canSetBeacon) {
           timeRef.current += delta;
-          artifactObject.position.y = Math.sin(timeRef.current * 2) * 3;
+          artifactObject.position.y = Math.sin(timeRef.current * 2) * 3 - 10;
 
           if (circleObject) {
-            circleObject.position.y = -Math.sin(timeRef.current * 2) * 3;
+            circleObject.position.y = -Math.sin(timeRef.current * 2) * 3 - 10;
           }
         }
 
