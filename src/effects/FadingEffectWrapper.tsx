@@ -15,9 +15,7 @@ interface FadingEffectProps {
 
 function setMeshOpacity(mesh: Mesh, opacity: number) {
   if (Array.isArray(mesh.material)) {
-    mesh.material.forEach((material) =>
-      updateMaterialOpacity(material, opacity),
-    );
+    mesh.material.forEach((material) => updateMaterialOpacity(material, opacity));
   } else {
     updateMaterialOpacity(mesh.material, opacity);
   }
@@ -63,10 +61,7 @@ export const FadingEffect: React.FC<FadingEffectProps> = ({
     if (group) {
       group.children.forEach((child) => {
         if (Math.random() < randomFrequency && child instanceof Mesh) {
-          setMeshOpacity(
-            child,
-            Math.random() * (maxOpacity - minOpacity) + minOpacity,
-          );
+          setMeshOpacity(child, Math.random() * (maxOpacity - minOpacity) + minOpacity);
         }
       });
     }

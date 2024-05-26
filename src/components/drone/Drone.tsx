@@ -55,7 +55,7 @@ export const FlyingDrone = () => {
       }
       // console.log("Drone mounted", firstAppearing);
     }
-  }, [firstAppearing, sounds, disableSounds]);
+  }, [firstAppearing, sounds, disableSounds, startStageFinished]);
 
 
   useEffect(() => {

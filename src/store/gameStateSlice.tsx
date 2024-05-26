@@ -25,10 +25,7 @@ export interface ChunkType {
 
 export type CollectedResources = Record<string, number>;
 
-export type CostsT = Record<
-  string,
-  { name: string; value: number; valueAlt?: string }
->;
+export type CostsT = Record<string, { name: string; value: number; valueAlt?: string }>;
 
 export interface GameStateSlice {
   disableAnimations: boolean;
@@ -79,13 +76,10 @@ export interface GameStateSlice {
   addEventLog: (eventName: string) => void;
 }
 
-export const createGameStateSlice: StateCreator<
-  GameStoreState,
-  [],
-  [],
-  GameStateSlice
-> = (set, get) => ({
-
+export const createGameStateSlice: StateCreator<GameStoreState, [], [], GameStateSlice> = (
+  set,
+  get
+) => ({
   disableAnimations: localStorage.getItem(SETTING_DISABLE_ANIMATIONS) === "true",
   disableSounds: localStorage.getItem(SETTING_DISABLE_SOUNDS) === "true",
   disableMusic: localStorage.getItem(SETTING_DISABLE_MUSIC) === "true",
@@ -130,26 +124,19 @@ export const createGameStateSlice: StateCreator<
   },
 
   updateResourcesAndPoints: () => {
-    const {
-      beacons,
-      collectedResources,
-      playerPoints,
-      canPlaceBeacon,
-      costs,
-      addEventLog,
-    } = get();
+    const { beacons, collectedResources, playerPoints, canPlaceBeacon, costs, addEventLog } = get();
 
     const newCollectedResources = beacons.reduce(
       (resources, beacon) => {
         resources[beacon.resource] = (resources[beacon.resource] || 0) + 1;
         return resources;
       },
-      { ...collectedResources },
+      { ...collectedResources }
     );
 
     const pointsEarned = beacons.reduce(
       (total, beacon) => total + resourceTypes[beacon.resource].score,
-      0,
+      0
     );
     let newPlayerPoints = playerPoints + pointsEarned;
 
