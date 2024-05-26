@@ -2,7 +2,7 @@ import { Suspense, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stats } from "@react-three/drei";
 import { FlickeringEffect } from "../effects/FlickeringEffectWrapper";
-import { useGameStore } from "../store/store";
+import { DEV_MODE, useGameStore } from "../store/store";
 import { ChunkGrid } from "../components/gfx/ChunkGrid";
 import { CoordinatesKeys } from "../components/gfx/CoordinatesKeys";
 import { PulsingCircle } from "../components/gfx/PulsingCircle";
@@ -40,7 +40,7 @@ export const GameCanvas = () => {
 
   return (
     <Canvas flat shadows dpr={[1, 1.5]} gl={{ antialias: false }}>
-      <Stats showPanel={2} />
+      { DEV_MODE && <Stats showPanel={2} />}
       {/* <Perf position="bottom-left" /> */}
       <SceneSettings />
       <Suspense fallback={null}>
