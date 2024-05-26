@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { PhrasesCollection } from "./PhrasesCollection";
-import { useGameStore } from "../../store/store";
+import { SETTING_EDUCATION_MODE, useGameStore } from "../../store/store";
 import { educationalStepsPhrases } from "./educationalStepsPhrases";
 
 // interface PhraseSystemOptions {
@@ -40,6 +40,7 @@ const usePhraseSystem = () => {
   const soloPanelOpacity = useGameStore((state) => state.soloPanelOpacity);
   const resetPanelsOpacity = useGameStore((state) => state.resetPanelsOpacity);
   const animationFirstStage = useGameStore((state) => state.animationFirstStage);
+  const updateVariableInLocalStorage = useGameStore((state) => state.updateVariableInLocalStorage);
 
   useEffect(() => {
     if (!educationMode) {
@@ -105,7 +106,7 @@ const usePhraseSystem = () => {
       setEducationalStepIndex((prevIndex) => prevIndex + 1);
     } else {
       setFirstGreetings(false);
-      useGameStore.getState().updateEducationMode(false);
+      updateVariableInLocalStorage(SETTING_EDUCATION_MODE, false);
       setActivePhrase({ phrase: "" });
     }
   };

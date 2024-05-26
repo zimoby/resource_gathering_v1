@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useGameStore } from "../store/store";
+import { SETTING_DISABLE_SOUNDS, SETTING_EDUCATION_MODE, SETTING_INVERT_DIRECTION, useGameStore } from "../store/store";
 
 export const useInitInfo = () => {
 	const firstStart = useGameStore((state) => state.firstStart);
@@ -11,15 +11,19 @@ export const useInitInfo = () => {
 
   useEffect(() => {
     if (localStorage.getItem('educationMode') === null) {
-      updateVariableInLocalStorage("educationMode", true);
+      updateVariableInLocalStorage(SETTING_EDUCATION_MODE, true);
     }
 
     if (localStorage.getItem('disableSounds') === null) {
-      updateVariableInLocalStorage("disableSounds", false);
+      updateVariableInLocalStorage(SETTING_DISABLE_SOUNDS, false);
     }
     
     if (localStorage.getItem('invertDirection') === null) {
-      updateVariableInLocalStorage("invertDirection", false);
+      updateVariableInLocalStorage(SETTING_INVERT_DIRECTION, false);
+    }
+
+    if (localStorage.getItem('startScreen') === null) {
+      updateVariableInLocalStorage('startScreen', true);
     }
 
   }, [educationMode, disableSounds, updateVariableInLocalStorage]);

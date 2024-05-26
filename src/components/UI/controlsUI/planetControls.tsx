@@ -1,5 +1,5 @@
 import { SliderWithInput, CheckBox } from "./uiLibrary";
-import { useGameStore } from "../../../store/store";
+import { SETTING_DISABLE_ANIMATIONS, useGameStore } from "../../../store/store";
 import { BasicPanelWrapper } from "../BasicPanelWrapper";
 
 export const SystemControls = () => {
@@ -9,9 +9,7 @@ export const SystemControls = () => {
   const mapResolution = useGameStore((state) => state.mapParams.resolution);
   const mapSpeed = useGameStore((state) => state.mapParams.speed);
   const disableAnimations = useGameStore((state) => state.disableAnimations);
-  const updateDisableAnimationsInStorage = useGameStore(
-    (state) => state.updateDisableAnimationsInStorage
-  );
+  const updateVariableInLocalStorage = useGameStore((state) => state.updateVariableInLocalStorage);
 
   const opacity = useGameStore((state) => state.uiPanelsState.systemControlsPanel.opacity);
 
@@ -51,7 +49,7 @@ export const SystemControls = () => {
           <CheckBox
             label="Disable Animations"
             value={disableAnimations}
-            onUpdate={() => updateDisableAnimationsInStorage(!disableAnimations)}
+            onUpdate={() => updateVariableInLocalStorage(SETTING_DISABLE_ANIMATIONS, !disableAnimations)}
           />
         </div>
       </div>

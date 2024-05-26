@@ -1,5 +1,5 @@
 import { StateCreator } from "zustand";
-import { GameStoreState } from "./store";
+import { GameStoreState, SETTING_DISABLE_ANIMATIONS, SETTING_DISABLE_SOUNDS, SETTING_EDUCATION_MODE, SETTING_INVERT_DIRECTION, SETTING_START_SCREEN } from "./store";
 import { ResourceType, resourceTypes } from "./worldParamsSlice";
 import { generateWeather } from "../utils/generators";
 import { WeatherCondition } from "./worldParamsSlice";
@@ -34,7 +34,7 @@ export interface GameStateSlice {
 
   startToLoadFiles: boolean;
   loadingProgress: number;
-  
+
   startScreen: boolean;
   firstStart: boolean;
   terrainLoading: boolean;
@@ -66,13 +66,8 @@ export interface GameStateSlice {
   updateWeather: () => WeatherCondition | null;
   updateStoreProperty: (paramName: string, value: unknown) => void;
   updateVariableInLocalStorage: (variableName: string, value: boolean) => void;
-  updateDisableAnimationsInStorage: (value: boolean) => void;
-  updateEducationMode: (value: boolean) => void;
-  resetEducationMode: () => void;
-  replacePropWithXY: (name: string, value: Offset) => void;
   addLog: (log: string) => void;
   addEventLog: (eventName: string) => void;
-  removeFirstEventLog: () => void;
 }
 
 export const createGameStateSlice: StateCreator<
@@ -81,19 +76,17 @@ export const createGameStateSlice: StateCreator<
   [],
   GameStateSlice
 > = (set, get) => ({
-  disableAnimations: localStorage.getItem("disableAnimations") === "true",
-  disableSounds: localStorage.getItem("disableSounds") === "true",
-  educationMode: localStorage.getItem("educationMode") === "true",
-  invertDirection: localStorage.getItem("invertDirection") === "true",
+  disableAnimations: localStorage.getItem(SETTING_DISABLE_ANIMATIONS) === "true",
+  disableSounds: localStorage.getItem(SETTING_DISABLE_SOUNDS) === "true",
+  educationMode: localStorage.getItem(SETTING_EDUCATION_MODE) === "true",
+  invertDirection: localStorage.getItem(SETTING_INVERT_DIRECTION) === "true",
+  startScreen: localStorage.getItem(SETTING_START_SCREEN) === "true",
 
   showSettingsModal: false,
   showAboutModal: false,
 
   startToLoadFiles: false,
   loadingProgress: 0,
-  startScreen:
-    localStorage.getItem("startScreen") === "true" ||
-    localStorage.getItem("startScreen") === null,
 
   firstStart: false,
   terrainLoading: true,
@@ -175,7 +168,6 @@ export const createGameStateSlice: StateCreator<
     placeBeacon: { name: "Place beacon", value: 100 },
     extendBeaconLimits: { name: "Extend beacons limits", value: 1000 },
   },
-
   updateWeather: (): WeatherCondition | null => {
     const newWeather = generateWeather();
     if (newWeather === get().weatherCondition) {
@@ -191,21 +183,6 @@ export const createGameStateSlice: StateCreator<
   updateVariableInLocalStorage: (variableName: string, value: boolean) => {
     set({ [variableName]: value });
     localStorage.setItem(variableName, value.toString());
-  },
-  updateDisableAnimationsInStorage: (value: boolean) => {
-    set({ disableAnimations: value });
-    localStorage.setItem("disableAnimations", value.toString());
-  },
-  updateEducationMode: (value: boolean) => {
-    set({ educationMode: value });
-    localStorage.setItem("educationMode", value.toString());
-  },
-  resetEducationMode: () => {
-    set({ educationMode: true });
-    localStorage.setItem("educationMode", "true");
-  },
-  replacePropWithXY: (name, value) => {
-    set(() => ({ [name]: { x: value.x, y: value.y } }));
   },
   addLog: (log) => {
     set((state) => {
@@ -224,12 +201,5 @@ export const createGameStateSlice: StateCreator<
       }
       return { eventsLog: updatedEvents };
     });
-  },
-  removeFirstEventLog: () => {
-    set((state) => {
-      const updatedEvents = [...state.eventsLog];
-      updatedEvents.shift();
-      return { eventsLog: updatedEvents };
-    });
-  },
+  }
 });

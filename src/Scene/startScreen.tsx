@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { corpLogoSvg } from "../assets/CorpLogo";
-import { useGameStore } from "../store/store";
+import { SETTING_DISABLE_ANIMATIONS, SETTING_DISABLE_SOUNDS, SETTING_START_SCREEN, useGameStore } from "../store/store";
 import { useCheckVariableRender } from "../utils/functions";
 import { ToggleButton } from "../components/UI/ToggleButton";
 import { useSoundSystem } from "../hooks/soundSystem";
@@ -32,9 +32,9 @@ const StartScreen = () => {
 			sounds.click.play();
 		}
     setTimeout(() => {
-      setStartScreen("startScreen", false);
+      setStartScreen(SETTING_START_SCREEN, false);
       if (startScreen === skipStartScene) {
-        updateVariableInLocalStorage("startScreen", !skipStartScene);
+        updateVariableInLocalStorage(SETTING_START_SCREEN, !skipStartScene);
       }
     }, 1000);
   };
@@ -126,13 +126,13 @@ const StartScreen = () => {
           <div className="mt-2 flex flex-row gap-3">
             <ToggleButton
               text={"Animations"}
-              onClick={() => updateVariableInLocalStorage("disableAnimations", !disableAnimations)}
+              onClick={() => updateVariableInLocalStorage(SETTING_DISABLE_ANIMATIONS, !disableAnimations)}
               state={disableAnimations}
             />
             <ToggleButton
               text={"Sound"}
               onClick={() => {
-                updateVariableInLocalStorage("disableSounds", !disableSounds);
+                updateVariableInLocalStorage(SETTING_DISABLE_SOUNDS, !disableSounds);
                 toggleAmbientSound(!disableSounds);
               }}
               state={disableSounds}

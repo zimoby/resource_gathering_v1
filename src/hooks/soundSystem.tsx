@@ -82,14 +82,14 @@ export const useSoundSystem = () => {
   useEffect(() => {
 		// console.log("sounds.ambient", {disableSounds, ambient: sounds.ambient, ambientWorks});
     if (disableSounds && sounds.ambient && ambientWorks) {
+			consoleLog("sounds.ambient.stop()");
       sounds.ambient.stop();
 			setAmbientWorks(false);
-			// consoleLog("sounds.ambient.stop()");
     } else if (
 			(!disableSounds && sounds.ambient && loadingProgress === 100) && 
 			!ambientWorks
 		) {
-			// consoleLog("sounds.ambient.play()");
+			consoleLog("sounds.ambient.play()");
 			sounds.ambient.stop();
       sounds.ambient.play();
 			setAmbientWorks(true);
