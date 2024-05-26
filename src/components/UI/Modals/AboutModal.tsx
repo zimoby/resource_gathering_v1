@@ -1,87 +1,73 @@
-import { SETTING_DISABLE_ANIMATIONS, SETTING_DISABLE_SOUNDS, SETTING_EDUCATION_MODE, SETTING_INVERT_DIRECTION, SETTING_START_SCREEN, useGameStore } from "../../../store/store";
+import { useEffect } from "react";
+import { useGameStore } from "../../../store/store";
 
-const ToggleButton = ({
-  label,
-  checked,
-  onChange,
-}: {
-  label: string;
-  checked: boolean;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}) => {
-  return (
-    <div className="w-3/4 h-fit py-1 flex justify-between items-center text-uitext text-lg hover:bg-uilines hover:text-neutral-900">
-      <label htmlFor={label} className="pl-5 tracking-tight leading-4 mr-2">
-        {label}
-      </label>
-      <input type="checkbox" className="mr-5" id={label} name={label} checked={checked} onChange={onChange} />
-    </div>
-  );
-};
-
-export const SettingsModal = () => {
-  const disableAnimations = useGameStore((state) => state.disableAnimations);
-  const disableSounds = useGameStore((state) => state.disableSounds);
-  const showSettingsModal = useGameStore((state) => state.showSettingsModal);
-  const startScreen = useGameStore((state) => state.startScreen);
-  const invertDirection = useGameStore((state) => state.invertDirection);
-  const educationMode = useGameStore((state) => state.educationMode);
-
+export const AboutModal = () => {
+  const showAboutModal = useGameStore((state) => state.showAboutModal);
   const updateStoreProperty = useGameStore((state) => state.updateStoreProperty);
-  const updateVariableInLocalStorage = useGameStore((state) => state.updateVariableInLocalStorage);
+
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        updateStoreProperty("showAboutModal", false);
+      }
+    };
+
+    if (showAboutModal) {
+      window.addEventListener("keydown", handleKeyPress);
+    }
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [showAboutModal, updateStoreProperty]);
 
   return (
     <div
-      className="fixed w-full h-full flex justify-center items-center z-50 bg-black/50 "
-      style={{ display: showSettingsModal ? "flex" : "none" }}
+      className="fixed w-full h-full flex justify-center items-center z-50 bg-black/50"
+      style={{ display: showAboutModal ? "flex" : "none" }}
     >
       <div
-        className="relative bg-black/80 w-96 h-fit flex flex-col  border border-uilines aug-border-yellow-500"
-        data-augmented-ui={`border tl-2-clip-x br-2-clip-x --aug-border-bg`}
+        className="relative bg-black/80 w-96 h-fit flex flex-col border border-uilines aug-border-yellow-500"
+        data-augmented-ui="border tl-2-clip-x br-2-clip-x --aug-border-bg"
       >
         <div className="absolute bottom-1.5 left-1.5 size-5 border-l-uilines border-b-uilines border-b-2 border-l-2" />
-        <div className=" flex justify-end items-center">
+        <div className="flex justify-end items-center">
           <div
             className="flex justify-center items-center size-8 text-uitext cursor-pointer hover:bg-uilines hover:text-neutral-900"
-            onClick={() => updateStoreProperty("showSettingsModal", false)}
+            onClick={() => updateStoreProperty("showAboutModal", false)}
           >
-            <div className=" text-4xl rotate-45 text-center">+</div>
+            <div className="text-4xl rotate-45 text-center">+</div>
           </div>
         </div>
-        <div className=" orbitron w-full h-8 mb-3 flex justify-center items-center text-uitext text-2xl">
-          Settings
+        <div className="orbitron w-full h-8 flex justify-center bg-uilines items-center text-neutral-900 text-2xl">
+          About
         </div>
-        <div className=" w-full mb-8 flex flex-col justify-center items-center text-uitext text-2xl">
-          <div className="w-full mb-3 flex flex-col justify-center items-center">
-            <ToggleButton
-              label="Show start screen"
-              checked={startScreen}
-              onChange={() => updateVariableInLocalStorage(SETTING_START_SCREEN, !startScreen)}
-            />
-            <ToggleButton
-              label="Show education"
-              checked={educationMode}
-              onChange={() => updateVariableInLocalStorage(SETTING_EDUCATION_MODE, !educationMode)}
-            />
+        <div className="w-full h-full flex flex-col p-7 pt-4 text-uitext leading-5 space-y-2">
+          <div className="text-sm">
+            <p>This game, created for the challenge "Futuristic UI" from Bruno Simon's </p>
+            <a className="underline" href="https://threejs-journey.com" target="_blank" rel="noreferrer">Three.js Journey</a>
+            <p>course, focuses on gathering resources on unknown planets.</p>
           </div>
-          <div className="w-full mb-3 flex flex-col justify-center items-center">
-            <ToggleButton
-              label="Invert keys direction"
-              checked={invertDirection}
-              onChange={() => updateVariableInLocalStorage(SETTING_INVERT_DIRECTION, !invertDirection)}
-            />
-          </div>
-          <div className="w-full mb-3 flex flex-col justify-center items-center">
-            <ToggleButton
-              label="Disable Animations"
-              checked={disableAnimations}
-              onChange={() => updateVariableInLocalStorage(SETTING_DISABLE_ANIMATIONS, !disableAnimations)}
-            />
-            <ToggleButton
-              label="Disable Sound"
-              checked={disableSounds}
-              onChange={() => updateVariableInLocalStorage(SETTING_DISABLE_SOUNDS, !disableSounds)}
-            />
+          <p className="">
+            <a className="underline" href="https://github.com/zimoby/resource_gathering_v1" target="_blank" rel="noreferrer">
+              GitHub
+            </a>
+          </p>
+          <p className="text-sm">
+            The game is being developed by Denys Bondartsov.
+          </p>
+          <div className=" flex flex-row space-x-3">
+            <a className="underline" href="https://zimoby.notion.site/" target="_blank" rel="noreferrer">
+              Notion
+            </a>
+            <a> | </a>
+            <a className="underline" href="https://www.instagram.com/zimoby/" target="_blank" rel="noreferrer">
+              Instagram
+            </a>
+            <a> | </a>
+            <a className="underline" href="https://x.com/ZimOby" target="_blank" rel="noreferrer">
+              Twitter
+            </a>
           </div>
         </div>
       </div>
