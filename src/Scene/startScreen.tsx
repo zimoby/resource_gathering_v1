@@ -119,7 +119,10 @@ const StartScreen = () => {
                 }}
               />
             </div>
-            <button className="w-32 m-2 uppercase text-center text-neutral-900" onClick={startGame}>
+            <button
+              className="orbitron w-32 m-2 uppercase text-center text-neutral-900"
+              onClick={startGame}
+            >
               Start Game
             </button>
             <div className="w-36 h-full overflow-hidden">
@@ -137,8 +140,9 @@ const StartScreen = () => {
         <div className="h-fit mt-16 flex flex-col justify-center items-center">
           <p>Settings</p>
           <p className="w-3/5 text-xs text-center leading-3">
-            The game includes glitch effects that may cause discomfort or seizures for people with
-            photosensitive epilepsy. If you find these effects uncomfortable you can disable them.
+            The game includes glitch effects that may cause discomfort or
+            seizures for people with photosensitive epilepsy. If you find these
+            effects uncomfortable you can disable them.
           </p>
           <div className="mt-2 flex flex-row gap-3">
             <ToggleButton
