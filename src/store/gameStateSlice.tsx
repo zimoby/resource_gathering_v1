@@ -28,7 +28,13 @@ export interface GameStateSlice {
   disableSounds: boolean;
   educationMode: boolean;
   invertDirection: boolean;
+
   showSettingsModal: boolean;
+  showAboutModal: boolean;
+
+  startToLoadFiles: boolean;
+  loadingProgress: number;
+  
   startScreen: boolean;
   firstStart: boolean;
   terrainLoading: boolean;
@@ -81,7 +87,10 @@ export const createGameStateSlice: StateCreator<
   invertDirection: localStorage.getItem("invertDirection") === "true",
 
   showSettingsModal: false,
+  showAboutModal: false,
 
+  startToLoadFiles: false,
+  loadingProgress: 0,
   startScreen:
     localStorage.getItem("startScreen") === "true" ||
     localStorage.getItem("startScreen") === null,

@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { corpLogoSvg } from "../assets/CorpLogo";
 import { useGameStore } from "../store/store";
 import { useCheckVariableRender } from "../utils/functions";
 import { ToggleButton } from "../components/UI/ToggleButton";
-import { Howl } from "howler";
+import { useSoundSystem } from "../hooks/soundSystem";
 
 const authorName = "Denys Bondartsov";
 
@@ -13,69 +13,18 @@ const StartScreen = () => {
   const disableAnimations = useGameStore((state) => state.disableAnimations);
   const disableSounds = useGameStore((state) => state.disableSounds);
   const startScreen = useGameStore((state) => state.startScreen);
+  const loadingProgress = useGameStore((state) => state.loadingProgress);
+  const startToLoadFiles = useGameStore((state) => state.startToLoadFiles);
 
-  const [loadingProgress, setLoadingProgress] = useState(0);
-  // const [userActive, setUserActive] = useState(false);
-  const [startToGenerate, setStartToGenerate] = useState(false);
+  // const [startToGenerate, setStartToGenerate] = useState(false);
   const [skipStartScene, setSkipStartScene] = useState(false);
   const [starting, setStarting] = useState(false);
-  const [sounds, setSounds] = useState<{ ambient: Howl | null; click: Howl | null }>({
-    ambient: null,
-    click: null,
-  });
 
-  // useEffect(() => {
-  //   const handleUserGesture = () => {
-  //     setUserActive(true);
-  //   };
+  const { toggleAmbientSound } = useSoundSystem();
 
-  //   document.addEventListener("click", handleUserGesture);
+  // useCheckVariableRender(loadingProgress, "loadingProgress");
 
-  //   return () => {
-  //     document.removeEventListener("click", handleUserGesture);
-  //   };
-  // }, []);
-
-  useCheckVariableRender(loadingProgress, "loadingProgress");
-
-  useEffect(() => {
-    if (!startToGenerate) return;
-
-    if (!sounds.ambient) {
-      const ambientSound = new Howl({
-        src: ["./mystic-forest-ambient-23812.mp3"],
-        loop: true,
-        volume: 0.2,
-        onload: () => {
-          setLoadingProgress((prev) => prev + 50);
-          setSounds((prev) => ({ ...prev, ambient: ambientSound }));
-        },
-      });
-
-      const clickSound = new Howl({
-        src: ["./mouse-click-153941.mp3"],
-        volume: 0.1,
-        onload: () => {
-          setLoadingProgress((prev) => prev + 50);
-          setSounds((prev) => ({ ...prev, click: clickSound }));
-        },
-      });
-    }
-
-    return () => {
-      if (sounds.ambient) sounds.ambient.unload();
-      if (sounds.click) sounds.click.unload();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [startToGenerate]);
-
-  useEffect(() => {
-    if (disableSounds && sounds.ambient) {
-      sounds.ambient.stop();
-    } else if (!disableSounds && sounds.ambient && loadingProgress === 100) {
-      sounds.ambient.play();
-    }
-  }, [disableSounds, sounds, loadingProgress]);
+  const { sounds } = useSoundSystem();
 
   const startGame = () => {
     setStarting(true);
@@ -113,18 +62,18 @@ const StartScreen = () => {
           {`Course by Bruno Simon Design by ${authorName} story by ${authorName} animation by ${authorName} development by ${authorName} testing by ${authorName} vfx by ${authorName}`}
         </p>
 
-        {!startToGenerate && (
+        {!startToLoadFiles && (
           <div className="w-fit h-fit mt-16 flex flex-row items-center justify-center border border-neutral-100 hover:border-yellow-400 overflow-hidden bg-neutral-100 hover:bg-yellow-400 cursor-pointer">
             <button
 							className="w-32 m-2 uppercase text-center text-neutral-900"
-              onClick={() => setStartToGenerate(true)}
+              onClick={() => useGameStore.setState({ startToLoadFiles: true })}
 						>
               Generate World
             </button>
           </div>
         )}
 
-        {startToGenerate && loadingProgress < 100 && (
+        {startToLoadFiles && loadingProgress < 100 && (
           <div className="w-[300px] h-10 mt-16 bg-neutral-800 border">
             <div
               className="h-full overflow-hidden bg-neutral-200"
@@ -142,7 +91,7 @@ const StartScreen = () => {
           </div>
         )}
 
-        {startToGenerate && loadingProgress === 100 && (
+        {startToLoadFiles && loadingProgress === 100 && (
           <div className="w-fit h-fit mt-16 flex flex-row items-center justify-center border border-neutral-100 hover:border-yellow-400 overflow-hidden bg-neutral-100 hover:bg-yellow-400 cursor-pointer">
             <div className="w-36 h-full overflow-hidden">
               <div
@@ -182,7 +131,10 @@ const StartScreen = () => {
             />
             <ToggleButton
               text={"Sound"}
-              onClick={() => updateVariableInLocalStorage("disableSounds", !disableSounds)}
+              onClick={() => {
+                updateVariableInLocalStorage("disableSounds", !disableSounds);
+                toggleAmbientSound(!disableSounds);
+              }}
               state={disableSounds}
             />
             <ToggleButton
