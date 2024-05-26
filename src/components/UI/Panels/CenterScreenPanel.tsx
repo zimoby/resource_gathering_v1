@@ -7,13 +7,14 @@ import { FlickeringHtmlEffect } from "../../../effects/AppearingUiEffectWrapper"
 
 export const CenterScreenPanel = () => {
   const showSettingsModal = useGameStore((state) => state.showSettingsModal);
+  const showAboutModal = useGameStore((state) => state.showAboutModal);
   const animationFirstStage = useGameStore((state) => state.animationFirstStage);
 
   if (!animationFirstStage) return null;
 
   return (
     <>
-      {!showSettingsModal && (
+      {(!showSettingsModal && !showAboutModal) && (
         <Billboard>
           <Html>
             <div

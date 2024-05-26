@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { SETTING_DISABLE_ANIMATIONS, SETTING_DISABLE_MUSIC, SETTING_DISABLE_SOUNDS, SETTING_EDUCATION_MODE, SETTING_INVERT_DIRECTION, SETTING_START_SCREEN, useGameStore } from "../../../store/store";
 
 const ToggleButton = ({
@@ -31,6 +32,24 @@ export const SettingsModal = () => {
   const updateStoreProperty = useGameStore((state) => state.updateStoreProperty);
   const updateVariableInLocalStorage = useGameStore((state) => state.updateVariableInLocalStorage);
 
+
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        updateStoreProperty("showSettingsModal", false);
+      }
+    };
+
+    if (showSettingsModal) {
+      window.addEventListener("keydown", handleKeyPress);
+    }
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [showSettingsModal, updateStoreProperty]);
+
+
   return (
     <div
       className="fixed w-full h-full flex justify-center items-center z-50 bg-black/50 "
@@ -49,10 +68,10 @@ export const SettingsModal = () => {
             <div className=" text-4xl rotate-45 text-center">+</div>
           </div>
         </div>
-        <div className=" orbitron w-full h-8 mb-3 flex justify-center items-center text-uitext text-2xl">
+        <div className="orbitron w-full h-8 flex justify-center bg-uilines items-center text-neutral-900 text-2xl">
           Settings
         </div>
-        <div className=" w-full mb-8 flex flex-col justify-center items-center text-uitext text-2xl">
+        <div className=" w-full mb-8 mt-6 flex flex-col justify-center items-center text-uitext text-2xl">
           <div className="w-full mb-3 flex flex-col justify-center items-center">
             <ToggleButton
               label="Show start screen"

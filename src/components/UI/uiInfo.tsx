@@ -22,6 +22,8 @@ import { FlyToNewWorld } from "./FlyToNewWorldButton";
 import { CollectedAftefacts } from "./Panels/CollectedAftefacts";
 import { SettingsButton } from "./SettingsButton";
 import { ArtifactsInfo } from "../artifacts/ArtifactsInfo";
+import { AboutButton } from "./AbountButton";
+import { AboutModal } from "./Modals/AboutModal";
 // import { Environment, OrbitControls, PerspectiveCamera, Preload, Sphere, View } from "@react-three/drei";
 // import { useRef } from "react";
 // import { useFrame } from "@react-three/fiber";
@@ -63,6 +65,7 @@ export const UiInfo = () => {
       }}
     >
       <SettingsModal />
+      <AboutModal />
       <div
         className="absolute top-0 left-0 h-16 flex justify-between gap-1 bg-transparent"
         style={{
@@ -83,6 +86,7 @@ export const UiInfo = () => {
           styles={{ height: "calc(100vh - 9.26rem)" }}
         >
           <CorpLogoPanel />
+          <AboutButton />
           <SettingsButton />
           <FlyToNewWorld />
           <SystemControls />

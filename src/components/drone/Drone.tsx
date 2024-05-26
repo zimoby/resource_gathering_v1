@@ -30,6 +30,7 @@ export const FlyingDrone = () => {
   const [firstAppearing, setFirstAppearing] = useState(true);
   const appearingHeightRef = useRef(-appearingHeight);
   const showSettingsModal = useGameStore((state) => state.showSettingsModal);
+  const showAboutModal = useGameStore((state) => state.showAboutModal);
   const setMapAnimationState = useGameStore((state) => state.setMapAnimationState);
   const educationMode = useGameStore((state) => state.educationMode);
 
@@ -78,7 +79,7 @@ export const FlyingDrone = () => {
         <Float position={[0, 20, 0]} floatIntensity={10} speed={5}>
           <Drone />
 
-          { !showSettingsModal && <Billboard>
+          { (!showSettingsModal && !showAboutModal) && <Billboard>
             <Html position={[4, 2, 0]}>
               {activePhrase.phrase !== "" && (
                 <div className="flex flex-col items-end">
