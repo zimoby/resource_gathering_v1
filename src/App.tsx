@@ -8,7 +8,7 @@ import StartScreen from "./Scene/startScreen";
 
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import { useSoundSystem } from "./hooks/soundSystem";
+import { useRunBgMusic, useSoundSystem } from "./hooks/soundSystem";
 
 gsap.registerPlugin(useGSAP);
 
@@ -22,6 +22,7 @@ const App = () => {
   // useParamsSync();
   useGameLoop();
   useSoundSystem();
+  useRunBgMusic();
   
   return (
     <>

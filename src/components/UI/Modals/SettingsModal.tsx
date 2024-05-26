@@ -1,4 +1,4 @@
-import { SETTING_DISABLE_ANIMATIONS, SETTING_DISABLE_SOUNDS, SETTING_EDUCATION_MODE, SETTING_INVERT_DIRECTION, SETTING_START_SCREEN, useGameStore } from "../../../store/store";
+import { SETTING_DISABLE_ANIMATIONS, SETTING_DISABLE_MUSIC, SETTING_DISABLE_SOUNDS, SETTING_EDUCATION_MODE, SETTING_INVERT_DIRECTION, SETTING_START_SCREEN, useGameStore } from "../../../store/store";
 
 const ToggleButton = ({
   label,
@@ -22,6 +22,7 @@ const ToggleButton = ({
 export const SettingsModal = () => {
   const disableAnimations = useGameStore((state) => state.disableAnimations);
   const disableSounds = useGameStore((state) => state.disableSounds);
+  const disableMusic = useGameStore((state) => state.disableMusic);
   const showSettingsModal = useGameStore((state) => state.showSettingsModal);
   const startScreen = useGameStore((state) => state.startScreen);
   const invertDirection = useGameStore((state) => state.invertDirection);
@@ -81,6 +82,11 @@ export const SettingsModal = () => {
               label="Disable Sound"
               checked={disableSounds}
               onChange={() => updateVariableInLocalStorage(SETTING_DISABLE_SOUNDS, !disableSounds)}
+            />
+            <ToggleButton
+              label="Disable Music"
+              checked={disableMusic}
+              onChange={() => updateVariableInLocalStorage(SETTING_DISABLE_MUSIC, !disableMusic)}
             />
           </div>
         </div>

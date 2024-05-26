@@ -79,22 +79,34 @@ export const useSoundSystem = () => {
   // }, [loadingProgress, playAmbientSound, disableSounds, ambientWorks]);
 
 
+	return { sounds };
+};
+
+
+export const useRunBgMusic = () => {
+	const disableSounds = useGameStore((state) => state.disableSounds);
+	const disableMusic = useGameStore((state) => state.disableMusic);
+	const loadingProgress = useGameStore((state) => state.loadingProgress);
+	const [ambientWorks, setAmbientWorks] = useState(false);
+
+	const { sounds } = useSoundSystem();
+
   useEffect(() => {
 		// console.log("sounds.ambient", {disableSounds, ambient: sounds.ambient, ambientWorks});
-    if (disableSounds && sounds.ambient && ambientWorks) {
+    if ((disableSounds || disableMusic) && sounds.ambient && ambientWorks) {
 			consoleLog("sounds.ambient.stop()");
       sounds.ambient.stop();
 			setAmbientWorks(false);
     } else if (
-			(!disableSounds && sounds.ambient && loadingProgress === 100) && 
+			((!disableSounds && !disableMusic) && sounds.ambient && loadingProgress === 100) && 
 			!ambientWorks
 		) {
+			if (disableMusic) return;
 			consoleLog("sounds.ambient.play()");
 			sounds.ambient.stop();
       sounds.ambient.play();
 			setAmbientWorks(true);
     }
-  }, [disableSounds, sounds, loadingProgress, ambientWorks]);
+  }, [disableSounds, sounds, loadingProgress, ambientWorks, disableMusic]);
 
-	return { sounds, playAmbientSound, toggleAmbientSound };
-};
+}

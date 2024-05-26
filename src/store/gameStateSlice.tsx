@@ -26,6 +26,7 @@ export interface CostsT {
 export interface GameStateSlice {
   disableAnimations: boolean;
   disableSounds: boolean;
+  disableMusic: boolean;
   educationMode: boolean;
   invertDirection: boolean;
 
@@ -78,6 +79,7 @@ export const createGameStateSlice: StateCreator<
 > = (set, get) => ({
   disableAnimations: localStorage.getItem(SETTING_DISABLE_ANIMATIONS) === "true",
   disableSounds: localStorage.getItem(SETTING_DISABLE_SOUNDS) === "true",
+  disableMusic: localStorage.getItem(SETTING_DISABLE_SOUNDS) === "true",
   educationMode: localStorage.getItem(SETTING_EDUCATION_MODE) === "true",
   invertDirection: localStorage.getItem(SETTING_INVERT_DIRECTION) === "true",
   startScreen: localStorage.getItem(SETTING_START_SCREEN) === "true",

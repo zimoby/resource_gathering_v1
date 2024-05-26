@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { corpLogoSvg } from "../assets/CorpLogo";
 import { SETTING_DISABLE_ANIMATIONS, SETTING_DISABLE_SOUNDS, SETTING_START_SCREEN, useGameStore } from "../store/store";
-import { useCheckVariableRender } from "../utils/functions";
+// import { useCheckVariableRender } from "../utils/functions";
 import { ToggleButton } from "../components/UI/ToggleButton";
 import { useSoundSystem } from "../hooks/soundSystem";
 
@@ -20,7 +20,7 @@ const StartScreen = () => {
   const [skipStartScene, setSkipStartScene] = useState(false);
   const [starting, setStarting] = useState(false);
 
-  const { toggleAmbientSound } = useSoundSystem();
+  // const { toggleAmbientSound } = useSoundSystem();
 
   // useCheckVariableRender(loadingProgress, "loadingProgress");
 
@@ -133,7 +133,6 @@ const StartScreen = () => {
               text={"Sound"}
               onClick={() => {
                 updateVariableInLocalStorage(SETTING_DISABLE_SOUNDS, !disableSounds);
-                toggleAmbientSound(!disableSounds);
               }}
               state={disableSounds}
             />
