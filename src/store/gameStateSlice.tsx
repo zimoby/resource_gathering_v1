@@ -1,5 +1,5 @@
 import { StateCreator } from "zustand";
-import { GameStoreState, SETTING_DISABLE_ANIMATIONS, SETTING_DISABLE_SOUNDS, SETTING_EDUCATION_MODE, SETTING_INVERT_DIRECTION, SETTING_START_SCREEN } from "./store";
+import { GameStoreState, SETTING_DISABLE_ANIMATIONS, SETTING_DISABLE_MUSIC, SETTING_DISABLE_SOUNDS, SETTING_EDUCATION_MODE, SETTING_INVERT_DIRECTION, SETTING_START_SCREEN } from "./store";
 import { ResourceType, resourceTypes } from "./worldParamsSlice";
 import { generateWeather } from "../utils/generators";
 import { WeatherCondition } from "./worldParamsSlice";
@@ -79,7 +79,7 @@ export const createGameStateSlice: StateCreator<
 > = (set, get) => ({
   disableAnimations: localStorage.getItem(SETTING_DISABLE_ANIMATIONS) === "true",
   disableSounds: localStorage.getItem(SETTING_DISABLE_SOUNDS) === "true",
-  disableMusic: localStorage.getItem(SETTING_DISABLE_SOUNDS) === "true",
+  disableMusic: localStorage.getItem(SETTING_DISABLE_MUSIC) === "true",
   educationMode: localStorage.getItem(SETTING_EDUCATION_MODE) === "true",
   invertDirection: localStorage.getItem(SETTING_INVERT_DIRECTION) === "true",
   startScreen: localStorage.getItem(SETTING_START_SCREEN) === "true",
