@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stats } from "@react-three/drei";
 import { FlickeringEffect } from "../effects/FlickeringEffectWrapper";
@@ -18,8 +18,24 @@ import { ArtifactsPlanesIndicators } from "../components/artifacts/ArtifactsIndi
 
 export const GameCanvas = () => {
   const firstStart = useGameStore((state) => state.firstStart);
+  const startToLoadFiles = useGameStore((state) => state.startToLoadFiles);
   const animationFirstStage = useGameStore((state) => state.animationFirstStage);
   const terrainAppearing = useGameStore((state) => state.terrainAppearing);
+  
+
+  useEffect(() => {
+    const handleClick = () => {
+      if (!startToLoadFiles) {
+        useGameStore.setState({ startToLoadFiles: true })
+      }
+    };
+
+    window.addEventListener("click", handleClick);
+
+    return () => {
+      window.removeEventListener("click", handleClick);
+    };
+  }, []);
 
   return (
     <Canvas flat shadows dpr={[1, 1.5]} gl={{ antialias: false }}>

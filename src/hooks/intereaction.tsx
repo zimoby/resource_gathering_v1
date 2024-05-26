@@ -60,9 +60,6 @@ export const useKeyboardControls = ({
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
-      // if (!animationFirstStage) { return; }
-
-      // console.log(event.code);
 
       if (keyToVector[event.code]) {
         setActiveKeys((prev) => ({ ...prev, [event.code]: true }));

@@ -48,7 +48,6 @@ const usePhraseSystem = () => {
     }
 
     if (firstGreetings && animationFirstStage) {
-      console.log("educationalStepIndex", educationalStepIndex);
       setActivePhrase(educationalStepsPhrases[educationalStepIndex]);
       setPhraseKey((prevKey) => prevKey + 1);
     }

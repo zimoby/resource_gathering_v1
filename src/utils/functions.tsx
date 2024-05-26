@@ -2,8 +2,21 @@ import { MutableRefObject, useEffect } from "react";
 import { useGameStore, DEV_MODE } from "../store/store";
 import { ChunkType } from "../store/gameStateSlice";
 
-export const consoleLog = (message: string, data?: object) => {
-  DEV_MODE && data ? console.log(message, { ...data }) : console.log(message);
+export const consoleLog = (message: string, data?: object | number | string | boolean
+) => {
+  if (!DEV_MODE) return;
+
+  if (!data) {
+    console.log(message);
+    return;
+  }
+
+  if (typeof data === "object") {
+    console.log(message, { ...data });
+  } else {
+    console.log(message, data);
+  }
+  
 };
 
 export const useCheckVariableRender = (
@@ -14,14 +27,14 @@ export const useCheckVariableRender = (
     if (typeof variable === "object") {
       consoleLog(name || `variable:`, { ...variable });
     } else {
-      console.log(name || `variable:`, variable);
+      consoleLog(name || `variable:`, variable);
     }
   }, [name, variable]);
 };
 
 export const useCheckComponentRender = (name: string) => {
   useEffect(() => {
-    console.log("CR: " + name);
+    consoleLog("CR: " + name);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 };

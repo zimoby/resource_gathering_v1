@@ -71,7 +71,7 @@ export const useRunBgMusic = () => {
 	const { sounds } = useSoundSystem();
 
   useEffect(() => {
-		// console.log("sounds.ambient", {disableSounds, ambient: sounds.ambient, ambientWorks});
+		// console.log("sounds.ambient", {disableSounds, ambient: sounds.ambient, ambientWorks, loadingProgress});
     if ((disableSounds || disableMusic) && sounds.ambient && ambientWorks) {
 			consoleLog("sounds.ambient.stop()");
       sounds.ambient.stop();

@@ -15,7 +15,7 @@ import { generateTerrain } from "./generateTerrain";
 
 import { NoiseFunction2D, createNoise2D } from "simplex-noise";
 import seedrandom from "seedrandom";
-import { useCalculateDeltas, useResetOffset } from "../../utils/functions";
+import { consoleLog, useCalculateDeltas, useResetOffset } from "../../utils/functions";
 import { useIncreasingSpeed } from "../../effects/IncreaseSceneSpeed";
 
 const generateIndices = (widthCount: number, depthCount: number, indices: Uint16Array) => {
@@ -133,7 +133,7 @@ export const Terrain = () => {
     
     if (resources[0] !== null && terrainLoading) {
       useGameStore.setState({ terrainLoading: false });
-      console.log("terrainLoading finished");
+      consoleLog("terrainLoading finished");
     }
   });
 
