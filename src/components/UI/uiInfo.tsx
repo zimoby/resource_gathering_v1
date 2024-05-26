@@ -25,7 +25,7 @@ import { ArtifactsInfo } from "../artifacts/ArtifactsInfo";
 import { AboutButton } from "./AbountButton";
 import { AboutModal } from "./Modals/AboutModal";
 import { useSoundSystem } from "../../hooks/soundSystem";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 // import { Environment, OrbitControls, PerspectiveCamera, Preload, Sphere, View } from "@react-three/drei";
 // import { useRef } from "react";
 // import { useFrame } from "@react-three/fiber";
