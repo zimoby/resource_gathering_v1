@@ -24,7 +24,7 @@ export const useInitInfo = () => {
     }
 
     if (localStorage.getItem(SETTING_DISABLE_SOUNDS) === null) {
-      updateVariableInLocalStorage(SETTING_DISABLE_SOUNDS, false);
+      updateVariableInLocalStorage(SETTING_DISABLE_SOUNDS, true);
     }
 
     if (localStorage.getItem(SETTING_DISABLE_MUSIC) === null) {
