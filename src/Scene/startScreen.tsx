@@ -64,7 +64,7 @@ const StartScreen = () => {
           className="orbitron text-7xl uppercase text-center text-yellow-400"
           style={{ transform: "perspective(40px) rotateX(5deg)" }}
         >
-          World researcher
+          Worlds researcher
         </div>
         <h1 className="orbitron text-xs mt-3 uppercase -skew-x-12">
           Project for the Threejs.journey course
