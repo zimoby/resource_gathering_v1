@@ -6,7 +6,6 @@ import {
 } from "three";
 import {
   MapDetailesType,
-  Terrain,
   TerrainTypesT,
   minLevel,
 } from "../../store/worldParamsSlice";

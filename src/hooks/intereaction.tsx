@@ -65,7 +65,7 @@ export const useKeyboardControls = ({
 
       if (event.code === "Space") {
         const intersects = getIntersection(
-          mouseEventRef.current || { clientX: 0, clientY: 0 },
+          mouseEventRef.current ?? { clientX: 0, clientY: 0 },
           raycaster,
           meshRef.current,
           camera,
