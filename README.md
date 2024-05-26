@@ -1,30 +1,27 @@
-# React + TypeScript + Vite
+# Holographic Resource Scanner
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Project for [ThreeJS Journey](https://threejs-journey.com/) course challenge "Futuristic UI" by Bruno Simon. This game focuses on gathering resources on unknown planets using a holographic scanner.
 
-Currently, two official plugins are available:
+Live: [Holographic Resource Scanner](https://resource-gathering-v1.vercel.app/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## About the Project
 
-## Expanding the ESLint configuration
+The game is a work in progress and open source. The main goal is to provide an immersive experience of resource gathering with a minimalist, futuristic UI. The game mechanics involve using a scanner to locate and extract resources hidden underground, which are essential for sustaining energy levels and progressing to new planets.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Repository Links
 
-- Configure the top-level `parserOptions` property like this:
+- [GitHub Repository](https://github.com/zimoby/resource_gathering_v1)
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+## Follow the Author
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- [Notion](https://zimoby.notion.site/)
+- [Instagram](https://www.instagram.com/zimoby/)
+- [Twitter](https://x.com/ZimOby)
+
+## References
+
+- [Pinterest](https://www.pinterest.com/zimoby/world-scanning/)
+
+### Sounds
+
+- Ambient Sound: ["Pixabay"](https://pixabay.com)
