@@ -57,7 +57,6 @@ export const FlyingDrone = () => {
     }
   }, [firstAppearing, sounds, disableSounds, startStageFinished]);
 
-
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       if (event.key === "Enter") {
