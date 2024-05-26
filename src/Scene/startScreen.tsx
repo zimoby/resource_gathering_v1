@@ -15,9 +15,7 @@ const authorName = "Denys Bondartsov";
 
 const StartScreen = () => {
   const setStartScreen = useGameStore((state) => state.updateStoreProperty);
-  const updateVariableInLocalStorage = useGameStore(
-    (state) => state.updateVariableInLocalStorage,
-  );
+  const updateVariableInLocalStorage = useGameStore((state) => state.updateVariableInLocalStorage);
   const disableAnimations = useGameStore((state) => state.disableAnimations);
   const disableSounds = useGameStore((state) => state.disableSounds);
   const startScreen = useGameStore((state) => state.startScreen);
@@ -70,14 +68,14 @@ const StartScreen = () => {
           Project for the Threejs.journey course
         </h1>
         <p className="text-center w-3/5 orbitron text-2xs mt-3 uppercase -skew-x-12 scale-y-150 scale-x-75 leading-3">
-        {`Course by Bruno Simon
-          Design by ${authorName}
-          Story by ${authorName}
-          Animation by ${authorName}
-          Development by ${authorName}
-          Testing by ${authorName}
-          Time Travel Logistics by ${authorName}
-          Unicorn Training by ${authorName}
+          {`Course by Bruno Simon ·
+          Design by ${authorName} ·
+          Story by ${authorName} ·
+          Animation by ${authorName} ·
+          Development by ${authorName} ·
+          Testing by Liia Kukava ❤︎
+          Time Travel Logistics by ${authorName} ·
+          Unicorn Training by ${authorName} ·
           Cat Whispering by ${authorName}`}
         </p>
 
@@ -121,10 +119,7 @@ const StartScreen = () => {
                 }}
               />
             </div>
-            <button
-              className="w-32 m-2 uppercase text-center text-neutral-900"
-              onClick={startGame}
-            >
+            <button className="w-32 m-2 uppercase text-center text-neutral-900" onClick={startGame}>
               Start Game
             </button>
             <div className="w-36 h-full overflow-hidden">
@@ -142,28 +137,21 @@ const StartScreen = () => {
         <div className="h-fit mt-16 flex flex-col justify-center items-center">
           <p>Settings</p>
           <p className="w-3/5 text-xs text-center leading-3">
-            The game includes glitch effects that may cause discomfort or
-            seizures for people with photosensitive epilepsy. If you find these
-            effects uncomfortable you can disable them.
+            The game includes glitch effects that may cause discomfort or seizures for people with
+            photosensitive epilepsy. If you find these effects uncomfortable you can disable them.
           </p>
           <div className="mt-2 flex flex-row gap-3">
             <ToggleButton
               text={"Animations"}
               onClick={() =>
-                updateVariableInLocalStorage(
-                  SETTING_DISABLE_ANIMATIONS,
-                  !disableAnimations,
-                )
+                updateVariableInLocalStorage(SETTING_DISABLE_ANIMATIONS, !disableAnimations)
               }
               state={disableAnimations}
             />
             <ToggleButton
               text={"Sound"}
               onClick={() => {
-                updateVariableInLocalStorage(
-                  SETTING_DISABLE_SOUNDS,
-                  !disableSounds,
-                );
+                updateVariableInLocalStorage(SETTING_DISABLE_SOUNDS, !disableSounds);
               }}
               state={disableSounds}
             />
