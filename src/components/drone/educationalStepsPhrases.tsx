@@ -1,49 +1,52 @@
 export const educationalStepsPhrases = [
   {
-    phrase: "Hello, I'm your drone. I will help you to gather resources.",
+    phrase: "Hello, I'm your drone. I'll help you gather resources.",
     skipped: false,
   },
   {
-    phrase: "To gather resources, hold Space and Click on the ground to add Beacon.",
+    phrase: "To gather resources, hold Space and Click on the ground to add a Beacon.",
     skipped: false,
   },
   {
-    phrase: "Great! Information about resources will appear on the left side of the screen.",
+    phrase: "Resources are hidden in the ground and marked with different colors.",
+    skipped: false,
+  },
+  {
+    phrase: "Great! Resource information will appear on the left side of the screen.",
     skipped: false,
     stage: "collectedResourcesPanel",
   },
-	{
-		phrase: "Important tip. Exteme weather conditions can destroy the beacons. Be careful!",
-		skipped: false,
-	},
   {
-    phrase:
-      "Resources gives you energy. Energy is needed for scaner work. Hold Space key to see how much energy the scanner is using. ",
+    phrase: "Important tip: Extreme weather can destroy beacons. Be careful!",
+    skipped: false,
+  },
+  {
+    phrase: "Resources provide energy. Hold Space to see the scanner's energy usage.",
     skipped: false,
     stage: "progressPanel",
   },
   {
-    phrase: "The costs for the different actions are shown on the right side of the screen.",
+    phrase: "The costs for different actions are shown on the right side of the screen.",
     skipped: false,
     stage: "costsPanel",
   },
   {
-    phrase: "When you archive energy progress, you can fly to another planet.",
+    phrase: "When you accumulate enough energy, you can fly to another planet.",
     skipped: false,
     stage: "newWorldButton",
   },
   {
-    phrase: "To change direction of scanning, use WASD or arrow keys. Hold Shift to speed up.",
+    phrase: "To change scanning direction, use WASD or arrow keys. Hold Shift to speed up.",
     skipped: false,
   },
   {
-    phrase: "On the planet you will find Artifacts. The white light around the map shows the side where the Artifact is. Brighter light means closer Artifact.",
-		skipped: false,
-		stage: "collectedArtifactsPanel",
+    phrase: "On the planet, you'll find Artifacts. White lights indicate the direction. Brighter light means a closer Artifact.",
+    skipped: false,
+    stage: "collectedArtifactsPanel",
   },
   {
-    phrase: "To take the Artifact, move drone close to it with hold Space. Click on the artifact when it starts to move up or down.",
-		skipped: false,
+    phrase: "To collect an Artifact, move the drone close while holding Space. When it starts to move, click on the surface below the Artifact.",
+    skipped: false,
   },
   {
     phrase: "Now, let's collect some resources!",
