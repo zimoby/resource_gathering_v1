@@ -24,6 +24,8 @@ import { SettingsButton } from "./SettingsButton";
 import { ArtifactsInfo } from "../artifacts/ArtifactsInfo";
 import { AboutButton } from "./AbountButton";
 import { AboutModal } from "./Modals/AboutModal";
+import { useSoundSystem } from "../../hooks/soundSystem";
+import { useEffect, useState } from "react";
 // import { Environment, OrbitControls, PerspectiveCamera, Preload, Sphere, View } from "@react-three/drei";
 // import { useRef } from "react";
 // import { useFrame } from "@react-three/fiber";
@@ -47,9 +49,30 @@ import { AboutModal } from "./Modals/AboutModal";
 // };
 
 export const UiInfo = () => {
-  const animationFirstStage = useGameStore(
-    (state) => state.animationFirstStage,
-  );
+  const animationFirstStage = useGameStore((state) => state.animationFirstStage);
+  const disableSounds = useGameStore((state) => state.disableSounds);
+  const startStageFinished = useGameStore((state) => state.startStageFinished);
+
+  const { sounds } = useSoundSystem();
+
+  useEffect(() => {
+    if (!disableSounds && animationFirstStage && sounds.glitch && !startStageFinished) {
+      // console.log("sounds.glitch", { animationFirstStage, glitch: sounds.glitch });
+      sounds.glitch.play();
+    }
+
+    if (!startStageFinished && animationFirstStage) {
+      const interval = setInterval(() => {
+        useGameStore.setState({ startStageFinished: true });
+      }, 1000);
+      
+      return () => {
+        clearInterval(interval);
+      }
+    }
+
+  }, [sounds, animationFirstStage, startStageFinished]);
+
 
   if (!animationFirstStage) return null;
 

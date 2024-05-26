@@ -9,6 +9,7 @@ import {
 // import { useCheckVariableRender } from "../utils/functions";
 import { ToggleButton } from "../components/UI/ToggleButton";
 import { useSoundSystem } from "../hooks/soundSystem";
+import { useCheckVariableRender } from "../utils/functions";
 
 const authorName = "Denys Bondartsov";
 
@@ -29,12 +30,13 @@ const StartScreen = () => {
 
   // const { toggleAmbientSound } = useSoundSystem();
 
-  // useCheckVariableRender(loadingProgress, "loadingProgress");
+  useCheckVariableRender(loadingProgress, "loadingProgress");
 
   const { sounds } = useSoundSystem();
 
   const startGame = () => {
     setStarting(true);
+    console.log("sounds.click", sounds.click);
     if (!disableSounds && sounds.click) {
       sounds.click.play();
     }
@@ -100,7 +102,7 @@ const StartScreen = () => {
           </div>
         )}
 
-        {startToLoadFiles && loadingProgress === 100 && (
+        {startToLoadFiles && loadingProgress >= 100 && (
           <div className="w-fit h-fit mt-16 flex flex-row items-center justify-center border border-neutral-100 hover:border-yellow-400 overflow-hidden bg-neutral-100 hover:bg-yellow-400 cursor-pointer">
             <div className="w-36 h-full overflow-hidden">
               <div

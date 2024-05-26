@@ -48,6 +48,7 @@ export interface GameStateSlice {
   terrainLoading: boolean;
   terrainAppearing: boolean;
   animationFirstStage: boolean;
+  startStageFinished: boolean;
 
   resetValues: boolean;
 
@@ -84,8 +85,8 @@ export const createGameStateSlice: StateCreator<
   [],
   GameStateSlice
 > = (set, get) => ({
-  disableAnimations:
-    localStorage.getItem(SETTING_DISABLE_ANIMATIONS) === "true",
+
+  disableAnimations: localStorage.getItem(SETTING_DISABLE_ANIMATIONS) === "true",
   disableSounds: localStorage.getItem(SETTING_DISABLE_SOUNDS) === "true",
   disableMusic: localStorage.getItem(SETTING_DISABLE_MUSIC) === "true",
   educationMode: localStorage.getItem(SETTING_EDUCATION_MODE) === "true",
@@ -102,6 +103,7 @@ export const createGameStateSlice: StateCreator<
   terrainLoading: true,
   terrainAppearing: false,
   animationFirstStage: false,
+  startStageFinished: false,
 
   resetValues: false,
 

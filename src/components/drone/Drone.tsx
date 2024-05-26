@@ -5,6 +5,7 @@ import { useGameStore } from "../../store/store";
 import { useFrame } from "@react-three/fiber";
 import TypingText from "../../effects/TextEffectsWrapper";
 import usePhraseSystem from "./usePhraseSystem";
+import { useSoundSystem } from "../../hooks/soundSystem";
 
 export const Drone = () => {
   const sphereRef = useRef<Mesh>(null);
@@ -40,8 +41,22 @@ export const FlyingDrone = () => {
     (state) => state.setMapAnimationState,
   );
   const educationMode = useGameStore((state) => state.educationMode);
+  const disableSounds = useGameStore((state) => state.disableSounds);
+  const startStageFinished = useGameStore((state) => state.startStageFinished);
 
   const { activePhrase, phraseKey, handleNextClick } = usePhraseSystem();
+  const { sounds } = useSoundSystem();
+
+  useEffect(() => {
+    if (firstAppearing && !startStageFinished) {
+      console.log("sounds.landing", {firstAppearing, landing: sounds.landing});
+      if (!disableSounds && sounds.landing) {
+        sounds.landing.play();
+      }
+      // console.log("Drone mounted", firstAppearing);
+    }
+  }, [firstAppearing, sounds, disableSounds]);
+
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {

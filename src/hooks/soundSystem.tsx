@@ -10,9 +10,13 @@ export const useSoundSystem = () => {
   const [sounds, setSounds] = useState<{
     ambient: Howl | null;
     click: Howl | null;
+		landing: Howl | null;
+		glitch: Howl | null;
   }>({
     ambient: null,
     click: null,
+		landing: null,
+		glitch: null,
   });
 
   useEffect(() => {
@@ -23,13 +27,13 @@ export const useSoundSystem = () => {
   useEffect(() => {
     if (!startToLoadFiles) return;
 
-    if (!sounds.ambient && !sounds.click) {
+    if (!sounds.ambient && !sounds.click && !sounds.landing && !sounds.glitch) {
       const ambientSound = new Howl({
         src: ["./mystic-forest-ambient-23812.mp3"],
         loop: true,
         volume: 0.2,
         onload: () => {
-          setSoundsLoadingProgress((prev) => prev + 50);
+          setSoundsLoadingProgress((prev) => Math.ceil( prev + 1 / Object.keys(sounds).length * 100));
           setSounds((prev) => ({ ...prev, ambient: ambientSound }));
         },
       });
@@ -38,15 +42,37 @@ export const useSoundSystem = () => {
         src: ["./mouse-click-153941.mp3"],
         volume: 0.1,
         onload: () => {
-          setSoundsLoadingProgress((prev) => prev + 50);
+          setSoundsLoadingProgress((prev) => Math.ceil( prev + 1 / Object.keys(sounds).length * 100));
           setSounds((prev) => ({ ...prev, click: clickSound }));
         },
       });
-    }
+
+			const landingSound = new Howl({
+				src: ["./sci-fi-sound-effect-designed-circuits-hum-24-200825.mp3"],
+				volume: 0.1,
+				onload: () => {
+					setSoundsLoadingProgress((prev) => Math.ceil( prev + 1 / Object.keys(sounds).length * 100));
+					setSounds((prev) => ({ ...prev, landing: landingSound }));
+				},
+			});
+
+			const glitchSound = new Howl({
+				src: ["./glitch-162763_mix.mp3"],
+				volume: 0.1,
+				onload: () => {
+					setSoundsLoadingProgress((prev) => Math.ceil( prev + 1 / Object.keys(sounds).length * 100));
+					setSounds((prev) => ({ ...prev, glitch: glitchSound }));
+				},
+			});
+
+			// consoleLog("sounds", { ambientSound, clickSound, landingSound });
+		}
 
     return () => {
       if (sounds.ambient) sounds.ambient.unload();
       if (sounds.click) sounds.click.unload();
+			if (sounds.landing) sounds.landing.unload();
+			if (sounds.glitch) sounds.glitch.unload();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startToLoadFiles]);
@@ -80,7 +106,7 @@ export const useRunBgMusic = () => {
       !disableSounds &&
       !disableMusic &&
       sounds.ambient &&
-      loadingProgress === 100 &&
+      loadingProgress >= 100 &&
       !ambientWorks
     ) {
       if (disableMusic) return;
