@@ -49,7 +49,7 @@ export const FlyingDrone = () => {
 
   useEffect(() => {
     if (firstAppearing && !startStageFinished) {
-      console.log("sounds.landing", {firstAppearing, landing: sounds.landing});
+      // console.log("sounds.landing", {firstAppearing, landing: sounds.landing});
       if (!disableSounds && sounds.landing) {
         sounds.landing.play();
       }
