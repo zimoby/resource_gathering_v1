@@ -5,7 +5,9 @@ import { artifactAmount } from "../../store/worldParamsSlice";
 
 export const ArtifactsInfo = () => {
   const artifacts = useGameStore((state) => state.artifacts);
-  const opacity = useGameStore((state) => state.uiPanelsState.collectedArtifactsPanel.opacity);
+  const opacity = useGameStore(
+    (state) => state.uiPanelsState.collectedArtifactsPanel.opacity,
+  );
 
   return (
     <BasicPanelWrapper
@@ -20,16 +22,22 @@ export const ArtifactsInfo = () => {
           <div
             key={index}
             className="list-selecting pr-4"
-            onClick={() => useGameStore.setState({ message: `Artifact: ${artifact.id}` })}
+            onClick={() =>
+              useGameStore.setState({ message: `Artifact: ${artifact.id}` })
+            }
           >
-            {index +
-              1 +
-              "." +
-              convertChunkCoordinateToName({ x: artifact.chunkX, y: artifact.chunkY }) +
-              ": " +
-              artifact.chunkX +
-              ":" +
-              artifact.chunkY
+            {
+              index +
+                1 +
+                "." +
+                convertChunkCoordinateToName({
+                  x: artifact.chunkX,
+                  y: artifact.chunkY,
+                }) +
+                ": " +
+                artifact.chunkX +
+                ":" +
+                artifact.chunkY
               // ": " +
               // Math.round(artifact.x) +
               // ":" +

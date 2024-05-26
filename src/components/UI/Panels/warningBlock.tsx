@@ -1,8 +1,16 @@
 import { FlickeringHtmlEffect } from "../../../effects/AppearingUiEffectWrapper";
 import { useGameStore } from "../../../store/store";
 
-export const SimpleWarningLines = ({ classes, size = "" }: { classes?: string; size?: string }) => {
-  const opacity = useGameStore((state) => state.uiPanelsState.emptyPanel.opacity);
+export const SimpleWarningLines = ({
+  classes,
+  size = "",
+}: {
+  classes?: string;
+  size?: string;
+}) => {
+  const opacity = useGameStore(
+    (state) => state.uiPanelsState.emptyPanel.opacity,
+  );
   return (
     <div
       className={`warning-sign3 ${classes} flex ${
@@ -59,7 +67,9 @@ const WarningLines = ({ direction }: { direction: string; width?: number }) => {
   }
 
   return (
-    <div className={`w-[150px] h-full overflow-hidden bg-uilines ${scaleInvert}`}>
+    <div
+      className={`w-[150px] h-full overflow-hidden bg-uilines ${scaleInvert}`}
+    >
       <div
         className={`w-[300px] h-full flex flex-col justify-center items-center bg-repeat-x animate-linear`}
         style={{

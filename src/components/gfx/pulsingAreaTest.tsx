@@ -1,7 +1,14 @@
 import { shaderMaterial } from "@react-three/drei";
 import { Object3DNode, extend, useFrame } from "@react-three/fiber";
 import { useRef } from "react";
-import { Color, DoubleSide, Mesh, PlaneGeometry, ShaderMaterial, Vector3 } from "three";
+import {
+  Color,
+  DoubleSide,
+  Mesh,
+  PlaneGeometry,
+  ShaderMaterial,
+  Vector3,
+} from "three";
 import { useGameStore } from "../../store/store";
 
 interface PulsingShaderMaterialUniforms {
@@ -40,7 +47,7 @@ const PulsingShaderMaterial = shaderMaterial(
       float value = sin(uTime * uFrequency) * uAmplitude + 0.5;
       gl_FragColor = vec4(uColor, value * uOpacity);
     }
-  `
+  `,
 );
 
 extend({ PulsingShaderMaterial });
@@ -49,14 +56,23 @@ declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace JSX {
     interface IntrinsicElements {
-      pulsingShaderMaterial: Object3DNode<ShaderMaterial, typeof PulsingShaderMaterial> & PulsingShaderMaterialUniforms;
+      pulsingShaderMaterial: Object3DNode<
+        ShaderMaterial,
+        typeof PulsingShaderMaterial
+      > &
+        PulsingShaderMaterialUniforms;
     }
   }
 }
 
-type PulsingShaderMaterialImpl = ShaderMaterial & { uniforms: { [uniform: string]: { value: unknown } } };
+type PulsingShaderMaterialImpl = ShaderMaterial & {
+  uniforms: Record<string, { value: unknown }>;
+};
 
-export const PlaneTest = ({ position = [0,0,0], color = new Color(0x0000ff) }) => {
+export const PlaneTest = ({
+  position = [0, 0, 0],
+  color = new Color(0x0000ff),
+}) => {
   const ref = useRef<Mesh<PlaneGeometry, PulsingShaderMaterialImpl>>(null);
   const { width, depth } = useGameStore((state) => state.mapParams);
 

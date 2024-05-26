@@ -4,9 +4,13 @@ import { BasicPanelWrapper } from "../UI/BasicPanelWrapper";
 
 export const BeaconsInfo = () => {
   const beacons = useGameStore((state) => state.beacons);
-  const opacity = useGameStore((state) => state.uiPanelsState.beaconPanel.opacity);
+  const opacity = useGameStore(
+    (state) => state.uiPanelsState.beaconPanel.opacity,
+  );
   const beaconsLimit = useGameStore((state) => state.beaconsLimit);
-  const increaseBeconsLimit = useGameStore((state) => state.increaseBeconsLimit);
+  const increaseBeconsLimit = useGameStore(
+    (state) => state.increaseBeconsLimit,
+  );
 
   return (
     <BasicPanelWrapper
@@ -29,12 +33,17 @@ export const BeaconsInfo = () => {
           <div
             key={index}
             className="list-selecting pr-3"
-            onClick={() => useGameStore.setState({ message: `Beacon: ${beacon.resource}` })}
+            onClick={() =>
+              useGameStore.setState({ message: `Beacon: ${beacon.resource}` })
+            }
           >
             {index +
               1 +
               "." +
-              convertChunkCoordinateToName({ x: beacon.chunkX, y: beacon.chunkY }) +
+              convertChunkCoordinateToName({
+                x: beacon.chunkX,
+                y: beacon.chunkY,
+              }) +
               ": " +
               beacon.resource}
           </div>

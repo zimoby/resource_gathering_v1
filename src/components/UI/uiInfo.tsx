@@ -31,26 +31,25 @@ import { AboutModal } from "./Modals/AboutModal";
 
 // const RotatingSphere = (props) => {
 //   const meshRef = useRef<Mesh>(null);
-  
 
 //   useFrame((state, delta) => {
 //     if (meshRef.current) {
-//       meshRef.current.rotation.y += delta * Math.PI; 
+//       meshRef.current.rotation.y += delta * Math.PI;
 //     }
 //   });
 
-  
-
 //   return (
 //     <mesh ref={meshRef} {...props}>
-//       <sphereGeometry args={[1, 32, 32]} /> 
-//       <meshStandardMaterial color="royalblue" /> 
+//       <sphereGeometry args={[1, 32, 32]} />
+//       <meshStandardMaterial color="royalblue" />
 //     </mesh>
 //   );
 // };
 
 export const UiInfo = () => {
-  const animationFirstStage = useGameStore((state) => state.animationFirstStage);
+  const animationFirstStage = useGameStore(
+    (state) => state.animationFirstStage,
+  );
 
   if (!animationFirstStage) return null;
 

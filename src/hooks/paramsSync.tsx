@@ -10,10 +10,9 @@ export const useParamsSync = () => {
   //   scale: { value: 50, min: 10, max: 100 },
   //   offsetX: { value: 0, min: -100, max: 100 },
   //   offsetY: { value: 0, min: -100, max: 100 },
-	// 	speed: { value: 0.1, min: 0, max: 0.5 },
+  // 	speed: { value: 0.1, min: 0, max: 0.5 },
   // });
-
   // useEffect(() => {
-	// 	useGameStore.setState({ mapParams: { width, depth, resolution, scale, offsetX, offsetY, speed } });
-	// }, [width, depth, resolution, scale, offsetX, offsetY, speed]);
+  // 	useGameStore.setState({ mapParams: { width, depth, resolution, scale, offsetX, offsetY, speed } });
+  // }, [width, depth, resolution, scale, offsetX, offsetY, speed]);
 };

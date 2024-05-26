@@ -4,21 +4,24 @@ import { Howl } from "howler";
 import { consoleLog } from "../utils/functions";
 
 export const useSoundSystem = () => {
-	const startToLoadFiles = useGameStore((state) => state.startToLoadFiles);
-	const [soundsLoadingProgress, setSoundsLoadingProgress] = useState(0);
+  const startToLoadFiles = useGameStore((state) => state.startToLoadFiles);
+  const [soundsLoadingProgress, setSoundsLoadingProgress] = useState(0);
 
-  const [sounds, setSounds] = useState<{ ambient: Howl | null; click: Howl | null }>({
+  const [sounds, setSounds] = useState<{
+    ambient: Howl | null;
+    click: Howl | null;
+  }>({
     ambient: null,
     click: null,
   });
 
-	useEffect(() => {
-		// console.log("soundsLoadingProgress", soundsLoadingProgress);
-		useGameStore.setState({ loadingProgress: soundsLoadingProgress });
-	}, [soundsLoadingProgress]);
+  useEffect(() => {
+    // console.log("soundsLoadingProgress", soundsLoadingProgress);
+    useGameStore.setState({ loadingProgress: soundsLoadingProgress });
+  }, [soundsLoadingProgress]);
 
   useEffect(() => {
-		if (!startToLoadFiles) return;
+    if (!startToLoadFiles) return;
 
     if (!sounds.ambient && !sounds.click) {
       const ambientSound = new Howl({
@@ -48,8 +51,7 @@ export const useSoundSystem = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startToLoadFiles]);
 
-
-	// useEffect(() => {
+  // useEffect(() => {
   //   if (!ambientWorks && !disableSounds && loadingProgress === 100) {
   //     // console.log("sounds.ambient.stop()");
   //     setAmbientWorks(true);
@@ -57,35 +59,35 @@ export const useSoundSystem = () => {
   //   }
   // }, [loadingProgress, playAmbientSound, disableSounds, ambientWorks]);
 
-
-	return { sounds };
+  return { sounds };
 };
 
-
 export const useRunBgMusic = () => {
-	const disableSounds = useGameStore((state) => state.disableSounds);
-	const disableMusic = useGameStore((state) => state.disableMusic);
-	const loadingProgress = useGameStore((state) => state.loadingProgress);
-	const [ambientWorks, setAmbientWorks] = useState(false);
+  const disableSounds = useGameStore((state) => state.disableSounds);
+  const disableMusic = useGameStore((state) => state.disableMusic);
+  const loadingProgress = useGameStore((state) => state.loadingProgress);
+  const [ambientWorks, setAmbientWorks] = useState(false);
 
-	const { sounds } = useSoundSystem();
+  const { sounds } = useSoundSystem();
 
   useEffect(() => {
-		// console.log("sounds.ambient", {disableSounds, ambient: sounds.ambient, ambientWorks, loadingProgress});
+    // console.log("sounds.ambient", {disableSounds, ambient: sounds.ambient, ambientWorks, loadingProgress});
     if ((disableSounds || disableMusic) && sounds.ambient && ambientWorks) {
-			consoleLog("sounds.ambient.stop()");
+      consoleLog("sounds.ambient.stop()");
       sounds.ambient.stop();
-			setAmbientWorks(false);
+      setAmbientWorks(false);
     } else if (
-			((!disableSounds && !disableMusic) && sounds.ambient && loadingProgress === 100) && 
-			!ambientWorks
-		) {
-			if (disableMusic) return;
-			consoleLog("sounds.ambient.play()");
-			sounds.ambient.stop();
+      !disableSounds &&
+      !disableMusic &&
+      sounds.ambient &&
+      loadingProgress === 100 &&
+      !ambientWorks
+    ) {
+      if (disableMusic) return;
+      consoleLog("sounds.ambient.play()");
+      sounds.ambient.stop();
       sounds.ambient.play();
-			setAmbientWorks(true);
+      setAmbientWorks(true);
     }
   }, [disableSounds, sounds, loadingProgress, ambientWorks, disableMusic]);
-
-}
+};

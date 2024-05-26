@@ -9,9 +9,13 @@ export const SystemControls = () => {
   const mapResolution = useGameStore((state) => state.mapParams.resolution);
   const mapSpeed = useGameStore((state) => state.mapParams.speed);
   const disableAnimations = useGameStore((state) => state.disableAnimations);
-  const updateVariableInLocalStorage = useGameStore((state) => state.updateVariableInLocalStorage);
+  const updateVariableInLocalStorage = useGameStore(
+    (state) => state.updateVariableInLocalStorage,
+  );
 
-  const opacity = useGameStore((state) => state.uiPanelsState.systemControlsPanel.opacity);
+  const opacity = useGameStore(
+    (state) => state.uiPanelsState.systemControlsPanel.opacity,
+  );
 
   return (
     <BasicPanelWrapper titleText="System Controls" opacity={opacity}>
@@ -49,7 +53,12 @@ export const SystemControls = () => {
           <CheckBox
             label="Disable Animations"
             value={disableAnimations}
-            onUpdate={() => updateVariableInLocalStorage(SETTING_DISABLE_ANIMATIONS, !disableAnimations)}
+            onUpdate={() =>
+              updateVariableInLocalStorage(
+                SETTING_DISABLE_ANIMATIONS,
+                !disableAnimations,
+              )
+            }
           />
         </div>
       </div>

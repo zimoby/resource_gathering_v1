@@ -6,7 +6,10 @@ export const PulsingCircle = () => {
   const canPlaceBeacon = useGameStore((state) => state.canPlaceBeacon);
 
   return (
-    <group visible={canPlaceBeacon} position={[activePosition.x, activePosition.y - 1, activePosition.z]}>
+    <group
+      visible={canPlaceBeacon}
+      position={[activePosition.x, activePosition.y - 1, activePosition.z]}
+    >
       <ConcentricCirclesAnimation size={10} />
     </group>
   );

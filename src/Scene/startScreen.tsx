@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { corpLogoSvg } from "../assets/CorpLogo";
-import { SETTING_DISABLE_ANIMATIONS, SETTING_DISABLE_SOUNDS, SETTING_START_SCREEN, useGameStore } from "../store/store";
+import {
+  SETTING_DISABLE_ANIMATIONS,
+  SETTING_DISABLE_SOUNDS,
+  SETTING_START_SCREEN,
+  useGameStore,
+} from "../store/store";
 // import { useCheckVariableRender } from "../utils/functions";
 import { ToggleButton } from "../components/UI/ToggleButton";
 import { useSoundSystem } from "../hooks/soundSystem";
@@ -9,7 +14,9 @@ const authorName = "Denys Bondartsov";
 
 const StartScreen = () => {
   const setStartScreen = useGameStore((state) => state.updateStoreProperty);
-  const updateVariableInLocalStorage = useGameStore((state) => state.updateVariableInLocalStorage);
+  const updateVariableInLocalStorage = useGameStore(
+    (state) => state.updateVariableInLocalStorage,
+  );
   const disableAnimations = useGameStore((state) => state.disableAnimations);
   const disableSounds = useGameStore((state) => state.disableSounds);
   const startScreen = useGameStore((state) => state.startScreen);
@@ -28,9 +35,9 @@ const StartScreen = () => {
 
   const startGame = () => {
     setStarting(true);
-		if(!disableSounds && sounds.click) {
-			sounds.click.play();
-		}
+    if (!disableSounds && sounds.click) {
+      sounds.click.play();
+    }
     setTimeout(() => {
       setStartScreen(SETTING_START_SCREEN, false);
       if (startScreen === skipStartScene) {
@@ -47,7 +54,9 @@ const StartScreen = () => {
         }`}
       >
         <div className="w-20 -mb-1 h-auto">
-          <div className="w-full h-full flex justify-center items-center fill-white">{corpLogoSvg}</div>
+          <div className="w-full h-full flex justify-center items-center fill-white">
+            {corpLogoSvg}
+          </div>
         </div>
         <div
           className="orbitron text-7xl uppercase text-center text-yellow-400"
@@ -65,9 +74,9 @@ const StartScreen = () => {
         {!startToLoadFiles && (
           <div className="w-fit h-fit mt-16 flex flex-row items-center justify-center border border-neutral-100 hover:border-yellow-400 overflow-hidden bg-neutral-100 hover:bg-yellow-400 cursor-pointer">
             <button
-							className="w-32 m-2 uppercase text-center text-neutral-900"
+              className="w-32 m-2 uppercase text-center text-neutral-900"
               onClick={() => useGameStore.setState({ startToLoadFiles: true })}
-						>
+            >
               Generate World
             </button>
           </div>
@@ -102,7 +111,10 @@ const StartScreen = () => {
                 }}
               />
             </div>
-            <button className="w-32 m-2 uppercase text-center text-neutral-900" onClick={startGame}>
+            <button
+              className="w-32 m-2 uppercase text-center text-neutral-900"
+              onClick={startGame}
+            >
               Start Game
             </button>
             <div className="w-36 h-full overflow-hidden">
@@ -120,19 +132,28 @@ const StartScreen = () => {
         <div className="h-fit mt-16 flex flex-col justify-center items-center">
           <p>Settings</p>
           <p className="w-3/5 text-xs text-center leading-3">
-            The game includes glitch effects that may cause discomfort or seizures for people with
-            photosensitive epilepsy. If you find these effects uncomfortable you can disable them.
+            The game includes glitch effects that may cause discomfort or
+            seizures for people with photosensitive epilepsy. If you find these
+            effects uncomfortable you can disable them.
           </p>
           <div className="mt-2 flex flex-row gap-3">
             <ToggleButton
               text={"Animations"}
-              onClick={() => updateVariableInLocalStorage(SETTING_DISABLE_ANIMATIONS, !disableAnimations)}
+              onClick={() =>
+                updateVariableInLocalStorage(
+                  SETTING_DISABLE_ANIMATIONS,
+                  !disableAnimations,
+                )
+              }
               state={disableAnimations}
             />
             <ToggleButton
               text={"Sound"}
               onClick={() => {
-                updateVariableInLocalStorage(SETTING_DISABLE_SOUNDS, !disableSounds);
+                updateVariableInLocalStorage(
+                  SETTING_DISABLE_SOUNDS,
+                  !disableSounds,
+                );
               }}
               state={disableSounds}
             />

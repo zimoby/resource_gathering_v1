@@ -1,6 +1,9 @@
 import { create } from "zustand";
 import { WorldParamsSlice, createWorldParamsSlice } from "./worldParamsSlice";
-import { UiPanelsStateSlice, createUiPanelsStateSlice } from "./uiPanelsStateSlice";
+import {
+  UiPanelsStateSlice,
+  createUiPanelsStateSlice,
+} from "./uiPanelsStateSlice";
 import { MapParamsSlice, createMapParamsSlice } from "./mapParamsSlice";
 import { GameStateSlice, createGameStateSlice } from "./gameStateSlice";
 

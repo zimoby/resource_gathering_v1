@@ -1,5 +1,9 @@
 import { StateCreator } from "zustand";
-import { generateArtifacts, generateRandomColor, generateWorld } from "../utils/generators";
+import {
+  generateArtifacts,
+  generateRandomColor,
+  generateWorld,
+} from "../utils/generators";
 import { GameStoreState } from "./store";
 import { Color } from "three";
 
@@ -7,13 +11,23 @@ export const minLevel = -10;
 export const maxLevel = 20;
 
 export type TerrainType = "water" | "grass" | "dirt" | "snow" | "default";
-export type ResourceType = "Water" | "Metals" | "Rare Elements" | "Hydrocarbons";
+export type ResourceType =
+  | "Water"
+  | "Metals"
+  | "Rare Elements"
+  | "Hydrocarbons";
 export type WeatherCondition = "Mild" | "Moderate" | "Severe";
-export type WorldState = {
-  value: "Extreme" | "Danger" | "Normal" | "Safe" | "Hazardous" | "Stormy" | "Extreme temperature";
+export interface WorldState {
+  value:
+    | "Extreme"
+    | "Danger"
+    | "Normal"
+    | "Safe"
+    | "Hazardous"
+    | "Stormy"
+    | "Extreme temperature";
   name: string;
-};
-
+}
 
 export interface Terrain {
   color: Color;
@@ -29,22 +43,22 @@ export interface Resource {
 export type MapDetailesType = [
   largeDetailes: number,
   mediumDetailes: number,
-  smallDetailes: number
+  smallDetailes: number,
 ];
 
-export type WorldNumberParamT = {
+export interface WorldNumberParamT {
   name: string;
   value: number;
   max: number;
   min: number;
 }
 
-export type WorldStringParamT = {
+export interface WorldStringParamT {
   name: string;
   value: string;
 }
 
-export type WorldParamsType = {
+export interface WorldParamsType {
   seed: WorldStringParamT;
   worldState: WorldState;
   name: WorldStringParamT;
@@ -55,7 +69,7 @@ export type WorldParamsType = {
   radiation: WorldNumberParamT;
   weatherCondition: WeatherCondition;
   mapDetailes: MapDetailesType;
-};
+}
 
 const classicTerrainPalette = {
   water: new Color(0x0000ff), // blue
@@ -87,17 +101,9 @@ export const terrainTypes: TerrainTypesT = {
   },
 };
 
-export interface TerrainTypesT {
-  [key: string]: Terrain;
-}
-
-export interface ResourceTypesT {
-  [key: string]: Resource;
-}
-
-export interface ArtifactsCollectedT {
-  [key: string]: number;
-}
+export type TerrainTypesT = Record<string, Terrain>;
+export type ResourceTypesT = Record<string, Resource>;
+export type ArtifactsCollectedT = Record<string, number>;
 
 export const resourceTypes: ResourceTypesT = {
   Water: {
@@ -163,9 +169,12 @@ export interface WorldParamsSlice {
 
 export const artifactAmount = 10;
 
-export const createWorldParamsSlice: StateCreator<GameStoreState, [], [], WorldParamsSlice> = (
-  set
-) => ({
+export const createWorldParamsSlice: StateCreator<
+  GameStoreState,
+  [],
+  [],
+  WorldParamsSlice
+> = (set) => ({
   beacons: [],
   beaconsLimit: 10,
 
@@ -174,7 +183,8 @@ export const createWorldParamsSlice: StateCreator<GameStoreState, [], [], WorldP
       if (state.playerPoints >= state.costs.extendBeaconLimits.value) {
         return {
           beaconsLimit: state.beaconsLimit + 1,
-          playerPoints: state.playerPoints - state.costs.extendBeaconLimits.value,
+          playerPoints:
+            state.playerPoints - state.costs.extendBeaconLimits.value,
           message: `Beacons limit increased to ${state.beaconsLimit + 1}`,
         };
       } else {

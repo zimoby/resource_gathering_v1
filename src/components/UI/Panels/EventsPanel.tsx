@@ -2,7 +2,9 @@ import { useGameStore } from "../../../store/store";
 import { BasicPanelWrapper } from "../BasicPanelWrapper";
 
 export const EventsPanel = () => {
-  const opacity = useGameStore((state) => state.uiPanelsState.eventsPanel.opacity);
+  const opacity = useGameStore(
+    (state) => state.uiPanelsState.eventsPanel.opacity,
+  );
   const eventsLog = useGameStore((state) => state.eventsLog);
 
   return (
@@ -11,7 +13,9 @@ export const EventsPanel = () => {
         <div
           key={index}
           className="list-selecting"
-          onClick={() => useGameStore.setState({ message: `Event: ${eventName}` })}
+          onClick={() =>
+            useGameStore.setState({ message: `Event: ${eventName}` })
+          }
         >
           {eventName}
         </div>

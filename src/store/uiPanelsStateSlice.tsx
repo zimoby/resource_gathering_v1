@@ -1,11 +1,11 @@
 import { StateCreator } from "zustand";
 import { GameStoreState } from "./store";
 
-type UiPanelsStateType = {
+interface UiPanelsStateType {
   opacity: number;
-};
+}
 
-export type UiPanelsStateSlice = {
+export interface UiPanelsStateSlice {
   uiPanelsState: {
     titlePanel: UiPanelsStateType;
     planetPanel: UiPanelsStateType;
@@ -27,7 +27,7 @@ export type UiPanelsStateSlice = {
   updatePanelOpacity: (panelName: PanelNamesT, value: number) => void;
   soloPanelOpacity: (panelName: PanelNamesT) => void;
   resetPanelsOpacity: () => void;
-};
+}
 
 type PanelNamesT =
   | "titlePanel"
@@ -47,9 +47,12 @@ type PanelNamesT =
   | "settingsButton"
   | "newWorldButton";
 
-export const createUiPanelsStateSlice: StateCreator<GameStoreState, [], [], UiPanelsStateSlice> = (
-  set
-) => ({
+export const createUiPanelsStateSlice: StateCreator<
+  GameStoreState,
+  [],
+  [],
+  UiPanelsStateSlice
+> = (set) => ({
   uiPanelsState: {
     titlePanel: { opacity: 1 },
     planetPanel: { opacity: 1 },
@@ -78,25 +81,31 @@ export const createUiPanelsStateSlice: StateCreator<GameStoreState, [], [], UiPa
   },
   soloPanelOpacity: (panelName: PanelNamesT) => {
     set((state) => {
-      const newPanelsState = Object.keys(state.uiPanelsState).reduce((acc, key) => {
-        acc[key as keyof typeof state.uiPanelsState] = { opacity: 0.1 };
-        return acc;
-      }, {} as typeof state.uiPanelsState);
+      const newPanelsState = Object.keys(state.uiPanelsState).reduce(
+        (acc, key) => {
+          acc[key as keyof typeof state.uiPanelsState] = { opacity: 0.1 };
+          return acc;
+        },
+        {} as typeof state.uiPanelsState,
+      );
       newPanelsState[panelName] = { opacity: 1 };
       return {
         uiPanelsState: newPanelsState,
       };
     });
   },
-	resetPanelsOpacity: () => {
-		set((state) => {
-			const newPanelsState = Object.keys(state.uiPanelsState).reduce((acc, key) => {
-				acc[key as keyof typeof state.uiPanelsState] = { opacity: 1 };
-				return acc;
-			}, {} as typeof state.uiPanelsState);
-			return {
-				uiPanelsState: newPanelsState,
-			};
-		});
-	},
+  resetPanelsOpacity: () => {
+    set((state) => {
+      const newPanelsState = Object.keys(state.uiPanelsState).reduce(
+        (acc, key) => {
+          acc[key as keyof typeof state.uiPanelsState] = { opacity: 1 };
+          return acc;
+        },
+        {} as typeof state.uiPanelsState,
+      );
+      return {
+        uiPanelsState: newPanelsState,
+      };
+    });
+  },
 });

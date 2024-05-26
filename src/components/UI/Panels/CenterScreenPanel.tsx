@@ -8,13 +8,15 @@ import { FlickeringHtmlEffect } from "../../../effects/AppearingUiEffectWrapper"
 export const CenterScreenPanel = () => {
   const showSettingsModal = useGameStore((state) => state.showSettingsModal);
   const showAboutModal = useGameStore((state) => state.showAboutModal);
-  const animationFirstStage = useGameStore((state) => state.animationFirstStage);
+  const animationFirstStage = useGameStore(
+    (state) => state.animationFirstStage,
+  );
 
   if (!animationFirstStage) return null;
 
   return (
     <>
-      {(!showSettingsModal && !showAboutModal) && (
+      {!showSettingsModal && !showAboutModal && (
         <Billboard>
           <Html>
             <div
@@ -31,13 +33,10 @@ export const CenterScreenPanel = () => {
                   className=" h-full w-full aug-border-yellow-500"
                   data-augmented-ui="border tl-2-clip-x br-2-clip-x --aug-border-bg"
                 />
-                <div
-                  className="absolute bottom-3 right-0"
-                >
+                <div className="absolute bottom-3 right-0">
                   <SystemMessagePanelAlt />
                 </div>
                 <LevelsIndicators />
-                
               </FlickeringHtmlEffect>
             </div>
             <WarningBlock />

@@ -6,12 +6,11 @@ import { GameCanvas } from "./Scene/GameCanvas";
 import { useGameStore } from "./store/store";
 import StartScreen from "./Scene/startScreen";
 
-import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 import { useRunBgMusic, useSoundSystem } from "./hooks/soundSystem";
 
 gsap.registerPlugin(useGSAP);
-
 
 const App = () => {
   const startScreen = useGameStore((state) => state.startScreen);
@@ -23,7 +22,7 @@ const App = () => {
   useGameLoop();
   useSoundSystem();
   useRunBgMusic();
-  
+
   return (
     <>
       {startScreen && !firstStart ? (

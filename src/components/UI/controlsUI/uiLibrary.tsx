@@ -1,31 +1,36 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 
-import "./styles.css"
+import "./styles.css";
 
-const backgroundSliderCalc = (value: number, minVal: number, maxVal: number): string => {
-  const percent = maxVal === minVal ? 100 : ((value - minVal) / (maxVal - minVal)) * 100
-  return `linear-gradient(to right, var(--color-uitext) 0%, var(--color-uitext) ${percent}%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.1) 100%)`
+const backgroundSliderCalc = (
+  value: number,
+  minVal: number,
+  maxVal: number,
+): string => {
+  const percent =
+    maxVal === minVal ? 100 : ((value - minVal) / (maxVal - minVal)) * 100;
+  return `linear-gradient(to right, var(--color-uitext) 0%, var(--color-uitext) ${percent}%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.1) 100%)`;
+};
+
+interface SliderWithInputProps {
+  label: string;
+  value: number;
+  min?: number;
+  max?: number;
+  step?: number;
+  onUpdate: (value: number) => void;
 }
 
-type SliderWithInputProps = {
-  label: string
-  value: number
-  min?: number
-  max?: number
-  step?: number
-  onUpdate: (value: number) => void
-}
-
-type CheckBoxProps = {
-  label: string
-  value: boolean
-  onUpdate: (value: boolean) => void
+interface CheckBoxProps {
+  label: string;
+  value: boolean;
+  onUpdate: (value: boolean) => void;
 }
 
 export const CheckBox = ({ label, value, onUpdate }: CheckBoxProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onUpdate(e.target.checked)
-  }
+    onUpdate(e.target.checked);
+  };
 
   return (
     <div className="relative flex flex-row text-xs justify-start items-center">
@@ -36,29 +41,38 @@ export const CheckBox = ({ label, value, onUpdate }: CheckBoxProps) => {
         onChange={handleChange}
         className="h-4 w-4 cursor-pointer appearance-none rounded-sm"
         style={{
-          background: value ? "rgba(128, 0, 128, 0.7)" : "rgba(255, 255, 255, 0.1)",
+          background: value
+            ? "rgba(128, 0, 128, 0.7)"
+            : "rgba(255, 255, 255, 0.1)",
         }}
       />
     </div>
-  )
-}
+  );
+};
 
-export const SliderWithInput = ({ label, value, min = 1, max = 100, step = 1, onUpdate }: SliderWithInputProps) => {
-  const [localValue, setLocalValue] = useState<number>(value)
+export const SliderWithInput = ({
+  label,
+  value,
+  min = 1,
+  max = 100,
+  step = 1,
+  onUpdate,
+}: SliderWithInputProps) => {
+  const [localValue, setLocalValue] = useState<number>(value);
   const [currentStep, setCurrentStep] = useState<number>(step);
 
   const handleStepChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
     setCurrentStep(e.shiftKey ? step * 10 : step);
-  }
+  };
 
   const allChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLocalValue(Number(e.target.value))
-    onUpdate(Number(e.target.value))
-  }
+    setLocalValue(Number(e.target.value));
+    onUpdate(Number(e.target.value));
+  };
 
   useEffect(() => {
-    setLocalValue(value)
-  }, [value])
+    setLocalValue(value);
+  }, [value]);
 
   return (
     <div className="relative flex flex-col space-y-0 text-xs justify-center items-start">
@@ -91,5 +105,5 @@ export const SliderWithInput = ({ label, value, min = 1, max = 100, step = 1, on
         />
       </div>
     </div>
-  )
-}
+  );
+};

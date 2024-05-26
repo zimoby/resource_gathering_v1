@@ -1,5 +1,10 @@
 import { Color } from "three";
-import { ArtifactT, ArtifactType, WeatherCondition, WorldState } from "../store/worldParamsSlice";
+import {
+  ArtifactT,
+  ArtifactType,
+  WeatherCondition,
+  WorldState,
+} from "../store/worldParamsSlice";
 import { WorldParamsType } from "../store/worldParamsSlice";
 
 export const generateWeather = (): WeatherCondition => {
@@ -46,8 +51,8 @@ export const generateWorld = (): WorldParamsType => {
     },
     worldState: {
       name: "World",
-      value: worldState
-    } as WorldState, 
+      value: worldState,
+    } as WorldState,
     name: {
       value: worldName,
       name: "Name",
@@ -60,9 +65,9 @@ export const generateWorld = (): WorldParamsType => {
     },
     humidity: {
       name: "Humidity",
-      value:humidity,
+      value: humidity,
       max: 150,
-      min: -50, 
+      min: -50,
     },
     windSpeed: {
       name: "Wind Speed",
@@ -83,13 +88,9 @@ export const generateWorld = (): WorldParamsType => {
       min: 0,
     },
     weatherCondition,
-    mapDetailes: [
-      largeDetailes,
-      mediumDetailes,
-      smallDetailes,
-    ]
+    mapDetailes: [largeDetailes, mediumDetailes, smallDetailes],
   };
-}
+};
 
 const randomRarestTypes = (): ArtifactType => {
   const randomValue = Math.random();
@@ -100,9 +101,13 @@ const randomRarestTypes = (): ArtifactType => {
   } else {
     return "legendary";
   }
-}
+};
 
-export const generateArtifacts = ({amount = 10}: {amount?: number}): ArtifactT[] => {
+export const generateArtifacts = ({
+  amount = 10,
+}: {
+  amount?: number;
+}): ArtifactT[] => {
   const artifacts: ArtifactT[] = [
     // {
     //   x: 0,
@@ -128,11 +133,11 @@ export const generateArtifacts = ({amount = 10}: {amount?: number}): ArtifactT[]
     });
   }
   return artifacts;
-}
+};
 
 export const generateRandomColor = () => {
   const hue = Math.random() * 360;
   const saturation = 70;
   const lightness = 70;
   return new Color(`hsl(${hue}, ${saturation}%, ${lightness}%)`);
-}
+};

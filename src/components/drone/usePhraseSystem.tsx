@@ -25,13 +25,15 @@ const randomisePhrase = (activePhrase: string) => {
   return newPhrase;
 };
 
-type ActivePhraseType = {
+interface ActivePhraseType {
   phrase: string;
   skipped?: boolean;
-};
+}
 
 const usePhraseSystem = () => {
-  const [activePhrase, setActivePhrase] = useState<ActivePhraseType>({ phrase: "" });
+  const [activePhrase, setActivePhrase] = useState<ActivePhraseType>({
+    phrase: "",
+  });
   const [phraseKey, setPhraseKey] = useState<number>(0);
   const [firstGreetings, setFirstGreetings] = useState<boolean>(true);
   const [educationalStepIndex, setEducationalStepIndex] = useState(0);
@@ -39,8 +41,12 @@ const usePhraseSystem = () => {
   const beacons = useGameStore((state) => state.beacons);
   const soloPanelOpacity = useGameStore((state) => state.soloPanelOpacity);
   const resetPanelsOpacity = useGameStore((state) => state.resetPanelsOpacity);
-  const animationFirstStage = useGameStore((state) => state.animationFirstStage);
-  const updateVariableInLocalStorage = useGameStore((state) => state.updateVariableInLocalStorage);
+  const animationFirstStage = useGameStore(
+    (state) => state.animationFirstStage,
+  );
+  const updateVariableInLocalStorage = useGameStore(
+    (state) => state.updateVariableInLocalStorage,
+  );
 
   useEffect(() => {
     if (!educationMode) {
@@ -52,28 +58,51 @@ const usePhraseSystem = () => {
       setPhraseKey((prevKey) => prevKey + 1);
     }
 
-    if (firstGreetings && animationFirstStage && beacons.length > 0 && educationalStepIndex === 1) {
+    if (
+      firstGreetings &&
+      animationFirstStage &&
+      beacons.length > 0 &&
+      educationalStepIndex === 1
+    ) {
       if (educationalStepIndex < educationalStepsPhrases.length - 1) {
         setEducationalStepIndex((prevIndex) => prevIndex + 1);
       }
     }
 
-    if (educationalStepsPhrases[educationalStepIndex].stage === "collectedResourcesPanel" ) {
+    if (
+      educationalStepsPhrases[educationalStepIndex].stage ===
+      "collectedResourcesPanel"
+    ) {
       soloPanelOpacity("collectedResourcesPanel");
-    } else if (educationalStepsPhrases[educationalStepIndex].stage === "progressPanel") {
+    } else if (
+      educationalStepsPhrases[educationalStepIndex].stage === "progressPanel"
+    ) {
       soloPanelOpacity("progressPanel");
-    } else if (educationalStepsPhrases[educationalStepIndex].stage === "costsPanel") {
+    } else if (
+      educationalStepsPhrases[educationalStepIndex].stage === "costsPanel"
+    ) {
       soloPanelOpacity("costsPanel");
-    } else if (educationalStepsPhrases[educationalStepIndex].stage === "newWorldButton") {
+    } else if (
+      educationalStepsPhrases[educationalStepIndex].stage === "newWorldButton"
+    ) {
       soloPanelOpacity("newWorldButton");
-    } else if (educationalStepsPhrases[educationalStepIndex].stage === "collectedArtifactsPanel") {
+    } else if (
+      educationalStepsPhrases[educationalStepIndex].stage ===
+      "collectedArtifactsPanel"
+    ) {
       soloPanelOpacity("collectedArtifactsPanel");
     } else {
       resetPanelsOpacity();
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [beacons.length, educationMode, educationalStepIndex, animationFirstStage, firstGreetings]);
+  }, [
+    beacons.length,
+    educationMode,
+    educationalStepIndex,
+    animationFirstStage,
+    firstGreetings,
+  ]);
 
   useEffect(() => {
     if (!firstGreetings) {

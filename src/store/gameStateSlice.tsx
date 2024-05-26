@@ -1,5 +1,13 @@
 import { StateCreator } from "zustand";
-import { GameStoreState, SETTING_DISABLE_ANIMATIONS, SETTING_DISABLE_MUSIC, SETTING_DISABLE_SOUNDS, SETTING_EDUCATION_MODE, SETTING_INVERT_DIRECTION, SETTING_START_SCREEN } from "./store";
+import {
+  GameStoreState,
+  SETTING_DISABLE_ANIMATIONS,
+  SETTING_DISABLE_MUSIC,
+  SETTING_DISABLE_SOUNDS,
+  SETTING_EDUCATION_MODE,
+  SETTING_INVERT_DIRECTION,
+  SETTING_START_SCREEN,
+} from "./store";
 import { ResourceType, resourceTypes } from "./worldParamsSlice";
 import { generateWeather } from "../utils/generators";
 import { WeatherCondition } from "./worldParamsSlice";
@@ -15,13 +23,12 @@ export interface ChunkType {
   y: number;
 }
 
-export interface CollectedResources {
-  [key: string]: number;
-}
+export type CollectedResources = Record<string, number>;
 
-export interface CostsT {
-  [key: string]: { name: string; value: number, valueAlt?: string };
-}
+export type CostsT = Record<
+  string,
+  { name: string; value: number; valueAlt?: string }
+>;
 
 export interface GameStateSlice {
   disableAnimations: boolean;
@@ -52,7 +59,7 @@ export interface GameStateSlice {
   dynamicSpeed: number;
   playerPoints: number;
   decreasePlayerPoints: (points: number) => void;
-  
+
   updateResourcesAndPoints: () => void;
   collectedResources: CollectedResources;
   message: string;
@@ -77,7 +84,8 @@ export const createGameStateSlice: StateCreator<
   [],
   GameStateSlice
 > = (set, get) => ({
-  disableAnimations: localStorage.getItem(SETTING_DISABLE_ANIMATIONS) === "true",
+  disableAnimations:
+    localStorage.getItem(SETTING_DISABLE_ANIMATIONS) === "true",
   disableSounds: localStorage.getItem(SETTING_DISABLE_SOUNDS) === "true",
   disableMusic: localStorage.getItem(SETTING_DISABLE_MUSIC) === "true",
   educationMode: localStorage.getItem(SETTING_EDUCATION_MODE) === "true",
@@ -96,7 +104,7 @@ export const createGameStateSlice: StateCreator<
   animationFirstStage: false,
 
   resetValues: false,
-  
+
   currentOffset: { x: 0, y: 0 },
   selectedResource: "Water",
   selectedChunk: { x: 0, y: 0 },
@@ -120,16 +128,29 @@ export const createGameStateSlice: StateCreator<
   },
 
   updateResourcesAndPoints: () => {
-    const { beacons, collectedResources, playerPoints, canPlaceBeacon, costs, addEventLog } = get();
-  
-    const newCollectedResources = beacons.reduce((resources, beacon) => {
-      resources[beacon.resource] = (resources[beacon.resource] || 0) + 1;
-      return resources;
-    }, { ...collectedResources });
+    const {
+      beacons,
+      collectedResources,
+      playerPoints,
+      canPlaceBeacon,
+      costs,
+      addEventLog,
+    } = get();
 
-    const pointsEarned = beacons.reduce((total, beacon) => total + resourceTypes[beacon.resource].score, 0);
+    const newCollectedResources = beacons.reduce(
+      (resources, beacon) => {
+        resources[beacon.resource] = (resources[beacon.resource] || 0) + 1;
+        return resources;
+      },
+      { ...collectedResources },
+    );
+
+    const pointsEarned = beacons.reduce(
+      (total, beacon) => total + resourceTypes[beacon.resource].score,
+      0,
+    );
     let newPlayerPoints = playerPoints + pointsEarned;
-  
+
     // let message = "";
     if (canPlaceBeacon) {
       if (newPlayerPoints >= costs.scanning.value) {
@@ -146,7 +167,7 @@ export const createGameStateSlice: StateCreator<
       // message: message
     });
   },
-  
+
   message: "",
 
   addNewMessage: (message: string) => {
@@ -155,7 +176,6 @@ export const createGameStateSlice: StateCreator<
     }
     set({ message });
   },
-    
 
   logs: [],
   eventsLog: [],
@@ -203,5 +223,5 @@ export const createGameStateSlice: StateCreator<
       }
       return { eventsLog: updatedEvents };
     });
-  }
+  },
 });

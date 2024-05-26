@@ -26,16 +26,23 @@ const ShapeCircle = React.memo(() => {
   );
 });
 
-
 export const BeaconGroup = () => {
   const firstStart = useGameStore((state) => state.firstStart);
   const beacons = useGameStore((state) => state.beacons);
-  const { width, depth, offsetX, offsetY } = useGameStore((state) => state.mapParams);
+  const { width, depth, offsetX, offsetY } = useGameStore(
+    (state) => state.mapParams,
+  );
   const canPlaceBeacon = useGameStore((state) => state.canPlaceBeacon);
   const { deltaX, deltaY } = useCalculateDeltas();
 
-  const beaconRefs = useMemo<React.RefObject<Group>[]>(() => beacons.map(() => createRef()), [beacons]);
-  const circleRefs = useMemo<React.RefObject<Group>[]>(() => beacons.map(() => createRef()), [beacons]);
+  const beaconRefs = useMemo<React.RefObject<Group>[]>(
+    () => beacons.map(() => createRef()),
+    [beacons],
+  );
+  const circleRefs = useMemo<React.RefObject<Group>[]>(
+    () => beacons.map(() => createRef()),
+    [beacons],
+  );
 
   const { speedRef: increasingSpeedRef } = useIncreasingSpeed(0, 1, 0.01, 2);
 
@@ -49,7 +56,7 @@ export const BeaconGroup = () => {
           width,
           depth,
           offsetX,
-          offsetY
+          offsetY,
         );
 
         beaconObject.position.x -= deltaX * increasingSpeedRef.current;
@@ -74,7 +81,10 @@ export const BeaconGroup = () => {
           ref={beaconRefs[index]}
         >
           <Sphere args={[1, 8, 8]} position={[0, beaconHeight, 0]} />
-          <Cylinder args={[0.1, 0.1, beaconHeight, 4]} position={[0, beaconHeight / 2, 0]} />
+          <Cylinder
+            args={[0.1, 0.1, beaconHeight, 4]}
+            position={[0, beaconHeight / 2, 0]}
+          />
           <group
             key={"circle_of_" + beacon.id}
             ref={circleRefs[index]}

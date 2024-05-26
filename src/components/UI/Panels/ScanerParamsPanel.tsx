@@ -4,7 +4,9 @@ import { BasicPanelWrapper } from "../BasicPanelWrapper";
 import { convertChunkCoordinateToName } from "../../../utils/functions";
 
 export const ScanerParamPanel = () => {
-  const opacity = useGameStore((state) => state.uiPanelsState.scanerPanel.opacity);
+  const opacity = useGameStore(
+    (state) => state.uiPanelsState.scanerPanel.opacity,
+  );
   const selectedChunk = useGameStore((state) => state.selectedChunk);
   const selectedResource = useGameStore((state) => state.selectedResource);
   const currentLocation = useGameStore((state) => state.currentLocation);
@@ -27,7 +29,8 @@ export const ScanerParamPanel = () => {
       },
       {
         title: "Current Location:",
-        value: Math.round(currentLocation.x) + ":" + Math.round(currentLocation.y),
+        value:
+          Math.round(currentLocation.x) + ":" + Math.round(currentLocation.y),
       },
       // {
       //   title: "Active Position:",
@@ -63,7 +66,9 @@ export const ScanerParamPanel = () => {
             className="list-selecting"
             key={index}
             onClick={() =>
-              useGameStore.setState({ message: `Scaner: ${data.title} ${data.value}` })
+              useGameStore.setState({
+                message: `Scaner: ${data.title} ${data.value}`,
+              })
             }
           >
             <div>{data.title}</div>

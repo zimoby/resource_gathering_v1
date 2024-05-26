@@ -56,12 +56,15 @@ export const createMapParamsSlice: StateCreator<
   mapAnimationState: "idle",
   setMapAnimationState: (state) => set({ mapAnimationState: state }),
   updateMapSize: (value) => {
-    set((state) => ({ mapParams: { ...state.mapParams, width: value, depth: value } }));
+    set((state) => ({
+      mapParams: { ...state.mapParams, width: value, depth: value },
+    }));
   },
   updateMapParam: (paramName, value) => {
     set((state) => ({
       mapParams: { ...state.mapParams, [paramName]: value },
     }));
   },
-  toggleShowResources: () => set((state) => ({ showResources: !state.showResources })),
+  toggleShowResources: () =>
+    set((state) => ({ showResources: !state.showResources })),
 });

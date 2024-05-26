@@ -3,7 +3,9 @@ import { numberSimplified } from "../../../utils/functions";
 import { BasicPanelWrapper } from "../BasicPanelWrapper";
 
 export const CollectedResourcesPanel = () => {
-  const opacity = useGameStore((state) => state.uiPanelsState.collectedResourcesPanel.opacity);
+  const opacity = useGameStore(
+    (state) => state.uiPanelsState.collectedResourcesPanel.opacity,
+  );
   const collectedResources = useGameStore((state) => state.collectedResources);
 
   return (
@@ -13,7 +15,11 @@ export const CollectedResourcesPanel = () => {
           <div
             key={resource}
             className="w-1/2 flex flex-col text-center justify-start items-center hover:bg-uilines hover:text-neutral-900"
-            onClick={() => useGameStore.setState({ message: `Collected Resources: ${resource}: ${count}` })}
+            onClick={() =>
+              useGameStore.setState({
+                message: `Collected Resources: ${resource}: ${count}`,
+              })
+            }
           >
             <div className="orbitron text-2xl">{numberSimplified(count)}</div>
             <div className=" text-xs leading-3">{resource}</div>

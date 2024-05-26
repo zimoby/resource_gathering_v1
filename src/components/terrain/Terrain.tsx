@@ -6,7 +6,7 @@ import {
   Float32BufferAttribute,
   Raycaster,
   BufferAttribute,
-  Mesh
+  Mesh,
 } from "three";
 import { useGameStore } from "../../store/store";
 import { useKeyboardControls } from "../../hooks/intereaction";
@@ -15,22 +15,29 @@ import { generateTerrain } from "./generateTerrain";
 
 import { NoiseFunction2D, createNoise2D } from "simplex-noise";
 import seedrandom from "seedrandom";
-import { consoleLog, useCalculateDeltas, useResetOffset } from "../../utils/functions";
+import {
+  consoleLog,
+  useCalculateDeltas,
+  useResetOffset,
+} from "../../utils/functions";
 import { useIncreasingSpeed } from "../../effects/IncreaseSceneSpeed";
 
-const generateIndices = (widthCount: number, depthCount: number, indices: Uint16Array) => {
+const generateIndices = (
+  widthCount: number,
+  depthCount: number,
+  indices: Uint16Array,
+) => {
   let index = 0;
   for (let i = 0; i < depthCount; i++) {
     for (let j = 0; j < widthCount; j++) {
       if (i < depthCount && j < widthCount) {
-
         const a = i * (widthCount + 1) + j;
         const b = a + (widthCount + 1);
-    
+
         indices[index++] = a;
         indices[index++] = b;
         indices[index++] = a + 1;
-    
+
         indices[index++] = b;
         indices[index++] = b + 1;
         indices[index++] = a + 1;
@@ -41,7 +48,9 @@ const generateIndices = (widthCount: number, depthCount: number, indices: Uint16
 
 export const Terrain = () => {
   const terrainLoading = useGameStore((state) => state.terrainLoading);
-  const { width, depth, resolution, scale, offsetX, offsetY } = useGameStore((state) => state.mapParams);
+  const { width, depth, resolution, scale, offsetX, offsetY } = useGameStore(
+    (state) => state.mapParams,
+  );
   const seed = useGameStore((state) => state.worldParams.seed);
   const mapDetailes = useGameStore((state) => state.worldParams.mapDetailes);
   const canPlaceBeacon = useGameStore((state) => state.canPlaceBeacon);
@@ -59,9 +68,15 @@ export const Terrain = () => {
   const meshRef = useRef<Mesh>(null);
   const offset = useRef({ x: 0, y: 0 });
 
-  const colors = useRef(new Float32Array((widthCount + 1) * (depthCount + 1) * 3));
-  const positions = useRef(new Float32Array((widthCount + 1) * (depthCount + 1) * 3));
-  const resources = useRef(new Array((widthCount + 1) * (depthCount + 1)).fill(null));
+  const colors = useRef(
+    new Float32Array((widthCount + 1) * (depthCount + 1) * 3),
+  );
+  const positions = useRef(
+    new Float32Array((widthCount + 1) * (depthCount + 1) * 3),
+  );
+  const resources = useRef(
+    new Array((widthCount + 1) * (depthCount + 1)).fill(null),
+  );
 
   const indices = useMemo(() => {
     const indicesPrecalc = new Uint16Array(widthCount * depthCount * 6);
@@ -69,8 +84,11 @@ export const Terrain = () => {
     return indicesPrecalc;
   }, [widthCount, depthCount]);
 
-  const noise2D: NoiseFunction2D = useMemo(() => createNoise2D(seedrandom(seed.value)), [seed]);
-  
+  const noise2D: NoiseFunction2D = useMemo(
+    () => createNoise2D(seedrandom(seed.value)),
+    [seed],
+  );
+
   const raycaster = useRef(new Raycaster());
   const terrainGeometry = useRef(new BufferGeometry());
   const colorAttribute = useRef(new Float32BufferAttribute(colors.current, 3));
@@ -80,26 +98,27 @@ export const Terrain = () => {
   useCanvasHover({ camera, raycaster: raycaster.current, meshRef, resources });
 
   const updateTerrainGeometry = () => {
-    const { colors: generatedColors, resources: generatedResources } = generateTerrain(
-      width,
-      depth,
-      resolution,
-      scale,
-      noise2D,
-      offset.current.x + offsetX,
-      offset.current.y + offsetY,
-      terrainGeometry.current,
-      canPlaceBeacon && playerPoints >= 50,
-      activePosition,
-      scanRadius,
-      resources.current,
-      colors.current,
-      positions.current,
-      widthCount,
-      depthCount,
-      terrainColors,
-      mapDetailes
-    );
+    const { colors: generatedColors, resources: generatedResources } =
+      generateTerrain(
+        width,
+        depth,
+        resolution,
+        scale,
+        noise2D,
+        offset.current.x + offsetX,
+        offset.current.y + offsetY,
+        terrainGeometry.current,
+        canPlaceBeacon && playerPoints >= 50,
+        activePosition,
+        scanRadius,
+        resources.current,
+        colors.current,
+        positions.current,
+        widthCount,
+        depthCount,
+        terrainColors,
+        mapDetailes,
+      );
 
     colorAttribute.current.array = generatedColors;
     colorAttribute.current.needsUpdate = true;
@@ -121,16 +140,15 @@ export const Terrain = () => {
   const { deltaX, deltaY } = useCalculateDeltas();
   useResetOffset(offset);
   const { speedRef: increasingSpeedRef } = useIncreasingSpeed(0, 1, 0.01, 2);
-  
-  useFrame(() => {
 
+  useFrame(() => {
     // offset.current.x += deltaX;
     // offset.current.y += deltaY;
     offset.current.x += deltaX * increasingSpeedRef.current;
     offset.current.y += deltaY * increasingSpeedRef.current;
 
     const resources = updateTerrainGeometry();
-    
+
     if (resources[0] !== null && terrainLoading) {
       useGameStore.setState({ terrainLoading: false });
       consoleLog("terrainLoading finished");

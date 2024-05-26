@@ -5,11 +5,17 @@ import { BigButtons } from "./BigButtons";
 import { useCallback } from "react";
 
 export const FlyToNewWorld = () => {
-  const animationFirstStage = useGameStore((state) => state.animationFirstStage);
-  const decreasePlayerPoints = useGameStore((state) => state.decreasePlayerPoints);
+  const animationFirstStage = useGameStore(
+    (state) => state.animationFirstStage,
+  );
+  const decreasePlayerPoints = useGameStore(
+    (state) => state.decreasePlayerPoints,
+  );
   const playerPoints = useGameStore((state) => state.playerPoints);
   const costs = useGameStore((state) => state.costs);
-  const opacity = useGameStore((state) => state.uiPanelsState.newWorldButton.opacity);
+  const opacity = useGameStore(
+    (state) => state.uiPanelsState.newWorldButton.opacity,
+  );
 
   const moveToTheNewWorld = useCallback(() => {
     if (playerPoints >= costs.flyToNewWorld.value) {

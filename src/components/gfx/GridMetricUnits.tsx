@@ -2,7 +2,6 @@ import { Plane } from "@react-three/drei";
 import { useGameStore } from "../../store/store";
 import { DoubleSide } from "three";
 
-
 export const GridMetricUnits = () => {
   const { width, depth } = useGameStore((state) => state.mapParams);
 

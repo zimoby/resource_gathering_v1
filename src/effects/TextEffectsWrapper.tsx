@@ -12,14 +12,17 @@ const TypingText: React.FC<TypingTextProps> = ({ text, speed = 100 }) => {
     setDisplayText("");
 
     let currentIndex = -1;
-    const typingInterval = setInterval(() => {
-      if (currentIndex < text.length - 1) {
+    const typingInterval = setInterval(
+      () => {
+        if (currentIndex < text.length - 1) {
           currentIndex++;
-        setDisplayText((prevText) => prevText + text[currentIndex]);
-      } else {
-        clearInterval(typingInterval);
-      }
-    }, (20 / text.length) * speed);
+          setDisplayText((prevText) => prevText + text[currentIndex]);
+        } else {
+          clearInterval(typingInterval);
+        }
+      },
+      (20 / text.length) * speed,
+    );
 
     return () => {
       clearInterval(typingInterval);

@@ -2,11 +2,18 @@ import { useGameStore } from "../../../store/store";
 import { BasicPanelWrapper } from "../BasicPanelWrapper";
 
 export const LogsPanel = () => {
-  const opacity = useGameStore((state) => state.uiPanelsState.logsPanel.opacity);
+  const opacity = useGameStore(
+    (state) => state.uiPanelsState.logsPanel.opacity,
+  );
   const logs = useGameStore((state) => state.logs);
 
   return (
-    <BasicPanelWrapper height="h-32" width="w-64" titleText="Logs:" opacity={opacity}>
+    <BasicPanelWrapper
+      height="h-32"
+      width="w-64"
+      titleText="Logs:"
+      opacity={opacity}
+    >
       {logs.map((log, index) => (
         <div
           key={index}

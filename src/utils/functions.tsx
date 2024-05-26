@@ -2,7 +2,9 @@ import { MutableRefObject, useEffect } from "react";
 import { useGameStore, DEV_MODE } from "../store/store";
 import { ChunkType } from "../store/gameStateSlice";
 
-export const consoleLog = (message: string, data?: object | number | string | boolean
+export const consoleLog = (
+  message: string,
+  data?: object | number | string | boolean,
 ) => {
   if (!DEV_MODE) return;
 
@@ -16,12 +18,11 @@ export const consoleLog = (message: string, data?: object | number | string | bo
   } else {
     console.log(message, data);
   }
-  
 };
 
 export const useCheckVariableRender = (
   variable: object | string | number | boolean,
-  name: string
+  name: string,
 ) => {
   useEffect(() => {
     if (typeof variable === "object") {
@@ -47,7 +48,11 @@ export const convertChunkCoordinateToName = (chunk: ChunkType) => {
   return `CH-${ew}${absX}${ns}${absY}`;
 };
 
-export const getChunkCoordinates = (globalX: number, globalY: number, chunkSize: number) => {
+export const getChunkCoordinates = (
+  globalX: number,
+  globalY: number,
+  chunkSize: number,
+) => {
   const x = Math.floor(globalX / chunkSize);
   const y = Math.floor(globalY / chunkSize);
   return { x, y };
@@ -58,14 +63,18 @@ export const isOutOfBound = (
   width: number,
   depth: number,
   offsetX: number,
-  offsetY: number
+  offsetY: number,
 ) => {
-  const xOutOfBounds = position.x < -width / 2 + offsetX || position.x > width / 2 + offsetX;
-  const yOutOfBounds = position.y < -depth / 2 + offsetY || position.y > depth / 2 + offsetY;
+  const xOutOfBounds =
+    position.x < -width / 2 + offsetX || position.x > width / 2 + offsetX;
+  const yOutOfBounds =
+    position.y < -depth / 2 + offsetY || position.y > depth / 2 + offsetY;
   return { x: xOutOfBounds, y: yOutOfBounds };
 };
 
-export const useResetOffset = (offset: MutableRefObject<{ x: number; y: number }>) => {
+export const useResetOffset = (
+  offset: MutableRefObject<{ x: number; y: number }>,
+) => {
   const resetValues = useGameStore((state) => state.resetValues);
 
   useEffect(() => {
@@ -87,25 +96,32 @@ export const useCalculateDeltas = () => {
 
   // consoleLog("speed", speed);
 
-  const deltaX = moveDirection.x * directionXY * (speed / 10 * dynamicSpeed);
-  const deltaY = moveDirection.y * directionXY * (speed / 10 * dynamicSpeed);
+  const deltaX = moveDirection.x * directionXY * ((speed / 10) * dynamicSpeed);
+  const deltaY = moveDirection.y * directionXY * ((speed / 10) * dynamicSpeed);
 
   return { deltaX, deltaY };
 };
 
 export const useUpdateMapMoving = () => {
-  const { width, depth, offsetX, offsetY } = useGameStore((state) => state.mapParams);
+  const { width, depth, offsetX, offsetY } = useGameStore(
+    (state) => state.mapParams,
+  );
   const currentLocation = useGameStore((state) => state.currentLocation);
   const currentOffset = useGameStore((state) => state.currentOffset);
 
-  const updateLocationAndOffset = (offset: { current: { x: number; y: number } }) => {
+  const updateLocationAndOffset = (offset: {
+    current: { x: number; y: number };
+  }) => {
     const currentChunk = getChunkCoordinates(
       offset.current.x + offsetX + width / 2,
       offset.current.y + offsetY + depth / 2,
-      width
+      width,
     );
 
-    if (currentLocation.x !== currentChunk.x || currentLocation.y !== currentChunk.y) {
+    if (
+      currentLocation.x !== currentChunk.x ||
+      currentLocation.y !== currentChunk.y
+    ) {
       useGameStore.setState({
         currentLocation: { x: currentChunk.x, y: currentChunk.y },
       });
@@ -116,7 +132,10 @@ export const useUpdateMapMoving = () => {
       y: Math.round(offset.current.y),
     };
 
-    if (currentOffset.x !== roundedOffset.x || currentOffset.y !== roundedOffset.y) {
+    if (
+      currentOffset.x !== roundedOffset.x ||
+      currentOffset.y !== roundedOffset.y
+    ) {
       useGameStore.setState({
         currentOffset: { x: roundedOffset.x, y: roundedOffset.y },
       });
@@ -131,4 +150,3 @@ export const numberSimplified = (number: number) => {
   if (number < 1000000) return `${(number / 1000).toFixed(1)}k`;
   return `${(number / 1000000).toFixed(1)}M`;
 };
-

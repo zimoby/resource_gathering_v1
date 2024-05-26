@@ -4,12 +4,18 @@ import { BasicPanelWrapper } from "../BasicPanelWrapper";
 export const ResourceDistributionPanel = () => {
   const collectedResources = useGameStore((state) => state.collectedResources);
 
-  const totalResources = Object.values(collectedResources).reduce((sum, count) => sum + count, 0);
+  const totalResources = Object.values(collectedResources).reduce(
+    (sum, count) => sum + count,
+    0,
+  );
 
-  const resourcePercentages = Object.entries(collectedResources).map(([resource, count]) => {
-    const percentage = totalResources > 0 ? (count / totalResources) * 100 : 0;
-    return { resource, percentage };
-  });
+  const resourcePercentages = Object.entries(collectedResources).map(
+    ([resource, count]) => {
+      const percentage =
+        totalResources > 0 ? (count / totalResources) * 100 : 0;
+      return { resource, percentage };
+    },
+  );
 
   return (
     <BasicPanelWrapper titleText="Resource Distribution">
@@ -38,7 +44,9 @@ export const BeaconManagementPanel = () => {
         <div key={beacon.id} className="flex justify-between items-center">
           <span>Beacon {beacon.id}</span>
           <div>
-            <button onClick={() => handleRemoveBeacon(beacon.id)}>Remove</button>
+            <button onClick={() => handleRemoveBeacon(beacon.id)}>
+              Remove
+            </button>
           </div>
         </div>
       ))}
@@ -82,7 +90,9 @@ export const WarningPanel = () => {
         </div>
       ))}
       {eventsLog.length === 0 && (
-        <div className="text-center text-green-500">No warnings at the moment.</div>
+        <div className="text-center text-green-500">
+          No warnings at the moment.
+        </div>
       )}
     </BasicPanelWrapper>
   );

@@ -1,6 +1,6 @@
-import { extend, useFrame } from '@react-three/fiber';
-import { useRef } from 'react';
-import { Mesh, PlaneGeometry, ShaderMaterial } from 'three';
+import { extend, useFrame } from "@react-three/fiber";
+import { useRef } from "react";
+import { Mesh, PlaneGeometry, ShaderMaterial } from "three";
 import { useGameStore } from "../../store/store";
 
 const terrainVertexShader = `
@@ -54,45 +54,46 @@ const terrainFragmentShader = `
 extend({ PlaneGeometry });
 
 const terrainMaterial = new ShaderMaterial({
-    uniforms: {
-      width: { value: 0 },
-      depth: { value: 0 },
-      resolution: { value: 0 },
-      scale: { value: 0 },
-      offsetX: { value: 0 },
-      offsetY: { value: 0 },
-      heightMultiplier: { value: 20 },
-      baseLineOffset: { value: -5 },
-    },
-    vertexShader: terrainVertexShader,
-    fragmentShader: terrainFragmentShader,
+  uniforms: {
+    width: { value: 0 },
+    depth: { value: 0 },
+    resolution: { value: 0 },
+    scale: { value: 0 },
+    offsetX: { value: 0 },
+    offsetY: { value: 0 },
+    heightMultiplier: { value: 20 },
+    baseLineOffset: { value: -5 },
+  },
+  vertexShader: terrainVertexShader,
+  fragmentShader: terrainFragmentShader,
+});
+
+export const TerrainVertex = () => {
+  const { width, depth, resolution, scale, offsetX, offsetY } = useGameStore(
+    (state) => state.mapParams,
+  );
+
+  const widthSegments = Math.floor(width * resolution);
+  const depthSegments = Math.floor(depth * resolution);
+
+  const meshRef = useRef<Mesh>(null);
+  const materialRef = useRef<ShaderMaterial>(null);
+
+  useFrame(() => {
+    if (materialRef.current) {
+      materialRef.current.uniforms.width.value = width;
+      materialRef.current.uniforms.depth.value = depth;
+      materialRef.current.uniforms.resolution.value = resolution;
+      materialRef.current.uniforms.scale.value = scale;
+      materialRef.current.uniforms.offsetX.value = offsetX;
+      materialRef.current.uniforms.offsetY.value = offsetY;
+    }
   });
-  
-  export const TerrainVertex = () => {
-    const { width, depth, resolution, scale, offsetX, offsetY } = useGameStore((state) => state.mapParams);
-    
-    const widthSegments = Math.floor(width * resolution);
-    const depthSegments = Math.floor(depth * resolution);
-  
-    const meshRef = useRef<Mesh>(null);
-    const materialRef = useRef<ShaderMaterial>(null);
-    
-    useFrame(() => {
-        if (materialRef.current) {
-            materialRef.current.uniforms.width.value = width;
-            materialRef.current.uniforms.depth.value = depth;
-            materialRef.current.uniforms.resolution.value = resolution;
-            materialRef.current.uniforms.scale.value = scale;
-            materialRef.current.uniforms.offsetX.value = offsetX;
-            materialRef.current.uniforms.offsetY.value = offsetY;
-        }
-    });
-    
-    return (
-      <mesh ref={meshRef}>
-        <planeGeometry args={[width, depth, widthSegments, depthSegments]} />
-        <primitive object={terrainMaterial} attach="material" ref={materialRef} />
-      </mesh>
-    );
-  };
-  
+
+  return (
+    <mesh ref={meshRef}>
+      <planeGeometry args={[width, depth, widthSegments, depthSegments]} />
+      <primitive object={terrainMaterial} attach="material" ref={materialRef} />
+    </mesh>
+  );
+};

@@ -30,7 +30,7 @@ export const useAppearingGlitchingEffect = ({
           timeouts.add(
             setTimeout(() => {
               child.visible = !child.visible;
-            }, lastToggle)
+            }, lastToggle),
           );
         }
         child.visible = true;

@@ -1,5 +1,13 @@
 import { useMemo, useRef } from "react";
-import { ShaderMaterial, DoubleSide, Color, PlaneGeometry, Mesh, Vector3, Euler } from "three";
+import {
+  ShaderMaterial,
+  DoubleSide,
+  Color,
+  PlaneGeometry,
+  Mesh,
+  Vector3,
+  Euler,
+} from "three";
 import { useFrame } from "@react-three/fiber";
 import { useGameStore } from "../../store/store";
 
@@ -57,7 +65,7 @@ export const RingPlaneShader = ({
         side: DoubleSide,
         depthWrite: false,
       }),
-    [width, depth, color, opacity]
+    [width, depth, color, opacity],
   );
 
   const planeRef = useRef<Mesh<PlaneGeometry, ShaderMaterial>>(null);

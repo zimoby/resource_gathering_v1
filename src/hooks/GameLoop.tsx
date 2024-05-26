@@ -3,7 +3,7 @@ import { useGameStore } from "../store/store";
 import { useProcessBeacons } from "../components/beacons/beaconUtils";
 
 export const useGameLoop = () => {
-	const { destroyBeacons } = useProcessBeacons();
+  const { destroyBeacons } = useProcessBeacons();
   const updateWeather = useGameStore.getState().updateWeather;
   const addEventLog = useGameStore.getState().addEventLog;
   const weatherRef = useRef<number | null>(null);
@@ -12,8 +12,10 @@ export const useGameLoop = () => {
     weatherRef.current = setInterval(() => {
       const receiveNewWether = updateWeather();
 
-      if (!receiveNewWether) { return; }
-      
+      if (!receiveNewWether) {
+        return;
+      }
+
       addEventLog(receiveNewWether);
       destroyBeacons();
     }, 5000);

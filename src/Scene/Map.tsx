@@ -13,51 +13,63 @@ import { ArtifactsGroup } from "../components/artifacts/ArtifactsGroup";
 export const Map = () => {
   const firstStart = useGameStore((state) => state.firstStart);
   const updateMapSize = useGameStore((state) => state.updateMapSize);
-  const animationFirstStage = useGameStore((state) => state.animationFirstStage);
+  const animationFirstStage = useGameStore(
+    (state) => state.animationFirstStage,
+  );
   const mapAnimationState = useGameStore((state) => state.mapAnimationState);
   const regenerateWorld = useGameStore((state) => state.regenerateWorld);
-  const setMapAnimationState = useGameStore((state) => state.setMapAnimationState);
+  const setMapAnimationState = useGameStore(
+    (state) => state.setMapAnimationState,
+  );
   const terrainAppearing = useGameStore((state) => state.terrainAppearing);
-  
-  const {
-    valueAnimation,
-    valueReached,
-    valueStarted,
-    startAnimation
-  } = useIncreasingSpeed2({ goalValue: 100 });
+
+  const { valueAnimation, valueReached, valueStarted, startAnimation } =
+    useIncreasingSpeed2({ goalValue: 100 });
 
   const {
     valueAnimation: valueAnimationDecr,
     valueReached: valueReachedDecr,
     valueStarted: valueStartedDecr,
     startAnimation: startAnimationDecr,
-  } = useIncreasingSpeed2({initialValue: 100, goalValue: 0});
+  } = useIncreasingSpeed2({ initialValue: 100, goalValue: 0 });
 
   useFrame(() => {
     if (!terrainAppearing && !valueReached.current && valueStarted.current) {
       useGameStore.setState({ terrainAppearing: true });
-    } else if (terrainAppearing && valueReached.current && !animationFirstStage) {
+    } else if (
+      terrainAppearing &&
+      valueReached.current &&
+      !animationFirstStage
+    ) {
       useGameStore.setState({ animationFirstStage: true });
     }
 
-    if (mapAnimationState === 'shrinking' && !valueStartedDecr.current) {
+    if (mapAnimationState === "shrinking" && !valueStartedDecr.current) {
       valueReached.current = false;
       valueStarted.current = false;
       startAnimationDecr();
-    } else if (mapAnimationState === 'shrinking' && !valueReachedDecr.current && valueStartedDecr.current) {
+    } else if (
+      mapAnimationState === "shrinking" &&
+      !valueReachedDecr.current &&
+      valueStartedDecr.current
+    ) {
       updateMapSize(valueAnimationDecr.value.get());
-    } else if (mapAnimationState === 'shrinking' && valueReachedDecr.current) {
+    } else if (mapAnimationState === "shrinking" && valueReachedDecr.current) {
       regenerateWorld();
-      setMapAnimationState('enlarging');
-    } else if (mapAnimationState === 'enlarging' && !valueStarted.current) {
+      setMapAnimationState("enlarging");
+    } else if (mapAnimationState === "enlarging" && !valueStarted.current) {
       startAnimation();
-      useGameStore.setState({ resetValues: true })
-    } else if (mapAnimationState === 'enlarging' && !valueReached.current && valueStarted.current) {
+      useGameStore.setState({ resetValues: true });
+    } else if (
+      mapAnimationState === "enlarging" &&
+      !valueReached.current &&
+      valueStarted.current
+    ) {
       // useGameStore.setState({ resetValues: false });
       updateMapSize(valueAnimation.value.get());
       // console.log(valueAnimation.value.get());
-    } else if (mapAnimationState === 'enlarging' && valueReached.current) {
-      setMapAnimationState('idle');
+    } else if (mapAnimationState === "enlarging" && valueReached.current) {
+      setMapAnimationState("idle");
       valueReachedDecr.current = false;
       valueReached.current = false;
       valueStartedDecr.current = false;

@@ -19,14 +19,15 @@ import { ArtifactsPlanesIndicators } from "../components/artifacts/ArtifactsIndi
 export const GameCanvas = () => {
   const firstStart = useGameStore((state) => state.firstStart);
   const startToLoadFiles = useGameStore((state) => state.startToLoadFiles);
-  const animationFirstStage = useGameStore((state) => state.animationFirstStage);
+  const animationFirstStage = useGameStore(
+    (state) => state.animationFirstStage,
+  );
   const terrainAppearing = useGameStore((state) => state.terrainAppearing);
-  
 
   useEffect(() => {
     const handleClick = () => {
       if (!startToLoadFiles) {
-        useGameStore.setState({ startToLoadFiles: true })
+        useGameStore.setState({ startToLoadFiles: true });
       }
     };
 
@@ -35,7 +36,7 @@ export const GameCanvas = () => {
     return () => {
       window.removeEventListener("click", handleClick);
     };
-  }, []);
+  }, [startToLoadFiles]);
 
   return (
     <Canvas flat shadows dpr={[1, 1.5]} gl={{ antialias: false }}>
@@ -43,27 +44,37 @@ export const GameCanvas = () => {
       {/* <Perf position="bottom-left" /> */}
       <SceneSettings />
       <Suspense fallback={null}>
-        <group position={[0,0,0]}>
+        <group position={[0, 0, 0]}>
           <FlyingDrone />
           <Map />
-          {animationFirstStage && <group position={[0, 0, 0]} visible={animationFirstStage}>
-            <CoordinatesKeys />
-            <ArtifactsPlanesIndicators />
-          </group>}
+          {animationFirstStage && (
+            <group position={[0, 0, 0]} visible={animationFirstStage}>
+              <CoordinatesKeys />
+              <ArtifactsPlanesIndicators />
+            </group>
+          )}
           <group position={[0, 0, 0]} visible={firstStart}>
-            <FlickeringEffect initialIntensity={10} randomFrequency={0.008} duration={50}>
+            <FlickeringEffect
+              initialIntensity={10}
+              randomFrequency={0.008}
+              duration={50}
+            >
               <ChunkGrid position={[0, 0, 0]} sizeExtend={1} />
               <ChunkGrid position={[0, -10, 0]} sizeExtend={1} />
               <ChunkGrid position={[0, -10, 0]} sizeExtend={10} />
             </FlickeringEffect>
 
-            {!terrainAppearing &&
-              <FlickeringEffect initialIntensity={10} randomFrequency={0.008} duration={50}>
+            {!terrainAppearing && (
+              <FlickeringEffect
+                initialIntensity={10}
+                randomFrequency={0.008}
+                duration={50}
+              >
                 <Line width={100} />
-                <Line width={100} rotation={new Euler(0,Math.PI/2,0)} />
+                <Line width={100} rotation={new Euler(0, Math.PI / 2, 0)} />
                 <ChunkGrid position={[0, -1, 0]} sizeExtend={30} />
               </FlickeringEffect>
-            }
+            )}
           </group>
           <PulsingCircle />
         </group>

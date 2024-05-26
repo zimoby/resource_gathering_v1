@@ -20,7 +20,7 @@ export const ConcentricCirclesAnimation = ({ size = 5 }) => {
       uColor: { value: new Color(0xf4f4f4) },
       uEdgeSoftness: { value: 0.5 },
     }),
-    []
+    [],
   );
 
   return (

@@ -1,5 +1,13 @@
 import { useEffect } from "react";
-import { SETTING_DISABLE_ANIMATIONS, SETTING_DISABLE_MUSIC, SETTING_DISABLE_SOUNDS, SETTING_EDUCATION_MODE, SETTING_INVERT_DIRECTION, SETTING_START_SCREEN, useGameStore } from "../../../store/store";
+import {
+  SETTING_DISABLE_ANIMATIONS,
+  SETTING_DISABLE_MUSIC,
+  SETTING_DISABLE_SOUNDS,
+  SETTING_EDUCATION_MODE,
+  SETTING_INVERT_DIRECTION,
+  SETTING_START_SCREEN,
+  useGameStore,
+} from "../../../store/store";
 
 const ToggleButton = ({
   label,
@@ -15,7 +23,14 @@ const ToggleButton = ({
       <label htmlFor={label} className="pl-5 tracking-tight leading-4 mr-2">
         {label}
       </label>
-      <input type="checkbox" className="mr-5" id={label} name={label} checked={checked} onChange={onChange} />
+      <input
+        type="checkbox"
+        className="mr-5"
+        id={label}
+        name={label}
+        checked={checked}
+        onChange={onChange}
+      />
     </div>
   );
 };
@@ -29,9 +44,12 @@ export const SettingsModal = () => {
   const invertDirection = useGameStore((state) => state.invertDirection);
   const educationMode = useGameStore((state) => state.educationMode);
 
-  const updateStoreProperty = useGameStore((state) => state.updateStoreProperty);
-  const updateVariableInLocalStorage = useGameStore((state) => state.updateVariableInLocalStorage);
-
+  const updateStoreProperty = useGameStore(
+    (state) => state.updateStoreProperty,
+  );
+  const updateVariableInLocalStorage = useGameStore(
+    (state) => state.updateVariableInLocalStorage,
+  );
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
@@ -48,7 +66,6 @@ export const SettingsModal = () => {
       window.removeEventListener("keydown", handleKeyPress);
     };
   }, [showSettingsModal, updateStoreProperty]);
-
 
   return (
     <div
@@ -76,36 +93,63 @@ export const SettingsModal = () => {
             <ToggleButton
               label="Show start screen"
               checked={startScreen}
-              onChange={() => updateVariableInLocalStorage(SETTING_START_SCREEN, !startScreen)}
+              onChange={() =>
+                updateVariableInLocalStorage(SETTING_START_SCREEN, !startScreen)
+              }
             />
             <ToggleButton
               label="Show education"
               checked={educationMode}
-              onChange={() => updateVariableInLocalStorage(SETTING_EDUCATION_MODE, !educationMode)}
+              onChange={() =>
+                updateVariableInLocalStorage(
+                  SETTING_EDUCATION_MODE,
+                  !educationMode,
+                )
+              }
             />
           </div>
           <div className="w-full mb-3 flex flex-col justify-center items-center">
             <ToggleButton
               label="Invert keys direction"
               checked={invertDirection}
-              onChange={() => updateVariableInLocalStorage(SETTING_INVERT_DIRECTION, !invertDirection)}
+              onChange={() =>
+                updateVariableInLocalStorage(
+                  SETTING_INVERT_DIRECTION,
+                  !invertDirection,
+                )
+              }
             />
           </div>
           <div className="w-full mb-3 flex flex-col justify-center items-center">
             <ToggleButton
               label="Disable Animations"
               checked={disableAnimations}
-              onChange={() => updateVariableInLocalStorage(SETTING_DISABLE_ANIMATIONS, !disableAnimations)}
+              onChange={() =>
+                updateVariableInLocalStorage(
+                  SETTING_DISABLE_ANIMATIONS,
+                  !disableAnimations,
+                )
+              }
             />
             <ToggleButton
               label="Disable Sound"
               checked={disableSounds}
-              onChange={() => updateVariableInLocalStorage(SETTING_DISABLE_SOUNDS, !disableSounds)}
+              onChange={() =>
+                updateVariableInLocalStorage(
+                  SETTING_DISABLE_SOUNDS,
+                  !disableSounds,
+                )
+              }
             />
             <ToggleButton
               label="Disable Music"
               checked={disableMusic}
-              onChange={() => updateVariableInLocalStorage(SETTING_DISABLE_MUSIC, !disableMusic)}
+              onChange={() =>
+                updateVariableInLocalStorage(
+                  SETTING_DISABLE_MUSIC,
+                  !disableMusic,
+                )
+              }
             />
           </div>
         </div>

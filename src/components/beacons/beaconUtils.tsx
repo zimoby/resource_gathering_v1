@@ -9,7 +9,9 @@ export const useProcessBeacons = () => {
   const beacons = useGameStore((state) => state.beacons);
   const weatherCondition = useGameStore((state) => state.weatherCondition);
   const costs = useGameStore((state) => state.costs);
-  const decreasePlayerPoints = useGameStore((state) => state.decreasePlayerPoints);
+  const decreasePlayerPoints = useGameStore(
+    (state) => state.decreasePlayerPoints,
+  );
   const playerPoints = useGameStore((state) => state.playerPoints);
   const beaconsLimit = useGameStore((state) => state.beaconsLimit);
 
@@ -25,28 +27,37 @@ export const useProcessBeacons = () => {
     }) => {
       const chunkBeacons = beacons.filter(
         (beacon: { chunkX: number; chunkY: number }) =>
-          beacon.chunkX === currentChunk.x && beacon.chunkY === currentChunk.y
+          beacon.chunkX === currentChunk.x && beacon.chunkY === currentChunk.y,
       );
 
-      const isWithinRadius = chunkBeacons.some((beacon: { x: number; z: number }) => {
-        const dx = position.x - beacon.x;
-        const dz = position.z - beacon.z;
-        const distance = Math.sqrt(dx * dx + dz * dz);
-        return distance < minDistance;
-      });
+      const isWithinRadius = chunkBeacons.some(
+        (beacon: { x: number; z: number }) => {
+          const dx = position.x - beacon.x;
+          const dz = position.z - beacon.z;
+          const distance = Math.sqrt(dx * dx + dz * dz);
+          return distance < minDistance;
+        },
+      );
 
       if (isWithinRadius) {
-        useGameStore.setState({ message: "Cannot place beacon too close to another beacon." });
+        useGameStore.setState({
+          message: "Cannot place beacon too close to another beacon.",
+        });
         return;
       }
 
       if (chunkBeacons.length >= 2) {
-        useGameStore.setState({ message: "Maximum beacons placed in this chunk." });
+        useGameStore.setState({
+          message: "Maximum beacons placed in this chunk.",
+        });
         return;
       }
 
       if (beacons.length >= beaconsLimit) {
-        useGameStore.setState({ message: "Maximum beacons limit reached. You can increase it in the Beacons panel" });
+        useGameStore.setState({
+          message:
+            "Maximum beacons limit reached. You can increase it in the Beacons panel",
+        });
         return;
       }
 
@@ -54,7 +65,9 @@ export const useProcessBeacons = () => {
         decreasePlayerPoints(costs.placeBeacon.value);
         addLog(`Beacon placed at ${currentChunk.x}, ${currentChunk.y}`);
       } else {
-        useGameStore.setState({ message: "Not enough energy to place a beacon." });
+        useGameStore.setState({
+          message: "Not enough energy to place a beacon.",
+        });
         return;
       }
 
@@ -75,13 +88,22 @@ export const useProcessBeacons = () => {
         return { beacons: newBeacons };
       });
     },
-    [addLog, beacons, beaconsLimit, costs.placeBeacon.value, decreasePlayerPoints, playerPoints]
+    [
+      addLog,
+      beacons,
+      beaconsLimit,
+      costs.placeBeacon.value,
+      decreasePlayerPoints,
+      playerPoints,
+    ],
   );
 
   const destroyBeacons = useCallback(() => {
     if (weatherCondition.toLowerCase() === "severe") {
       const destroyPercentage = 0.2;
-      const numBeaconsToDestroy = Math.floor(beacons.length * destroyPercentage);
+      const numBeaconsToDestroy = Math.floor(
+        beacons.length * destroyPercentage,
+      );
 
       if (numBeaconsToDestroy > 0) {
         const destroyedBeacons: BeaconType[] = [];
@@ -94,14 +116,18 @@ export const useProcessBeacons = () => {
         }
 
         useGameStore.setState((state) => {
-          const newBeacons = state.beacons.filter((beacon) => !destroyedBeacons.includes(beacon));
+          const newBeacons = state.beacons.filter(
+            (beacon) => !destroyedBeacons.includes(beacon),
+          );
           return { beacons: newBeacons };
         });
 
         useGameStore.setState({
           message: `Destroyed ${numBeaconsToDestroy} beacons due to severe weather.`,
         });
-        addLog(`Destroyed ${numBeaconsToDestroy} beacons due to severe weather.`);
+        addLog(
+          `Destroyed ${numBeaconsToDestroy} beacons due to severe weather.`,
+        );
       }
     }
   }, [addLog, beacons, weatherCondition]);

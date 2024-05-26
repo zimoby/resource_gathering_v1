@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useRef } from "react";
 import {
-  DoubleSide, Color, Vector2,
+  DoubleSide,
+  Color,
+  Vector2,
   PlaneGeometry,
   ShaderMaterial,
-  Mesh
+  Mesh,
 } from "three";
 import { useGameStore } from "../../store/store";
 import { useFrame } from "@react-three/fiber";
@@ -59,7 +61,9 @@ export interface BasicGridShaderProps {
   position?: [number, number, number];
 }
 
-export const BasicGridShader = ({ position = [0,0,0] }: BasicGridShaderProps) => {
+export const BasicGridShader = ({
+  position = [0, 0, 0],
+}: BasicGridShaderProps) => {
   const { width, depth } = useGameStore((state) => state.mapParams);
   const resetValues = useGameStore((state) => state.resetValues);
   const gridConfig = useGameStore((state) => state.gridConfig);
@@ -72,7 +76,7 @@ export const BasicGridShader = ({ position = [0,0,0] }: BasicGridShaderProps) =>
 
   useEffect(() => {
     generateGridGeometry();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [width, depth, gridConfig]);
 
   const generateGridGeometry = useMemo(() => {
@@ -101,10 +105,18 @@ export const BasicGridShader = ({ position = [0,0,0] }: BasicGridShaderProps) =>
         planeRef.current.material = planeMaterial;
       }
     };
-  }, [width, depth, gridConfig.chunkSize, gridConfig.subGrids, gridConfig.lineWidth, gridConfig.gridColor, gridConfig.subGridColor, planeRef]);
+  }, [
+    width,
+    depth,
+    gridConfig.chunkSize,
+    gridConfig.subGrids,
+    gridConfig.lineWidth,
+    gridConfig.gridColor,
+    gridConfig.subGridColor,
+    planeRef,
+  ]);
 
   useFrame(() => {
-
     if (resetValues) {
       // console.log("resetValues:", resetValues);
       offset.current.x = 0;
@@ -121,12 +133,11 @@ export const BasicGridShader = ({ position = [0,0,0] }: BasicGridShaderProps) =>
     if (
       planeRef.current &&
       planeRef.current.material instanceof ShaderMaterial &&
-      planeRef.current.material.uniforms.offset &&
-      planeRef.current.material.uniforms.offset.value
+      planeRef.current.material.uniforms.offset?.value
     ) {
       planeRef.current.material.uniforms.offset.value.set(
         offset.current.x * 0.01,
-        -offset.current.y * 0.01
+        -offset.current.y * 0.01,
       );
     }
   });

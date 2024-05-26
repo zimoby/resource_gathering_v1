@@ -7,12 +7,11 @@ import { useProcessBeacons } from "../components/beacons/beaconUtils";
 import { getChunkCoordinates } from "../utils/functions";
 import { useProcessArtifacts } from "../components/artifacts/artifactUtils";
 
-
 const getIntersection = (
   event: { clientX: number; clientY: number },
   raycaster: Raycaster,
   mesh: Mesh | null,
-  camera: Camera
+  camera: Camera,
 ) => {
   const mouse = new Vector2();
   if (!event) return [];
@@ -28,15 +27,15 @@ const getIntersection = (
   }
 };
 
-const keyToVector: { [key: string]: { x: number; y: number } } = {
-  'ArrowUp': { x: 0, y: -1 },
-  'KeyW': { x: 0, y: -1 },
-  'ArrowDown': { x: 0, y: 1 },
-  'KeyS': { x: 0, y: 1 },
-  'ArrowLeft': { x: -1, y: 0 },
-  'KeyA': { x: -1, y: 0 },
-  'ArrowRight': { x: 1, y: 0 },
-  'KeyD': { x: 1, y: 0 }
+const keyToVector: Record<string, { x: number; y: number }> = {
+  ArrowUp: { x: 0, y: -1 },
+  KeyW: { x: 0, y: -1 },
+  ArrowDown: { x: 0, y: 1 },
+  KeyS: { x: 0, y: 1 },
+  ArrowLeft: { x: -1, y: 0 },
+  KeyA: { x: -1, y: 0 },
+  ArrowRight: { x: 1, y: 0 },
+  KeyD: { x: 1, y: 0 },
 };
 
 export const useKeyboardControls = ({
@@ -60,7 +59,6 @@ export const useKeyboardControls = ({
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
-
       if (keyToVector[event.code]) {
         setActiveKeys((prev) => ({ ...prev, [event.code]: true }));
       }
@@ -70,7 +68,7 @@ export const useKeyboardControls = ({
           mouseEventRef.current || { clientX: 0, clientY: 0 },
           raycaster,
           meshRef.current,
-          camera
+          camera,
         );
 
         if (intersects.length > 0 && !canPlaceBeacon) {
@@ -89,12 +87,12 @@ export const useKeyboardControls = ({
         useGameStore.setState({ dynamicSpeed: 3 });
       }
     },
-    [camera, canPlaceBeacon, meshRef, raycaster]
+    [camera, canPlaceBeacon, meshRef, raycaster],
   );
 
   const handleKeyUp = useCallback((event: KeyboardEvent) => {
     setActiveKeys((prev) => {
-      const newKeys: { [key: string]: boolean } = { ...prev };
+      const newKeys: Record<string, boolean> = { ...prev };
       delete newKeys[event.code];
       return newKeys;
     });
@@ -111,17 +109,21 @@ export const useKeyboardControls = ({
   }, []);
 
   useEffect(() => {
-    const newMoveDirection = Object.entries(activeKeys).reduce((acc, [key, active]) => {
-      if (active && keyToVector[key]) {
-        acc.x += keyToVector[key].x;
-        acc.y += keyToVector[key].y;
-      }
-      return acc;
-    }, { x: 0, y: 0 });
+    const newMoveDirection = Object.entries(activeKeys).reduce(
+      (acc, [key, active]) => {
+        if (active && keyToVector[key]) {
+          acc.x += keyToVector[key].x;
+          acc.y += keyToVector[key].y;
+        }
+        return acc;
+      },
+      { x: 0, y: 0 },
+    );
 
     if (
       (newMoveDirection.x !== 0 || newMoveDirection.y !== 0) &&
-      (newMoveDirection.x !== moveDirection.x || newMoveDirection.y !== moveDirection.y)
+      (newMoveDirection.x !== moveDirection.x ||
+        newMoveDirection.y !== moveDirection.y)
     ) {
       useGameStore.setState({ moveDirection: newMoveDirection });
     }
@@ -149,10 +151,12 @@ export const useCanvasHover = ({
   camera: Camera;
   raycaster: Raycaster;
   meshRef: RefObject<Mesh>;
-  resources: { current: Array<ResourceType> };
+  resources: { current: ResourceType[] };
 }) => {
   const canPlaceBeacon = useGameStore((state) => state.canPlaceBeacon);
-  const { width, depth, offsetX, offsetY } = useGameStore((state) => state.mapParams);
+  const { width, depth, offsetX, offsetY } = useGameStore(
+    (state) => state.mapParams,
+  );
   const { addBeacon } = useProcessBeacons();
   const { takeArtifact, checkArtifactInRadius } = useProcessArtifacts();
   const addNewMessage = useGameStore((state) => state.addNewMessage);
@@ -160,9 +164,11 @@ export const useCanvasHover = ({
   const playerPoints = useGameStore((state) => state.playerPoints);
   // const animationFirstStage = useGameStore((state) => state.animationFirstStage);
 
-  const throttledSetState = useRef(throttle((state) => {
-    useGameStore.setState(state);
-  }, 100)).current;
+  const throttledSetState = useRef(
+    throttle((state) => {
+      useGameStore.setState(state);
+    }, 100),
+  ).current;
 
   const handleCanvasHover = useCallback(
     (event: { clientX: number; clientY: number; type: string }) => {
@@ -171,7 +177,7 @@ export const useCanvasHover = ({
       // console.log(event.type);
 
       if (!canPlaceBeacon || !meshRef.current) {
-        if(playerPoints < costs.scanning.value) {
+        if (playerPoints < costs.scanning.value) {
           addNewMessage("Not enough energy to scan");
         }
         return;
@@ -181,7 +187,7 @@ export const useCanvasHover = ({
         { clientX: event.clientX, clientY: event.clientY },
         raycaster,
         meshRef.current,
-        camera
+        camera,
       );
 
       if (intersects.length === 0) {
@@ -209,7 +215,11 @@ export const useCanvasHover = ({
 
       throttledSetState({
         selectedResource: resource,
-        selectedChunk: getChunkCoordinates(currentPosition.x, currentPosition.y, width),
+        selectedChunk: getChunkCoordinates(
+          currentPosition.x,
+          currentPosition.y,
+          width,
+        ),
       });
 
       const isWithinRadius = checkArtifactInRadius({ point });
@@ -227,13 +237,33 @@ export const useCanvasHover = ({
             z: point.z - offsetY,
           },
           resource,
-          currentChunk: getChunkCoordinates(currentPosition.x, currentPosition.y, width),
+          currentChunk: getChunkCoordinates(
+            currentPosition.x,
+            currentPosition.y,
+            width,
+          ),
         });
         // useGameStore.setState({ canPlaceBeacon: false });
       }
-
     },
-    [canPlaceBeacon, meshRef, raycaster, camera, resources, width, depth, throttledSetState, checkArtifactInRadius, playerPoints, costs.scanning.value, addNewMessage, addBeacon, offsetX, offsetY, takeArtifact]
+    [
+      canPlaceBeacon,
+      meshRef,
+      raycaster,
+      camera,
+      resources,
+      width,
+      depth,
+      throttledSetState,
+      checkArtifactInRadius,
+      playerPoints,
+      costs.scanning.value,
+      addNewMessage,
+      addBeacon,
+      offsetX,
+      offsetY,
+      takeArtifact,
+    ],
   );
 
   useEffect(() => {

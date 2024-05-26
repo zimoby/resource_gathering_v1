@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import { useGameStore } from '../store/store';
+import React, { useEffect, useRef } from "react";
+import { useGameStore } from "../store/store";
 
 interface FlickeringHtmlEffectProps {
   children: React.ReactNode;
@@ -29,7 +29,7 @@ export const FlickeringHtmlEffect: React.FC<FlickeringHtmlEffectProps> = ({
     const container = containerRef.current;
     if ((disabled || disableAnimations) && container) {
       container.childNodes.forEach((child) => {
-        (child as HTMLElement).style.visibility = 'visible';
+        (child as HTMLElement).style.visibility = "visible";
       });
       return;
     }
@@ -43,31 +43,45 @@ export const FlickeringHtmlEffect: React.FC<FlickeringHtmlEffectProps> = ({
     const container = containerRef.current;
     if (container) {
       const timeouts = new Set<number>();
-      
+
       container.childNodes.forEach((child, index) => {
         const element = child as HTMLElement;
-        element.style.visibility = 'hidden';
+        element.style.visibility = "hidden";
 
         const startDelay = index * delay;
         timeouts.add(
           setTimeout(() => {
-            element.style.visibility = 'visible';
+            element.style.visibility = "visible";
             let lastToggle = 0;
             for (let i = 0; i < initialIntensity; i++) {
               lastToggle += Math.random() * duration;
               timeouts.add(
                 setTimeout(() => {
-                  element.style.visibility = element.style.visibility === 'hidden' ? 'visible' : 'hidden';
-                }, lastToggle)
+                  element.style.visibility =
+                    element.style.visibility === "hidden"
+                      ? "visible"
+                      : "hidden";
+                }, lastToggle),
               );
             }
-          }, startDelay)
+          }, startDelay),
         );
       });
 
       return () => timeouts.forEach(clearTimeout);
     }
-  }, [initialIntensity, duration, disabled, containerRef, disableAnimations, delay]);
+  }, [
+    initialIntensity,
+    duration,
+    disabled,
+    containerRef,
+    disableAnimations,
+    delay,
+  ]);
 
-  return <div className={classStyles} style={{...styles}} ref={containerRef}>{children}</div>;
+  return (
+    <div className={classStyles} style={{ ...styles }} ref={containerRef}>
+      {children}
+    </div>
+  );
 };

@@ -10,11 +10,11 @@ import { useIncreasingSpeed } from "../../effects/IncreaseSceneSpeed";
 const beaconHeight = 10;
 
 const artifactColors = {
-  default: new Color('white'),
-  selected: new Color('yellow')
-}
+  default: new Color("white"),
+  selected: new Color("yellow"),
+};
 
-const Artifact = ({ type, selected }: { type: string, selected: boolean }) => {
+const Artifact = ({ type, selected }: { type: string; selected: boolean }) => {
   const Component = useMemo(() => {
     switch (type) {
       case "usual":
@@ -31,10 +31,9 @@ const Artifact = ({ type, selected }: { type: string, selected: boolean }) => {
   const color = selected ? artifactColors.selected : artifactColors.default;
 
   return <Component color={color} />;
-}
+};
 
 const UsualArtifact = ({ color }: { color: Color }) => {
-
   return (
     <Octahedron args={[4, 0]} position={[0, beaconHeight, 0]} scale={[1, 2, 1]}>
       <meshStandardMaterial color={color} />
@@ -43,10 +42,12 @@ const UsualArtifact = ({ color }: { color: Color }) => {
 };
 
 const RareArtifact = ({ color }: { color: Color }) => {
-
-
   return (
-    <Tetrahedron args={[4, 0]} position={[0, beaconHeight, 0]} scale={[1, 2, 1]}>
+    <Tetrahedron
+      args={[4, 0]}
+      position={[0, beaconHeight, 0]}
+      scale={[1, 2, 1]}
+    >
       <meshStandardMaterial color={color} />
     </Tetrahedron>
   );
@@ -69,14 +70,20 @@ export const ArtifactsGroup = () => {
   const artifacts = useGameStore((state) => state.artifacts);
   const artifactSelected = useGameStore((state) => state.artifactSelected);
   const canSetBeacon = useGameStore((state) => state.canPlaceBeacon);
-  const { width, depth, offsetX, offsetY } = useGameStore((state) => state.mapParams);
+  const { width, depth, offsetX, offsetY } = useGameStore(
+    (state) => state.mapParams,
+  );
   const { deltaX, deltaY } = useCalculateDeltas();
   const timeRef = useRef(0);
 
-  const artifactRefs = useRef<React.RefObject<Group>[]>(artifacts.map(() => createRef()));
+  const artifactRefs = useRef<React.RefObject<Group>[]>(
+    artifacts.map(() => createRef()),
+  );
   const { speedRef: increasingSpeedRef } = useIncreasingSpeed(0, 1, 0.01, 2);
 
-  const circleRefs = useRef<React.RefObject<Group>[]>(artifacts.map(() => createRef()));
+  const circleRefs = useRef<React.RefObject<Group>[]>(
+    artifacts.map(() => createRef()),
+  );
 
   useFrame((_, delta) => {
     artifactRefs.current.forEach((beacon, index) => {
@@ -88,13 +95,13 @@ export const ArtifactsGroup = () => {
         // artifactObject.position.z -= deltaY;
         artifactObject.position.x -= deltaX * increasingSpeedRef.current;
         artifactObject.position.z -= deltaY * increasingSpeedRef.current;
-        
+
         const checkBoundaries = isOutOfBound(
           { x: artifactObject.position.x, y: artifactObject.position.z },
           width,
           depth,
           offsetX,
-          offsetY
+          offsetY,
         );
 
         if (artifactSelected === artifacts[index].id && canSetBeacon) {
@@ -106,28 +113,35 @@ export const ArtifactsGroup = () => {
           }
         }
 
-				artifactObject.rotateY(delta / 2);
+        artifactObject.rotateY(delta / 2);
         artifactObject.visible = !checkBoundaries.x && !checkBoundaries.y;
 
-				if (artifactObject.visible !== artifacts[index].visible) {
-					useGameStore.setState((state) => {
-						state.artifacts[index].visible = artifactObject.visible;
-						return state;
-					});
-				}
+        if (artifactObject.visible !== artifacts[index].visible) {
+          useGameStore.setState((state) => {
+            state.artifacts[index].visible = artifactObject.visible;
+            return state;
+          });
+        }
       }
     });
   });
 
- return (
+  return (
     <group visible={firstStart}>
       {artifacts.map((artifact, index) => (
         <group
           key={artifact.id}
-          position={[artifact.x + artifact.chunkX * 100, artifact.y + 1, artifact.z + artifact.chunkY * 100]}
+          position={[
+            artifact.x + artifact.chunkX * 100,
+            artifact.y + 1,
+            artifact.z + artifact.chunkY * 100,
+          ]}
           ref={artifactRefs.current[index]}
         >
-          <Artifact type={artifact.type} selected={artifactSelected === artifact.id} />
+          <Artifact
+            type={artifact.type}
+            selected={artifactSelected === artifact.id}
+          />
         </group>
       ))}
     </group>
