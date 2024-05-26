@@ -70,7 +70,15 @@ const StartScreen = () => {
           Project for the Threejs.journey course
         </h1>
         <p className="text-center w-3/5 orbitron text-2xs mt-3 uppercase -skew-x-12 scale-y-150 scale-x-75 leading-3">
-          {`Course by Bruno Simon Design by ${authorName} story by ${authorName} animation by ${authorName} development by ${authorName} testing by ${authorName} vfx by ${authorName}`}
+        {`Course by Bruno Simon
+          Design by ${authorName}
+          Story by ${authorName}
+          Animation by ${authorName}
+          Development by ${authorName}
+          Testing by ${authorName}
+          Time Travel Logistics by ${authorName}
+          Unicorn Training by ${authorName}
+          Cat Whispering by ${authorName}`}
         </p>
 
         {!startToLoadFiles && (
