@@ -22,30 +22,30 @@ import { FlyToNewWorld } from "./FlyToNewWorldButton";
 import { CollectedAftefacts } from "./Panels/CollectedAftefacts";
 import { SettingsButton } from "./SettingsButton";
 import { ArtifactsInfo } from "../artifacts/ArtifactsInfo";
-import { Environment, OrbitControls, PerspectiveCamera, Preload, Sphere, View } from "@react-three/drei";
-import { useRef } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { Mesh } from "three";
+// import { Environment, OrbitControls, PerspectiveCamera, Preload, Sphere, View } from "@react-three/drei";
+// import { useRef } from "react";
+// import { useFrame } from "@react-three/fiber";
+// import { Mesh } from "three";
 
-const RotatingSphere = (props) => {
-  const meshRef = useRef<Mesh>(null);
+// const RotatingSphere = (props) => {
+//   const meshRef = useRef<Mesh>(null);
   
 
-  useFrame((state, delta) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.y += delta * Math.PI; 
-    }
-  });
+//   useFrame((state, delta) => {
+//     if (meshRef.current) {
+//       meshRef.current.rotation.y += delta * Math.PI; 
+//     }
+//   });
 
   
 
-  return (
-    <mesh ref={meshRef} {...props}>
-      <sphereGeometry args={[1, 32, 32]} /> 
-      <meshStandardMaterial color="royalblue" /> 
-    </mesh>
-  );
-};
+//   return (
+//     <mesh ref={meshRef} {...props}>
+//       <sphereGeometry args={[1, 32, 32]} /> 
+//       <meshStandardMaterial color="royalblue" /> 
+//     </mesh>
+//   );
+// };
 
 export const UiInfo = () => {
   const animationFirstStage = useGameStore((state) => state.animationFirstStage);

@@ -1,37 +1,16 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useGameStore } from "../store/store";
 import { Howl } from "howler";
 import { consoleLog } from "../utils/functions";
 
 export const useSoundSystem = () => {
-  const disableSounds = useGameStore((state) => state.disableSounds);
 	const startToLoadFiles = useGameStore((state) => state.startToLoadFiles);
-	const loadingProgress = useGameStore((state) => state.loadingProgress);
 	const [soundsLoadingProgress, setSoundsLoadingProgress] = useState(0);
-	const [ambientWorks, setAmbientWorks] = useState(false);
 
   const [sounds, setSounds] = useState<{ ambient: Howl | null; click: Howl | null }>({
     ambient: null,
     click: null,
   });
-
-	const playAmbientSound = useCallback(() => {
-		// consoleLog("playAmbientSound", {disableSounds, ambient: sounds.ambient});
-    if (!disableSounds && sounds.ambient) {
-			// console.log("App sounds.ambient.play()");
-      sounds.ambient.play();
-    }
-  }, [disableSounds, sounds]);
-
-	const toggleAmbientSound = (state: boolean) => {
-    if (!state && sounds.ambient) {
-      sounds.ambient.stop();
-			// consoleLog("sounds.ambient.stop()");
-    } else if (state && sounds.ambient) {
-      sounds.ambient.play();
-			// consoleLog("sounds.ambient.play()");
-    }
-  };
 
 	useEffect(() => {
 		// console.log("soundsLoadingProgress", soundsLoadingProgress);
