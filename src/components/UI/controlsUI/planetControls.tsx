@@ -49,7 +49,7 @@ export const SystemControls = () => {
             onUpdate={(e) => updateMapParam("speed", e)}
           />
         </div>
-        <div className="space-y-1 pt-2">
+        {/* <div className="space-y-1 pt-2">
           <CheckBox
             label="Disable Animations"
             value={disableAnimations}
@@ -60,7 +60,7 @@ export const SystemControls = () => {
               )
             }
           />
-        </div>
+        </div> */}
       </div>
     </BasicPanelWrapper>
   );
