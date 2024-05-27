@@ -15,7 +15,7 @@ export const EventsPanel = () => {
     <BasicPanelWrapper
       height="h-32"
       width="w-64"
-      titleText="Logs:"
+      titleText="Events:"
       opacity={opacity}
     >
       {transitions((style, log: { id: string; text: string }) => (
