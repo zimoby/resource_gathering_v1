@@ -42,7 +42,7 @@ export const useCheckComponentRender = (name: string) => {
   }, []);
 };
 
-export const convertChunkCoordinateToName = (chunk: ChunkType) => {
+export const convertChunkCoordinateToName = (chunk: ChunkType): string => {
   const ns = chunk.y >= 0 ? "N" : "S";
   const ew = chunk.x >= 0 ? "E" : "W";
   const absX = Math.abs(chunk.x);

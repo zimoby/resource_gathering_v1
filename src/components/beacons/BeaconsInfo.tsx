@@ -1,6 +1,9 @@
+import { useListAppearing } from "../../effects/ListAppearing";
+import { ChunkType } from "../../store/gameStateSlice";
 import { useGameStore } from "../../store/store";
 import { convertChunkCoordinateToName } from "../../utils/functions";
 import { BasicPanelWrapper } from "../UI/BasicPanelWrapper";
+import { animated } from "@react-spring/web";
 
 export const BeaconsInfo = () => {
   const beacons = useGameStore((state) => state.beacons);
@@ -11,6 +14,8 @@ export const BeaconsInfo = () => {
   const increaseBeconsLimit = useGameStore(
     (state) => state.increaseBeconsLimit,
   );
+
+  const transitions = useListAppearing(beacons);
 
   return (
     <BasicPanelWrapper
@@ -29,9 +34,10 @@ export const BeaconsInfo = () => {
             + Extend beacons limit +
           </button>
         )}
-        {beacons.slice(0, 100).map((beacon, index) => (
-          <div
-            key={index}
+        {transitions((style, beacon, _, index) => (
+          <animated.div
+            key={beacon.id}
+            style={style}
             className="list-selecting pr-3"
             onClick={() =>
               useGameStore.setState({ message: `Beacon: ${beacon.resource}` })
@@ -43,10 +49,10 @@ export const BeaconsInfo = () => {
               convertChunkCoordinateToName({
                 x: beacon.chunkX,
                 y: beacon.chunkY,
-              }) +
+              } as ChunkType) +
               ": " +
               beacon.resource}
-          </div>
+          </animated.div>
         ))}
         <div className="h-5" />
       </>

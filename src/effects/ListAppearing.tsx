@@ -1,6 +1,6 @@
 import { useTransition, easings } from "@react-spring/web";
 
-export const useListAppearing = (array: { id: string; text: string }[]) => {
+export const useListAppearing = <T extends { id: string }>(array: T[]) => {
   const transitions = useTransition(array, {
     keys: (item) => item.id,
     from: {
