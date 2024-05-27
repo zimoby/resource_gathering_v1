@@ -41,6 +41,8 @@ export interface GameStateSlice {
   disableSounds: boolean;
   disableMusic: boolean;
   educationMode: boolean;
+  toggleEducationMode: () => void;
+
   invertDirection: boolean;
 
   showSettingsModal: boolean;
@@ -48,6 +50,9 @@ export interface GameStateSlice {
 
   startToLoadFiles: boolean;
   loadingProgress: number;
+
+  educationalStepIndex: number;
+  increaseEducationalStepIndex: () => void;
 
   startScreen: boolean;
   firstStart: boolean;
@@ -97,12 +102,29 @@ export const createGameStateSlice: StateCreator<
     localStorage.getItem(SETTING_DISABLE_ANIMATIONS) === "true",
   disableSounds: localStorage.getItem(SETTING_DISABLE_SOUNDS) === "true",
   disableMusic: localStorage.getItem(SETTING_DISABLE_MUSIC) === "true",
+
   educationMode: localStorage.getItem(SETTING_EDUCATION_MODE) === "true",
+  toggleEducationMode: () => {
+    const newValue = !get().educationMode;
+    set({ educationMode: newValue });
+    localStorage.setItem(SETTING_EDUCATION_MODE, newValue.toString());
+    if (!newValue) {
+      set({ educationalStepIndex: 0 });
+    }
+  },
+
   invertDirection: localStorage.getItem(SETTING_INVERT_DIRECTION) === "true",
   startScreen: localStorage.getItem(SETTING_START_SCREEN) === "true",
 
   showSettingsModal: false,
   showAboutModal: false,
+
+  educationalStepIndex: 0,
+  increaseEducationalStepIndex: () => {
+    set((state) => {
+      return { educationalStepIndex: state.educationalStepIndex + 1 };
+    });
+  },
 
   startToLoadFiles: false,
   loadingProgress: 0,

@@ -2,9 +2,15 @@ import { useGameStore } from "../../store/store";
 
 export const DroneMoveAngleUI = () => {
   const droneMoveAngle = useGameStore((state) => state.droneMoveAngle);
+  const opacity = useGameStore(
+    (state) => state.uiPanelsState.supportPanels.opacity,
+  );
 
   return (
-    <div className="relative size-16 mx-1 my-5 rounded-full bg-neutral-900 border border-uilines">
+    <div
+      className="relative size-16 mx-1 my-5 rounded-full bg-neutral-900 border border-uilines"
+      style={{ opacity }}
+    >
       <div className="absolute top-1/2 left-1/2 origin-left w-full border border-uilines opacity-20 bg-uilines -translate-x-1/2" />
       <div className="absolute top-1/2 left-1/2 origin-top w-full border border-uilines opacity-20 bg-uilines -translate-x-1/2 rotate-90" />
       {/* <div className="absolute top-1/2 left-1/2 origin-top w-full h-full border border-uilines opacity-20 bg-uilines rotate-90" /> */}

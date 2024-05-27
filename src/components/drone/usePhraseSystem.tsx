@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { PhrasesCollection } from "./PhrasesCollection";
 import { SETTING_EDUCATION_MODE, useGameStore } from "../../store/store";
 import { educationalStepsPhrases } from "./educationalStepsPhrases";
+// import { consoleLog, useCheckVariableRender } from "../../utils/functions";
 
 // interface PhraseSystemOptions {
 //   minDuration?: number;
@@ -36,7 +37,13 @@ const usePhraseSystem = () => {
   });
   const [phraseKey, setPhraseKey] = useState<number>(0);
   const [firstGreetings, setFirstGreetings] = useState<boolean>(true);
-  const [educationalStepIndex, setEducationalStepIndex] = useState(0);
+  const educationalStepIndex = useGameStore(
+    (state) => state.educationalStepIndex,
+  );
+  const increaseEducationalStepIndex = useGameStore(
+    (state) => state.increaseEducationalStepIndex,
+  );
+  // const [educationalStepIndex, setEducationalStepIndex] = useState(0);
   const educationMode = useGameStore((state) => state.educationMode);
   const beacons = useGameStore((state) => state.beacons);
   const soloPanelOpacity = useGameStore((state) => state.soloPanelOpacity);
@@ -48,12 +55,21 @@ const usePhraseSystem = () => {
     (state) => state.updateVariableInLocalStorage,
   );
 
+  // useCheckVariableRender(educationMode, "educationMode");
+  // useCheckVariableRender(firstGreetings, "firstGreetings");
+
   useEffect(() => {
     if (!educationMode) {
+      // consoleLog("reset", { educationMode, firstGreetings });
       setFirstGreetings(false);
+      setActivePhrase({ phrase: "" });
+    } else {
+      setFirstGreetings(true);
     }
 
-    if (firstGreetings && animationFirstStage) {
+    // consoleLog("educationMode", { educationMode, firstGreetings });
+
+    if (educationMode && firstGreetings && animationFirstStage) {
       setActivePhrase(educationalStepsPhrases[educationalStepIndex]);
       setPhraseKey((prevKey) => prevKey + 1);
     }
@@ -65,11 +81,13 @@ const usePhraseSystem = () => {
       educationalStepIndex === 1
     ) {
       if (educationalStepIndex < educationalStepsPhrases.length - 1) {
-        setEducationalStepIndex((prevIndex) => prevIndex + 1);
+        increaseEducationalStepIndex();
       }
     }
 
-    if (
+    if (educationalStepsPhrases[educationalStepIndex].stage === "welcome") {
+      soloPanelOpacity();
+    } else if (
       educationalStepsPhrases[educationalStepIndex].stage ===
       "collectedResourcesPanel"
     ) {
@@ -105,33 +123,39 @@ const usePhraseSystem = () => {
   ]);
 
   useEffect(() => {
-    if (!firstGreetings) {
+    // consoleLog("useEffect selectRandomPhrase", { educationMode });
+
+    let timeoutId: number | undefined;
+
+    if (!educationMode) {
       const selectRandomPhrase = () => {
         const newPhrase = randomisePhrase(activePhrase.phrase);
         setActivePhrase({ phrase: newPhrase });
         setPhraseKey((prevKey) => prevKey + 1);
-        const timeout = setTimeout(selectRandomPhrase, 10000);
-        return () => clearTimeout(timeout);
+        // consoleLog("selectRandomPhrase", { educationMode, newPhrase });
+        timeoutId = setTimeout(selectRandomPhrase, 10000);
+        // return () => clearTimeout(timeout);
       };
 
-      const initialTimeout = setTimeout(selectRandomPhrase, 10000);
-      return () => clearTimeout(initialTimeout);
+      timeoutId = setTimeout(selectRandomPhrase, 10000);
     }
-  }, [activePhrase, firstGreetings]);
+    return () => clearTimeout(timeoutId);
+  }, [activePhrase, educationMode]);
 
   useEffect(() => {
-    if (activePhrase.phrase !== "" && !firstGreetings) {
+    if (activePhrase.phrase !== "" && !educationMode) {
       const timeout = setTimeout(() => {
         setActivePhrase({ phrase: "" });
       }, 5000);
 
       return () => clearTimeout(timeout);
     }
-  }, [activePhrase, firstGreetings, phraseKey]);
+  }, [activePhrase, phraseKey, educationMode]);
 
   const handleNextClick = () => {
     if (educationalStepIndex < educationalStepsPhrases.length - 1) {
-      setEducationalStepIndex((prevIndex) => prevIndex + 1);
+      increaseEducationalStepIndex();
+      // setEducationalStepIndex((prevIndex) => prevIndex + 1);
     } else {
       setFirstGreetings(false);
       updateVariableInLocalStorage(SETTING_EDUCATION_MODE, false);

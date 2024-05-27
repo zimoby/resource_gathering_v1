@@ -25,7 +25,7 @@ export interface UiPanelsStateSlice {
     newWorldButton: UiPanelsStateType;
   };
   updatePanelOpacity: (panelName: PanelNamesT, value: number) => void;
-  soloPanelOpacity: (panelName: PanelNamesT) => void;
+  soloPanelOpacity: (panelName?: PanelNamesT) => void;
   resetPanelsOpacity: () => void;
 }
 
@@ -79,7 +79,7 @@ export const createUiPanelsStateSlice: StateCreator<
       },
     }));
   },
-  soloPanelOpacity: (panelName: PanelNamesT) => {
+  soloPanelOpacity: (panelName?: PanelNamesT) => {
     set((state) => {
       const newPanelsState = Object.keys(state.uiPanelsState).reduce(
         (acc, key) => {
@@ -88,7 +88,9 @@ export const createUiPanelsStateSlice: StateCreator<
         },
         {} as typeof state.uiPanelsState,
       );
-      newPanelsState[panelName] = { opacity: 1 };
+      if (panelName) {
+        newPanelsState[panelName] = { opacity: 1 };
+      }
       return {
         uiPanelsState: newPanelsState,
       };

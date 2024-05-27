@@ -30,7 +30,7 @@ export const useCheckVariableRender = (
     if (typeof variable === "object") {
       consoleLog(name || `variable:`, { ...variable });
     } else {
-      consoleLog(name || `variable:`, variable);
+      consoleLog(name || `variable:`, variable.toString());
     }
   }, [name, variable]);
 };

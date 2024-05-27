@@ -24,6 +24,9 @@ export const SimpleWarningLines = ({
 
 export const WarningBlock = () => {
   const weather = useGameStore((state) => state.weatherCondition);
+  const opacity = useGameStore(
+    (state) => state.uiPanelsState.supportPanels.opacity,
+  );
 
   return (
     <>
@@ -34,6 +37,7 @@ export const WarningBlock = () => {
             style={{
               top: "calc(-50vh + 90px)",
               left: "-150px",
+              opacity,
             }}
             data-augmented-ui="border bl-clip-x br-clip-x --aug-border-bg"
           >
