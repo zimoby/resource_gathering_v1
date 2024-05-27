@@ -38,20 +38,22 @@ export const BeaconsInfo = () => {
           <animated.div
             key={beacon.id}
             style={style}
-            className="list-selecting pr-3"
+            className=""
             onClick={() =>
               useGameStore.setState({ message: `Beacon: ${beacon.resource}` })
             }
           >
-            {index +
-              1 +
-              "." +
-              convertChunkCoordinateToName({
-                x: beacon.chunkX,
-                y: beacon.chunkY,
-              } as ChunkType) +
-              ": " +
-              beacon.resource}
+            <div className="list-selecting pr-3">
+              {index +
+                1 +
+                "." +
+                convertChunkCoordinateToName({
+                  x: beacon.chunkX,
+                  y: beacon.chunkY,
+                } as ChunkType) +
+                ": " +
+                beacon.resource}
+            </div>
           </animated.div>
         ))}
         <div className="h-5" />
