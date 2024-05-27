@@ -5,6 +5,7 @@ import { SystemMessagePanelAlt } from "../SystemMessagePanel";
 import { LevelsIndicators } from "../levelsIndicators";
 import { FlickeringHtmlEffect } from "../../../effects/AppearingUiEffectWrapper";
 import { DirectionIndicators } from "../directionIndicators";
+import { DroneMoveAngleUI } from "../../drone/droneMoveAngle";
 
 export const CenterScreenPanel = () => {
   const showSettingsModal = useGameStore((state) => state.showSettingsModal);
@@ -37,7 +38,10 @@ export const CenterScreenPanel = () => {
                 <div className="absolute bottom-3 right-0">
                   <SystemMessagePanelAlt />
                 </div>
-                <LevelsIndicators />
+                <div className="absolute top-0 right-0 flex flex-row items-start justify-end gap-3 p-2">
+                  <DroneMoveAngleUI />
+                  <LevelsIndicators />
+                </div>
                 <DirectionIndicators />
               </FlickeringHtmlEffect>
             </div>

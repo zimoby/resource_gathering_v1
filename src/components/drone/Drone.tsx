@@ -6,6 +6,8 @@ import { useFrame } from "@react-three/fiber";
 import TypingText from "../../effects/TextEffectsWrapper";
 import usePhraseSystem from "./usePhraseSystem";
 import { useSoundSystem } from "../../hooks/soundSystem";
+import { throttle } from "lodash";
+// import { useCheckVariableRender } from "../../utils/functions";
 
 export const Drone = () => {
   const sphereRef = useRef<Mesh>(null);
@@ -34,6 +36,7 @@ const appearingHeight = 120;
 export const FlyingDrone = () => {
   const ref = useRef<Group>(null);
   const [firstAppearing, setFirstAppearing] = useState(true);
+  const droneDirectionAngleRef = useRef(0);
   const appearingHeightRef = useRef(-appearingHeight);
   const showSettingsModal = useGameStore((state) => state.showSettingsModal);
   const showAboutModal = useGameStore((state) => state.showAboutModal);
@@ -43,9 +46,22 @@ export const FlyingDrone = () => {
   const educationMode = useGameStore((state) => state.educationMode);
   const disableSounds = useGameStore((state) => state.disableSounds);
   const startStageFinished = useGameStore((state) => state.startStageFinished);
+  // const droneVectorMovement = useGameStore(
+  //   (state) => state.droneVectorMovement,
+  // );
+
+  // const droneMoveAngle = useGameStore((state) => state.droneMoveAngle);
+
+  // useCheckVariableRender(droneMoveAngle, "droneMoveAngle");
 
   const { activePhrase, phraseKey, handleNextClick } = usePhraseSystem();
   const { sounds } = useSoundSystem();
+
+  const throttledSetState = useRef(
+    throttle((state) => {
+      useGameStore.setState(state);
+    }, 150),
+  ).current;
 
   useEffect(() => {
     if (firstAppearing && !startStageFinished) {
@@ -91,6 +107,36 @@ export const FlyingDrone = () => {
       ref.current.position.y +=
         (y - appearingHeight - ref.current.position.y) * ease;
       ref.current.position.z += (z - ref.current.position.z) * ease;
+
+      droneDirectionAngleRef.current = Math.atan2(
+        ref.current.position.x,
+        ref.current.position.z,
+      );
+
+      throttledSetState({
+        droneMoveAngle: Math.round(
+          droneDirectionAngleRef.current * (180 / Math.PI),
+        ),
+      });
+
+      // ref.current.rotation.y -= droneDirectionAngleRef.current;
+
+      // if (droneVectorMovement.x !== ref.current.position.x || droneVectorMovement.y !== ref.current.position.y) {
+      // useGameStore.setState({
+      //   droneVectorMovement: {
+      //     x: ref.current.position.x,
+      //     y: ref.current.position.y,
+      //   },
+      // });
+      // console.log("droneVectorMovement", droneVectorMovement);
+      // }
+
+      // if (droneVectorMovement.x !== 0 || droneVectorMovement.y !== 0) {
+      //   ref.current.rotation.y = Math.atan2(
+      //     droneVectorMovement.x,
+      //     droneVectorMovement.y,
+      // );
+      // }
     }
   });
 
@@ -103,6 +149,10 @@ export const FlyingDrone = () => {
           {!showSettingsModal && !showAboutModal && (
             <Billboard>
               <Html position={[4, 2, 0]}>
+                {/* <div>
+                  {droneDirectionAngleRef.current.toFixed(2) * (180 / Math.PI)}
+                </div> */}
+
                 {activePhrase.phrase !== "" && (
                   <div className="flex flex-col items-end">
                     <div

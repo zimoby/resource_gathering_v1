@@ -63,6 +63,8 @@ export interface GameStateSlice {
   selectedChunk: ChunkType;
   currentLocation: ChunkType;
   moveDirection: Offset;
+  droneVectorMovement: Offset;
+  droneMoveAngle: number;
   dynamicSpeed: number;
   playerPoints: number;
   decreasePlayerPoints: (points: number) => void;
@@ -118,6 +120,8 @@ export const createGameStateSlice: StateCreator<
   selectedChunk: { x: 0, y: 0 },
   currentLocation: { x: 0, y: 0 },
   moveDirection: { x: 0, y: -1 },
+  droneVectorMovement: { x: 0, y: 0 },
+  droneMoveAngle: 0,
   dynamicSpeed: 1,
 
   playerPoints: 1000,
