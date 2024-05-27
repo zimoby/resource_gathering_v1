@@ -15,7 +15,9 @@ const authorName = "Denys Bondartsov";
 
 const StartScreen = () => {
   const setStartScreen = useGameStore((state) => state.updateStoreProperty);
-  const updateVariableInLocalStorage = useGameStore((state) => state.updateVariableInLocalStorage);
+  const updateVariableInLocalStorage = useGameStore(
+    (state) => state.updateVariableInLocalStorage,
+  );
   const disableAnimations = useGameStore((state) => state.disableAnimations);
   const disableSounds = useGameStore((state) => state.disableSounds);
   const startScreen = useGameStore((state) => state.startScreen);
@@ -148,14 +150,20 @@ const StartScreen = () => {
             <ToggleButton
               text={"Animations"}
               onClick={() =>
-                updateVariableInLocalStorage(SETTING_DISABLE_ANIMATIONS, !disableAnimations)
+                updateVariableInLocalStorage(
+                  SETTING_DISABLE_ANIMATIONS,
+                  !disableAnimations,
+                )
               }
               state={disableAnimations}
             />
             <ToggleButton
               text={"Sound"}
               onClick={() => {
-                updateVariableInLocalStorage(SETTING_DISABLE_SOUNDS, !disableSounds);
+                updateVariableInLocalStorage(
+                  SETTING_DISABLE_SOUNDS,
+                  !disableSounds,
+                );
               }}
               state={disableSounds}
             />
