@@ -4,6 +4,7 @@ import { useGameStore } from "../../../store/store";
 import { SystemMessagePanelAlt } from "../SystemMessagePanel";
 import { LevelsIndicators } from "../levelsIndicators";
 import { FlickeringHtmlEffect } from "../../../effects/AppearingUiEffectWrapper";
+import { DirectionIndicators } from "../directionIndicators";
 
 export const CenterScreenPanel = () => {
   const showSettingsModal = useGameStore((state) => state.showSettingsModal);
@@ -37,6 +38,7 @@ export const CenterScreenPanel = () => {
                   <SystemMessagePanelAlt />
                 </div>
                 <LevelsIndicators />
+                <DirectionIndicators />
               </FlickeringHtmlEffect>
             </div>
             <WarningBlock />
