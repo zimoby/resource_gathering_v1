@@ -11,6 +11,7 @@ import {
 import { ResourceType, resourceTypes } from "./worldParamsSlice";
 import { generateWeather } from "../utils/generators";
 import { WeatherCondition } from "./worldParamsSlice";
+import { generateUUID } from "three/src/math/MathUtils.js";
 // import { consoleLog } from "../utils/functions";
 
 export interface Offset {
@@ -29,6 +30,11 @@ export type CostsT = Record<
   string,
   { name: string; value: number; valueAlt?: string }
 >;
+
+export interface LogWithIdT {
+  id: string;
+  text: string;
+}
 
 export interface GameStateSlice {
   disableAnimations: boolean;
@@ -65,8 +71,8 @@ export interface GameStateSlice {
   collectedResources: CollectedResources;
   message: string;
   addNewMessage: (message: string) => void;
-  logs: string[];
-  eventsLog: string[];
+  logs: LogWithIdT[];
+  eventsLog: LogWithIdT[];
   scanRadius: number;
   canPlaceBeacon: boolean;
   activePosition: { x: number; y: number; z: number };
@@ -209,8 +215,12 @@ export const createGameStateSlice: StateCreator<
     localStorage.setItem(variableName, value.toString());
   },
   addLog: (log) => {
+    const uniqueLog: LogWithIdT = {
+      id: generateUUID(),
+      text: log,
+    };
     set((state) => {
-      const updatedLogs = [log, ...state.logs];
+      const updatedLogs = [uniqueLog, ...state.logs];
       if (updatedLogs.length > 10) {
         updatedLogs.pop();
       }
@@ -218,12 +228,29 @@ export const createGameStateSlice: StateCreator<
     });
   },
   addEventLog: (eventName) => {
+    const uniqueLog: LogWithIdT = {
+      id: generateUUID(),
+      text: eventName,
+    };
     set((state) => {
-      const updatedEvents = [...state.eventsLog, eventName];
+      const updatedEvents = [uniqueLog, ...state.eventsLog];
       if (updatedEvents.length > 5) {
-        updatedEvents.shift();
+        updatedEvents.pop();
       }
       return { eventsLog: updatedEvents };
     });
   },
+  // addEventLog: (eventName) => {
+  //   const uniqueLog: LogWithIdT = {
+  //     id: generateUUID(),
+  //     text: eventName,
+  //   };
+  //   set((state) => {
+  //     const updatedEvents = [...state.eventsLog, uniqueLog];
+  //     if (updatedEvents.length > 5) {
+  //       updatedEvents.shift();
+  //     }
+  //     return { eventsLog: updatedEvents };
+  //   });
+  // },
 });

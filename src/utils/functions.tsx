@@ -2,6 +2,8 @@ import { MutableRefObject, useEffect } from "react";
 import { useGameStore, DEV_MODE } from "../store/store";
 import { ChunkType } from "../store/gameStateSlice";
 
+export const generateUniqueId = () => `${Date.now()}-${Math.random()}`;
+
 export const consoleLog = (
   message: string,
   data?: object | number | string | boolean,

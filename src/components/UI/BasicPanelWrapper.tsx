@@ -18,7 +18,7 @@ export const BasicPanelWrapper = ({
 }) => {
   return (
     <div
-      className={`${styles} ${height} ${width} relative text-left text-xs bg-neutral-900/50 p-0 aug-border-yellow-500`}
+      className={`${styles} ${height} ${width} overflow-hidden relative text-left text-xs bg-neutral-900/50 p-0 aug-border-yellow-500`}
       style={{ opacity: opacity }}
       data-augmented-ui={`${augUi}`}
     >

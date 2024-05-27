@@ -1,5 +1,7 @@
+import { useListAppearing } from "../../../effects/ListAppearing";
 import { useGameStore } from "../../../store/store";
 import { BasicPanelWrapper } from "../BasicPanelWrapper";
+import { animated } from "@react-spring/web";
 
 export const EventsPanel = () => {
   const opacity = useGameStore(
@@ -7,18 +9,23 @@ export const EventsPanel = () => {
   );
   const eventsLog = useGameStore((state) => state.eventsLog);
 
+  const transitions = useListAppearing(eventsLog);
+
   return (
-    <BasicPanelWrapper height="h-32" titleText="Events:" opacity={opacity}>
-      {eventsLog.map((eventName, index) => (
-        <div
-          key={index}
-          className="list-selecting"
-          onClick={() =>
-            useGameStore.setState({ message: `Event: ${eventName}` })
-          }
+    <BasicPanelWrapper
+      height="h-32"
+      width="w-64"
+      titleText="Logs:"
+      opacity={opacity}
+    >
+      {transitions((style, log: { id: string; text: string }) => (
+        <animated.div
+          key={log.id}
+          style={style}
+          onClick={() => useGameStore.setState({ message: log.text })}
         >
-          {eventName}
-        </div>
+          <div className="list-selecting">{log.text}</div>
+        </animated.div>
       ))}
     </BasicPanelWrapper>
   );
