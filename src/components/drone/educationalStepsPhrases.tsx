@@ -2,7 +2,7 @@ export const educationalStepsPhrases = [
   {
     phrase: "Hello, I'm your drone. I'll help you gather resources.",
     skipped: false,
-    stage: "welcome",
+    // stage: "welcome",
     step: 0,
   },
   {
