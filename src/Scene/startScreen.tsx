@@ -82,7 +82,7 @@ const StartScreen = () => {
         {!startToLoadFiles && (
           <div className="w-fit h-fit mt-16 flex flex-row items-center justify-center border border-neutral-100 hover:border-yellow-400 overflow-hidden bg-neutral-100 hover:bg-yellow-400 cursor-pointer">
             <button
-              className="w-32 m-2 uppercase text-center text-neutral-900"
+              className="orbitron w-42 px-5 m-2 uppercase text-center text-neutral-900"
               onClick={() => useGameStore.setState({ startToLoadFiles: true })}
             >
               Generate World
@@ -120,7 +120,7 @@ const StartScreen = () => {
               />
             </div>
             <button
-              className="orbitron w-32 m-2 uppercase text-center text-neutral-900"
+              className="orbitron w-36 m-2 uppercase text-center text-neutral-900"
               onClick={startGame}
             >
               Start Game
