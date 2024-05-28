@@ -104,16 +104,20 @@ export const FlyingDrone = () => {
 
     if (firstAppearing && time > 0.3) {
       ref.current.position.y +=
-        (appearingHeightRef.current - ref.current.position.y) * (delta * 50) * ease;
+        (appearingHeightRef.current - ref.current.position.y) *
+        (delta * 50) *
+        ease;
       if (Math.abs(ref.current.position.y - appearingHeightRef.current) < 5) {
         setFirstAppearing(false);
         setMapAnimationState("enlarging");
       }
     } else {
-      ref.current.position.x += (x - ref.current.position.x) * (delta * 100) * ease;
+      ref.current.position.x +=
+        (x - ref.current.position.x) * (delta * 100) * ease;
       ref.current.position.y +=
         (y - appearingHeight - ref.current.position.y) * ease;
-      ref.current.position.z += (z - ref.current.position.z) * (delta * 100) * ease;
+      ref.current.position.z +=
+        (z - ref.current.position.z) * (delta * 100) * ease;
 
       // droneHeightHistoryRef.current.push(ref.current.position.y);
 
@@ -126,14 +130,10 @@ export const FlyingDrone = () => {
       //   droneHeightHistory: droneHeightHistoryRef.current,
       // });
 
-
-
       droneDirectionAngleRef.current = Math.atan2(
         ref.current.position.x,
         ref.current.position.z,
       );
-
-
 
       throttledSetState({
         droneMoveAngle: Math.round(

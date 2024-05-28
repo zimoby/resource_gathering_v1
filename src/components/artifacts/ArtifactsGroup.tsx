@@ -94,8 +94,10 @@ export const ArtifactsGroup = () => {
         // artifactObject.position.x -= deltaX;
         // artifactObject.position.z -= deltaY;
         // console.log("artifactObject", deltaX, deltaY);
-        artifactObject.position.x -= deltaX * (delta * 100) * increasingSpeedRef.current;
-        artifactObject.position.z -= deltaY * (delta * 100) * increasingSpeedRef.current;
+        artifactObject.position.x -=
+          deltaX * (delta * 100) * increasingSpeedRef.current;
+        artifactObject.position.z -=
+          deltaY * (delta * 100) * increasingSpeedRef.current;
 
         const checkBoundaries = isOutOfBound(
           { x: artifactObject.position.x, y: artifactObject.position.z },
