@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { PhrasesCollection } from "./PhrasesCollection";
 import { SETTING_EDUCATION_MODE, useGameStore } from "../../store/store";
 import { educationalStepsPhrases } from "./educationalStepsPhrases";
+import { colors } from "../../assets/colors";
 // import { consoleLog, useCheckVariableRender } from "../../utils/functions";
 
 // interface PhraseSystemOptions {
@@ -55,6 +56,7 @@ const usePhraseSystem = () => {
     (state) => state.updateVariableInLocalStorage,
   );
   const playerPoints = useGameStore((state) => state.playerPoints);
+  const setColors = useGameStore((state) => state.setColors);
 
   const [gameOverState, setGameOverState] = useState(false);
 
@@ -64,8 +66,14 @@ const usePhraseSystem = () => {
       setActivePhrase({
         phrase: "SOS. No energy left. We are lost on this planet.",
       });
+      const newColors = {
+        ...colors,
+        uilines: "#E22D2D",
+        uitext: "#E22D2D",
+      };
+      setColors(newColors);
     }
-  }, [playerPoints, beacons.length]);
+  }, [playerPoints, beacons.length, setColors]);
 
   // useCheckVariableRender(educationMode, "educationMode");
   // useCheckVariableRender(firstGreetings, "firstGreetings");

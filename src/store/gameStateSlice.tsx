@@ -210,10 +210,6 @@ export const createGameStateSlice: StateCreator<
       }
     }
 
-    // if (beacons.length === 0 && newPlayerPoints <= 0) {
-    //   // addEventLog("SOS. No energy left. We are lost on this planet.");
-    // }
-
     set({
       collectedResources: newCollectedResources,
       playerPoints: Math.max(newPlayerPoints, 0),
