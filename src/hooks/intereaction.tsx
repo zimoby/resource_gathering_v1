@@ -51,6 +51,7 @@ export const useKeyboardControls = ({
   const mouseEventRef = useRef<MouseEvent | null>(null);
   const [activeKeys, setActiveKeys] = useState({});
   const moveDirection = useGameStore((state) => state.moveDirection);
+  const playerPoints = useGameStore((state) => state.playerPoints);
   // const animationFirstStage = useGameStore((state) => state.animationFirstStage);
 
   const handleMousePosition = useCallback((event: MouseEvent) => {
@@ -83,11 +84,19 @@ export const useKeyboardControls = ({
         }
       }
 
-      if (event.code === "ShiftLeft" || event.code === "ShiftRight") {
+      if (
+        (event.code === "ShiftLeft" || event.code === "ShiftRight") &&
+        playerPoints > 0
+      ) {
         useGameStore.setState({ dynamicSpeed: 3 });
+      } else if (
+        (event.code === "ShiftLeft" || event.code === "ShiftRight") &&
+        playerPoints <= 0
+      ) {
+        useGameStore.setState({ dynamicSpeed: 1 });
       }
     },
-    [camera, canPlaceBeacon, meshRef, raycaster],
+    [camera, canPlaceBeacon, meshRef, playerPoints, raycaster],
   );
 
   const handleKeyUp = useCallback((event: KeyboardEvent) => {

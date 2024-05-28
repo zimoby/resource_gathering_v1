@@ -169,7 +169,10 @@ export const createGameStateSlice: StateCreator<
       canPlaceBeacon,
       costs,
       addEventLog,
+      dynamicSpeed,
     } = get();
+
+    const { mapParams } = get();
 
     const newCollectedResources = beacons.reduce(
       (resources, beacon) => {
@@ -185,6 +188,18 @@ export const createGameStateSlice: StateCreator<
     );
     let newPlayerPoints = playerPoints + pointsEarned;
 
+    // console.log("dynamicSpeed", dynamicSpeed, mapParams.speed);
+
+    const combinedSpeed = dynamicSpeed * mapParams.speed;
+
+    if (combinedSpeed > 1) {
+      newPlayerPoints -=
+        dynamicSpeed * mapParams.speed * costs.increaseSpeed.value;
+      addEventLog(
+        `High Speed. -${dynamicSpeed * mapParams.speed * costs.increaseSpeed.value} energy`,
+      );
+    }
+
     // let message = "";
     if (canPlaceBeacon) {
       if (newPlayerPoints >= costs.scanning.value) {
@@ -195,9 +210,18 @@ export const createGameStateSlice: StateCreator<
       }
     }
 
+    // if (beacons.length === 0 && newPlayerPoints <= 0) {
+    //   // addEventLog("SOS. No energy left. We are lost on this planet.");
+    // }
+
     set({
       collectedResources: newCollectedResources,
-      playerPoints: newPlayerPoints,
+      playerPoints: Math.max(newPlayerPoints, 0),
+      mapParams: {
+        ...mapParams,
+        speed: playerPoints > 0 ? mapParams.speed : 1,
+        // message: message
+      },
       // message: message
     });
   },
@@ -223,6 +247,7 @@ export const createGameStateSlice: StateCreator<
     flyToNewWorld: { name: "Fly to new world", value: 10000 },
     placeBeacon: { name: "Place beacon", value: 100 },
     extendBeaconLimits: { name: "Extend beacons limits", value: 1000 },
+    increaseSpeed: { name: "Extra speed", value: 5, valueAlt: "x" },
   },
   updateWeather: (): WeatherCondition | null => {
     const newWeather = generateWeather();

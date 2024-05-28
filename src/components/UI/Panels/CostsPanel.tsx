@@ -25,7 +25,9 @@ export const CostsPanel = () => {
           }}
         >
           <div className="w-2/3">{costs[cost].name}:</div>
-          <div className=" ml-2 w-1/4">{costs[cost].value}</div>
+          <div className=" ml-2 w-1/4">
+            {costs[cost].value + (costs[cost].valueAlt ?? "")}
+          </div>
         </div>
       ))}
     </BasicPanelWrapper>
