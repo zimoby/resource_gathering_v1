@@ -10,7 +10,7 @@ import { useIncreasingSpeed } from "../../effects/IncreaseSceneSpeed";
 const beaconHeight = 10;
 const minDistance = 20;
 
-const ShapeCircle = React.memo(() => {
+const ShapeCircle = React.memo(function ShapeCircle() {
   const shapePoints = useMemo(() => {
     const shape = new Shape();
     shape.moveTo(0, 0);
