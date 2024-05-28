@@ -27,7 +27,7 @@ export const SinePanel = () => {
             d="M 0,5 Q 12.5,0 25,5 T 50,5 T 75,5 T 100,5 T 125,5 T 150,5 T 175,5 T 200,5"
             fill="transparent"
             stroke="white"
-            strokeWidth="0.2"
+            strokeWidth="0.5"
             style={{
               transform: `scaleY(${Math.min(collectedResources.Metals / 100, 1)})`,
               transformOrigin: "center",
@@ -39,7 +39,7 @@ export const SinePanel = () => {
             d="M 0,5 Q 12.5,0 25,5 T 50,5 T 75,5 T 100,5 T 125,5 T 150,5 T 175,5 T 200,5"
             fill="transparent"
             stroke="yellow"
-            strokeWidth="0.2"
+            strokeWidth="0.5"
             style={{
               transform: `scaleY(${Math.min(collectedResources.Water / 100, 1)})`,
               transformOrigin: "center",
@@ -51,7 +51,7 @@ export const SinePanel = () => {
             d="M 0,5 Q 12.5,0 25,5 T 50,5 T 75,5 T 100,5 T 125,5 T 150,5 T 175,5 T 200,5"
             fill="transparent"
             stroke="blue"
-            strokeWidth="0.2"
+            strokeWidth="0.5"
             style={{
               transform: `scaleY(${Math.min(collectedResources.Hydrocarbons / 100, 1)})`,
               transformOrigin: "center",
@@ -63,7 +63,7 @@ export const SinePanel = () => {
             d="M 0,5 Q 12.5,0 25,5 T 50,5 T 75,5 T 100,5 T 125,5 T 150,5 T 175,5 T 200,5"
             fill="transparent"
             stroke="green"
-            strokeWidth="0.2"
+            strokeWidth="0.5"
             style={{
               transform: `scaleY(${Math.min(collectedResources["Rare Elements"] / 100, 1)})`,
               transformOrigin: "center",
