@@ -52,6 +52,7 @@ export const useKeyboardControls = ({
   const [activeKeys, setActiveKeys] = useState({});
   const moveDirection = useGameStore((state) => state.moveDirection);
   const playerPoints = useGameStore((state) => state.playerPoints);
+  const updateMapParam = useGameStore((state) => state.updateMapParam);
   // const animationFirstStage = useGameStore((state) => state.animationFirstStage);
 
   const handleMousePosition = useCallback((event: MouseEvent) => {
@@ -74,7 +75,6 @@ export const useKeyboardControls = ({
 
         if (intersects.length > 0 && !canPlaceBeacon) {
           const { point, face } = intersects[0];
-          // console.log("point", point);
           if (face) {
             useGameStore.setState({
               canPlaceBeacon: true,
@@ -94,9 +94,12 @@ export const useKeyboardControls = ({
         playerPoints <= 0
       ) {
         useGameStore.setState({ dynamicSpeed: 1 });
+      } else if (event.code === "AltLeft" || event.code === "AltRight") {
+        updateMapParam("speed", 0);
+        // useGameStore.setState({ dynamicSpeed: 0 });
       }
     },
-    [camera, canPlaceBeacon, meshRef, playerPoints, raycaster],
+    [camera, canPlaceBeacon, meshRef, playerPoints, raycaster, updateMapParam],
   );
 
   const handleKeyUp = useCallback((event: KeyboardEvent) => {
@@ -179,6 +182,12 @@ export const useCanvasHover = ({
     }, 100),
   ).current;
 
+  const throttledCheckArtefacts = useRef(
+    throttle((point: { point: { x: number; y: number } }) => {
+      checkArtifactInRadius(point);
+    }, 200),
+  ).current;
+
   const handleCanvasHover = useCallback(
     (event: { clientX: number; clientY: number; type: string }) => {
       // if (!animationFirstStage) { return; }
@@ -232,6 +241,9 @@ export const useCanvasHover = ({
       });
 
       const isWithinRadius = checkArtifactInRadius({ point });
+      // const isWithinRadius = throttledCheckArtefacts({ point });
+
+      // console.log("isWithinRadius", isWithinRadius);
 
       if (event.type === "click") {
         if (isWithinRadius) {
