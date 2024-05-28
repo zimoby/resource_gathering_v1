@@ -9,20 +9,19 @@ import StartScreen from "./Scene/startScreen";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useRunBgMusic, useSoundSystem } from "./hooks/soundSystem";
-import { useEffect } from "react";
+import { useMemo } from "react";
 
 gsap.registerPlugin(useGSAP);
 
 const App = () => {
   const startScreen = useGameStore((state) => state.startScreen);
   const firstStart = useGameStore((state) => state.firstStart);
-  const { colors } = useGameStore();
+  const setColors = useGameStore((state) => state.setColors);
+  const colors = useGameStore((state) => state.colors);
 
-  useEffect(() => {
-    Object.entries(colors).forEach(([key, value]) => {
-      document.documentElement.style.setProperty(`--${key}-color`, value);
-    });
-  }, [colors]);
+  useMemo(() => {
+    setColors(colors);
+  }, [colors, setColors]);
 
   useInitInfo();
   useCalculateResources();

@@ -1,6 +1,6 @@
 import { StateCreator } from "zustand";
 import { GameStoreState } from "./store";
-import { colors } from "../assets/colors";
+import { colors, setColors } from "../assets/colors";
 
 interface UiPanelsStateType {
   opacity: number;
@@ -76,7 +76,10 @@ export const createUiPanelsStateSlice: StateCreator<
   },
 
   colors: colors,
-  setColors: (newColors) => set({ colors: newColors }),
+  setColors: (newColors) => {
+    set({ colors: newColors });
+    setColors(newColors);
+  },
 
   updatePanelOpacity: (panelName: PanelNamesT, value: number) => {
     set((state) => ({
