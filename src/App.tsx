@@ -10,6 +10,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useRunBgMusic, useSoundSystem } from "./hooks/soundSystem";
 import { useMemo } from "react";
+import { useEnergyActions } from "./hooks/energyActions";
 
 gsap.registerPlugin(useGSAP);
 
@@ -29,6 +30,7 @@ const App = () => {
   useGameLoop();
   useSoundSystem();
   useRunBgMusic();
+  useEnergyActions();
 
   return (
     <>

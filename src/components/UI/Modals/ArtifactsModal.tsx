@@ -24,7 +24,7 @@ export const ArtefactsModal = () => {
       return { name: name, params: artifactsParams[index] };
     });
 
-    console.log("uniteData", uniteData);
+    // console.log("uniteData", uniteData);
 
     return uniteData;
   }, [artifactsArray]);

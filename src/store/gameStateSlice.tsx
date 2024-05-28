@@ -214,6 +214,13 @@ export const createGameStateSlice: StateCreator<
       );
     }
 
+    if (mapParams.width > 100 || mapParams.depth > 100) {
+      const extraMapSize = mapParams.width - 100 + (mapParams.depth - 100);
+      const extraCosts = Math.round(extraMapSize * costs.increaseMapSize.value);
+      newPlayerPoints -= extraCosts;
+      addEventLog(`Extra Map Scan. -${extraCosts} energy`);
+    }
+
     // let message = "";
     if (canPlaceBeacon) {
       if (newPlayerPoints >= costs.scanning.value) {
@@ -258,6 +265,7 @@ export const createGameStateSlice: StateCreator<
     placeBeacon: { name: "Place beacon", value: 100 },
     extendBeaconLimits: { name: "Extend beacons limits", value: 1000 },
     increaseSpeed: { name: "Extra speed", value: 5, valueAlt: "x" },
+    increaseMapSize: { name: "Extra map size", value: 2, valueAlt: "x" },
   },
   updateWeather: (): WeatherCondition | null => {
     const newWeather = generateWeather();
