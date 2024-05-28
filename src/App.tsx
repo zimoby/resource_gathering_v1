@@ -9,7 +9,7 @@ import StartScreen from "./Scene/startScreen";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useRunBgMusic, useSoundSystem } from "./hooks/soundSystem";
-import { useMemo } from "react";
+import { useEffect } from "react";
 import { useEnergyActions } from "./hooks/energyActions";
 
 gsap.registerPlugin(useGSAP);
@@ -20,7 +20,7 @@ const App = () => {
   const setColors = useGameStore((state) => state.setColors);
   const colors = useGameStore((state) => state.colors);
 
-  useMemo(() => {
+  useEffect(() => {
     setColors(colors);
   }, [colors, setColors]);
 
