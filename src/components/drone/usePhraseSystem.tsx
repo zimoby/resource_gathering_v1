@@ -54,6 +54,18 @@ const usePhraseSystem = () => {
   const updateVariableInLocalStorage = useGameStore(
     (state) => state.updateVariableInLocalStorage,
   );
+  const playerPoints = useGameStore((state) => state.playerPoints);
+
+  const [gameOverState, setGameOverState] = useState(false);
+
+  useEffect(() => {
+    if (playerPoints <= 0 && beacons.length === 0) {
+      setGameOverState(true);
+      setActivePhrase({
+        phrase: "SOS. No energy left. We are lost on this planet.",
+      });
+    }
+  }, [playerPoints, beacons.length]);
 
   // useCheckVariableRender(educationMode, "educationMode");
   // useCheckVariableRender(firstGreetings, "firstGreetings");
@@ -127,7 +139,7 @@ const usePhraseSystem = () => {
 
     let timeoutId: number | undefined;
 
-    if (!educationMode) {
+    if (!educationMode && !gameOverState) {
       const selectRandomPhrase = () => {
         const newPhrase = randomisePhrase(activePhrase.phrase);
         setActivePhrase({ phrase: newPhrase });
@@ -140,17 +152,17 @@ const usePhraseSystem = () => {
       timeoutId = setTimeout(selectRandomPhrase, 10000);
     }
     return () => clearTimeout(timeoutId);
-  }, [activePhrase, educationMode]);
+  }, [activePhrase, educationMode, gameOverState]);
 
   useEffect(() => {
-    if (activePhrase.phrase !== "" && !educationMode) {
+    if (activePhrase.phrase !== "" && !educationMode && !gameOverState) {
       const timeout = setTimeout(() => {
         setActivePhrase({ phrase: "" });
       }, 5000);
 
       return () => clearTimeout(timeout);
     }
-  }, [activePhrase, phraseKey, educationMode]);
+  }, [activePhrase, phraseKey, educationMode, gameOverState]);
 
   const handleNextClick = () => {
     if (educationalStepIndex < educationalStepsPhrases.length - 1) {
