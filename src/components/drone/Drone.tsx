@@ -7,6 +7,7 @@ import TypingText from "../../effects/TextEffectsWrapper";
 import usePhraseSystem from "./usePhraseSystem";
 import { useSoundSystem } from "../../hooks/soundSystem";
 import { throttle } from "lodash";
+import { useModalPriority } from "../../hooks/modalPriority";
 // import { useCheckVariableRender } from "../../utils/functions";
 
 export const Drone = () => {
@@ -39,8 +40,9 @@ export const FlyingDrone = () => {
   const droneDirectionAngleRef = useRef(0);
   // const droneHeightHistoryRef = useRef([] as number[]);
   const appearingHeightRef = useRef(-appearingHeight);
-  const showSettingsModal = useGameStore((state) => state.showSettingsModal);
-  const showAboutModal = useGameStore((state) => state.showAboutModal);
+  // const showSettingsModal = useGameStore((state) => state.showSettingsModal);
+  // const showAboutModal = useGameStore((state) => state.showAboutModal);
+  const showModal = useModalPriority();
   const setMapAnimationState = useGameStore(
     (state) => state.setMapAnimationState,
   );
@@ -168,7 +170,7 @@ export const FlyingDrone = () => {
         <Float position={[0, 20, 0]} floatIntensity={10} speed={5}>
           <Drone />
 
-          {!showSettingsModal && !showAboutModal && (
+          {!showModal && (
             <Billboard>
               <Html position={[4, 2, 0]}>
                 {/* <div>

@@ -7,19 +7,22 @@ import { FlickeringHtmlEffect } from "../../../effects/AppearingUiEffectWrapper"
 import { DirectionIndicators } from "../directionIndicators";
 import { DroneMoveAngleUI } from "../../drone/droneMoveAngle";
 import { EducationSteps } from "../eduSteps";
+import { useModalPriority } from "../../../hooks/modalPriority";
 
 export const CenterScreenPanel = () => {
-  const showSettingsModal = useGameStore((state) => state.showSettingsModal);
-  const showAboutModal = useGameStore((state) => state.showAboutModal);
+  // const showSettingsModal = useGameStore((state) => state.showSettingsModal);
+  // const showAboutModal = useGameStore((state) => state.showAboutModal);
   const animationFirstStage = useGameStore(
     (state) => state.animationFirstStage,
   );
+
+  const showModal = useModalPriority();
 
   if (!animationFirstStage) return null;
 
   return (
     <>
-      {!showSettingsModal && !showAboutModal && (
+      {!showModal && (
         <Billboard>
           <Html>
             <div
