@@ -150,6 +150,8 @@ export interface ArtifactT {
   chunkY: number;
   visible: boolean;
   id: string;
+  name: string;
+  params: Record<string, { name: string; value: number }>;
 }
 
 export interface WorldParamsSlice {
@@ -158,6 +160,7 @@ export interface WorldParamsSlice {
   beaconsLimit: number;
 
   artifacts: ArtifactT[];
+  artifactsArray: ArtifactT[];
   artifactsCollectedByTypes: ArtifactsCollectedT;
   artifactSelected: string;
   terrainColors: TerrainTypesT;
@@ -165,6 +168,7 @@ export interface WorldParamsSlice {
   regenerateWorld: () => void;
   increaseBeconsLimit: () => void;
   addArtifactToCollection: (type: ArtifactType) => void;
+  addToArtifactsArray: (artifact: ArtifactT) => void;
 }
 
 export const artifactAmount = 10;
@@ -202,7 +206,6 @@ export const createWorldParamsSlice: StateCreator<
     rare: 0,
     legendary: 0,
   },
-
   addArtifactToCollection: (type: ArtifactType) => {
     set((state) => {
       return {
@@ -210,6 +213,15 @@ export const createWorldParamsSlice: StateCreator<
           ...state.artifactsCollectedByTypes,
           [type]: state.artifactsCollectedByTypes[type] + 1,
         },
+      };
+    });
+  },
+  artifactsArray: [],
+
+  addToArtifactsArray: (artifact: ArtifactT) => {
+    set((state) => {
+      return {
+        artifactsArray: [...state.artifactsArray, artifact],
       };
     });
   },

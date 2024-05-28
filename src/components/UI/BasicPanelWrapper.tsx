@@ -1,3 +1,5 @@
+import { useGameStore } from "../../store/store";
+
 export const BasicPanelWrapper = ({
   children,
   titleText = "",
@@ -6,6 +8,7 @@ export const BasicPanelWrapper = ({
   styles = "",
   opacity = 1,
   augUi = "border br-clip --aug-border-bg",
+  titleModalAction = "",
 }: {
   children: React.ReactNode;
   titleText?: string;
@@ -15,16 +18,33 @@ export const BasicPanelWrapper = ({
   opacity?: number;
   augUi?: string;
   list?: boolean;
+  titleModalAction?: string;
 }) => {
+  const toggleModal = useGameStore((state) => state.toggleModal);
+
+  const titleAction = () => {
+    if (titleModalAction !== "") {
+      console.log("titleModalAction", titleModalAction);
+      toggleModal(titleModalAction);
+    }
+    //   // if titleModal is defined, call it
+    //   if (titleModalAction) {
+    //     titleModalAction();
+    //   }
+  };
+
   return (
     <div
       className={`${styles} ${height} ${width} overflow-hidden relative text-left text-xs bg-neutral-900/50 p-0 aug-border-yellow-500`}
       style={{ opacity: opacity }}
       data-augmented-ui={`${augUi}`}
     >
-      <p className="orbitron w-full h-fit px-1 bg-uilines text-neutral-900 select-none">
+      <button
+        className={`orbitron w-full h-fit flex justify-start items-center px-1 bg-uilines text-neutral-900 select-none ${titleModalAction === "" ? "cursor-default" : "cursor-pointer hover:bg-neutral-900 hover:text-uitext"}`}
+        onClick={titleAction}
+      >
         {titleText}
-      </p>
+      </button>
       <div className="scrollbar w-full h-full p-1 text-uitext">{children}</div>
     </div>
   );

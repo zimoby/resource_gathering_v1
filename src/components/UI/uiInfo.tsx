@@ -26,6 +26,7 @@ import { AboutButton } from "./AbountButton";
 import { AboutModal } from "./Modals/AboutModal";
 import { useSoundSystem } from "../../hooks/soundSystem";
 import { useEffect } from "react";
+import { ArtefactsModal } from "./Modals/ArtifactsModal";
 // import { Environment, OrbitControls, PerspectiveCamera, Preload, Sphere, View } from "@react-three/drei";
 // import { useRef } from "react";
 // import { useFrame } from "@react-three/fiber";
@@ -86,6 +87,7 @@ export const UiInfo = () => {
         top: "0.5rem",
       }}
     >
+      <ArtefactsModal />
       <SettingsModal />
       <AboutModal />
       <div

@@ -47,6 +47,8 @@ export interface GameStateSlice {
 
   showSettingsModal: boolean;
   showAboutModal: boolean;
+  showArtifactsModal: boolean;
+  toggleModal: (modalName: string) => void;
 
   startToLoadFiles: boolean;
   loadingProgress: number;
@@ -118,6 +120,13 @@ export const createGameStateSlice: StateCreator<
 
   showSettingsModal: false,
   showAboutModal: false,
+  showArtifactsModal: false,
+
+  toggleModal: (modalName: string) => {
+    set((state) => {
+      return { [modalName]: !state[modalName] };
+    });
+  },
 
   educationalStepIndex: 0,
   increaseEducationalStepIndex: () => {

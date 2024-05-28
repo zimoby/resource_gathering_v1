@@ -21,4 +21,4 @@ export const useModalPriority = () => {
   }, [showSettingsModal, showAboutModal, showArtifactsModal]);
 
   return showModal;
-}
+};

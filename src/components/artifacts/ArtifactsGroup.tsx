@@ -76,6 +76,8 @@ export const ArtifactsGroup = () => {
   const { deltaX, deltaY } = useCalculateDeltas();
   const timeRef = useRef(0);
 
+  // console.log("ArtifactsGroup", artifacts);
+
   const artifactRefs = useRef<React.RefObject<Group>[]>(
     artifacts.map(() => createRef()),
   );

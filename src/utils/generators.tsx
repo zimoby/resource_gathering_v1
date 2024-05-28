@@ -103,6 +103,169 @@ const randomRarestTypes = (): ArtifactType => {
   }
 };
 
+const generateUniqArtefactName = () => {
+  const adjectives = [
+    "Ancient",
+    "Forgotten",
+    "Mysterious",
+    "Magical",
+    "Enchanted",
+    "Cursed",
+    "Blessed",
+    "Divine",
+    "Sacred",
+    "Holy",
+    "Unholy",
+    "Dark",
+    "Light",
+    "Eternal",
+    "Infinite",
+    "Infernal",
+    "Celestial",
+    "Abyssal",
+    "Eldritch",
+    "Arcane",
+    "Mystic",
+    "Mythical",
+    "Legendary",
+  ];
+
+  const adjectivesExtra = [
+    "Golden",
+    "Silver",
+    "Bronze",
+    "Crystal",
+    "Sapphire",
+    "Ruby",
+    "Emerald",
+    "Diamond",
+    "Amethyst",
+    "Topaz",
+    "Opal",
+    "Pearl",
+    "Obsidian",
+    "Onyx",
+    "Jade",
+    "Ivory",
+    "Platinum",
+    "Titanium",
+    "Copper",
+    "Iron",
+    "Steel",
+    "Adamantium",
+    "Mithril",
+    "Orichalcum",
+    "Plutonium",
+    "Uranium",
+    "Neptunium",
+    "Mercury",
+    "Lead",
+    "Tin",
+    "Aluminium",
+    "Cobalt",
+    "Nickel",
+    "Zinc",
+    "Oxygen",
+    "Nitrogen",
+    "Hydrogen",
+    "Helium",
+    "Lithium",
+    "Beryllium",
+    "Boron",
+    "Sodium",
+    "Potassium",
+    "Calcium",
+    "Scandium",
+    "Titanium",
+    "Vanadium",
+    "Chromium",
+    "Manganese",
+    "Iron",
+    "Cobalt",
+    "Nickel",
+    "Copper",
+    "Zinc",
+    "Tin",
+    "Antimony",
+    "Tellurium",
+    "Iodine",
+    "Xenon",
+    "Caesium",
+    "Barium",
+    "Lanthanum",
+    "Cerium",
+    "Praseodymium",
+    "Neodymium",
+    "Promethium",
+    "Samarium",
+    "Europium",
+    "Gadolinium",
+    "Terbium",
+  ];
+
+  const randomAdjective1 =
+    adjectivesExtra[Math.floor(Math.random() * adjectivesExtra.length)];
+  const randomAdjective2 =
+    adjectives[Math.floor(Math.random() * adjectives.length)];
+  const name = `${randomAdjective1} ${randomAdjective2}`;
+  return name;
+};
+
+const generateUniqArtefactParams = () => {
+  const weight = Math.floor(Math.random() * 1000);
+  const power = Math.floor(Math.random() * 1000);
+  // physical properties
+  const width = Math.floor(Math.random() * 100);
+  const height = Math.floor(Math.random() * 100);
+  const density = Math.floor(Math.random() * 100);
+  // chemical properties
+  const atomicNumber = Math.floor(Math.random() * 100);
+  const meltingPoint = Math.floor(Math.random() * 100);
+  const boilingPoint = Math.floor(Math.random() * 100);
+  const radioactivity = Math.floor(Math.random() * 100);
+
+  const collectAllParams = {
+    weight: {
+      name: "Weight",
+      value: weight,
+    },
+    power: {
+      name: "Power",
+      value: power,
+    },
+    width: {
+      name: "Width",
+      value: width,
+    },
+    height: {
+      name: "Height",
+      value: height,
+    },
+    density: {
+      name: "Density",
+      value: density,
+    },
+    atomicNumber: {
+      name: "Atomic Number",
+      value: atomicNumber,
+    },
+    meltingPoint: {
+      name: "Melting Point",
+      value: meltingPoint,
+    },
+    boilingPoint: {
+      name: "Boiling Point",
+      value: boilingPoint,
+    },
+    radioactivity: {
+      name: "Radioactivity",
+      value: radioactivity,
+    },
+  };
+
+  return collectAllParams;
+};
+
 export const generateArtifacts = ({
   amount = 10,
 }: {
@@ -130,6 +293,8 @@ export const generateArtifacts = ({
       chunkY: Math.floor(Math.random() * 10) - 5,
       visible: true,
       id: Math.random().toString(36).substr(2, 9),
+      name: generateUniqArtefactName(),
+      params: generateUniqArtefactParams(),
     });
   }
   return artifacts;

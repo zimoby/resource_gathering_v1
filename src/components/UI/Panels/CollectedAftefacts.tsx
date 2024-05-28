@@ -8,6 +8,11 @@ export const CollectedAftefacts = () => {
   const opacity = useGameStore(
     (state) => state.uiPanelsState.collectedArtifactsPanel.opacity,
   );
+  // const showArtifactsModal = useGameStore((state) => state.showArtifactsModal);
+
+  // const showModalAction = useGameStore.setState({
+  //   showArtifactsModal: !showArtifactsModal,
+  // });
 
   return (
     <BasicPanelWrapper
@@ -15,7 +20,10 @@ export const CollectedAftefacts = () => {
       height="h-32"
       width="w-fit"
       opacity={opacity}
+      // titleModal={true}
+      titleModalAction="showArtifactsModal"
     >
+      {/* <div className=" absolute -top-2">adas dasdasdasdasd asdasdasdas</div> */}
       <div className=" flex flex-row justify-center items-center divide-x divide-uilines">
         {Object.keys(artifactsCollectedByTypes).map((key, index) => (
           <div
