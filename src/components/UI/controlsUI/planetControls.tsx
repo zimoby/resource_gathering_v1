@@ -1,6 +1,7 @@
 import { SliderWithInput } from "./uiLibrary";
 import { useGameStore } from "../../../store/store";
 import { BasicPanelWrapper } from "../BasicPanelWrapper";
+import { useMemo } from "react";
 
 export const SystemControls = () => {
   const updateMapParam = useGameStore((state) => state.updateMapParam);
@@ -8,10 +9,40 @@ export const SystemControls = () => {
   const mapDepth = useGameStore((state) => state.mapParams.depth);
   const mapResolution = useGameStore((state) => state.mapParams.resolution);
   const mapSpeed = useGameStore((state) => state.mapParams.speed);
-  // const disableAnimations = useGameStore((state) => state.disableAnimations);
-  // const updateVariableInLocalStorage = useGameStore(
-  //   (state) => state.updateVariableInLocalStorage,
-  // );
+
+  // width 200 and depth 200 is limit mapResolution to 3 minimum
+
+  const mapParams = useMemo(() => {
+    const mapWidthParams = {
+      min: 1,
+      max: 200,
+    };
+
+    const mapDepthParams = {
+      min: 1,
+      max: 200,
+    };
+
+    const mapResolutionParams = {
+      min: 2,
+      max: 7,
+    };
+
+    // if (mapWidth > 100 && mapDepth > 100 && mapResolution < 3) {
+    //   mapResolutionParams.min = 3;
+    // } else if (mapResolution === 2 && mapWidth > 100 && mapDepth > 100) {
+    //   mapWidthParams.max = 100;
+    //   mapDepthParams.max = 100;
+    // } else if (mapResolution === 3 && mapWidth === 100 && mapDepth === 100) {
+    //   mapWidthParams.max = 200;
+    //   mapDepthParams.max = 200;
+    // } else if (mapResolution === 3 && mapWidth > 100 && mapDepth > 100) {
+    //   mapWidthParams.max = 100;
+    //   mapDepthParams.max = 100;
+    // }
+
+    return { mapWidthParams, mapDepthParams, mapResolutionParams };
+  }, [mapWidth, mapDepth, mapResolution]);
 
   const opacity = useGameStore(
     (state) => state.uiPanelsState.systemControlsPanel.opacity,
@@ -24,20 +55,20 @@ export const SystemControls = () => {
           <SliderWithInput
             label="Map Width"
             value={mapWidth}
-            max={200}
+            max={mapParams.mapWidthParams.max}
             onUpdate={(e) => updateMapParam("width", e)}
           />
           <SliderWithInput
             label="Map Depth"
             value={mapDepth}
-            max={200}
+            max={mapParams.mapDepthParams.max}
             onUpdate={(e) => updateMapParam("depth", e)}
           />
           <SliderWithInput
             label="Resolution"
             value={mapResolution}
-            min={2}
-            max={7}
+            min={mapParams.mapResolutionParams.min}
+            max={mapParams.mapResolutionParams.max}
             onUpdate={(e) => updateMapParam("resolution", e)}
           />
           <SliderWithInput
