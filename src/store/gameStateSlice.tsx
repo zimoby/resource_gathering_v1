@@ -76,6 +76,9 @@ export interface GameStateSlice {
   playerPoints: number;
   decreasePlayerPoints: (points: number) => void;
 
+  locationsHistory: ChunkType[];
+  addLocationToHistory: (location: ChunkType) => void;
+
   updateResourcesAndPoints: () => void;
   collectedResources: CollectedResources;
   message: string;
@@ -159,6 +162,25 @@ export const createGameStateSlice: StateCreator<
   droneVectorMovement: { x: 0, y: 0 },
   droneMoveAngle: 0,
   dynamicSpeed: 1,
+
+  locationsHistory: [
+    {
+      x: 0,
+      y: 0,
+    },
+  ],
+  addLocationToHistory: (location: ChunkType) => {
+    set((state) => {
+      if (
+        !state.locationsHistory.some(
+          (loc) => loc.x === location.x && loc.y === location.y,
+        )
+      ) {
+        return { locationsHistory: [...state.locationsHistory, location] };
+      }
+      return state;
+    });
+  },
 
   playerPoints: 1000,
 

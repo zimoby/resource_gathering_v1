@@ -110,6 +110,13 @@ export const useUpdateMapMoving = () => {
   );
   const currentLocation = useGameStore((state) => state.currentLocation);
   const currentOffset = useGameStore((state) => state.currentOffset);
+  const addLocationToHistory = useGameStore(
+    (state) => state.addLocationToHistory,
+  );
+  const mapAnimationState = useGameStore((state) => state.mapAnimationState);
+  const animationFirstStage = useGameStore((state) => state.animationFirstStage);
+
+  // useCheckVariableRender(mapAnimationState, "mapAnimationState");
 
   const updateLocationAndOffset = (offset: {
     current: { x: number; y: number };
@@ -121,9 +128,12 @@ export const useUpdateMapMoving = () => {
     );
 
     if (
-      currentLocation.x !== currentChunk.x ||
-      currentLocation.y !== currentChunk.y
+      (currentLocation.x !== currentChunk.x ||
+        currentLocation.y !== currentChunk.y) &&
+      mapAnimationState === "idle" &&
+      animationFirstStage
     ) {
+      addLocationToHistory(currentChunk);
       useGameStore.setState({
         currentLocation: { x: currentChunk.x, y: currentChunk.y },
       });

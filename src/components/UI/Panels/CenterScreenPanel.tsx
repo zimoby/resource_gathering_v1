@@ -8,6 +8,7 @@ import { DirectionIndicators } from "../directionIndicators";
 import { DroneMoveAngleUI } from "../../drone/droneMoveAngle";
 import { EducationSteps } from "../eduSteps";
 import { useModalPriority } from "../../../hooks/modalPriority";
+import { PlanetChunks } from "../planetChunks";
 
 export const CenterScreenPanel = () => {
   // const showSettingsModal = useGameStore((state) => state.showSettingsModal);
@@ -49,7 +50,10 @@ export const CenterScreenPanel = () => {
                   <DroneMoveAngleUI />
                   <LevelsIndicators />
                 </div>
-                <DirectionIndicators />
+                <div className="absolute bottom-0 left-0 flex flex-row items-end justify-end gap-3 p-5">
+                  <PlanetChunks />
+                  <DirectionIndicators />
+                </div>
               </FlickeringHtmlEffect>
             </div>
             <WarningBlock />
