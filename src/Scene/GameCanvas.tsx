@@ -40,7 +40,7 @@ export const GameCanvas = () => {
 
   return (
     <Canvas flat shadows dpr={[1, 1.5]} gl={{ antialias: false }}>
-      { DEV_MODE && <Stats showPanel={2} />}
+      {DEV_MODE && <Stats showPanel={0} />}
       {/* <Perf position="bottom-left" /> */}
       <SceneSettings />
       <Suspense fallback={null}>
