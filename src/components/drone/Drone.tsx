@@ -115,7 +115,7 @@ export const FlyingDrone = () => {
       ref.current.position.x +=
         (x - ref.current.position.x) * (delta * 100) * ease;
       ref.current.position.y +=
-        (y - appearingHeight - ref.current.position.y) * ease;
+        (y - appearingHeight - ref.current.position.y) * (delta * 100) * ease;
       ref.current.position.z +=
         (z - ref.current.position.z) * (delta * 100) * ease;
 
