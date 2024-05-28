@@ -182,11 +182,11 @@ export const useCanvasHover = ({
     }, 100),
   ).current;
 
-  const throttledCheckArtefacts = useRef(
-    throttle((point: { point: { x: number; y: number } }) => {
-      checkArtifactInRadius(point);
-    }, 200),
-  ).current;
+  // const throttledCheckArtefacts = useRef(
+  //   throttle((point: { point: { x: number; y: number } }) => {
+  //     checkArtifactInRadius(point);
+  //   }, 200),
+  // ).current;
 
   const handleCanvasHover = useCallback(
     (event: { clientX: number; clientY: number; type: string }) => {
