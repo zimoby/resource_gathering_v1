@@ -50,14 +50,21 @@ import { ArtefactsModal } from "./Modals/ArtifactsModal";
 // };
 
 export const UiInfo = () => {
-  const animationFirstStage = useGameStore((state) => state.animationFirstStage);
+  const animationFirstStage = useGameStore(
+    (state) => state.animationFirstStage,
+  );
   const disableSounds = useGameStore((state) => state.disableSounds);
   const startStageFinished = useGameStore((state) => state.startStageFinished);
 
   const { sounds } = useSoundSystem();
 
   useEffect(() => {
-    if (!disableSounds && animationFirstStage && sounds.glitch && !startStageFinished) {
+    if (
+      !disableSounds &&
+      animationFirstStage &&
+      sounds.glitch &&
+      !startStageFinished
+    ) {
       // console.log("sounds.glitch", { animationFirstStage, glitch: sounds.glitch });
       sounds.glitch.play();
     }
@@ -66,14 +73,12 @@ export const UiInfo = () => {
       const interval = setInterval(() => {
         useGameStore.setState({ startStageFinished: true });
       }, 1000);
-      
+
       return () => {
         clearInterval(interval);
-      }
+      };
     }
-
-  }, [sounds, animationFirstStage, startStageFinished]);
-
+  }, [sounds, animationFirstStage, startStageFinished, disableSounds]);
 
   if (!animationFirstStage) return null;
 

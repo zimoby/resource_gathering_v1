@@ -1,3 +1,4 @@
+import { ModalName } from "../../store/gameStateSlice";
 import { useGameStore } from "../../store/store";
 
 export const BasicPanelWrapper = ({
@@ -8,7 +9,7 @@ export const BasicPanelWrapper = ({
   styles = "",
   opacity = 1,
   augUi = "border br-clip --aug-border-bg",
-  titleModalAction = "",
+  titleModalAction,
 }: {
   children: React.ReactNode;
   titleText?: string;
@@ -18,13 +19,13 @@ export const BasicPanelWrapper = ({
   opacity?: number;
   augUi?: string;
   list?: boolean;
-  titleModalAction?: string;
+  titleModalAction?: ModalName;
 }) => {
   const toggleModal = useGameStore((state) => state.toggleModal);
 
   const titleAction = () => {
-    if (titleModalAction !== "") {
-      console.log("titleModalAction", titleModalAction);
+    if (titleModalAction !== undefined) {
+
       toggleModal(titleModalAction);
     }
     //   // if titleModal is defined, call it
@@ -40,7 +41,7 @@ export const BasicPanelWrapper = ({
       data-augmented-ui={`${augUi}`}
     >
       <button
-        className={`orbitron w-full h-fit flex justify-start items-center px-1 bg-uilines text-neutral-900 select-none ${titleModalAction === "" ? "cursor-default" : "cursor-pointer hover:bg-neutral-900 hover:text-uitext"}`}
+        className={`orbitron w-full h-fit flex justify-start items-center px-1 bg-uilines text-neutral-900 select-none ${titleModalAction === undefined ? "cursor-default" : "cursor-pointer hover:bg-neutral-900 hover:text-uitext"}`}
         onClick={titleAction}
       >
         {titleText}

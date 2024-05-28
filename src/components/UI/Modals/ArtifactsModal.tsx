@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { useGameStore } from "../../../store/store";
-import { useCheckVariableRender } from "../../../utils/functions";
+// import { useCheckVariableRender } from "../../../utils/functions";
 
 export const ArtefactsModal = () => {
   const showArtifactsModal = useGameStore((state) => state.showArtifactsModal);
