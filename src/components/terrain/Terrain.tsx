@@ -141,11 +141,12 @@ export const Terrain = () => {
   useResetOffset(offset);
   const { speedRef: increasingSpeedRef } = useIncreasingSpeed(0, 1, 0.01, 2);
 
-  useFrame(() => {
+  useFrame((_, delta) => {
     // offset.current.x += deltaX;
     // offset.current.y += deltaY;
-    offset.current.x += deltaX * increasingSpeedRef.current;
-    offset.current.y += deltaY * increasingSpeedRef.current;
+    // consoleLog("delta", delta * 100);
+    offset.current.x += deltaX * (delta * 100) * increasingSpeedRef.current;
+    offset.current.y += deltaY * (delta * 100) * increasingSpeedRef.current;
 
     const resources = updateTerrainGeometry();
 

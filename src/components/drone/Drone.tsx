@@ -37,6 +37,7 @@ export const FlyingDrone = () => {
   const ref = useRef<Group>(null);
   const [firstAppearing, setFirstAppearing] = useState(true);
   const droneDirectionAngleRef = useRef(0);
+  // const droneHeightHistoryRef = useRef([] as number[]);
   const appearingHeightRef = useRef(-appearingHeight);
   const showSettingsModal = useGameStore((state) => state.showSettingsModal);
   const showAboutModal = useGameStore((state) => state.showAboutModal);
@@ -62,6 +63,12 @@ export const FlyingDrone = () => {
       useGameStore.setState(state);
     }, 150),
   ).current;
+
+  // const throttleDroneHeightHistory = useRef(
+  //   throttle((state) => {
+  //     useGameStore.setState(state);
+  //   }, 150),
+  // ).current;
 
   useEffect(() => {
     if (firstAppearing && !startStageFinished) {
@@ -89,7 +96,7 @@ export const FlyingDrone = () => {
     };
   }, [educationMode, handleNextClick]);
 
-  useFrame(({ clock }) => {
+  useFrame(({ clock }, delta) => {
     const time = clock.getElapsedTime();
     if (!ref.current) return;
     const { x, y, z } = useGameStore.getState().activePosition;
@@ -97,21 +104,36 @@ export const FlyingDrone = () => {
 
     if (firstAppearing && time > 0.3) {
       ref.current.position.y +=
-        (appearingHeightRef.current - ref.current.position.y) * ease;
+        (appearingHeightRef.current - ref.current.position.y) * (delta * 50) * ease;
       if (Math.abs(ref.current.position.y - appearingHeightRef.current) < 5) {
         setFirstAppearing(false);
         setMapAnimationState("enlarging");
       }
     } else {
-      ref.current.position.x += (x - ref.current.position.x) * ease;
+      ref.current.position.x += (x - ref.current.position.x) * (delta * 100) * ease;
       ref.current.position.y +=
         (y - appearingHeight - ref.current.position.y) * ease;
-      ref.current.position.z += (z - ref.current.position.z) * ease;
+      ref.current.position.z += (z - ref.current.position.z) * (delta * 100) * ease;
+
+      // droneHeightHistoryRef.current.push(ref.current.position.y);
+
+      // if (droneHeightHistoryRef.current.length > 10) {
+      //   droneHeightHistoryRef.current.shift();
+      //   // console.log("droneHeightHistoryRef", droneHeightHistoryRef.current);
+      // }
+
+      // throttleDroneHeightHistory({
+      //   droneHeightHistory: droneHeightHistoryRef.current,
+      // });
+
+
 
       droneDirectionAngleRef.current = Math.atan2(
         ref.current.position.x,
         ref.current.position.z,
       );
+
+
 
       throttledSetState({
         droneMoveAngle: Math.round(

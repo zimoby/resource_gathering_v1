@@ -59,8 +59,8 @@ export const BeaconGroup = () => {
           offsetY,
         );
 
-        beaconObject.position.x -= deltaX * increasingSpeedRef.current;
-        beaconObject.position.z -= deltaY * increasingSpeedRef.current;
+        beaconObject.position.x -= deltaX * (delta * 100) * increasingSpeedRef.current;
+        beaconObject.position.z -= deltaY * (delta * 100) * increasingSpeedRef.current;
         // beaconObject.position.x -= deltaX;
         // beaconObject.position.z -= deltaY;
         beaconObject.visible = !checkBoundaries.x && !checkBoundaries.y;
