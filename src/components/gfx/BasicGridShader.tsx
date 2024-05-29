@@ -118,7 +118,7 @@ export const BasicGridShader = ({
 
   useFrame((_, delta) => {
     if (resetValues) {
-      // console.log("resetValues:", resetValues);
+      // console.log("resetValues basicGridShader", resetValues);
       offset.current.x = 0;
       offset.current.y = 0;
     }
@@ -128,7 +128,7 @@ export const BasicGridShader = ({
     offset.current.x += deltaX * (delta * 100) * increasingSpeedRef.current;
     offset.current.y += deltaY * (delta * 100) * increasingSpeedRef.current;
 
-    updateLocationAndOffset(offset);
+    
 
     if (
       planeRef.current &&

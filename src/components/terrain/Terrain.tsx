@@ -19,6 +19,7 @@ import {
   consoleLog,
   useCalculateDeltas,
   useResetOffset,
+  useUpdateMapMoving,
 } from "../../utils/functions";
 import { useIncreasingSpeed } from "../../effects/IncreaseSceneSpeed";
 
@@ -138,6 +139,7 @@ export const Terrain = () => {
   };
 
   const { deltaX, deltaY } = useCalculateDeltas();
+  const { updateLocationAndOffset } = useUpdateMapMoving();
   useResetOffset(offset);
   const { speedRef: increasingSpeedRef } = useIncreasingSpeed(0, 1, 0.01, 2);
 
@@ -147,6 +149,8 @@ export const Terrain = () => {
     // consoleLog("delta", delta * 100);
     offset.current.x += deltaX * (delta * 100) * increasingSpeedRef.current;
     offset.current.y += deltaY * (delta * 100) * increasingSpeedRef.current;
+
+    updateLocationAndOffset(offset);
 
     const resources = updateTerrainGeometry();
 

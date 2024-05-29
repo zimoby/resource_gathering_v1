@@ -84,6 +84,7 @@ export const useResetOffset = (
       offset.current.x = 0;
       offset.current.y = 0;
       useGameStore.setState({ resetValues: false });
+      // consoleLog("resetValues terrain", {resetValues, x: offset.current.x, y: offset.current.y});
     }
   }, [resetValues, offset]);
 };
@@ -95,8 +96,6 @@ export const useCalculateDeltas = () => {
   const invertDirection = useGameStore((state) => state.invertDirection);
 
   const directionXY = invertDirection ? -1 : 1;
-
-  // consoleLog("speed", speed);
 
   const deltaX = moveDirection.x * directionXY * ((speed / 10) * dynamicSpeed);
   const deltaY = moveDirection.y * directionXY * ((speed / 10) * dynamicSpeed);
@@ -117,8 +116,6 @@ export const useUpdateMapMoving = () => {
   const animationFirstStage = useGameStore(
     (state) => state.animationFirstStage,
   );
-
-  // useCheckVariableRender(mapAnimationState, "mapAnimationState");
 
   const updateLocationAndOffset = (offset: {
     current: { x: number; y: number };

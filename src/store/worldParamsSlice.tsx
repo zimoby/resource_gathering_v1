@@ -245,6 +245,7 @@ export const createWorldParamsSlice: StateCreator<
       beacons: [],
       currentOffset: { x: 0, y: 0 },
       currentLocation: { x: 0, y: 0 },
+      locationsHistory: [{ x: 0, y: 0 }],
 
       collectedResources: {
         Water: 0,
