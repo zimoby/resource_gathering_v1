@@ -61,7 +61,14 @@ export const educationalStepsPhrases = [
   },
   {
     phrase:
-      "On the planet, you'll find Artifacts. White lights indicate the direction. Brighter light means a closer Artifact.",
+      "You can change the map size and speed of moving. But it will cost extra energy.",
+    skipped: false,
+    stage: "systemControlsPanel",
+    step: 3,
+  },
+  {
+    phrase:
+      "On the planet, you'll find Artifacts. White lights around the map indicate the direction. Brighter light means a closer Artifact.",
     skipped: false,
     stage: "collectedArtifactsPanel",
     step: 4,

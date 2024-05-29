@@ -25,7 +25,7 @@ export const EducationSteps = () => {
     { name: "Gather resources", id: "resources1", startIndex: 1 },
     { name: "Collect Energy", id: "energy1", startIndex: 5 },
     { name: "Map movement", id: "mapmove1", startIndex: 8 },
-    { name: "Artifacts", id: "artifacts1", startIndex: 9 },
+    { name: "Artifacts", id: "artifacts1", startIndex: 10 },
   ];
 
   const changeEduIndex = useCallback(

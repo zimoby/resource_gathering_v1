@@ -121,6 +121,11 @@ const usePhraseSystem = () => {
     ) {
       soloPanelOpacity("costsPanel");
     } else if (
+      educationalStepsPhrases[educationalStepIndex].stage ===
+      "systemControlsPanel"
+    ) {
+      soloPanelOpacity("systemControlsPanel");
+    } else if (
       educationalStepsPhrases[educationalStepIndex].stage === "newWorldButton"
     ) {
       soloPanelOpacity("newWorldButton");
