@@ -189,7 +189,7 @@ export const createGameStateSlice: StateCreator<
     });
   },
 
-  playerPoints: 10000,
+  playerPoints: 1000,
 
   decreasePlayerPoints: (points: number) => {
     set((state) => {
@@ -213,6 +213,8 @@ export const createGameStateSlice: StateCreator<
       costs,
       addEventLog,
       dynamicSpeed,
+      animationFirstStage,
+      mapAnimationState,
     } = get();
 
     const { mapParams } = get();
@@ -243,7 +245,11 @@ export const createGameStateSlice: StateCreator<
       );
     }
 
-    if (mapParams.width > 100 || mapParams.depth > 100) {
+    if (
+      (mapParams.width > 100 || mapParams.depth > 100) &&
+      animationFirstStage &&
+      mapAnimationState === "idle"
+    ) {
       const extraMapSize = mapParams.width - 100 + (mapParams.depth - 100);
       const extraCosts = Math.round(extraMapSize * costs.increaseMapSize.value);
       newPlayerPoints -= extraCosts;
