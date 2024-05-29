@@ -53,6 +53,7 @@ export const useKeyboardControls = ({
   const moveDirection = useGameStore((state) => state.moveDirection);
   const playerPoints = useGameStore((state) => state.playerPoints);
   const updateMapParam = useGameStore((state) => state.updateMapParam);
+  const autoPilot = useGameStore((state) => state.autoPilot);
   // const animationFirstStage = useGameStore((state) => state.animationFirstStage);
 
   const handleMousePosition = useCallback((event: MouseEvent) => {
@@ -63,6 +64,9 @@ export const useKeyboardControls = ({
     (event: KeyboardEvent) => {
       if (keyToVector[event.code]) {
         setActiveKeys((prev) => ({ ...prev, [event.code]: true }));
+        if (autoPilot) {
+          useGameStore.setState({ autoPilot: false });
+        }
       }
 
       if (event.code === "Space") {
