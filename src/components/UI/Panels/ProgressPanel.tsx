@@ -43,8 +43,8 @@ export const ProgressBlock = () => {
               onClick={() =>
                 useGameStore.setState({
                   message:
-                    "You need to gather more energy: " +
-                    blockFills[index] +
+                    "Current energy level: " +
+                    Math.floor((playerPoints / goal) * 100) +
                     "%",
                 })
               }

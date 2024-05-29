@@ -1,5 +1,6 @@
 import { StateCreator } from "zustand";
 import {
+  DEV_MODE,
   GameStoreState,
   SETTING_DISABLE_ANIMATIONS,
   SETTING_DISABLE_MUSIC,
@@ -189,7 +190,7 @@ export const createGameStateSlice: StateCreator<
     });
   },
 
-  playerPoints: 1000,
+  playerPoints: DEV_MODE ? 20000 : 1000,
 
   decreasePlayerPoints: (points: number) => {
     set((state) => {
