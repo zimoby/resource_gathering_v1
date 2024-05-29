@@ -66,6 +66,8 @@ export interface GameStateSlice {
 
   resetValues: boolean;
 
+  autoPilot: boolean;
+
   currentOffset: Offset;
   selectedResource: ResourceType;
   selectedChunk: ChunkType;
@@ -157,6 +159,8 @@ export const createGameStateSlice: StateCreator<
 
   resetValues: false,
 
+  autoPilot: false,
+
   currentOffset: { x: 0, y: 0 },
   selectedResource: "Water",
   selectedChunk: { x: 0, y: 0 },
@@ -185,7 +189,7 @@ export const createGameStateSlice: StateCreator<
     });
   },
 
-  playerPoints: 1000,
+  playerPoints: 200000,
 
   decreasePlayerPoints: (points: number) => {
     set((state) => {

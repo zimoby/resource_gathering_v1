@@ -11,6 +11,7 @@ import { useGSAP } from "@gsap/react";
 import { useRunBgMusic, useSoundSystem } from "./hooks/soundSystem";
 import { useEffect } from "react";
 import { useEnergyActions } from "./hooks/energyActions";
+import { useAutoPilot } from "./hooks/autoPilot";
 
 gsap.registerPlugin(useGSAP);
 
@@ -31,6 +32,7 @@ const App = () => {
   useSoundSystem();
   useRunBgMusic();
   useEnergyActions();
+  useAutoPilot();
 
   return (
     <>
