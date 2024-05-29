@@ -9,7 +9,7 @@ import {
 } from "three";
 import { useGameStore } from "../../store/store";
 import { useFrame } from "@react-three/fiber";
-import { useCalculateDeltas, useUpdateMapMoving } from "../../utils/functions";
+import { useCalculateDeltas } from "../../utils/functions";
 import { useIncreasingSpeed } from "../../effects/IncreaseSceneSpeed";
 
 const vertexShader = `
@@ -72,7 +72,7 @@ export const BasicGridShader = ({
 
   const { deltaX, deltaY } = useCalculateDeltas();
   const { speedRef: increasingSpeedRef } = useIncreasingSpeed(0, 1, 0.01, 2);
-  const { updateLocationAndOffset } = useUpdateMapMoving();
+  // const { updateLocationAndOffset } = useUpdateMapMoving();
 
   useEffect(() => {
     generateGridGeometry();
@@ -127,8 +127,6 @@ export const BasicGridShader = ({
     // offset.current.y += deltaY;
     offset.current.x += deltaX * (delta * 100) * increasingSpeedRef.current;
     offset.current.y += deltaY * (delta * 100) * increasingSpeedRef.current;
-
-    
 
     if (
       planeRef.current &&
