@@ -25,17 +25,10 @@ export const SinePanel = () => {
             parsedResourcesColors[index].color[1] * 255
           }, ${parsedResourcesColors[index].color[2] * 255})`}
           strokeWidth="0.5"
-          style={{
-            transform: `scaleY(${Math.min(
-              collectedResources[resourceName] / 100,
-              1,
-            )})`,
-            transformOrigin: "center",
-          }}
         />
       ),
     }));
-  }, [collectedResources, parsedResourcesColors]);
+  }, [parsedResourcesColors]);
 
   return (
     <div
@@ -54,7 +47,18 @@ export const SinePanel = () => {
         preserveAspectRatio="none"
       >
         {resourcePaths.map(({ path, resourceName }) => (
-          <g key={resourceName}>{path}</g>
+          <g
+            key={resourceName}
+            style={{
+              transform: `scaleY(${Math.min(
+                collectedResources[resourceName] / 100,
+                1,
+              )})`,
+              transformOrigin: "center",
+            }}
+          >
+            {path}
+          </g>
         ))}
       </svg>
     </div>
