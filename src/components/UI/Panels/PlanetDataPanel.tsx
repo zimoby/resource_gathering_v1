@@ -4,6 +4,7 @@ import {
   WorldNumberParamT,
   WorldParamsType,
   WorldStringParamT,
+  resourceTypes,
 } from "../../../store/worldParamsSlice";
 import { BasicPanelWrapper } from "../BasicPanelWrapper";
 
@@ -65,6 +66,21 @@ export const PlanetDataPanel = () => {
     return colors;
   }, [terrainColors]);
 
+  const parsedResourcesColors = useMemo(() => {
+    // console.log("resourceTypes", resourceTypes);
+    const resColors = Object.keys(resourceTypes).map((key) => {
+      return {
+        color: [
+          resourceTypes[key].color.r,
+          resourceTypes[key].color.g,
+          resourceTypes[key].color.b,
+        ],
+      };
+    });
+
+    return resColors;
+  }, []);
+
   const paramNames: (keyof WorldParamsType)[] = [
     "seed",
     "worldState",
@@ -102,6 +118,24 @@ export const PlanetDataPanel = () => {
           <p className="">Ground:</p>
           <div className=" flex flex-row ml-2 space-x-1 justify-center items-center">
             {parseColors.map((color, index) => {
+              return (
+                <div
+                  key={index}
+                  className="size-3 rounded-full "
+                  style={{
+                    backgroundColor: `rgb(${color.color[0] * 255} ${color.color[1] * 255} ${
+                      color.color[2] * 255
+                    })`,
+                  }}
+                />
+              );
+            })}
+          </div>
+        </div>
+        <div className="list-selecting flex flex-row justify-start">
+          <p className="">Resources:</p>
+          <div className=" flex flex-row ml-2 space-x-1 justify-center items-center">
+            {parsedResourcesColors.map((color, index) => {
               return (
                 <div
                   key={index}
