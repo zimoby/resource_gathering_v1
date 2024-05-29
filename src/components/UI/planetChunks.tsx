@@ -1,4 +1,10 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useGameStore } from "../../store/store";
 // import { useCheckVariableRender } from "../../utils/functions";
 // import { useCheckVariableRender } from "../../utils/functions";
@@ -55,47 +61,68 @@ export const PlanetChunks = ({ size = 5, hideControls = false }) => {
 
   // useCheckVariableRender(offset, "offset");
 
-  const handleMouseDown = (event: React.MouseEvent) => {
+  const handleMouseDown = useCallback((event: React.MouseEvent) => {
     setDragging(true);
     setDragStart({ x: event.clientX, y: event.clientY });
-  };
+  }, []);
 
-  const handleMouseMove = (event: MouseEvent) => {
-    if (dragging && hideControls) {
-      const deltaX = event.clientX - dragStart.x;
-      const deltaY = event.clientY - dragStart.y;
-      setOffset({ x: offset.x + deltaX, y: offset.y + deltaY });
-      setDragStart({ x: event.clientX, y: event.clientY });
-    }
-  };
+  const handleMouseMove = useCallback(
+    (event: MouseEvent) => {
+      if (dragging && hideControls) {
+        const deltaX = event.clientX - dragStart.x;
+        const deltaY = event.clientY - dragStart.y;
+        setOffset((prev) => ({ x: prev.x + deltaX, y: prev.y + deltaY }));
+        setDragStart({ x: event.clientX, y: event.clientY });
+      }
+    },
+    [dragging, dragStart, hideControls],
+  );
 
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     setDragging(false);
-  };
+  }, []);
 
   useEffect(() => {
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", handleMouseUp);
+    if (dragging) {
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
+    }
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dragging, dragStart]);
+  }, [dragging, handleMouseMove, handleMouseUp]);
 
   // useCheckVariableRender(artifacts, "artifacts");
+
+  const memoizedLocationsHistory = useMemo(
+    () => locationsHistory,
+    [locationsHistory],
+  );
+  const memoizedArtifacts = useMemo(() => artifacts, [artifacts]);
+  const memoizedCurrentLocation = useMemo(
+    () => currentLocation,
+    [currentLocation],
+  );
+  const memoizedOffset = useMemo(() => offset, [offset]);
 
   const grid = useMemo<GridCell[][]>(() => {
     const newGrid: GridCell[][] = Array.from({ length: gridSize }, () =>
       Array<GridCell>(gridSize).fill("empty"),
     );
 
-    locationsHistory.forEach((location) => {
+    memoizedLocationsHistory.forEach((location) => {
       const offsetX = Math.round(
-        location.x - currentLocation.x + halfGridSize + offset.x / 10,
+        location.x -
+          memoizedCurrentLocation.x +
+          halfGridSize +
+          memoizedOffset.x / 10,
       );
       const offsetY = Math.round(
-        location.y - currentLocation.y + halfGridSize + offset.y / 10,
+        location.y -
+          memoizedCurrentLocation.y +
+          halfGridSize +
+          memoizedOffset.y / 10,
       );
 
       if (
@@ -108,12 +135,18 @@ export const PlanetChunks = ({ size = 5, hideControls = false }) => {
       }
     });
 
-    artifacts.forEach((artifact) => {
+    memoizedArtifacts.forEach((artifact) => {
       const offsetX = Math.round(
-        artifact.chunkX - currentLocation.x + halfGridSize + offset.x / 10,
+        artifact.chunkX -
+          memoizedCurrentLocation.x +
+          halfGridSize +
+          memoizedOffset.x / 10,
       );
       const offsetY = Math.round(
-        artifact.chunkY - currentLocation.y + halfGridSize + offset.y / 10,
+        artifact.chunkY -
+          memoizedCurrentLocation.y +
+          halfGridSize +
+          memoizedOffset.y / 10,
       );
 
       if (
@@ -127,8 +160,8 @@ export const PlanetChunks = ({ size = 5, hideControls = false }) => {
       }
     });
 
-    const currentX = Math.round(halfGridSize + offset.x / 10);
-    const currentY = Math.round(halfGridSize + offset.y / 10);
+    const currentX = Math.round(halfGridSize + memoizedOffset.x / 10);
+    const currentY = Math.round(halfGridSize + memoizedOffset.y / 10);
     if (
       currentX >= 0 &&
       currentX < gridSize &&
@@ -143,13 +176,11 @@ export const PlanetChunks = ({ size = 5, hideControls = false }) => {
     return newGrid;
   }, [
     gridSize,
-    locationsHistory,
-    artifacts,
-    currentLocation.x,
-    currentLocation.y,
+    memoizedLocationsHistory,
+    memoizedArtifacts,
+    memoizedCurrentLocation,
     halfGridSize,
-    offset.x,
-    offset.y,
+    memoizedOffset,
   ]);
 
   return (
