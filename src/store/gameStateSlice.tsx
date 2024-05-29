@@ -48,6 +48,7 @@ export interface GameStateSlice {
   showSettingsModal: boolean;
   showAboutModal: boolean;
   showArtifactsModal: boolean;
+  showMapModal: boolean;
   toggleModal: (modalName: ModalName) => void;
 
   startToLoadFiles: boolean;
@@ -100,7 +101,8 @@ export interface GameStateSlice {
 export type ModalName =
   | "showSettingsModal"
   | "showAboutModal"
-  | "showArtifactsModal";
+  | "showArtifactsModal"
+  | "showMapModal";
 
 export const createGameStateSlice: StateCreator<
   GameStoreState,
@@ -129,6 +131,7 @@ export const createGameStateSlice: StateCreator<
   showSettingsModal: false,
   showAboutModal: false,
   showArtifactsModal: false,
+  showMapModal: false,
 
   toggleModal: (modalName: ModalName) => {
     set((state) => {

@@ -1,11 +1,12 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useGameStore } from "../../store/store";
 // import { useCheckVariableRender } from "../../utils/functions";
+// import { useCheckVariableRender } from "../../utils/functions";
 
-type GridCell = "empty" | "visited" | "artifact";
+type GridCell = "empty" | "visited" | "artifact" | "current";
 
 interface MinimapCellProps {
-  cellType: "empty" | "visited" | "artifact";
+  cellType: GridCell;
 }
 
 const MinimapCell: React.FC<MinimapCellProps> = React.memo(({ cellType }) => {
@@ -17,6 +18,9 @@ const MinimapCell: React.FC<MinimapCellProps> = React.memo(({ cellType }) => {
       break;
     case "artifact":
       bgColor = "bg-red-500";
+      break;
+    case "current":
+      bgColor = "bg-neutral-100";
       break;
     default:
       bgColor = "";
@@ -31,7 +35,7 @@ const MinimapCell: React.FC<MinimapCellProps> = React.memo(({ cellType }) => {
 
 MinimapCell.displayName = "MinimapCell";
 
-export const PlanetChunks = () => {
+export const PlanetChunks = ({ size = 5, hideControls = false }) => {
   const locationsHistory = useGameStore((state) => state.locationsHistory);
   const currentLocation = useGameStore((state) => state.currentLocation);
   const artifacts = useGameStore((state) => state.artifacts);
@@ -39,8 +43,45 @@ export const PlanetChunks = () => {
     (state) => state.uiPanelsState.supportPanels.opacity,
   );
 
-  const [gridSize, setGridSize] = useState(5);
+  const [dragging, setDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const [gridSize, setGridSize] = useState(size);
   const halfGridSize = Math.floor(gridSize / 2);
+
+  const toggleModal = useGameStore((state) => state.toggleModal);
+
+  // useCheckVariableRender(offset, "offset");
+
+  const handleMouseDown = (event: React.MouseEvent) => {
+    setDragging(true);
+    setDragStart({ x: event.clientX, y: event.clientY });
+  };
+
+  const handleMouseMove = (event: MouseEvent) => {
+    if (dragging && hideControls) {
+      const deltaX = event.clientX - dragStart.x;
+      const deltaY = event.clientY - dragStart.y;
+      setOffset({ x: offset.x + deltaX, y: offset.y + deltaY });
+      setDragStart({ x: event.clientX, y: event.clientY });
+    }
+  };
+
+  const handleMouseUp = () => {
+    setDragging(false);
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dragging, dragStart]);
 
   // useCheckVariableRender(artifacts, "artifacts");
 
@@ -50,8 +91,12 @@ export const PlanetChunks = () => {
     );
 
     locationsHistory.forEach((location) => {
-      const offsetX = location.x - currentLocation.x + halfGridSize;
-      const offsetY = location.y - currentLocation.y + halfGridSize;
+      const offsetX = Math.round(
+        location.x - currentLocation.x + halfGridSize + offset.x / 10,
+      );
+      const offsetY = Math.round(
+        location.y - currentLocation.y + halfGridSize + offset.y / 10,
+      );
 
       if (
         offsetX >= 0 &&
@@ -64,8 +109,12 @@ export const PlanetChunks = () => {
     });
 
     artifacts.forEach((artifact) => {
-      const offsetX = artifact.chunkX - currentLocation.x + halfGridSize;
-      const offsetY = artifact.chunkY - currentLocation.y + halfGridSize;
+      const offsetX = Math.round(
+        artifact.chunkX - currentLocation.x + halfGridSize + offset.x / 10,
+      );
+      const offsetY = Math.round(
+        artifact.chunkY - currentLocation.y + halfGridSize + offset.y / 10,
+      );
 
       if (
         offsetX >= 0 &&
@@ -78,6 +127,17 @@ export const PlanetChunks = () => {
       }
     });
 
+    const currentX = Math.round(halfGridSize + offset.x / 10);
+    const currentY = Math.round(halfGridSize + offset.y / 10);
+    if (
+      currentX >= 0 &&
+      currentX < gridSize &&
+      currentY >= 0 &&
+      currentY < gridSize
+    ) {
+      newGrid[currentY][currentX] = "current";
+    }
+
     // console.log("newGrid", newGrid);
 
     return newGrid;
@@ -88,20 +148,40 @@ export const PlanetChunks = () => {
     currentLocation.x,
     currentLocation.y,
     halfGridSize,
+    offset.x,
+    offset.y,
   ]);
 
   return (
-    <div className="relative inline-block" style={{ opacity }}>
-      <div className="absolute top-0 right-0 size-7 border-r-2 border-t-2 border-t-uilines border-r-uilines -m-3 hover:border-t-neutral-100 hover:border-r-neutral-100 hover:-m-5  cursor-pointer"
-        onClick={() => setGridSize((prev) => prev + 2)}
-      />
+    <div
+      className="relative inline-block"
+      style={{ opacity }}
+      ref={containerRef}
+      onMouseDown={handleMouseDown}
+    >
       {/* <div className="absolute top-0 right-0 size-7 border-r-2 border-t-2 border-t-uilines border-r-uilines -m-6 hover:border-t-neutral-100 hover:border-r-neutral-100 hover:-m-8 cursor-pointer"
         onClick={() => setGridSize(() => 21)}
       /> */}
-      <div className="absolute left-0 bottom-0 size-7 border-r-2 border-t-2 border-t-uilines border-r-uilines -m-3 rotate-180 hover:border-t-neutral-100 hover:border-r-neutral-100 hover:-m-5  cursor-pointer"
-        onClick={() => setGridSize((prev) => prev - 2)}
-      />
-      <div className="size-full border border-uilines">
+      {!hideControls && (
+        <>
+          <div
+            className="absolute top-0 right-0 size-7 border-r-2 border-t-2 border-t-uilines border-r-uilines -m-3 hover:border-t-neutral-100 hover:border-r-neutral-100 hover:-m-5  cursor-pointer"
+            onClick={() => setGridSize((prev) => prev + 2)}
+          />
+          <div
+            className="absolute left-0 bottom-0 size-7 border-r-2 border-t-2 border-t-uilines border-r-uilines -m-3 rotate-180 hover:border-t-neutral-100 hover:border-r-neutral-100 hover:-m-5  cursor-pointer"
+            onClick={() => setGridSize((prev) => prev - 2)}
+          />
+        </>
+      )}
+      <div
+        className="size-full border border-uilines cursor-pointer"
+        onClick={() => {
+          if (!hideControls) {
+            toggleModal("showMapModal");
+          }
+        }}
+      >
         {grid.map((row, rowIndex) => (
           <div key={rowIndex} className="flex">
             {row.map((cell, cellIndex) => (

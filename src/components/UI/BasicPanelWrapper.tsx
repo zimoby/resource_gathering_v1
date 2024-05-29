@@ -25,13 +25,8 @@ export const BasicPanelWrapper = ({
 
   const titleAction = () => {
     if (titleModalAction !== undefined) {
-
       toggleModal(titleModalAction);
     }
-    //   // if titleModal is defined, call it
-    //   if (titleModalAction) {
-    //     titleModalAction();
-    //   }
   };
 
   return (

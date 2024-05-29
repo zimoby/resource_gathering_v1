@@ -8,11 +8,6 @@ export const CollectedAftefacts = () => {
   const opacity = useGameStore(
     (state) => state.uiPanelsState.collectedArtifactsPanel.opacity,
   );
-  // const showArtifactsModal = useGameStore((state) => state.showArtifactsModal);
-
-  // const showModalAction = useGameStore.setState({
-  //   showArtifactsModal: !showArtifactsModal,
-  // });
 
   return (
     <BasicPanelWrapper

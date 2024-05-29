@@ -114,7 +114,9 @@ export const useUpdateMapMoving = () => {
     (state) => state.addLocationToHistory,
   );
   const mapAnimationState = useGameStore((state) => state.mapAnimationState);
-  const animationFirstStage = useGameStore((state) => state.animationFirstStage);
+  const animationFirstStage = useGameStore(
+    (state) => state.animationFirstStage,
+  );
 
   // useCheckVariableRender(mapAnimationState, "mapAnimationState");
 
