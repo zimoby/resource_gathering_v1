@@ -189,7 +189,7 @@ export const createGameStateSlice: StateCreator<
     });
   },
 
-  playerPoints: 20000,
+  playerPoints: 10000,
 
   decreasePlayerPoints: (points: number) => {
     set((state) => {
