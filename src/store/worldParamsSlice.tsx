@@ -11,11 +11,7 @@ export const minLevel = -10;
 export const maxLevel = 20;
 
 export type TerrainType = "water" | "grass" | "dirt" | "snow" | "default";
-export type ResourceType =
-  | "Water"
-  | "Metals"
-  | "Rare Elements"
-  | "Hydrocarbons";
+
 export type WeatherCondition = "Mild" | "Moderate" | "Severe";
 export interface WorldState {
   value:
@@ -105,27 +101,54 @@ export type TerrainTypesT = Record<string, Terrain>;
 export type ResourceTypesT = Record<string, Resource>;
 export type ArtifactsCollectedT = Record<string, number>;
 
+export type ResourceType =
+  | "Water"
+  | "Metals"
+  | "Rare Elements"
+  | "Hydrocarbons";
+
+export const resourceNames = [
+  "Water",
+  "Metals",
+  "Rare Elements",
+  "Hydrocarbons",
+];
+
 export const resourceTypes: ResourceTypesT = {
-  Water: {
+  [resourceNames[0]]: {
     color: new Color(16777215), // white
     threshold: 0.1,
     score: 10,
   },
-  Metals: {
+  [resourceNames[1]]: {
     color: new Color(16753920), // orange
     threshold: 0.2,
     score: 7,
   },
-  "Rare Elements": {
+  [resourceNames[2]]: {
     color: new Color(8388736), // purple
     threshold: 0.4,
     score: 5,
   },
-  Hydrocarbons: {
+  [resourceNames[3]]: {
     color: new Color(16728192), // pink
     threshold: 1,
     score: 1,
   },
+};
+
+export const parseResourcesColors = (): { color: number[] }[] => {
+  const resColors = Object.keys(resourceTypes).map((key) => {
+    return {
+      color: [
+        resourceTypes[key].color.r,
+        resourceTypes[key].color.g,
+        resourceTypes[key].color.b,
+      ],
+    };
+  });
+
+  return resColors;
 };
 
 export type ArtifactType = "usual" | "rare" | "legendary";

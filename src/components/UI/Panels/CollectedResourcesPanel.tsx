@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { useGameStore } from "../../../store/store";
 import { numberSimplified } from "../../../utils/functions";
 import { BasicPanelWrapper } from "../BasicPanelWrapper";
-import { resourceTypes } from "../../../store/worldParamsSlice";
+import { parseResourcesColors } from "../../../store/worldParamsSlice";
 
 export const CollectedResourcesPanel = () => {
   const opacity = useGameStore(
@@ -12,17 +12,7 @@ export const CollectedResourcesPanel = () => {
   const [hoveredResource, setHoveredResource] = useState<string | null>(null);
 
   const parsedResourcesColors = useMemo(() => {
-    const resColors = Object.keys(resourceTypes).map((key) => {
-      return {
-        color: [
-          resourceTypes[key].color.r,
-          resourceTypes[key].color.g,
-          resourceTypes[key].color.b,
-        ],
-      };
-    });
-
-    return resColors;
+    return parseResourcesColors();
   }, []);
 
   return (

@@ -1,10 +1,41 @@
+import { useMemo } from "react";
 import { useGameStore } from "../../../store/store";
+import {
+  parseResourcesColors,
+  resourceNames,
+} from "../../../store/worldParamsSlice";
 
 export const SinePanel = () => {
   const collectedResources = useGameStore((state) => state.collectedResources);
   const opacity = useGameStore(
     (state) => state.uiPanelsState.supportPanels.opacity,
   );
+  const parsedResourcesColors = useMemo(() => parseResourcesColors(), []);
+
+  const resourcePaths = useMemo(() => {
+    return resourceNames.map((resourceName, index) => ({
+      resourceName,
+      path: (
+        <path
+          key={resourceName}
+          id={`repeating-group-${index + 1}`}
+          d="M 0,5 Q 12.5,0 25,5 T 50,5 T 75,5 T 100,5 T 125,5 T 150,5 T 175,5 T 200,5"
+          fill="transparent"
+          stroke={`rgba(${parsedResourcesColors[index].color[0] * 255}, ${
+            parsedResourcesColors[index].color[1] * 255
+          }, ${parsedResourcesColors[index].color[2] * 255})`}
+          strokeWidth="0.5"
+          style={{
+            transform: `scaleY(${Math.min(
+              collectedResources[resourceName] / 100,
+              1,
+            )})`,
+            transformOrigin: "center",
+          }}
+        />
+      ),
+    }));
+  }, [collectedResources, parsedResourcesColors]);
 
   return (
     <div
@@ -22,54 +53,9 @@ export const SinePanel = () => {
         viewBox="0 0 200 10"
         preserveAspectRatio="none"
       >
-        <g id="repeating-group-1" className="">
-          <path
-            d="M 0,5 Q 12.5,0 25,5 T 50,5 T 75,5 T 100,5 T 125,5 T 150,5 T 175,5 T 200,5"
-            fill="transparent"
-            stroke="white"
-            strokeWidth="0.5"
-            style={{
-              transform: `scaleY(${Math.min(collectedResources.Metals / 100, 1)})`,
-              transformOrigin: "center",
-            }}
-          />
-        </g>
-        <g id="repeating-group-2">
-          <path
-            d="M 0,5 Q 12.5,0 25,5 T 50,5 T 75,5 T 100,5 T 125,5 T 150,5 T 175,5 T 200,5"
-            fill="transparent"
-            stroke="yellow"
-            strokeWidth="0.5"
-            style={{
-              transform: `scaleY(${Math.min(collectedResources.Water / 100, 1)})`,
-              transformOrigin: "center",
-            }}
-          />
-        </g>
-        <g id="repeating-group-3">
-          <path
-            d="M 0,5 Q 12.5,0 25,5 T 50,5 T 75,5 T 100,5 T 125,5 T 150,5 T 175,5 T 200,5"
-            fill="transparent"
-            stroke="blue"
-            strokeWidth="0.5"
-            style={{
-              transform: `scaleY(${Math.min(collectedResources.Hydrocarbons / 100, 1)})`,
-              transformOrigin: "center",
-            }}
-          />
-        </g>
-        <g id="repeating-group-4">
-          <path
-            d="M 0,5 Q 12.5,0 25,5 T 50,5 T 75,5 T 100,5 T 125,5 T 150,5 T 175,5 T 200,5"
-            fill="transparent"
-            stroke="green"
-            strokeWidth="0.5"
-            style={{
-              transform: `scaleY(${Math.min(collectedResources["Rare Elements"] / 100, 1)})`,
-              transformOrigin: "center",
-            }}
-          />
-        </g>
+        {resourcePaths.map(({ path, resourceName }) => (
+          <g key={resourceName}>{path}</g>
+        ))}
       </svg>
     </div>
   );

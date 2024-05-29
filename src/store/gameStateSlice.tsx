@@ -9,7 +9,7 @@ import {
   SETTING_INVERT_DIRECTION,
   SETTING_START_SCREEN,
 } from "./store";
-import { ResourceType, resourceTypes } from "./worldParamsSlice";
+import { ResourceType, resourceNames, resourceTypes } from "./worldParamsSlice";
 import { generateWeather } from "../utils/generators";
 import { WeatherCondition } from "./worldParamsSlice";
 import { generateUUID } from "three/src/math/MathUtils.js";
@@ -199,10 +199,10 @@ export const createGameStateSlice: StateCreator<
   },
 
   collectedResources: {
-    Water: 0,
-    Metals: 0,
-    "Rare Elements": 0,
-    Hydrocarbons: 0,
+    [resourceNames[0]]: 0,
+    [resourceNames[1]]: 0,
+    [resourceNames[2]]: 0,
+    [resourceNames[3]]: 0,
   },
 
   updateResourcesAndPoints: () => {
