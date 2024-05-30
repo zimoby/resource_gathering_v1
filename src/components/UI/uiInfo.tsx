@@ -12,23 +12,24 @@ import { EventsPanel } from "./Panels/EventsPanel";
 
 import "./linearAnimation.css";
 import { SinePanel } from "./Panels/SinePanel";
-import { CorpLogoPanel } from "./CorpLogoPanel";
+import { CorpLogoPanel } from "./Panels/CorpLogoPanel";
 import { FlickeringHtmlEffect } from "../../effects/AppearingUiEffectWrapper";
 import { SettingsModal } from "./Modals/SettingsModal";
 import { SimpleWarningLines } from "./Panels/warningBlock";
 import { EmptyGrowPanel } from "../gfx/EmptyPanel";
 import { CostsPanel } from "./Panels/CostsPanel";
-import { FlyToNewWorld } from "./FlyToNewWorldButton";
+import { FlyToNewWorld } from "./Elements/FlyToNewWorldButton";
 import { CollectedAftefacts } from "./Panels/CollectedAftefacts";
-import { SettingsButton } from "./SettingsButton";
+import { SettingsButton } from "./Elements/SettingsButton";
 import { ArtifactsInfo } from "../artifacts/ArtifactsInfo";
-import { AboutButton } from "./AbountButton";
+
 import { AboutModal } from "./Modals/AboutModal";
 import { useSoundSystem } from "../../hooks/soundSystem";
 import { useEffect } from "react";
 import { ArtefactsModal } from "./Modals/ArtifactsModal";
 import { MapModal } from "./Modals/MapModal";
 import { DronePanel } from "./Panels/DronePanel";
+import { AboutButton } from "./Elements/AbountButton";
 // import { Environment, OrbitControls, PerspectiveCamera, Preload, Sphere, View } from "@react-three/drei";
 // import { useRef } from "react";
 // import { useFrame } from "@react-three/fiber";

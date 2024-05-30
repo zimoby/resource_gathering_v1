@@ -1,8 +1,7 @@
-import { useGameStore } from "../../store/store";
-
-import "./linearAnimation.css";
+import { useGameStore } from "../../../store/store";
 import { BigButtons } from "./BigButtons";
 import { useCallback } from "react";
+import "./../linearAnimation.css";
 
 export const FlyToNewWorld = () => {
   const animationFirstStage = useGameStore(

@@ -1,5 +1,5 @@
-import { corpLogoSvg } from "../../assets/CorpLogo";
-import { useGameStore } from "../../store/store";
+import { corpLogoSvg } from "../../../assets/CorpLogo";
+import { useGameStore } from "../../../store/store";
 
 export const CorpLogoPanel = () => {
   const opacity = useGameStore(

@@ -1,4 +1,4 @@
-import { useGameStore } from "../../store/store";
+import { useGameStore } from "../../../store/store";
 
 export const DirectionIndicators = () => {
   const moveDirection = useGameStore((state) => state.moveDirection);

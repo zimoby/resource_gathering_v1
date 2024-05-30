@@ -1,14 +1,14 @@
 import { Billboard, Html } from "@react-three/drei";
 import { WarningBlock } from "./warningBlock";
 import { useGameStore } from "../../../store/store";
-import { SystemMessagePanelAlt } from "../SystemMessagePanel";
-import { LevelsIndicators } from "../levelsIndicators";
+import { SystemMessagePanelAlt } from "../Elements/SystemMessagePanel";
+import { LevelsIndicators } from "../Elements/levelsIndicators";
 import { FlickeringHtmlEffect } from "../../../effects/AppearingUiEffectWrapper";
-import { DirectionIndicators } from "../directionIndicators";
 import { DroneMoveAngleUI } from "../../drone/droneMoveAngle";
-import { EducationSteps } from "../eduSteps";
 import { useModalPriority } from "../../../hooks/modalPriority";
-import { PlanetChunks } from "../planetChunks";
+import { PlanetChunks } from "../Elements/planetChunks";
+import { EducationSteps } from "../Elements/eduSteps";
+import { DirectionIndicators } from "../Elements/directionIndicators";
 
 export const CenterScreenPanel = () => {
   // const showSettingsModal = useGameStore((state) => state.showSettingsModal);

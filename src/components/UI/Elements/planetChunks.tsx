@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { useGameStore } from "../../store/store";
+import { useGameStore } from "../../../store/store";
 // import { useCheckVariableRender } from "../../utils/functions";
 // import { useCheckVariableRender } from "../../utils/functions";
 

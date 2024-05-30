@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useGameStore } from "../../../store/store";
-import { PlanetChunks } from "../planetChunks";
+import { PlanetChunks } from "../Elements/planetChunks";
 // import { useCheckVariableRender } from "../../../utils/functions";
 
 export const MapModal = () => {

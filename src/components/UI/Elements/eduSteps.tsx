@@ -1,6 +1,7 @@
 import { useCallback } from "react";
-import { SETTING_EDUCATION_MODE, useGameStore } from "../../store/store";
-import { educationalStepsPhrases } from "../drone/educationalStepsPhrases";
+import { educationalStepsPhrases } from "../../drone/educationalStepsPhrases";
+import { SETTING_EDUCATION_MODE, useGameStore } from "../../../store/store";
+
 // import { animated } from "@react-spring/web";
 
 export const EducationSteps = () => {

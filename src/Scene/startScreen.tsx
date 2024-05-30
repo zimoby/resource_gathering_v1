@@ -7,7 +7,7 @@ import {
   useGameStore,
 } from "../store/store";
 // import { useCheckVariableRender } from "../utils/functions";
-import { ToggleButton } from "../components/UI/ToggleButton";
+import { ToggleButton } from "../components/UI/Elements/ToggleButton";
 import { useSoundSystem } from "../hooks/soundSystem";
 import { useCheckVariableRender } from "../utils/functions";
 

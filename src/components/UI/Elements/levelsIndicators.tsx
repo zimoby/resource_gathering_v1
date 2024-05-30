@@ -1,5 +1,5 @@
-import { useGameStore } from "../../store/store";
-import { maxLevel, minLevel } from "../../store/worldParamsSlice";
+import { useGameStore } from "../../../store/store";
+import { maxLevel, minLevel } from "../../../store/worldParamsSlice";
 
 export const LevelsIndicators = () => {
   const activePosition = useGameStore((state) => state.activePosition);

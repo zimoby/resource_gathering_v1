@@ -1,4 +1,4 @@
-import { BasicPanelWrapper } from "./BasicPanelWrapper";
+import { BasicPanelWrapper } from "../BasicPanelWrapper";
 
 export const BigButtons = ({
   text,
