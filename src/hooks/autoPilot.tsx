@@ -1,12 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useGameStore } from "../store/store";
-
-const directions = [
-  { x: 0, y: 1 },
-  { x: 1, y: 0 },
-  { x: 0, y: -1 },
-  { x: -1, y: 0 },
-];
+import { movementDirections } from "../store/gameStateSlice";
 
 export const useAutoPilot = () => {
   const currentLocation = useGameStore((state) => state.currentLocation);
@@ -16,7 +10,9 @@ export const useAutoPilot = () => {
   useEffect(() => {
     const randomMoveDirection = () => {
       const randomDirection =
-        directions[Math.floor(Math.random() * directions.length)];
+        movementDirections[
+          Math.floor(Math.random() * movementDirections.length)
+        ];
       useGameStore.setState({ moveDirection: randomDirection });
     };
 

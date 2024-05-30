@@ -107,6 +107,13 @@ export type ModalName =
   | "showArtifactsModal"
   | "showMapModal";
 
+export const movementDirections = [
+  { x: -1, y: 0, label: "a" },
+  { x: 0, y: -1, label: "w" },
+  { x: 0, y: 1, label: "s" },
+  { x: 1, y: 0, label: "d" },
+];
+
 export const createGameStateSlice: StateCreator<
   GameStoreState,
   [],
