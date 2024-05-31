@@ -188,6 +188,9 @@ export interface WorldParamsSlice {
   artifactSelected: string;
   terrainColors: TerrainTypesT;
 
+  visitedWorlds: WorldParamsType[];
+  addVisitedWorld: (params: WorldParamsType) => void;
+
   regenerateWorld: () => void;
   increaseBeconsLimit: () => void;
   addArtifactToCollection: (type: ArtifactType) => void;
@@ -201,7 +204,7 @@ export const createWorldParamsSlice: StateCreator<
   [],
   [],
   WorldParamsSlice
-> = (set) => ({
+> = (set, get) => ({
   beacons: [],
   beaconsLimit: 10,
 
@@ -251,6 +254,8 @@ export const createWorldParamsSlice: StateCreator<
 
   terrainColors: terrainTypes,
 
+  visitedWorlds: [],
+
   worldParams: generateWorld(),
   regenerateWorld: () => {
     const newTerrainColors = {
@@ -261,8 +266,10 @@ export const createWorldParamsSlice: StateCreator<
       default: { color: new Color(0xffffff), level: 0 },
     };
 
+    const newWorldParams = generateWorld();
+
     set({
-      worldParams: generateWorld(),
+      worldParams: newWorldParams,
       terrainColors: newTerrainColors,
       artifacts: generateArtifacts({ amount: artifactAmount }),
       beacons: [],
@@ -280,5 +287,16 @@ export const createWorldParamsSlice: StateCreator<
       scanRadius: 30,
       weatherCondition: "Mild",
     });
+    get().addVisitedWorld(newWorldParams);
+  },
+  addVisitedWorld: (params: WorldParamsType) => {
+    const { visitedWorlds } = get();
+    const isUnique = !visitedWorlds.some(
+      (world) => JSON.stringify(world) === JSON.stringify(params),
+    );
+
+    if (isUnique) {
+      set({ visitedWorlds: [...visitedWorlds, params] });
+    }
   },
 });

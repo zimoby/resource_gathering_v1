@@ -20,6 +20,7 @@ const App = () => {
   const firstStart = useGameStore((state) => state.firstStart);
   const setColors = useGameStore((state) => state.setColors);
   const colors = useGameStore((state) => state.colors);
+  const regenerateWorld = useGameStore((state) => state.regenerateWorld);
 
   useEffect(() => {
     setColors(colors);
@@ -33,6 +34,12 @@ const App = () => {
   useRunBgMusic();
   useEnergyActions();
   useAutoPilot();
+
+  useEffect(() => {
+    if (firstStart) {
+      regenerateWorld();
+    }
+  }, [firstStart, regenerateWorld]);
 
   return (
     <>
