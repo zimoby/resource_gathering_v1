@@ -1,6 +1,7 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useGameStore } from "../../../store/store";
-// import { useCheckVariableRender } from "../../../utils/functions";
+
+type ArtifactType = "usual" | "rare" | "legendary";
 
 export const ArtefactsModal = () => {
   const showArtifactsModal = useGameStore((state) => state.showArtifactsModal);
@@ -8,30 +9,27 @@ export const ArtefactsModal = () => {
     (state) => state.updateStoreProperty,
   );
   const artifactsArray = useGameStore((state) => state.artifactsArray);
-
-  // useCheckVariableRender(artifactsArray, "artifactsArray");
+  const [expandedArtifacts, setExpandedArtifacts] = useState<number[]>([]);
 
   const displayArtifactData = useMemo(() => {
     const artifactsNames = Object.values(artifactsArray).map(
       (artifact) => artifact.name,
     );
-
     const artifactsParams = Object.values(artifactsArray).map(
       (artifact) => artifact.params,
     );
-
+    const artifactsTypes = Object.values(artifactsArray).map(
+      (artifact) => artifact.type,
+    );
     const uniteData = artifactsNames.map((name, index) => {
-      return { name: name, params: artifactsParams[index] };
+      return {
+        name: name,
+        params: artifactsParams[index],
+        type: artifactsTypes[index],
+      };
     });
-
-    // console.log("uniteData", uniteData);
-
     return uniteData;
   }, [artifactsArray]);
-
-  displayArtifactData;
-
-  // console.log("artifactsArray", artifactsArray);
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
@@ -39,15 +37,34 @@ export const ArtefactsModal = () => {
         updateStoreProperty("showArtifactsModal", false);
       }
     };
-
     if (showArtifactsModal) {
       window.addEventListener("keydown", handleKeyPress);
     }
-
     return () => {
       window.removeEventListener("keydown", handleKeyPress);
     };
   }, [showArtifactsModal, updateStoreProperty]);
+
+  const toggleArtifact = (index: number) => {
+    if (expandedArtifacts.includes(index)) {
+      setExpandedArtifacts(expandedArtifacts.filter((i) => i !== index));
+    } else {
+      setExpandedArtifacts([...expandedArtifacts, index]);
+    }
+  };
+
+  const getColorByType = (type: ArtifactType) => {
+    switch (type) {
+      case "usual":
+        return "text-gray-400";
+      case "rare":
+        return "text-blue-400";
+      case "legendary":
+        return "text-orange-400";
+      default:
+        return "text-white";
+    }
+  };
 
   return (
     <div
@@ -58,7 +75,6 @@ export const ArtefactsModal = () => {
         className="relative bg-black/80 w-96 h-1/2 flex flex-col border border-uilines aug-border-yellow-500"
         data-augmented-ui="border tl-2-clip-x br-2-clip-x --aug-border-bg"
       >
-        {/* <div className="absolute bottom-1.5 left-1.5 size-5 border-l-uilines border-b-uilines border-b-2 border-l-2" /> */}
         <div className="flex justify-end items-center">
           <div
             className="flex justify-center items-center size-8 text-uitext cursor-pointer hover:bg-uilines hover:text-neutral-900"
@@ -70,16 +86,28 @@ export const ArtefactsModal = () => {
         <div className="orbitron w-full h-8 flex justify-center bg-uilines items-center text-neutral-900 text-2xl">
           {`Artifacts (${displayArtifactData.length})`}
         </div>
-        <div className="scrollbar w-full h-full flex flex-col p-7 pt-4 text-uitext leading-5 space-y-2">
+        <div className="scrollbar w-full h-full flex flex-col p-7 pt-4 text-uitext leading-5 space-y-1">
           {displayArtifactData.map((artifact, index) => (
-            <div key={index}>
-              <div className=" uppercase text-xl">{artifact.name}</div>
-              {Object.keys(artifact.params).map((key, index) => (
-                <div className=" text-xs" key={index}>
-                  {artifact.params[key].name}: {artifact.params[key].value}
-                </div>
-              ))}
-              {/* <div>{artifact.params}</div> */}
+            <div
+              className="px-2 border border-uilines hover:bg-uilines hover:text-neutral-900"
+              key={index}
+            >
+              <div
+                className={`checked:border-indigo-500 flex items-center justify-between uppercase text-base cursor-pointer select-none`}
+                onClick={() => toggleArtifact(index)}
+              >
+                <div className=" leading-5 py-1">{artifact.name}</div>
+                <div>{artifact.type}</div>
+              </div>
+              {expandedArtifacts.includes(index) && (
+                <>
+                  {Object.keys(artifact.params).map((key, index) => (
+                    <div className="text-xs" key={index}>
+                      {artifact.params[key].name}: {artifact.params[key].value}
+                    </div>
+                  ))}
+                </>
+              )}
             </div>
           ))}
         </div>
