@@ -51,6 +51,7 @@ export const FlyingDrone = () => {
 
   const throttledSetState = useRef(
     throttle((state) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       useGameStore.setState(state);
     }, 150),
   ).current;

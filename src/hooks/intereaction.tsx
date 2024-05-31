@@ -187,6 +187,7 @@ export const useCanvasHover = ({
 
   const throttledSetState = useRef(
     throttle((state) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       useGameStore.setState(state);
     }, 100),
   ).current;

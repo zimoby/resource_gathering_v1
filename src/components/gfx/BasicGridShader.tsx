@@ -127,12 +127,10 @@ export const BasicGridShader = ({
     if (
       planeRef.current &&
       planeRef.current.material instanceof ShaderMaterial &&
-      planeRef.current.material.uniforms.offset?.value
+      planeRef.current.material.uniforms.offset?.value instanceof Vector2
     ) {
-      planeRef.current.material.uniforms.offset.value.set(
-        offset.current.x * 0.01,
-        -offset.current.y * 0.01,
-      );
+      const offsetValue = planeRef.current.material.uniforms.offset.value;
+      offsetValue.set(offset.current.x * 0.01, -offset.current.y * 0.01);
     }
   });
 
