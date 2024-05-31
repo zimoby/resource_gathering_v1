@@ -18,6 +18,7 @@ module.exports = {
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs', 'node_modules'],
   parser: '@typescript-eslint/parser',
+  files: ["!tailwind.config.js"],
   parserOptions: {
     project: path.resolve(__dirname, './tsconfig.json'),
     tsconfigRootDir: __dirname,
