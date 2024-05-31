@@ -1,8 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useGameStore } from "../../../store/store";
 
-type ArtifactType = "usual" | "rare" | "legendary";
-
 export const ArtefactsModal = () => {
   const showArtifactsModal = useGameStore((state) => state.showArtifactsModal);
   const updateStoreProperty = useGameStore(
@@ -53,18 +51,18 @@ export const ArtefactsModal = () => {
     }
   };
 
-  const getColorByType = (type: ArtifactType) => {
-    switch (type) {
-      case "usual":
-        return "text-gray-400";
-      case "rare":
-        return "text-blue-400";
-      case "legendary":
-        return "text-orange-400";
-      default:
-        return "text-white";
-    }
-  };
+  // const getColorByType = (type: ArtifactType) => {
+  //   switch (type) {
+  //     case "usual":
+  //       return "text-gray-400";
+  //     case "rare":
+  //       return "text-blue-400";
+  //     case "legendary":
+  //       return "text-orange-400";
+  //     default:
+  //       return "text-white";
+  //   }
+  // };
 
   return (
     <div

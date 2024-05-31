@@ -103,7 +103,15 @@ export const useKeyboardControls = ({
         // useGameStore.setState({ dynamicSpeed: 0 });
       }
     },
-    [camera, canPlaceBeacon, meshRef, playerPoints, raycaster, updateMapParam],
+    [
+      autoPilot,
+      camera,
+      canPlaceBeacon,
+      meshRef,
+      playerPoints,
+      raycaster,
+      updateMapParam,
+    ],
   );
 
   const handleKeyUp = useCallback((event: KeyboardEvent) => {
