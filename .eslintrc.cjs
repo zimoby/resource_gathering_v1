@@ -18,7 +18,6 @@ module.exports = {
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs', 'node_modules'],
   parser: '@typescript-eslint/parser',
-  files: ["!tailwind.config.js"],
   parserOptions: {
     project: path.resolve(__dirname, './tsconfig.json'),
     tsconfigRootDir: __dirname,
@@ -44,6 +43,15 @@ module.exports = {
       { allowConstantExport: true }
     ]
   },
+  overrides: [
+    {
+      files: ['*.ts', '*.tsx'],
+      excludedFiles: ['tailwind.config.js'],
+      parserOptions: {
+        project: ['./tsconfig.json'],
+      },
+    },
+  ],
   settings: {
     react: {
       version: 'detect'
