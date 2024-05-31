@@ -16,12 +16,12 @@ import { generateTerrain } from "./generateTerrain";
 import { NoiseFunction2D, createNoise2D } from "simplex-noise";
 import seedrandom from "seedrandom";
 import {
-  consoleLog,
   useCalculateDeltas,
   useResetOffset,
   useUpdateMapMoving,
 } from "../../utils/functions";
 import { useIncreasingSpeed } from "../../effects/IncreaseSceneSpeed";
+import { ResourceType } from "../../store/worldParamsSlice";
 
 const generateIndices = (
   widthCount: number,
@@ -74,8 +74,8 @@ export const Terrain = () => {
   const positions = useRef(
     new Float32Array((widthCount + 1) * (depthCount + 1) * 3),
   );
-  const resources = useRef(
-    new Array((widthCount + 1) * (depthCount + 1)).fill(null),
+  const resources = useRef<ResourceType[]>(
+    new Array<ResourceType>((widthCount + 1) * (depthCount + 1)).fill("empty"),
   );
 
   const indices = useMemo(() => {

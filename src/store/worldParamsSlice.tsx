@@ -105,7 +105,8 @@ export type ResourceType =
   | "Water"
   | "Metals"
   | "Rare Elements"
-  | "Hydrocarbons";
+  | "Hydrocarbons"
+  | "empty";
 
 export const resourceNames = [
   "Water",
