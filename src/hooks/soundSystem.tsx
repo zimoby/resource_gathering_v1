@@ -20,7 +20,6 @@ export const useSoundSystem = () => {
   });
 
   useEffect(() => {
-    // console.log("soundsLoadingProgress", soundsLoadingProgress);
     useGameStore.setState({ loadingProgress: soundsLoadingProgress });
   }, [soundsLoadingProgress]);
 
@@ -72,8 +71,6 @@ export const useSoundSystem = () => {
           setSounds((prev) => ({ ...prev, glitch: glitchSound }));
         },
       });
-
-      // consoleLog("sounds", { ambientSound, clickSound, landingSound });
     }
 
     return () => {
@@ -84,14 +81,6 @@ export const useSoundSystem = () => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startToLoadFiles]);
-
-  // useEffect(() => {
-  //   if (!ambientWorks && !disableSounds && loadingProgress === 100) {
-  //     // console.log("sounds.ambient.stop()");
-  //     setAmbientWorks(true);
-  //     playAmbientSound();
-  //   }
-  // }, [loadingProgress, playAmbientSound, disableSounds, ambientWorks]);
 
   return { sounds };
 };
@@ -105,7 +94,6 @@ export const useRunBgMusic = () => {
   const { sounds } = useSoundSystem();
 
   useEffect(() => {
-    // console.log("sounds.ambient", {disableSounds, ambient: sounds.ambient, ambientWorks, loadingProgress});
     if ((disableSounds || disableMusic) && sounds.ambient && ambientWorks) {
       consoleLog("sounds.ambient.stop()");
       sounds.ambient.stop();

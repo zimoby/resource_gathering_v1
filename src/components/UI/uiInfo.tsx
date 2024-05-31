@@ -30,27 +30,6 @@ import { ArtefactsModal } from "./Modals/ArtifactsModal";
 import { MapModal } from "./Modals/MapModal";
 import { DronePanel } from "./Panels/DronePanel";
 import { AboutButton } from "./Elements/AbountButton";
-// import { Environment, OrbitControls, PerspectiveCamera, Preload, Sphere, View } from "@react-three/drei";
-// import { useRef } from "react";
-// import { useFrame } from "@react-three/fiber";
-// import { Mesh } from "three";
-
-// const RotatingSphere = (props) => {
-//   const meshRef = useRef<Mesh>(null);
-
-//   useFrame((state, delta) => {
-//     if (meshRef.current) {
-//       meshRef.current.rotation.y += delta * Math.PI;
-//     }
-//   });
-
-//   return (
-//     <mesh ref={meshRef} {...props}>
-//       <sphereGeometry args={[1, 32, 32]} />
-//       <meshStandardMaterial color="royalblue" />
-//     </mesh>
-//   );
-// };
 
 export const UiInfo = () => {
   const animationFirstStage = useGameStore(
@@ -68,7 +47,6 @@ export const UiInfo = () => {
       sounds.glitch &&
       !startStageFinished
     ) {
-      // console.log("sounds.glitch", { animationFirstStage, glitch: sounds.glitch });
       sounds.glitch.play();
     }
 
@@ -109,7 +87,6 @@ export const UiInfo = () => {
           <TitlePanel />
           <ProgressBlock />
           <SinePanel />
-          {/* <EmptyGrowPanel /> */}
           <SimpleWarningLines size="flex flex-grow h-full" />
         </FlickeringHtmlEffect>
       </div>

@@ -2,12 +2,7 @@ import { useCallback } from "react";
 import { educationalStepsPhrases } from "../../drone/educationalStepsPhrases";
 import { SETTING_EDUCATION_MODE, useGameStore } from "../../../store/store";
 
-// import { animated } from "@react-spring/web";
-
 export const EducationSteps = () => {
-  // const opacity = useGameStore(
-  //   (state) => state.uiPanelsState.supportPanels.opacity,
-  // );
   const educationMode = useGameStore((state) => state.educationMode);
   const educationalStepIndex = useGameStore(
     (state) => state.educationalStepIndex,
@@ -18,8 +13,6 @@ export const EducationSteps = () => {
   const resetPanelsOpacity = useGameStore((state) => state.resetPanelsOpacity);
 
   const currentEduStep = educationalStepsPhrases[educationalStepIndex].step;
-
-  // console.log(educationalStepIndex);
 
   const eduStepsNames = [
     { name: "Welcome", id: "welcome1", startIndex: 0 },
@@ -51,7 +44,6 @@ export const EducationSteps = () => {
       {educationMode && (
         <>
           <div>
-            {/* {educationalStepsPhrases[educationalStepIndex].phrase} */}
             <p className=" orbitron text-uitext">Tutor Steps:</p>
           </div>
           <div className="flex w-44 flex-col space-y-1 justify-center items-start">

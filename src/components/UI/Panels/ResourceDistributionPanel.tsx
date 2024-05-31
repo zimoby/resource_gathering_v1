@@ -75,25 +75,3 @@ export const ResourceExtractionPanel = () => {
     </BasicPanelWrapper>
   );
 };
-
-// export const WarningPanel = () => {
-//   const eventsLog = useGameStore((state) => state.eventsLog);
-
-//   return (
-//     <BasicPanelWrapper titleText="Warnings" width="w-64">
-//       {eventsLog.map((warning, index) => (
-//         <div key={index} className="mb-2 p-2 rounded bg-red-500 ">
-//           <div className="flex items-center">
-//             <span className="mr-2">⚠️</span>
-//           </div>
-//           <p>{warning}</p>
-//         </div>
-//       ))}
-//       {eventsLog.length === 0 && (
-//         <div className="text-center text-green-500">
-//           No warnings at the moment.
-//         </div>
-//       )}
-//     </BasicPanelWrapper>
-//   );
-// };

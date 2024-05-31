@@ -67,7 +67,6 @@ export const PlanetDataPanel = () => {
   }, [terrainColors]);
 
   const parsedResourcesColors = useMemo(() => {
-    // console.log("resourceTypes", resourceTypes);
     const resColors = Object.keys(resourceTypes).map((key) => {
       return {
         color: [

@@ -1,6 +1,5 @@
 import { useGameStore } from "../../store/store";
 import { Octahedron, Tetrahedron } from "@react-three/drei";
-// import { ConcentricCirclesAnimation } from "../gfx/concentricCircles";
 import { useFrame } from "@react-three/fiber";
 import { isOutOfBound, useCalculateDeltas } from "../../utils/functions";
 import { createRef, useMemo, useRef } from "react";
@@ -76,8 +75,6 @@ export const ArtifactsGroup = () => {
   const { deltaX, deltaY } = useCalculateDeltas();
   const timeRef = useRef(0);
 
-  // console.log("ArtifactsGroup", artifacts);
-
   const artifactRefs = useRef<React.RefObject<Group>[]>(
     artifacts.map(() => createRef()),
   );
@@ -93,9 +90,6 @@ export const ArtifactsGroup = () => {
       const circleObject = circleRefs.current[index].current;
 
       if (artifactObject) {
-        // artifactObject.position.x -= deltaX;
-        // artifactObject.position.z -= deltaY;
-        // console.log("artifactObject", deltaX, deltaY);
         artifactObject.position.x -=
           deltaX * (delta * 100) * increasingSpeedRef.current;
         artifactObject.position.z -=

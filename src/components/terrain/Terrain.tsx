@@ -59,7 +59,6 @@ export const Terrain = () => {
   const activePosition = useGameStore((state) => state.activePosition);
   const playerPoints = useGameStore((state) => state.playerPoints);
   const terrainColors = useGameStore((state) => state.terrainColors);
-  // const resetValues = useGameStore((state) => state.resetValues);
 
   const widthCount = Math.floor(width / resolution);
   const depthCount = Math.floor(depth / resolution) + 1;
@@ -144,9 +143,6 @@ export const Terrain = () => {
   const { speedRef: increasingSpeedRef } = useIncreasingSpeed(0, 1, 0.01, 2);
 
   useFrame((_, delta) => {
-    // offset.current.x += deltaX;
-    // offset.current.y += deltaY;
-    // consoleLog("delta", delta * 100);
     offset.current.x += deltaX * (delta * 100) * increasingSpeedRef.current;
     offset.current.y += deltaY * (delta * 100) * increasingSpeedRef.current;
 
@@ -156,7 +152,6 @@ export const Terrain = () => {
 
     if (resources[0] !== null && terrainLoading) {
       useGameStore.setState({ terrainLoading: false });
-      consoleLog("terrainLoading finished");
     }
   });
 

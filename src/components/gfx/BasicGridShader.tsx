@@ -72,7 +72,6 @@ export const BasicGridShader = ({
 
   const { deltaX, deltaY } = useCalculateDeltas();
   const { speedRef: increasingSpeedRef } = useIncreasingSpeed(0, 1, 0.01, 2);
-  // const { updateLocationAndOffset } = useUpdateMapMoving();
 
   useEffect(() => {
     generateGridGeometry();
@@ -118,13 +117,10 @@ export const BasicGridShader = ({
 
   useFrame((_, delta) => {
     if (resetValues) {
-      // console.log("resetValues basicGridShader", resetValues);
       offset.current.x = 0;
       offset.current.y = 0;
     }
 
-    // offset.current.x += deltaX;
-    // offset.current.y += deltaY;
     offset.current.x += deltaX * (delta * 100) * increasingSpeedRef.current;
     offset.current.y += deltaY * (delta * 100) * increasingSpeedRef.current;
 

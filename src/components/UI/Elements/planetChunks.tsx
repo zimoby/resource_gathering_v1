@@ -6,8 +6,6 @@ import React, {
   useState,
 } from "react";
 import { useGameStore } from "../../../store/store";
-// import { useCheckVariableRender } from "../../utils/functions";
-// import { useCheckVariableRender } from "../../utils/functions";
 
 type GridCell = "empty" | "visited" | "artifact" | "current";
 
@@ -59,8 +57,6 @@ export const PlanetChunks = ({ size = 5, hideControls = false }) => {
 
   const toggleModal = useGameStore((state) => state.toggleModal);
 
-  // useCheckVariableRender(offset, "offset");
-
   const handleMouseDown = useCallback((event: React.MouseEvent) => {
     setDragging(true);
     setDragStart({ x: event.clientX, y: event.clientY });
@@ -92,8 +88,6 @@ export const PlanetChunks = ({ size = 5, hideControls = false }) => {
       document.removeEventListener("mouseup", handleMouseUp);
     };
   }, [dragging, handleMouseMove, handleMouseUp]);
-
-  // useCheckVariableRender(artifacts, "artifacts");
 
   const memoizedLocationsHistory = useMemo(
     () => locationsHistory,
@@ -171,8 +165,6 @@ export const PlanetChunks = ({ size = 5, hideControls = false }) => {
       newGrid[currentY][currentX] = "current";
     }
 
-    // console.log("newGrid", newGrid);
-
     return newGrid;
   }, [
     gridSize,
@@ -190,9 +182,6 @@ export const PlanetChunks = ({ size = 5, hideControls = false }) => {
       ref={containerRef}
       onMouseDown={handleMouseDown}
     >
-      {/* <div className="absolute top-0 right-0 size-7 border-r-2 border-t-2 border-t-uilines border-r-uilines -m-6 hover:border-t-neutral-100 hover:border-r-neutral-100 hover:-m-8 cursor-pointer"
-        onClick={() => setGridSize(() => 21)}
-      /> */}
       {!hideControls && (
         <>
           <div

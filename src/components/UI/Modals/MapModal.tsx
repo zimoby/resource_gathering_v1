@@ -1,15 +1,12 @@
 import { useEffect } from "react";
 import { useGameStore } from "../../../store/store";
 import { PlanetChunks } from "../Elements/planetChunks";
-// import { useCheckVariableRender } from "../../../utils/functions";
 
 export const MapModal = () => {
   const showMapModal = useGameStore((state) => state.showMapModal);
   const updateStoreProperty = useGameStore(
     (state) => state.updateStoreProperty,
   );
-
-  // useCheckVariableRender(artifactsArray, "artifactsArray");
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
@@ -36,7 +33,6 @@ export const MapModal = () => {
         className="relative bg-black/80 w-96 h-1/2 flex flex-col border border-uilines aug-border-yellow-500"
         data-augmented-ui="border tl-2-clip-x br-2-clip-x --aug-border-bg"
       >
-        {/* <div className="absolute bottom-1.5 left-1.5 size-5 border-l-uilines border-b-uilines border-b-2 border-l-2" /> */}
         <div className="flex justify-end items-center">
           <div
             className="flex justify-center items-center size-8 text-uitext cursor-pointer hover:bg-uilines hover:text-neutral-900"

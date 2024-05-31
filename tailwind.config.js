@@ -27,8 +27,6 @@ export default {
         "fade-out": {
           "0%": { opacity: 1 },
           "100%": { opacity: 0 },
-          // "0%": { opacity: 1, transform: "perspective(20px) translateZ(0)" },
-          // "100%": { opacity: 0, transform: "perspective(20px) translateZ(-100px)" },
         }
       },
       animation: {

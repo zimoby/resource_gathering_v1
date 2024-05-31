@@ -26,23 +26,17 @@ export const ArtifactsInfo = () => {
               useGameStore.setState({ message: `Artifact: ${artifact.id}` })
             }
           >
-            {
-              index +
-                1 +
-                "." +
-                convertChunkCoordinateToName({
-                  x: artifact.chunkX,
-                  y: artifact.chunkY,
-                }) +
-                ": " +
-                artifact.chunkX +
-                ":" +
-                artifact.chunkY
-              // ": " +
-              // Math.round(artifact.x) +
-              // ":" +
-              // Math.round(artifact.z)
-            }
+            {index +
+              1 +
+              "." +
+              convertChunkCoordinateToName({
+                x: artifact.chunkX,
+                y: artifact.chunkY,
+              }) +
+              ": " +
+              artifact.chunkX +
+              ":" +
+              artifact.chunkY}
           </div>
         ))}
         <div className="h-5"></div>

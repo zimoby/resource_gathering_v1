@@ -11,8 +11,6 @@ import { EducationSteps } from "../Elements/eduSteps";
 import { DirectionIndicators } from "../Elements/directionIndicators";
 
 export const CenterScreenPanel = () => {
-  // const showSettingsModal = useGameStore((state) => state.showSettingsModal);
-  // const showAboutModal = useGameStore((state) => state.showAboutModal);
   const animationFirstStage = useGameStore(
     (state) => state.animationFirstStage,
   );

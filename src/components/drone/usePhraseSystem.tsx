@@ -3,14 +3,6 @@ import { PhrasesCollection } from "./PhrasesCollection";
 import { SETTING_EDUCATION_MODE, useGameStore } from "../../store/store";
 import { educationalStepsPhrases } from "./educationalStepsPhrases";
 import { colors } from "../../assets/colors";
-// import { consoleLog, useCheckVariableRender } from "../../utils/functions";
-
-// interface PhraseSystemOptions {
-//   minDuration?: number;
-//   maxDuration?: number;
-//   phraseDuration?: number;
-//   firstAppearing?: boolean;
-// }
 
 const getRandomPhrase = () => {
   const randomIndex = Math.floor(Math.random() * PhrasesCollection.length);
@@ -44,7 +36,6 @@ const usePhraseSystem = () => {
   const increaseEducationalStepIndex = useGameStore(
     (state) => state.increaseEducationalStepIndex,
   );
-  // const [educationalStepIndex, setEducationalStepIndex] = useState(0);
   const educationMode = useGameStore((state) => state.educationMode);
   const beacons = useGameStore((state) => state.beacons);
   const soloPanelOpacity = useGameStore((state) => state.soloPanelOpacity);
@@ -75,19 +66,13 @@ const usePhraseSystem = () => {
     }
   }, [playerPoints, beacons.length, setColors]);
 
-  // useCheckVariableRender(educationMode, "educationMode");
-  // useCheckVariableRender(firstGreetings, "firstGreetings");
-
   useEffect(() => {
     if (!educationMode) {
-      // consoleLog("reset", { educationMode, firstGreetings });
       setFirstGreetings(false);
       setActivePhrase({ phrase: "" });
     } else {
       setFirstGreetings(true);
     }
-
-    // consoleLog("educationMode", { educationMode, firstGreetings });
 
     if (educationMode && firstGreetings && animationFirstStage) {
       setActivePhrase(educationalStepsPhrases[educationalStepIndex]);
@@ -148,8 +133,6 @@ const usePhraseSystem = () => {
   ]);
 
   useEffect(() => {
-    // consoleLog("useEffect selectRandomPhrase", { educationMode });
-
     let timeoutId: number | undefined;
 
     if (!educationMode && !gameOverState) {
@@ -157,9 +140,7 @@ const usePhraseSystem = () => {
         const newPhrase = randomisePhrase(activePhrase.phrase);
         setActivePhrase({ phrase: newPhrase });
         setPhraseKey((prevKey) => prevKey + 1);
-        // consoleLog("selectRandomPhrase", { educationMode, newPhrase });
         timeoutId = setTimeout(selectRandomPhrase, 10000);
-        // return () => clearTimeout(timeout);
       };
 
       timeoutId = setTimeout(selectRandomPhrase, 10000);
@@ -180,7 +161,6 @@ const usePhraseSystem = () => {
   const handleNextClick = () => {
     if (educationalStepIndex < educationalStepsPhrases.length - 1) {
       increaseEducationalStepIndex();
-      // setEducationalStepIndex((prevIndex) => prevIndex + 1);
     } else {
       setFirstGreetings(false);
       updateVariableInLocalStorage(SETTING_EDUCATION_MODE, false);

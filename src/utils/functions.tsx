@@ -84,7 +84,6 @@ export const useResetOffset = (
       offset.current.x = 0;
       offset.current.y = 0;
       useGameStore.setState({ resetValues: false });
-      // consoleLog("resetValues terrain", {resetValues, x: offset.current.x, y: offset.current.y});
     }
   }, [resetValues, offset]);
 };

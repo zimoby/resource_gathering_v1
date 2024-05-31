@@ -13,9 +13,6 @@ export const DroneMoveAngleUI = () => {
     >
       <div className="absolute top-1/2 left-1/2 origin-left w-full border border-uilines opacity-20 bg-uilines -translate-x-1/2" />
       <div className="absolute top-1/2 left-1/2 origin-top w-full border border-uilines opacity-20 bg-uilines -translate-x-1/2 rotate-90" />
-      {/* <div className="absolute top-1/2 left-1/2 origin-top w-full h-full border border-uilines opacity-20 bg-uilines rotate-90" /> */}
-      {/* <div className="absolute top-0 left-0 origin-center size-5 border border-uilines opacity-20 bg-uilines -translate-x-1/2 rotate-90" /> */}
-      {/* <div className="absolute size-10  rounded-full origin-center  border border-uilines bg-uilines -translate-x-1/2" /> */}
       <div
         className="absolute top-1/2 left-1/2 origin-left w-full border border-uilines bg-uilines"
         style={{
@@ -25,12 +22,6 @@ export const DroneMoveAngleUI = () => {
         <div className="absolute top-1/2 left-1/2 origin-top w-full border border-uilines opacity-50 bg-uilines -translate-x-1/2 translate-y-2 scale-75" />
         <div className="absolute top-1/2 left-1/2 origin-top w-full border border-uilines opacity-50 bg-uilines -translate-x-1/2 -translate-y-2 scale-75" />
       </div>
-      {/* <div
-        className="absolute top-1/2 left-1/2 origin-left w-full border border-uilines bg-uilines"
-        style={{
-          transform: `rotate(${-droneMoveAngle}deg) translateX(-50%) scaleX(2)`,
-        }}
-      /> */}
       <div className=" size-full rounded-full border border-uilines opacity-20 scale-125" />
       <p className=" font-mono size-full text-xs mt-2 text-center text-uitext">
         {-droneMoveAngle}°

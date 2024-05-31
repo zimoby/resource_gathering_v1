@@ -54,7 +54,6 @@ export const useKeyboardControls = ({
   const playerPoints = useGameStore((state) => state.playerPoints);
   const updateMapParam = useGameStore((state) => state.updateMapParam);
   const autoPilot = useGameStore((state) => state.autoPilot);
-  // const animationFirstStage = useGameStore((state) => state.animationFirstStage);
 
   const handleMousePosition = useCallback((event: MouseEvent) => {
     mouseEventRef.current = event;
@@ -100,7 +99,6 @@ export const useKeyboardControls = ({
         useGameStore.setState({ dynamicSpeed: 1 });
       } else if (event.code === "AltLeft" || event.code === "AltRight") {
         updateMapParam("speed", 0);
-        // useGameStore.setState({ dynamicSpeed: 0 });
       }
     },
     [
@@ -186,7 +184,6 @@ export const useCanvasHover = ({
   const addNewMessage = useGameStore((state) => state.addNewMessage);
   const costs = useGameStore((state) => state.costs);
   const playerPoints = useGameStore((state) => state.playerPoints);
-  // const animationFirstStage = useGameStore((state) => state.animationFirstStage);
 
   const throttledSetState = useRef(
     throttle((state) => {
@@ -194,18 +191,8 @@ export const useCanvasHover = ({
     }, 100),
   ).current;
 
-  // const throttledCheckArtefacts = useRef(
-  //   throttle((point: { point: { x: number; y: number } }) => {
-  //     checkArtifactInRadius(point);
-  //   }, 200),
-  // ).current;
-
   const handleCanvasHover = useCallback(
     (event: { clientX: number; clientY: number; type: string }) => {
-      // if (!animationFirstStage) { return; }
-
-      // console.log(event.type);
-
       if (!canPlaceBeacon || !meshRef.current) {
         if (playerPoints < costs.scanning.value) {
           addNewMessage("Not enough energy to scan");
@@ -253,9 +240,6 @@ export const useCanvasHover = ({
       });
 
       const isWithinRadius = checkArtifactInRadius({ point });
-      // const isWithinRadius = throttledCheckArtefacts({ point });
-
-      // console.log("isWithinRadius", isWithinRadius);
 
       if (event.type === "click") {
         if (isWithinRadius) {
@@ -276,7 +260,6 @@ export const useCanvasHover = ({
             width,
           ),
         });
-        // useGameStore.setState({ canPlaceBeacon: false });
       }
     },
     [

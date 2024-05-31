@@ -8,26 +8,12 @@ export const useListAppearing = <T extends { id: string }>(array: T[]) => {
       opacity: 0,
       backgroundColor: "var(--color-uilines)",
     },
-    enter:
-        // [
-    //   {
-    //     transform: "translateX(15%)",
-    //     opacity: 0.5,
-    //     backgroundColor: "var(--color-uilines)",
-    //   },
-      {
-        transform: "translateX(0%)",
-        opacity: 1,
-        backgroundColor: "rgba(0, 0, 0, 0)",
-        config: { duration: 300, easing: easings.easeOutCubic },
-      },
-    // ],
-    // leave: {
-    //   transform: "translateX(-100%)",
-    //   backgroundColor: "rgba(0, 0, 0, 0.5)",
-    //   opacity: 0,
-    // },
-    // config: { duration: 300, easing: easings.easeOutCubic },
+    enter: {
+      transform: "translateX(0%)",
+      opacity: 1,
+      backgroundColor: "rgba(0, 0, 0, 0)",
+      config: { duration: 300, easing: easings.easeOutCubic },
+    },
   });
 
   return transitions;

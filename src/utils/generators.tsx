@@ -28,7 +28,6 @@ export const generateWorld = (): WorldParamsType => {
   const radiation = Math.floor(Math.random() * 1000);
   const weatherCondition = generateWeather();
 
-  // min 0.1, max 0.9
   const largeDetailes = Math.random() * 0.8 + 0.1;
   const mediumDetailes = Math.random() * 0.8 + 0.1;
   const smallDetailes = Math.random() * 0.8 + 0.1;

@@ -21,7 +21,6 @@ export const CollectedResourcesPanel = () => {
         {Object.entries(collectedResources).map(([resource, count], index) => (
           <div
             key={resource}
-            // className="w-1/2 flex flex-col text-center justify-start items-center hover:bg-uilines hover:text-neutral-900"
             className="w-1/2 flex flex-col text-center justify-start items-center"
             onMouseEnter={() => setHoveredResource(resource)}
             onMouseLeave={() => setHoveredResource(null)}

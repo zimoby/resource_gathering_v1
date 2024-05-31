@@ -6,7 +6,6 @@ import {
   SETTING_START_SCREEN,
   useGameStore,
 } from "../store/store";
-// import { useCheckVariableRender } from "../utils/functions";
 import { ToggleButton } from "../components/UI/Elements/ToggleButton";
 import { useSoundSystem } from "../hooks/soundSystem";
 import { useCheckVariableRender } from "../utils/functions";
@@ -23,12 +22,8 @@ const StartScreen = () => {
   const startScreen = useGameStore((state) => state.startScreen);
   const loadingProgress = useGameStore((state) => state.loadingProgress);
   const startToLoadFiles = useGameStore((state) => state.startToLoadFiles);
-
-  // const [startToGenerate, setStartToGenerate] = useState(false);
   const [skipStartScene, setSkipStartScene] = useState(false);
   const [starting, setStarting] = useState(false);
-
-  // const { toggleAmbientSound } = useSoundSystem();
 
   useCheckVariableRender(loadingProgress, "loadingProgress");
 

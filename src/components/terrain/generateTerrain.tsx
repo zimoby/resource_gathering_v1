@@ -115,18 +115,17 @@ const generateHeight = (
     noise2D(
       (x + offsetX) / scaleCorrection,
       (y + offsetY - depthOffCorrection / 2) / scaleCorrection,
-    ) * mapDetailes[0]; // 0.5;
+    ) * mapDetailes[0];
   const mediumScale =
     noise2D(
       (x + offsetX) / (scaleCorrection * 0.5),
       (y + offsetY - depthOffCorrection / 2) / (scaleCorrection * 0.5),
-    ) * mapDetailes[1]; // 0.25;
+    ) * mapDetailes[1];
   const smallScale =
     noise2D(
       (x + offsetX) / (scaleCorrection * 0.25),
       (y + offsetY - depthOffCorrection / 2) / (scaleCorrection * 0.25),
-    ) * mapDetailes[2]; // * 0.25;
-
+    ) * mapDetailes[2];
   const combined = largeScale + mediumScale + smallScale;
 
   if (combined >= 0) {
@@ -176,7 +175,6 @@ export const generateTerrain = (
         heightNoise * heightMultiplier + baseLineOffset,
         minLevel,
       );
-      // const y = Math.max(heightNoise * (heightMultiplier + heightMultiplier / 2) - heightMultiplier / 2, -heightMultiplier);
       const z = i * resolution - depth / 2;
       const idx = (i * (widthCount + 1) + j) * 3;
       positions[idx] = x;
@@ -186,19 +184,6 @@ export const generateTerrain = (
   }
 
   applyTerrainColors(positions, colors, widthCount, depthCount, terrainColors);
-
-  // if (canPlaceBeacon) {
-  //   for (let i = 0; i < resources.length; i++) {
-  //     const resource = resources[i];
-  //     if (resource) {
-  //       const color = getResourceColor(resource);
-  //       colors[i * 3] = color.r;
-  //       colors[i * 3 + 1] = color.g;
-  //       colors[i * 3 + 2] = color.b;
-  //     }
-  //   }
-  // }
-  // const alwaycanPlaceBeacon = true;
 
   if (canPlaceBeacon) {
     const mousePosX = activePosition.x + width / 2;

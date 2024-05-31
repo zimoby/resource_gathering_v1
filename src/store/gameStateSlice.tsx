@@ -13,7 +13,6 @@ import { ResourceType, resourceNames, resourceTypes } from "./worldParamsSlice";
 import { generateWeather } from "../utils/generators";
 import { WeatherCondition } from "./worldParamsSlice";
 import { generateUUID } from "three/src/math/MathUtils.js";
-// import { consoleLog } from "../utils/functions";
 
 export interface Offset {
   x: number;
@@ -241,8 +240,6 @@ export const createGameStateSlice: StateCreator<
     );
     let newPlayerPoints = playerPoints + pointsEarned;
 
-    // console.log("dynamicSpeed", dynamicSpeed, mapParams.speed);
-
     const combinedSpeed = dynamicSpeed * mapParams.speed;
 
     if (combinedSpeed > 1) {
@@ -264,13 +261,10 @@ export const createGameStateSlice: StateCreator<
       addEventLog(`Extra Map Scan. -${extraCosts} energy`);
     }
 
-    // let message = "";
     if (canPlaceBeacon) {
       if (newPlayerPoints >= costs.scanning.value) {
         newPlayerPoints -= costs.scanning.value;
         addEventLog(`Scanning. -${costs.scanning.value} energy`);
-      } else {
-        // message = `Not enough energy to scan. Need ${costs.scanning.value} energy`;
       }
     }
 
@@ -280,9 +274,7 @@ export const createGameStateSlice: StateCreator<
       mapParams: {
         ...mapParams,
         speed: playerPoints > 0 ? mapParams.speed : 1,
-        // message: message
       },
-      // message: message
     });
   },
 
@@ -352,17 +344,4 @@ export const createGameStateSlice: StateCreator<
       return { eventsLog: updatedEvents };
     });
   },
-  // addEventLog: (eventName) => {
-  //   const uniqueLog: LogWithIdT = {
-  //     id: generateUUID(),
-  //     text: eventName,
-  //   };
-  //   set((state) => {
-  //     const updatedEvents = [...state.eventsLog, uniqueLog];
-  //     if (updatedEvents.length > 5) {
-  //       updatedEvents.shift();
-  //     }
-  //     return { eventsLog: updatedEvents };
-  //   });
-  // },
 });

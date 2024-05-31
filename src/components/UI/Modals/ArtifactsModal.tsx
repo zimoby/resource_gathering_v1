@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import { useGameStore } from "../../../store/store";
-import { useCheckVariableRender } from "../../../utils/functions";
 
 export const ArtefactsModal = () => {
   const showArtifactsModal = useGameStore((state) => state.showArtifactsModal);
@@ -10,8 +9,6 @@ export const ArtefactsModal = () => {
   const artifactsArray = useGameStore((state) => state.artifactsArray);
   const visitedWorlds = useGameStore((state) => state.visitedWorlds);
   const [expandedArtifacts, setExpandedArtifacts] = useState<number[]>([]);
-
-  useCheckVariableRender(visitedWorlds, "visitedWorlds");
 
   const displayArtifactData = useMemo(() => {
     const worldSeeds = visitedWorlds.map((world) => world.seed.value);
@@ -48,19 +45,6 @@ export const ArtefactsModal = () => {
       setExpandedArtifacts([...expandedArtifacts, index]);
     }
   };
-
-  // // const getColorByType = (type: ArtifactType) => {
-  //   switch (type) {
-  //     case "usual":
-  //       return "text-gray-400";
-  //     case "rare":
-  //       return "text-blue-400";
-  //     case "legendary":
-  //       return "text-orange-400";
-  //     default:
-  //       return "text-white";
-  //   }
-  // };
 
   return (
     <div

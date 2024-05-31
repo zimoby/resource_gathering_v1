@@ -28,7 +28,6 @@ const App = () => {
 
   useInitInfo();
   useCalculateResources();
-  // useParamsSync();
   useGameLoop();
   useSoundSystem();
   useRunBgMusic();
