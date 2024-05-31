@@ -268,8 +268,10 @@ const generateUniqArtefactParams = () => {
 
 export const generateArtifacts = ({
   amount = 10,
+  worldId = "",
 }: {
   amount?: number;
+  worldId?: string;
 }): ArtifactT[] => {
   const artifacts: ArtifactT[] = [
     // {
@@ -295,6 +297,7 @@ export const generateArtifacts = ({
       id: Math.random().toString(36).substr(2, 9),
       name: generateUniqArtefactName(),
       params: generateUniqArtefactParams(),
+      worldId,
     });
   }
   return artifacts;

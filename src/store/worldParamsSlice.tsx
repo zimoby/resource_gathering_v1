@@ -175,6 +175,7 @@ export interface ArtifactT {
   id: string;
   name: string;
   params: Record<string, { name: string; value: number }>;
+  worldId: string;
 }
 
 export interface WorldParamsSlice {
@@ -271,7 +272,10 @@ export const createWorldParamsSlice: StateCreator<
     set({
       worldParams: newWorldParams,
       terrainColors: newTerrainColors,
-      artifacts: generateArtifacts({ amount: artifactAmount }),
+      artifacts: generateArtifacts({
+        amount: artifactAmount,
+        worldId: newWorldParams.seed.value,
+      }),
       beacons: [],
       currentOffset: { x: 0, y: 0 },
       currentLocation: { x: 0, y: 0 },
