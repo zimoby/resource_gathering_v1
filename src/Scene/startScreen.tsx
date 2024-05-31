@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { corpLogoSvg } from "../assets/CorpLogo";
 import {
   SETTING_DISABLE_ANIMATIONS,
@@ -23,31 +23,30 @@ const StartScreen = () => {
   const loadingProgress = useGameStore((state) => state.loadingProgress);
   const startToLoadFiles = useGameStore((state) => state.startToLoadFiles);
   const [skipStartScene, setSkipStartScene] = useState(false);
-  const [starting, setStarting] = useState(false);
 
   useCheckVariableRender(loadingProgress, "loadingProgress");
 
   const { sounds } = useSoundSystem();
 
-  const startGame = () => {
-    setStarting(true);
-    console.log("sounds.click", sounds.click);
-    if (!disableSounds && sounds.click) {
-      sounds.click.play();
-    }
-    setTimeout(() => {
-      setStartScreen(SETTING_START_SCREEN, false);
-      if (startScreen === skipStartScene) {
-        updateVariableInLocalStorage(SETTING_START_SCREEN, !skipStartScene);
+  useEffect(() => {
+    if (loadingProgress >= 100) {
+      if (!disableSounds && sounds.click) {
+        sounds.click.play();
       }
-    }, 1000);
-  };
+      setTimeout(() => {
+        setStartScreen(SETTING_START_SCREEN, false);
+        if (startScreen === skipStartScene) {
+          updateVariableInLocalStorage(SETTING_START_SCREEN, !skipStartScene);
+        }
+      }, 1000);
+    }
+  }, [loadingProgress]);
 
   return (
     <div className="h-full w-full bg-black">
       <div
         className={`h-full w-full flex flex-col justify-center items-center bg-neutral-900 ${
-          starting ? "animate-fadeOut" : ""
+          loadingProgress >= 100 ? "animate-fadeOut" : ""
         }`}
       >
         <div className="w-20 -mb-1 h-auto">
@@ -78,35 +77,6 @@ const StartScreen = () => {
 
         {!startToLoadFiles && (
           <div className="w-fit h-fit mt-16 flex flex-row items-center justify-center border border-neutral-100 hover:border-yellow-400 overflow-hidden bg-neutral-100 hover:bg-yellow-400 cursor-pointer">
-            <button
-              className="orbitron w-42 px-5 m-2 uppercase text-center text-neutral-900"
-              onClick={() => useGameStore.setState({ startToLoadFiles: true })}
-            >
-              Generate World
-            </button>
-          </div>
-        )}
-
-        {startToLoadFiles && loadingProgress < 100 && (
-          <div className="w-[300px] h-10 mt-16 bg-neutral-800 border">
-            <div
-              className="h-full overflow-hidden bg-neutral-200"
-              style={{ width: `${loadingProgress * 3}px` }}
-            >
-              <div
-                className="h-full flex flex-col justify-center items-center bg-repeat-x animate-linear"
-                style={{
-                  width: `${loadingProgress * 6}px`,
-                  background:
-                    "repeating-linear-gradient(-45deg, transparent, transparent 10px, black 10px, black 20px)",
-                }}
-              />
-            </div>
-          </div>
-        )}
-
-        {startToLoadFiles && loadingProgress >= 100 && (
-          <div className="w-fit h-fit mt-16 flex flex-row items-center justify-center border border-neutral-100 hover:border-yellow-400 overflow-hidden bg-neutral-100 hover:bg-yellow-400 cursor-pointer">
             <div className="w-36 h-full overflow-hidden">
               <div
                 className="w-72 h-full flex flex-col justify-center items-center bg-repeat-x animate-linear"
@@ -118,7 +88,7 @@ const StartScreen = () => {
             </div>
             <button
               className="orbitron w-36 m-2 uppercase text-center text-neutral-900"
-              onClick={startGame}
+              onClick={() => useGameStore.setState({ startToLoadFiles: true })}
             >
               Start Game
             </button>
@@ -126,6 +96,24 @@ const StartScreen = () => {
               <div
                 className="w-72 h-full flex flex-col justify-center items-center bg-repeat-x animate-linear"
                 style={{
+                  background:
+                    "repeating-linear-gradient(-45deg, transparent, transparent 10px, black 10px, black 20px)",
+                }}
+              />
+            </div>
+          </div>
+        )}
+
+        {startToLoadFiles && (
+          <div className="w-[300px] h-10 mt-16 bg-neutral-800 border">
+            <div
+              className="h-full overflow-hidden bg-neutral-200"
+              style={{ width: `${loadingProgress * 3}px` }}
+            >
+              <div
+                className="h-full flex flex-col justify-center items-center bg-repeat-x animate-linear"
+                style={{
+                  width: `${loadingProgress * 6}px`,
                   background:
                     "repeating-linear-gradient(-45deg, transparent, transparent 10px, black 10px, black 20px)",
                 }}
