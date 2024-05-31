@@ -47,8 +47,8 @@ export const AboutModal = () => {
         <div className="w-full h-full flex flex-col p-7 pt-4 text-uitext leading-5 space-y-2">
           <div className="text-sm">
             <p>
-              This game, created for the challenge "Futuristic UI" from Bruno
-              Simon's{" "}
+              This game, created for the challenge &quot;Futuristic UI&quot;
+              from Bruno Simon&apos;s{" "}
             </p>
             <a
               className="underline"

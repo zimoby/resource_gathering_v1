@@ -19,7 +19,7 @@ module.exports = {
   ignorePatterns: ['dist', '.eslintrc.cjs', 'node_modules'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: path.resolve(__dirname, './tsconfig.json'),
+    project: './tsconfig.json',
     tsconfigRootDir: __dirname,
     sourceType: 'module',
     ecmaFeatures: {

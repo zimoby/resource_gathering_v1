@@ -40,7 +40,15 @@ const StartScreen = () => {
         }
       }, 1000);
     }
-  }, [loadingProgress]);
+  }, [
+    loadingProgress,
+    disableSounds,
+    sounds.click,
+    skipStartScene,
+    startScreen,
+    setStartScreen,
+    updateVariableInLocalStorage,
+  ]);
 
   return (
     <div className="h-full w-full bg-black">

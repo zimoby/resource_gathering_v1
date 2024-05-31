@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, ReactNode } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Group, Material, Mesh } from "three";
+import { Group, Material, Mesh, BufferGeometry } from "three";
 import { useAppearingGlitchingEffect } from "./AppearingGlitchingEffect";
 import { useGameStore } from "../store/store";
 
@@ -13,7 +13,10 @@ interface FadingEffectProps {
   maxOpacity?: number;
 }
 
-function setMeshOpacity(mesh: Mesh, opacity: number) {
+function setMeshOpacity(
+  mesh: Mesh<BufferGeometry, Material | Material[]>,
+  opacity: number,
+) {
   if (Array.isArray(mesh.material)) {
     mesh.material.forEach((material) =>
       updateMaterialOpacity(material, opacity),
@@ -44,7 +47,10 @@ export const FadingEffect: React.FC<FadingEffectProps> = ({
     if ((disabled || disableAnimations) && group) {
       group.children.forEach((child) => {
         if (child instanceof Mesh) {
-          setMeshOpacity(child, maxOpacity);
+          setMeshOpacity(
+            child as Mesh<BufferGeometry, Material | Material[]>,
+            maxOpacity,
+          );
         }
       });
       return;
@@ -64,7 +70,7 @@ export const FadingEffect: React.FC<FadingEffectProps> = ({
       group.children.forEach((child) => {
         if (Math.random() < randomFrequency && child instanceof Mesh) {
           setMeshOpacity(
-            child,
+            child as Mesh<BufferGeometry, Material | Material[]>,
             Math.random() * (maxOpacity - minOpacity) + minOpacity,
           );
         }

@@ -154,3 +154,5 @@ const ArtifactsPlaneIndicator: React.FC<ArtifactsPlaneIndicatorProps> =
       />
     </Plane>
   ));
+
+ArtifactsPlaneIndicator.displayName = "ArtifactsPlaneIndicator";

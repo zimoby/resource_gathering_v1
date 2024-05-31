@@ -44,7 +44,7 @@ export const useIncreasingSpeed2 = ({
     valueReached.current = false;
     valueStarted.current = true;
     api.stop();
-    api.start({
+    void api.start({
       from: { value: initialValue },
       to: { value: goalValue },
       config: { duration: duration * 1000, easing },
